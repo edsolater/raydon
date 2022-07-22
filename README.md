@@ -1,6 +1,4 @@
-# Raydium Frontend
-
-# url(query) support
+# url(query) support (same as Raydium V2)
 
 ## Swap
 
