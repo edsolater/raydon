@@ -38,7 +38,7 @@ export default function PageLayout(props: {
 }) {
   useDocumentMetaTitle(props.metaTitle)
   const isMobile = useAppSettings((s) => s.isMobile)
-  const [isSideMenuOpen, setIsSideMenuOpen] = useState(false)
+  const showSideMenu = useAppSettings((s) => s.showSideMenu)
   return (
     <div
       style={{
@@ -67,9 +67,13 @@ export default function PageLayout(props: {
           <TopNavbar
             barTitle={props.mobileBarTitle}
             className="grid-area-a"
-            onOpenMenu={() => setIsSideMenuOpen(true)}
+            onOpenMenu={() => useAppSettings.setState({ showSideMenu: true })}
           />
-          <Drawer open={isSideMenuOpen} onClose={() => setIsSideMenuOpen(false)} onOpen={() => setIsSideMenuOpen(true)}>
+          <Drawer
+            open={Boolean(showSideMenu)}
+            onClose={() => useAppSettings.setState({ showSideMenu: false })}
+            onOpen={() => useAppSettings.setState({ showSideMenu: true })}
+          >
             {({ close }) => <SideMenu className="flex-container h-screen" onClickCloseBtn={close} />}
           </Drawer>
         </>
