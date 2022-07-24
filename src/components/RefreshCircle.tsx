@@ -3,14 +3,14 @@ import React, { useEffect, useRef } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import IntervalCircle, { IntervalCircleHandler } from '@/components/IntervalCircle'
-import Tooltip from '@/components/Tooltip'
+import Tooltip from '@/tempUikits/Tooltip'
 import { useForceUpdate } from '@/hooks/useForceUpdate'
 import useToggle from '@/hooks/useToggle'
 import { AnyFn } from '@/types/constants'
 
 import { useDocumentVisibility } from '../hooks/useDocumentVisibility'
 
-import { PopoverPlacement } from './Popover'
+import { PopoverPlacement } from '../tempUikits/Popover'
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import { inServer } from '@/functions/judgers/isSSR'
 import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect '

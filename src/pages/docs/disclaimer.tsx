@@ -1,4 +1,4 @@
-import Card from '@/components/Card'
+import Card from '@/tempUikits/Card'
 import React from 'react'
 
 export default function DisclaimerPage() {

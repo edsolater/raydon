@@ -3,9 +3,9 @@ import React, { ReactNode, useEffect, useMemo, useState } from 'react'
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import useNotification from '@/application/notification/useNotification'
 
-import Col from './Col'
+import Col from '../tempUikits/Col'
 import ConfirmDialog, { ConfirmDialogInfo } from '../pageComponents/dialogs/ConfirmDialog'
-import Link from './Link'
+import Link from '../tempUikits/Link'
 import NotificationItem, { NotificationItemInfo } from './NotificationItem'
 import WelcomeBetaDialog from '../pageComponents/dialogs/WelcomeBetaDialog'
 

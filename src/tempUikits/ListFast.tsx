@@ -3,7 +3,7 @@ import React, { CSSProperties, Fragment, ReactNode, RefObject, useCallback, useE
 import mergeRef from '@/functions/react/mergeRef'
 import { useRecordedEffect } from '@/hooks/useRecordedEffect'
 
-import Col from './Col'
+import Col from '../tempUikits/Col'
 
 function useInfiniteScrollDirector(
   ref: RefObject<HTMLElement | null | undefined>,

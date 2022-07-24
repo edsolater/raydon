@@ -4,10 +4,10 @@ import { twMerge } from 'tailwind-merge'
 
 import useToggle from '@/hooks/useToggle'
 
-import Button from '../../components/Button'
-import Card from '../../components/Card'
-import Col from '../../components/Col'
-import Dialog from '../../components/Dialog'
+import Button from '../../tempUikits/Button'
+import Card from '../../tempUikits/Card'
+import Col from '../../tempUikits/Col'
+import Dialog from '../../tempUikits/Dialog'
 import Icon, { AppHeroIconName } from '../../components/Icon'
 
 export interface ConfirmDialogInfo {

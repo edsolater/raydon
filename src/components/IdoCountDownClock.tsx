@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-import Row from '@/components/Row'
+import Row from '@/tempUikits/Row'
 
 import parseDuration from '../functions/date/parseDuration'
 import { TimeStamp } from '@/functions/date/interface'

@@ -4,7 +4,7 @@ import { twMerge } from 'tailwind-merge'
 
 import { SplToken, Token } from '@/application/token/type'
 
-import Image from './Image'
+import Image from '../tempUikits/Image'
 
 export interface CoinAvatarProps {
   /** the shadow transparent fondation border */

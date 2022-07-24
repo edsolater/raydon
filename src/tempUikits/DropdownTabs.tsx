@@ -5,7 +5,7 @@ import { useUrlQuery } from '@/hooks/useUrlQuery'
 import { useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import Collapse, { CollapseHandler } from './Collapse'
-import Icon from './Icon'
+import Icon from '../components/Icon'
 import RadioGroup, { RadioGroupProps } from './RadioGroup'
 import Row from './Row'
 

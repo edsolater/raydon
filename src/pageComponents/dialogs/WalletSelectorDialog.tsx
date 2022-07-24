@@ -4,17 +4,17 @@ import { WalletAdapter, WalletReadyState } from '@solana/wallet-adapter-base'
 
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import useWallet from '@/application/wallet/useWallet'
-import Card from '@/components/Card'
+import Card from '@/tempUikits/Card'
 import Icon from '@/components/Icon'
-import Row from '@/components/Row'
+import Row from '@/tempUikits/Row'
 
-import Grid from '../../components/Grid'
-import Link from '../../components/Link'
-import ResponsiveDialogDrawer from '../../components/ResponsiveDialogDrawer'
-import Input from '../../components/Input'
-import Col from '../../components/Col'
-import Button from '../../components/Button'
-import FadeInStable from '../../components/FadeIn'
+import Grid from '../../tempUikits/Grid'
+import Link from '../../tempUikits/Link'
+import ResponsiveDialogDrawer from '../../tempUikits/ResponsiveDialogDrawer'
+import Input from '../../tempUikits/Input'
+import Col from '../../tempUikits/Col'
+import Button from '../../tempUikits/Button'
+import FadeInStable from '../../tempUikits/FadeIn'
 
 function WalletSelectorPanelItem({
   wallet,

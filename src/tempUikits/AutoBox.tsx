@@ -1,7 +1,7 @@
 import { omit } from '@/functions/objectMethods'
 import Col, { ColProps } from './Col'
 import Grid, { GridProps } from './Grid'
-import Row, { RowProps } from './Row'
+import Row, { RowProps } from '../tempUikits/Row'
 
 export interface AutoBoxProps extends ColProps {
   is?: 'Row' | 'Col' | 'Grid' | 'div' | ''

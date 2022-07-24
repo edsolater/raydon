@@ -4,10 +4,10 @@ import { twMerge } from 'tailwind-merge'
 
 import { shrinkToValue } from '@/functions/shrinkToValue'
 
-import Col from './Col'
-import Input, { InputProps } from './Input'
+import Col from '../tempUikits/Col'
+import Input, { InputProps } from '../tempUikits/Input'
 import mergeRef from '@/functions/react/mergeRef'
-import DecimalInput, { DecimalInputProps } from './DecimalInput'
+import DecimalInput, { DecimalInputProps } from '../tempUikits/DecimalInput'
 
 export type InputBoxProps = {
   className?: string

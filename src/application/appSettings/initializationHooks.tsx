@@ -12,7 +12,7 @@ import useNotification from '../notification/useNotification'
 import { useRouter } from 'next/router'
 import { useRecordedEffect } from '@/hooks/useRecordedEffect'
 import { toString } from '@/functions/numberish/toString'
-import Link from '@/components/Link'
+import Link from '@/tempUikits/Link'
 import { useAppVersion } from '../appVersion/useAppVersion'
 import { inClient, inServer, isInBonsaiTest, isInLocalhost } from '@/functions/judgers/isSSR'
 

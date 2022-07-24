@@ -1,6 +1,6 @@
 import useCreateFarms from '@/application/createFarm/useCreateFarm'
-import { FadeIn } from '@/components/FadeIn'
-import Grid from '@/components/Grid'
+import { FadeIn } from '@/tempUikits/FadeIn'
+import Grid from '@/tempUikits/Grid'
 import { useEffect, useState } from 'react'
 import { RewardFormCardInputs } from './RewardFormInputs'
 import { NewAddedRewardSummary } from './NewAddedRewardSummary'

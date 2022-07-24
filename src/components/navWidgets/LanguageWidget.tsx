@@ -2,7 +2,7 @@ import { useClickableElementRef } from '@/hooks/useClickableElement'
 import useTranslation from '@/hooks/useTranslation'
 
 import Menu from '../Menu'
-import Row from '../Row'
+import Row from '../../tempUikits/Row'
 
 function Item({ name = '', className, onClick }: { name?: string; className?: string; onClick?: () => void }) {
   const clickRef = useClickableElementRef({ onClick })

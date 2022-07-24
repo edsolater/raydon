@@ -5,7 +5,7 @@ import React, { ReactNode, useEffect, useMemo, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import Col from './Col'
 import Collapse from './Collapse'
-import Icon from './Icon'
+import Icon from '../components/Icon'
 import Row from './Row'
 
 /**

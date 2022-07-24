@@ -4,9 +4,9 @@ import { twMerge } from 'tailwind-merge'
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import { shrinkToValue } from '@/functions/shrinkToValue'
 
-import HDrawer, { DrawerPlacement } from './HDrawer'
-import Popover, { PopoverPlacement } from './Popover'
-import { PopupLocationInfo } from './Popover/useLocationCalculator'
+import HDrawer, { DrawerPlacement } from '../tempUikits/HDrawer'
+import Popover, { PopoverPlacement } from '../tempUikits/Popover'
+import { PopupLocationInfo } from '../tempUikits/Popover/useLocationCalculator'
 
 /**
  * for PageLayout

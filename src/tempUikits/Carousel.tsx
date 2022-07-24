@@ -3,7 +3,7 @@ import React, { ReactNode, useEffect, useRef, useState } from 'react'
 import { shrinkToValue } from '@/functions/shrinkToValue'
 import useDevice from '@/hooks/useDevice'
 
-import Icon from './Icon'
+import Icon from '../components/Icon'
 import Row from './Row'
 
 export default function Carousel<T>({

@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react'
 
 import Icon, { IconProps } from '@/components/Icon'
-import Row from '@/components/Row'
+import Row from '@/tempUikits/Row'
 
 /**
  * component type: styled UI component

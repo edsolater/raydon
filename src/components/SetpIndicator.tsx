@@ -2,8 +2,8 @@ import { ReactNode } from 'react'
 
 import { shrinkToValue } from '@/functions/shrinkToValue'
 
-import Col from './Col'
-import Row from './Row'
+import Col from '../tempUikits/Col'
+import Row from '../tempUikits/Row'
 
 /** must set either totalSteps or stepInfos */
 export default function SetpIndicator<T extends { /** start from 1  */ stepNumber: number; stepContent: ReactNode }>({

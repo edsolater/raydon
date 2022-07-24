@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactMarkdown from 'react-markdown'
-import Link from './Link'
+import Link from '../tempUikits/Link'
 import { ReactMarkdownOptions } from 'react-markdown/lib/react-markdown'
 
 /**

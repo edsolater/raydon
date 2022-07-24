@@ -2,9 +2,9 @@ import useAppSettings from '@/application/appSettings/useAppSettings'
 import useCreateFarms from '@/application/createFarm/useCreateFarm'
 import { MAX_DURATION, MIN_DURATION } from '@/application/farms/handleFarmInfo'
 import useWallet from '@/application/wallet/useWallet'
-import Button from '@/components/Button'
-import ResponsiveDialogDrawer from '@/components/ResponsiveDialogDrawer'
-import Row from '@/components/Row'
+import Button from '@/tempUikits/Button'
+import ResponsiveDialogDrawer from '@/tempUikits/ResponsiveDialogDrawer'
+import Row from '@/tempUikits/Row'
 import { isDateBefore } from '@/functions/date/judges'
 import { getDuration } from '@/functions/date/parseDuration'
 import { gte, isMeaningfulNumber, lte } from '@/functions/numberish/compare'
@@ -14,8 +14,8 @@ import { useMemo, useRef, useState } from 'react'
 
 import { twMerge } from 'tailwind-merge'
 
-import Card from '../../components/Card'
-import Dialog from '../../components/Dialog'
+import Card from '../../tempUikits/Card'
+import Dialog from '../../tempUikits/Dialog'
 import { RewardCardInputsHandler, RewardFormCardInputs, RewardFormCardInputsParams } from './RewardFormInputs'
 
 export default function RewardInputDialog({

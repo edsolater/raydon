@@ -72,9 +72,10 @@ export default function TabWithPanel<T extends string = string>({
         values={values}
         className={`grid grid-cols-auto-fit ${tabGroupClassName ?? ''}`}
         itemClassName={(checked) =>
-          `py-3 w-full text-center mobile:text-sm ${
-            checked ? 'text-status-active font-bold' : ''
-          } ${shrinkToValue(tabItemClassName, [checked])}`
+          `py-3 w-full text-center mobile:text-sm ${checked ? 'text-status-active font-bold' : ''} ${shrinkToValue(
+            tabItemClassName,
+            [checked]
+          )}`
         }
         currentValue={currentValue}
         {...restProps}

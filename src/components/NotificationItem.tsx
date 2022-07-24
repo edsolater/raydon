@@ -4,9 +4,9 @@ import { useHover } from '@/hooks/useHover'
 import useToggle from '@/hooks/useToggle'
 import { Transition } from '@headlessui/react'
 
-import Card from './Card'
+import Card from '../tempUikits/Card'
 import Icon, { AppHeroIconName } from './Icon'
-import Row from './Row'
+import Row from '../tempUikits/Row'
 
 export interface NotificationItemInfo {
   type?: 'success' | 'warning' | 'error' | 'info'

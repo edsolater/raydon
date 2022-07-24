@@ -5,7 +5,7 @@ import { PublicKeyish } from '@raydium-io/raydium-sdk'
 import React, { useEffect } from 'react'
 import { twMerge } from 'tailwind-merge'
 import Icon from './Icon'
-import { ThreeSlotItem } from './ThreeSlotItem'
+import { ThreeSlotItem } from '../tempUikits/ThreeSlotItem'
 
 /**
  * base on {@link ThreeSlotItem}

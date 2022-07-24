@@ -10,7 +10,7 @@ import { ReactNode, useEffect, useRef, useState } from 'react'
 import { useSearchText } from '../hooks/useSearchText'
 import { SearchOptions } from '../functions/searchItems'
 import Card from './Card'
-import Icon from './Icon'
+import Icon from '../components/Icon'
 import Input, { InputComponentHandler, InputProps } from './Input'
 import Popover, { PopoverHandles } from './Popover'
 
