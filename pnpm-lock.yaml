@@ -7,6 +7,10 @@ overrides:
   bn.js: ^5.2.1
 
 specifiers:
+  '@edsolater/fnkit': ^0.1.7
+  '@edsolater/hookit': ^0.1.3
+  '@edsolater/jfetch': ^0.1.2
+  '@edsolater/xstore': ^0.1.8
   '@headlessui/react': ^1.6.6
   '@heroicons/react': ^1.0.6
   '@next/bundle-analyzer': ^12.2.2
@@ -16,6 +20,7 @@ specifiers:
   '@solana/wallet-adapter-tokenpocket': ^0.4.7
   '@solana/wallet-adapter-wallets': ^0.16.8
   '@solana/web3.js': ^1.48.0
+  '@types/bn.js': ^5.1.0
   '@types/node': ^18.0.6
   '@types/react': ^18.0.15
   '@types/react-dom': ^18.0.6
@@ -51,6 +56,10 @@ specifiers:
   zustand: ^3.7.2
 
 dependencies:
+  '@edsolater/fnkit': 0.1.7
+  '@edsolater/hookit': 0.1.3
+  '@edsolater/jfetch': 0.1.2
+  '@edsolater/xstore': 0.1.8
   '@headlessui/react': 1.6.6_biqbaboplfbrettd7655fr4n2y
   '@heroicons/react': 1.0.6_react@18.2.0
   '@raydium-io/raydium-sdk': 1.1.0-beta.6_5v7yr66cdcqn7alpmbfxte4oxm
@@ -74,6 +83,7 @@ dependencies:
 
 devDependencies:
   '@next/bundle-analyzer': 12.2.3
+  '@types/bn.js': 5.1.0
   '@types/node': 18.0.6
   '@types/react': 18.0.15
   '@types/react-dom': 18.0.6
@@ -131,6 +141,35 @@ packages:
     engines: {node: '>=12'}
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
+
+  /@edsolater/fnkit/0.0.5:
+    resolution: {integrity: sha512-T900jYYRaYEhUaZhtLgfrTCfTdDOcMh79Al5UXhCXMuhEVtGkn8MSs3rhMIpwRUVbrJWm9O3kgnXgm1wWHOgxQ==}
+    dev: false
+
+  /@edsolater/fnkit/0.1.7:
+    resolution: {integrity: sha512-ck1HXhu6CH/9pAbVgPvLGrEdlZb8iplze+OkDu5GOnZeN9sRCJny/Jvw3BQWX2Ljutk0Nrb9ot7l3Wi8ZnNJ0g==}
+    dev: false
+
+  /@edsolater/hookit/0.1.3:
+    resolution: {integrity: sha512-2+EGzi/4cgAL1Wo11YBzejPrpt9U1AdhFnn51zNwZidzlLTgf7eKYOxjoczZmLWcbuIuHvr5gxqHiu+oCNZiaQ==}
+    dependencies:
+      '@edsolater/fnkit': 0.1.7
+      react: 18.2.0
+    dev: false
+
+  /@edsolater/jfetch/0.1.2:
+    resolution: {integrity: sha512-wA4NSIP9xn2j4qHaz0R14uTjJoRYrk3dJ6bCtuMpvZTEtdBmYPNP3cMQIOP8BbIeUikFnzdOLIvEHw52LZ8low==}
+    dependencies:
+      '@edsolater/fnkit': 0.0.5
+      react: 18.2.0
+    dev: false
+
+  /@edsolater/xstore/0.1.8:
+    resolution: {integrity: sha512-c/ZF7ldf924VdV5/CIeKHc7ZMbvySVpZpqHLuz4praZTaWHcbVACKq6dLOxKmnNSjJIHd45cICDZaH4BDpopTw==}
+    dependencies:
+      '@edsolater/fnkit': 0.1.7
+      react: 18.2.0
+    dev: false
 
   /@eslint/eslintrc/1.3.0:
     resolution: {integrity: sha512-UWW0TMTmk2d7hLcWD1/e2g5HDM/HQ3csaLSqXCfqwh4uNDuNqlaKWXmEsL4Cs41Z0KnILNvwbHAah3C2yt06kw==}
@@ -1159,7 +1198,6 @@ packages:
     resolution: {integrity: sha512-QSSVYj7pYFN49kW77o2s9xTCwZ8F2xLbjLLSEVh8D2F4JUhZtPAGOFLTD+ffqksBx/u4cE/KImFjyhqCjn/LIA==}
     dependencies:
       '@types/node': 18.0.6
-    dev: false
 
   /@types/cacheable-request/6.0.2:
     resolution: {integrity: sha512-B3xVo+dlKM6nnKTcmm5ZtY/OL8bOAOd2Olee9M1zft65ox50OzjEHW91sDiU9j6cvW8Ejg1/Qkf4xd2kugApUA==}
