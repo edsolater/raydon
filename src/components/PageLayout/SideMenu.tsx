@@ -1,18 +1,18 @@
-import React, { ReactNode, useEffect, useRef } from 'react'
-import { useRouter } from 'next/router'
-import { twMerge } from 'tailwind-merge'
 import useAppSettings from '@/application/appSettings/useAppSettings'
-import { LinkAddress } from '@/types/constants'
-import Col from '../../tempUikits/Col'
-import Icon, { AppHeroIconName } from '../Icon'
-import Image from '../../tempUikits/Image'
-import Link from '../../tempUikits/Link'
-import PageLayoutPopoverDrawer from '../PageLayoutPopoverDrawer'
-import Row from '../../tempUikits/Row'
 import { setCssVarible } from '@/functions/dom/cssVariable'
 import { inClient } from '@/functions/judgers/isSSR'
-import { RpcConnectionPanelPopover, RpcConnectionFace } from './RpcConnectionWidget'
+import { LinkAddress } from '@/types/constants'
+import { useRouter } from 'next/router'
+import { ReactNode, useEffect, useRef } from 'react'
+import { twMerge } from 'tailwind-merge'
+import Col from '../../tempUikits/Col'
+import Image from '../../tempUikits/Image'
+import Link from '../../tempUikits/Link'
+import Row from '../../tempUikits/Row'
+import Icon, { AppHeroIconName } from '../Icon'
+import PageLayoutPopoverDrawer from '../PageLayoutPopoverDrawer'
 import { CommunityPopover } from './CommunityWidget'
+import { RpcConnectionFace, RpcConnectionPanelPopover } from './RpcConnectionWidget'
 import { SlippageTolerancePopover } from './SlippageTolerancePopover'
 import { VersionInfoBlock } from './VersionInfoBlock'
 
@@ -24,9 +24,7 @@ import { VersionInfoBlock } from './VersionInfoBlock'
  * - {@link SlippageTolerancePopover `<SlippageTolerancePopover>`}
  */
 export function SideMenu({ className, onClickCloseBtn }: { className?: string; onClickCloseBtn?(): void }) {
-  const { pathname } = useRouter()
   const isMobile = useAppSettings((s) => s.isMobile)
-  const isInLocalhost = useAppSettings((s) => s.isInLocalhost)
   const sideMenuRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -67,76 +65,61 @@ export function SideMenu({ className, onClickCloseBtn }: { className?: string; o
           </Row>
         )}
         <Col className="grid grid-rows-[2fr,1fr,auto] flex-1 overflow-hidden">
-          <div className="shrink overflow-y-auto min-h-[120px] py-4 space-y-1 mobile:py-0 px-2 mr-2 mobile:ml-2 mb-2">
-            <LinkItem icon="/icons/entry-icon-trade.svg" href="https://dex.raydium.io/">
-              Trading
-            </LinkItem>
-            <LinkItem icon="/icons/entry-icon-swap.svg" href="/swap" isCurrentRoutePath={pathname.includes('swap')}>
-              Swap
-            </LinkItem>
-            <LinkItem
-              icon="/icons/entry-icon-liquidity.svg"
-              href="/liquidity/add"
-              isCurrentRoutePath={pathname.includes('liquidity')}
-            >
-              Liquidity
-            </LinkItem>
-            <LinkItem icon="/icons/entry-icon-pools.svg" href="/pools" isCurrentRoutePath={pathname.includes('pools')}>
-              Pools
-            </LinkItem>
-            <LinkItem icon="/icons/entry-icon-farms.svg" href="/farms" isCurrentRoutePath={pathname.includes('farms')}>
-              Farms
-            </LinkItem>
-            <LinkItem
-              icon="/icons/entry-icon-staking.svg"
-              href="/staking"
-              isCurrentRoutePath={pathname.includes('staking')}
-            >
-              Staking
-            </LinkItem>
-            <LinkItem icon="/icons/entry-icon-acceleraytor.svg" href="/acceleraytor/list">
-              AcceleRaytor
-            </LinkItem>
-            {isInLocalhost && (
-              <LinkItem icon="/icons/entry-icon-acceleraytor.svg" href="/acceleraytor/basement">
-                Basement
-              </LinkItem>
-            )}
-            <LinkItem icon="/icons/entry-icon-dropzone.svg" href="https://dropzone.raydium.io/">
-              Dropzone
-            </LinkItem>
-            <LinkItem icon="/icons/entry-icon-nft.svg" href="https://nft.raydium.io/">
-              NFT
-            </LinkItem>
-          </div>
-
-          <Col className="mobile:h-[180px] overflow-scroll no-native-scrollbar">
-            <div className="mx-8 border-b border-[rgba(57,208,216,0.16)] my-2 mobile:my-1"></div>
-            <div className="flex-1 overflow-auto no-native-scrollbar mt-2">
-              <RpcConnectionPanelSidebarWidget />
-              <SettingSidebarWidget />
-              <CommunityPanelSidebarWidget />
-
-              <OptionItem noArrow href="https://raydium.gitbook.io/raydium/" iconSrc="/icons/msic-docs.svg">
-                Docs
-              </OptionItem>
-
-              <OptionItem noArrow href="https://v1.raydium.io/swap" heroIconName="desktop-computer">
-                Raydium V1
-              </OptionItem>
-
-              <OptionItem noArrow href="https://forms.gle/DvUS4YknduBgu2D7A" iconSrc="/icons/misc-feedback.svg">
-                Feedback
-              </OptionItem>
-            </div>
-          </Col>
-
+          <MenuRouters className="shrink min-h-[120px] mr-2 mb-2 mobile:ml-2 overflow-y-auto" />
+          <MenuSubOptions className="mobile:h-[180px] overflow-scroll no-native-scrollbar" />
           <VersionInfoBlock />
         </Col>
       </Col>
     </>
   )
 }
+
+function MenuRouters({ className }: { className: string }) {
+  const isInLocalhost = useAppSettings((s) => s.isInLocalhost)
+  const { pathname } = useRouter()
+
+  return (
+    <div className={twMerge('py-4 space-y-1 mobile:py-0 px-2', className)}>
+      <LinkItem icon="/icons/entry-icon-trade.svg" href="https://dex.raydium.io/">
+        Trading
+      </LinkItem>
+      <LinkItem icon="/icons/entry-icon-swap.svg" href="/swap" isCurrentRoutePath={pathname.includes('swap')}>
+        Swap
+      </LinkItem>
+      <LinkItem
+        icon="/icons/entry-icon-liquidity.svg"
+        href="/liquidity/add"
+        isCurrentRoutePath={pathname.includes('liquidity')}
+      >
+        Liquidity
+      </LinkItem>
+      <LinkItem icon="/icons/entry-icon-pools.svg" href="/pools" isCurrentRoutePath={pathname.includes('pools')}>
+        Pools
+      </LinkItem>
+      <LinkItem icon="/icons/entry-icon-farms.svg" href="/farms" isCurrentRoutePath={pathname.includes('farms')}>
+        Farms
+      </LinkItem>
+      <LinkItem icon="/icons/entry-icon-staking.svg" href="/staking" isCurrentRoutePath={pathname.includes('staking')}>
+        Staking
+      </LinkItem>
+      <LinkItem icon="/icons/entry-icon-acceleraytor.svg" href="/acceleraytor/list">
+        AcceleRaytor
+      </LinkItem>
+      {isInLocalhost && (
+        <LinkItem icon="/icons/entry-icon-acceleraytor.svg" href="/acceleraytor/basement">
+          Basement
+        </LinkItem>
+      )}
+      <LinkItem icon="/icons/entry-icon-dropzone.svg" href="https://dropzone.raydium.io/">
+        Dropzone
+      </LinkItem>
+      <LinkItem icon="/icons/entry-icon-nft.svg" href="https://nft.raydium.io/">
+        NFT
+      </LinkItem>
+    </div>
+  )
+}
+
 function LinkItem({
   children,
   href,
@@ -177,6 +160,40 @@ function LinkItem({
     </Link>
   )
 }
+
+function MenuSubOptions({ className }: { className: string }) {
+  return (
+    <Col className={className}>
+      <div className="mx-8 border-b border-[rgba(57,208,216,0.16)] my-2 mobile:my-1"></div>
+      <div className="flex-1 overflow-auto no-native-scrollbar mt-2">
+        <PageLayoutPopoverDrawer renderPopoverContent={({ close }) => <RpcConnectionPanelPopover close={close} />}>
+          <RpcConnectionFace />
+        </PageLayoutPopoverDrawer>
+
+        <PageLayoutPopoverDrawer renderPopoverContent={<SlippageTolerancePopover />}>
+          <OptionItem iconSrc="/icons/msic-settings.svg">Settings</OptionItem>
+        </PageLayoutPopoverDrawer>
+
+        <PageLayoutPopoverDrawer renderPopoverContent={<CommunityPopover />}>
+          <OptionItem iconSrc="/icons/msic-community.svg">Community</OptionItem>
+        </PageLayoutPopoverDrawer>
+
+        <OptionItem noArrow href="https://raydium.gitbook.io/raydium/" iconSrc="/icons/msic-docs.svg">
+          Docs
+        </OptionItem>
+
+        <OptionItem noArrow href="https://v1.raydium.io/swap" heroIconName="desktop-computer">
+          Raydium V1
+        </OptionItem>
+
+        <OptionItem noArrow href="https://forms.gle/DvUS4YknduBgu2D7A" iconSrc="/icons/misc-feedback.svg">
+          Feedback
+        </OptionItem>
+      </div>
+    </Col>
+  )
+}
+
 function OptionItem({
   noArrow,
   children,
@@ -216,26 +233,5 @@ function OptionItem({
         {!noArrow && <Icon size={isMobile ? 'xs' : 'sm'} heroIconName="chevron-right" iconClassName="text-[#ACE3E6]" />}
       </Row>
     </Link>
-  )
-}
-function SettingSidebarWidget() {
-  return (
-    <PageLayoutPopoverDrawer renderPopoverContent={<SlippageTolerancePopover />}>
-      <OptionItem iconSrc="/icons/msic-settings.svg">Settings</OptionItem>
-    </PageLayoutPopoverDrawer>
-  )
-}
-function CommunityPanelSidebarWidget() {
-  return (
-    <PageLayoutPopoverDrawer renderPopoverContent={<CommunityPopover />}>
-      <OptionItem iconSrc="/icons/msic-community.svg">Community</OptionItem>
-    </PageLayoutPopoverDrawer>
-  )
-}
-function RpcConnectionPanelSidebarWidget() {
-  return (
-    <PageLayoutPopoverDrawer renderPopoverContent={({ close }) => <RpcConnectionPanelPopover close={close} />}>
-      <RpcConnectionFace />
-    </PageLayoutPopoverDrawer>
   )
 }
