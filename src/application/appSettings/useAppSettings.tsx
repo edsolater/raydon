@@ -23,6 +23,8 @@ export type AppSettingsStore = {
   isInLocalhost?: boolean
   isInBonsaiTest?: boolean
 
+  isSideBarMenuShown?: boolean
+
   /** sould block any update when approve panel shows on  */
   isApprovePanelShown: boolean
 

@@ -41,6 +41,8 @@ export function useDeviceInfoSyc() {
   }, [])
 }
 
+export function useKeyboardShortcurtInitialization() {}
+
 export function useSlippageTolerenceValidator() {
   const slippageTolerance = useAppSettings((s) => s.slippageTolerance)
 

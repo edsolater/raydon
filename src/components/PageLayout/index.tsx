@@ -8,6 +8,8 @@ import { SideMenu } from './SideMenu'
 import { TopNavbar } from './TopNavbar'
 import { VersionTooOldDialog } from './VersionTooOldDialog'
 
+import { Div } from '@edsolater/uikit'
+
 /**
  * for easier to code and read
  *
@@ -76,7 +78,9 @@ export default function PageLayout(props: {
       ) : (
         <>
           <TopNavbar className="grid-area-a" />
-          <SideMenu className="flex-container grid-area-b" />
+          <Div className="flex-container grid-area-b">
+            <SideMenu />
+          </Div>
         </>
       )}
       <main
