@@ -40,7 +40,7 @@ export default function PageLayout(props: {
 }) {
   useDocumentMetaTitle(props.metaTitle)
   const isMobile = useAppSettings((s) => s.isMobile)
-  const [isSideMenuOpen, setIsSideMenuOpen] = useState(false)
+  const isSideBarMenuShown = useAppSettings((s) => s.isSideBarMenuShown)
   return (
     <div
       style={{
@@ -69,16 +69,20 @@ export default function PageLayout(props: {
           <TopNavbar
             barTitle={props.mobileBarTitle}
             className="grid-area-a"
-            onOpenMenu={() => setIsSideMenuOpen(true)}
+            onOpenMenu={() => useAppSettings.setState({ isSideBarMenuShown: true })}
           />
-          <Drawer open={isSideMenuOpen} onClose={() => setIsSideMenuOpen(false)} onOpen={() => setIsSideMenuOpen(true)}>
+          <Drawer
+            open={Boolean(isSideBarMenuShown)}
+            onClose={() => useAppSettings.setState({ isSideBarMenuShown: false })}
+            onOpen={() => useAppSettings.setState({ isSideBarMenuShown: true })}
+          >
             {({ close }) => <SideMenu className="flex-container h-screen" onClickCloseBtn={close} />}
           </Drawer>
         </>
       ) : (
         <>
           <TopNavbar className="grid-area-a" />
-          <Div className="flex-container grid-area-b">
+          <Div className={`flex-container grid-area-b ${isSideBarMenuShown ? 'bg-red-500' : ''}`}>
             <SideMenu />
           </Div>
         </>

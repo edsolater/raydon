@@ -5,6 +5,7 @@ import NextNProgress from 'nextjs-progressbar'
 
 import {
   useDeviceInfoSyc,
+  useKeyboardShortcutInitialization,
   useSlippageTolerenceSyncer,
   useSlippageTolerenceValidator,
   useThemeModeSync
@@ -106,11 +107,9 @@ PublicKey.prototype.toJSON = function () {
 
 function ClientInitialization() {
   useHandleWindowTopError()
-
   useThemeModeSync()
-
   useDeviceInfoSyc()
-
+  useKeyboardShortcutInitialization()
   return null
 }
 

@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@edsolater/fnkit": "^0.1.7",
-    "@edsolater/hookit": "^0.1.3",
+    "@edsolater/hookit": "^0.1.2",
     "@edsolater/jfetch": "^0.1.2",
     "@edsolater/uikit": "^0.1.7",
     "@edsolater/xstore": "^0.1.8",
