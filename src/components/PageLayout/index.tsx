@@ -9,6 +9,8 @@ import { TopNavbar } from './TopNavbar'
 import { VersionTooOldDialog } from './VersionTooOldDialog'
 
 import { Div } from '@edsolater/uikit'
+import FadeInStable from '@/tempUikits/FadeIn'
+import Col from '@/tempUikits/Col'
 
 /**
  * for easier to code and read
@@ -82,9 +84,11 @@ export default function PageLayout(props: {
       ) : (
         <>
           <TopNavbar className="grid-area-a" />
-          <Div className={`flex-container grid-area-b ${isSideBarMenuShown ? 'bg-red-500' : ''}`}>
-            <SideMenu />
-          </Div>
+          <Col className="grid-area-b">
+            <FadeInStable show={isSideBarMenuShown} heightOrWidth="width">
+              <SideMenu />
+            </FadeInStable>
+          </Col>
         </>
       )}
       <main

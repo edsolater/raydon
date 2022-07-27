@@ -1,17 +1,16 @@
-import { ReactNode, useRef } from 'react'
+import { Fragment, ReactNode, useRef } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-import useToggle from '@/hooks/useToggle'
 import { Transition } from '@headlessui/react'
 
 export default function FadeInStable({
-  openDelay = 17,
+  heightOrWidth = 'height',
   ignoreEnterTransition,
   ignoreLeaveTransition,
   show,
   children
 }: {
-  openDelay?: number
+  heightOrWidth?: 'height' | 'width'
   ignoreEnterTransition?: boolean
   ignoreLeaveTransition?: boolean
   show?: any
@@ -19,10 +18,16 @@ export default function FadeInStable({
 }) {
   // const [nodeExist, { off: destory }] = useToggle(true)
   const contentRef = useRef<HTMLDivElement>(null)
-  const [isDuringTransition, { off: turnOffDuringTransition, on: turnOnDuringTransition }] = useToggle()
+  const innerChildren = useRef<ReactNode>(children)
+  if (children) innerChildren.current = children // TODO: should cache child result for close transition
+  const inTransitionDuration = useRef(false) // flag for transition is start from transition cancel
+  const cachedElementHeight = useRef<number>() // for transition start may start from transition cancel, which height is not correct
+  const cachedElementWidth = useRef<number>() // for transition start may start from transition cancel, which height is not correct
   return (
     <Transition
       show={Boolean(show)}
+      appear
+      static
       // unmount={false} // TODO: although it will lose state, but not unmount will lose element's height, cause display: none will make height lose. so, have to customized a <Transition> component.
       enter="select-none transition-all duration-200 ease"
       enterFrom="opacity-0"
@@ -31,147 +36,113 @@ export default function FadeInStable({
       leaveFrom="opacity-100"
       leaveTo="opacity-0"
       beforeEnter={() => {
-        if (ignoreEnterTransition) return
-        // seems headlessui/react 1.6 will get react 18's priority strategy. 👇 fllowing code will invoke **before** element load
-        contentRef.current?.style.setProperty('position', 'absolute') // init will rerender element, "position:absolute" is for not affect others
-        contentRef.current?.style.setProperty('visibility', 'hidden')
-        setTimeout(() => {
+        if (ignoreEnterTransition) {
+          contentRef.current?.style.removeProperty('position')
+          contentRef.current?.style.removeProperty('visibility')
+          return
+        }
+
+        window.requestAnimationFrame(() => {
           contentRef.current?.style.removeProperty('position')
           contentRef.current?.style.removeProperty('visibility')
 
-          const height = contentRef.current?.clientHeight
-          // frequent ui action may cause element havn't attach to DOM yet, when occors, just ignore it.
-          if (height) {
-            contentRef.current?.style.setProperty('height', '0')
-            // get a layout property to manually to force the browser to layout the above code.
-            // So trick. But have to.🤯🤯🤯🤯
-            contentRef.current?.clientHeight
-            contentRef.current?.style.setProperty('height', `${height}px`)
+          if (inTransitionDuration.current) {
+            contentRef.current?.style.setProperty('height', `${cachedElementHeight.current}px`)
+            contentRef.current?.style.setProperty('width', `${cachedElementWidth.current}px`)
+          } else {
+            const height = contentRef.current?.clientHeight
+            const width = contentRef.current?.clientWidth
+            cachedElementHeight.current = height
+            cachedElementWidth.current = width
+
+            if (heightOrWidth === 'height') {
+              contentRef.current?.style.setProperty('height', '0')
+              /// Force bowser to paint the frame  🤯🤯🤯🤯
+              contentRef.current?.clientHeight
+              contentRef.current?.style.setProperty('height', `${height}px`)
+            }
+
+            if (heightOrWidth === 'width') {
+              contentRef.current?.style.setProperty('width', '0')
+              /// Force bowser to paint the frame  🤯🤯🤯🤯
+              contentRef.current?.clientWidth
+              contentRef.current?.style.setProperty('width', `${width}px`)
+            }
           }
-        }, openDelay)
-        turnOnDuringTransition()
+          inTransitionDuration.current = true
+        })
       }}
       afterEnter={() => {
         contentRef.current?.style.removeProperty('height')
-        turnOffDuringTransition()
+        contentRef.current?.style.removeProperty('width')
+        inTransitionDuration.current = false
       }}
       beforeLeave={() => {
         if (ignoreLeaveTransition) return
-        setTimeout(() => {
+        if (inTransitionDuration.current) {
+          if (heightOrWidth === 'height') contentRef.current?.style.setProperty('height', `0`)
+        } else {
           const height = contentRef.current?.clientHeight
-          if (!height) {
-            contentRef.current?.style.setProperty('height', '0')
-          } else {
+          const width = contentRef.current?.clientWidth
+          cachedElementHeight.current = height
+          cachedElementHeight.current = height
+
+          if (heightOrWidth === 'height') {
             contentRef.current?.style.setProperty('height', `${height}px`)
-            // get a layout property to manually to force the browser to layout the above code.
-            // So trick. But have to.🤯🤯🤯🤯
+            // Force bowser to paint the frame  🤯🤯🤯🤯
             contentRef.current?.clientHeight
             contentRef.current?.style.setProperty('height', '0')
           }
-        })
-        turnOnDuringTransition()
+
+          if (heightOrWidth === 'width') {
+            contentRef.current?.style.setProperty('width', `${width}px`)
+            // Force bowser to paint the frame  🤯🤯🤯🤯
+            contentRef.current?.clientWidth
+            contentRef.current?.style.setProperty('width', '0')
+          }
+        }
+        inTransitionDuration.current = true
       }}
       afterLeave={() => {
         contentRef.current?.style.removeProperty('height')
+        contentRef.current?.style.removeProperty('width')
         contentRef.current?.style.setProperty('position', 'absolute')
         contentRef.current?.style.setProperty('visibility', 'hidden')
-        turnOffDuringTransition()
+        innerChildren.current = null // clean from internal storage
+        inTransitionDuration.current = false
       }}
     >
       {/* outer div can't set ref for it's being used by headless-ui <Transition/> */}
       <div
         ref={contentRef}
-        className={twMerge(
-          `transition-all duration-200 ease overflow-hidden ${children || isDuringTransition ? '' : 'hidden'}`
-        )}
+        style={{ position: 'absolute', visibility: 'hidden', transition: '200ms' }}
+        className={twMerge(`transition-all duration-200 ease overflow-hidden`)}
       >
-        {children}
+        {innerChildren.current}
       </div>
     </Transition>
   )
 }
 
 export function FadeIn({
-  openDelay = 35,
+  // open,
   ignoreEnterTransition,
   ignoreLeaveTransition,
-  className,
   children
 }: {
-  // if immediately, inner content maybe be still not render ready
-  openDelay?: number
+  // TODO: imply
+  // open?:boolean
   ignoreEnterTransition?: boolean
   ignoreLeaveTransition?: boolean
-  className?: string
   children?: ReactNode
 }) {
-  // const [nodeExist, { off: destory }] = useToggle(true)
-  const contentRef = useRef<HTMLDivElement>(null)
-  const innerChildren = useRef<ReactNode>(children)
-  if (children) innerChildren.current = children
-  const [isDuringTransition, { off: turnOffDuringTransition, on: turnOnDuringTransition }] = useToggle()
   return (
-    <Transition
-      appear
+    <FadeInStable
+      ignoreEnterTransition={ignoreEnterTransition}
+      ignoreLeaveTransition={ignoreLeaveTransition}
       show={Boolean(children)}
-      enter={`select-none ${ignoreEnterTransition ? '' : 'transition-all'} duration-200 ease`}
-      enterFrom="opacity-0"
-      enterTo="opacity-100"
-      leave={`select-none ${ignoreLeaveTransition ? '' : 'transition-all'} duration-200 ease`}
-      leaveFrom="opacity-100"
-      leaveTo="opacity-0"
-      beforeEnter={() => {
-        if (ignoreEnterTransition) return
-        // seems headlessui/react 1.6 will get react 18's priority strategy. 👇 fllowing code will invoke **before** element load
-        contentRef.current?.style.setProperty('position', 'absolute') // init will rerender element, "position:absolute" is for not affect others
-        contentRef.current?.style.setProperty('visibility', 'hidden')
-        setTimeout(() => {
-          contentRef.current?.style.removeProperty('position')
-          contentRef.current?.style.removeProperty('visibility')
-
-          const height = contentRef.current?.clientHeight
-          // frequent ui action may cause element havn't attach to DOM yet, when occors, just ignore it.
-          if (height) {
-            contentRef.current?.style.setProperty('height', '0')
-            // get a layout property to manually to force the browser to layout the above code.
-            // So trick. But have to.🤯🤯🤯🤯
-            contentRef.current?.clientHeight
-            contentRef.current?.style.setProperty('height', `${height}px`)
-          }
-        }, openDelay)
-        turnOnDuringTransition()
-      }}
-      afterEnter={() => {
-        contentRef.current?.style.removeProperty('height')
-        turnOffDuringTransition()
-      }}
-      beforeLeave={() => {
-        if (ignoreLeaveTransition) return
-        setTimeout(() => {
-          const height = contentRef.current?.clientHeight
-          if (!height) {
-            contentRef.current?.style.setProperty('height', '0')
-          } else {
-            contentRef.current?.style.setProperty('height', `${height}px`)
-            // get a layout property to manually to force the browser to layout the above code.
-            // So trick. But have to.🤯🤯🤯🤯
-            contentRef.current?.clientHeight
-            contentRef.current?.style.setProperty('height', '0')
-          }
-        })
-        turnOnDuringTransition()
-      }}
-      afterLeave={() => {
-        contentRef.current?.style.removeProperty('height')
-        turnOffDuringTransition()
-      }}
     >
-      <div
-        ref={contentRef}
-        className={`transition-all duration-200 ease overflow-hidden ${children || isDuringTransition ? '' : 'hidden'}`}
-      >
-        {innerChildren.current}
-      </div>
-    </Transition>
+      {children}
+    </FadeInStable>
   )
 }
