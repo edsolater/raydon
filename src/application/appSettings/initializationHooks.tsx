@@ -15,6 +15,7 @@ import { toString } from '@/functions/numberish/toString'
 import Link from '@/tempUikits/Link'
 import { useAppVersion } from '../appVersion/useAppVersion'
 import { inClient, inServer, isInBonsaiTest, isInLocalhost } from '@/functions/judgers/isSSR'
+import { useKeyboardShortcut } from '@edsolater/hookit'
 
 export function useThemeModeSync() {
   const themeMode = useAppSettings((s) => s.themeMode)
@@ -39,6 +40,14 @@ export function useDeviceInfoSyc() {
       isInLocalhost: isInLocalhost
     })
   }, [])
+}
+
+export function useKeyboardShortcutInitialization() {
+  const document = globalThis.document
+  if (!inClient) return
+  useKeyboardShortcut(document as any, {
+    'ctrl + \\': () => useAppSettings.setState((s) => ({ isSideBarMenuShown: !s.isSideBarMenuShown }))
+  })
 }
 
 export function useSlippageTolerenceValidator() {

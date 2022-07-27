@@ -8,6 +8,8 @@ import { SideMenu } from './SideMenu'
 import { TopNavbar } from './TopNavbar'
 import { VersionTooOldDialog } from './VersionTooOldDialog'
 
+import { Div } from '@edsolater/uikit'
+
 /**
  * for easier to code and read
  *
@@ -38,7 +40,7 @@ export default function PageLayout(props: {
 }) {
   useDocumentMetaTitle(props.metaTitle)
   const isMobile = useAppSettings((s) => s.isMobile)
-  const showSideMenu = useAppSettings((s) => s.showSideMenu)
+  const isSideBarMenuShown = useAppSettings((s) => s.isSideBarMenuShown)
   return (
     <div
       style={{
@@ -67,12 +69,12 @@ export default function PageLayout(props: {
           <TopNavbar
             barTitle={props.mobileBarTitle}
             className="grid-area-a"
-            onOpenMenu={() => useAppSettings.setState({ showSideMenu: true })}
+            onOpenMenu={() => useAppSettings.setState({ isSideBarMenuShown: true })}
           />
           <Drawer
-            open={Boolean(showSideMenu)}
-            onClose={() => useAppSettings.setState({ showSideMenu: false })}
-            onOpen={() => useAppSettings.setState({ showSideMenu: true })}
+            open={Boolean(isSideBarMenuShown)}
+            onClose={() => useAppSettings.setState({ isSideBarMenuShown: false })}
+            onOpen={() => useAppSettings.setState({ isSideBarMenuShown: true })}
           >
             {({ close }) => <SideMenu className="flex-container h-screen" onClickCloseBtn={close} />}
           </Drawer>
@@ -80,7 +82,9 @@ export default function PageLayout(props: {
       ) : (
         <>
           <TopNavbar className="grid-area-a" />
-          <SideMenu className="flex-container grid-area-b" />
+          <Div className={`flex-container grid-area-b ${isSideBarMenuShown ? 'bg-red-500' : ''}`}>
+            <SideMenu />
+          </Div>
         </>
       )}
       <main
