@@ -1,6 +1,6 @@
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import useDocumentMetaTitle from '@/hooks/useDocumentMetaTitle'
-import { ReactNode, useState } from 'react'
+import { ReactNode } from 'react'
 import { twMerge } from 'tailwind-merge'
 import Drawer from '../../tempUikits/Drawer'
 import { RPCPerformanceBanner } from './RPCPerformanceBanner'
@@ -8,9 +8,8 @@ import { SideMenu } from './SideMenu'
 import { TopNavbar } from './TopNavbar'
 import { VersionTooOldDialog } from './VersionTooOldDialog'
 
-import { Div } from '@edsolater/uikit'
-import FadeInStable from '@/tempUikits/FadeIn'
 import Col from '@/tempUikits/Col'
+import { FadeIn } from '@/tempUikits/FadeIn'
 
 /**
  * for easier to code and read
@@ -84,10 +83,10 @@ export default function PageLayout(props: {
       ) : (
         <>
           <TopNavbar className="grid-area-a" />
-          <Col className="grid-area-b">
-            <FadeInStable show={isSideBarMenuShown} heightOrWidth="width">
+          <Col className="flex-container grid-area-b">
+            <FadeIn show={isSideBarMenuShown} heightOrWidth="width">
               <SideMenu />
-            </FadeInStable>
+            </FadeIn>
           </Col>
         </>
       )}

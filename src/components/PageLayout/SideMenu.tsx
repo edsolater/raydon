@@ -5,7 +5,7 @@ import { LinkAddress } from '@/types/constants'
 import { useRouter } from 'next/router'
 import { ReactNode, useEffect, useRef } from 'react'
 import { twMerge } from 'tailwind-merge'
-import Col from '../../tempUikits/Col'
+import { Col } from '@edsolater/uikit'
 import Image from '../../tempUikits/Image'
 import Link from '../../tempUikits/Link'
 import Row from '../../tempUikits/Row'
@@ -37,40 +37,38 @@ export function SideMenu({ className, onClickCloseBtn }: { className?: string; o
   }, [sideMenuRef])
 
   return (
-    <>
-      <Col
-        domRef={sideMenuRef}
-        className={twMerge(
-          `h-full overflow-y-auto w-56 mobile:w-48 mobile:rounded-tr-2xl mobile:rounded-br-2xl`,
-          className
-        )}
-        style={{
-          background: isMobile
-            ? 'linear-gradient(242.18deg, rgba(57, 208, 216, 0.08) 68.05%, rgba(57, 208, 216, 0.02) 86.71%), #0C0926'
-            : undefined,
-          boxShadow: isMobile ? '8px 0px 48px rgba(171, 196, 255, 0.12)' : undefined
-        }}
-      >
-        {isMobile && (
-          <Row className="items-center justify-between p-6 mobile:p-4 mobile:pl-8">
-            <Link href="/">
-              <Image src="/logo/logo-with-text.svg" className="mobile:scale-75" />
-            </Link>
-            <Icon
-              size={isMobile ? 'sm' : 'md'}
-              heroIconName="x"
-              className="text-[rgba(57,208,216,0.8)] clickable clickable-mask-offset-2"
-              onClick={onClickCloseBtn}
-            />
-          </Row>
-        )}
-        <Col className="grid grid-rows-[2fr,1fr,auto] flex-1 overflow-hidden">
-          <MenuRouters className="shrink min-h-[120px] mr-2 mb-2 mobile:ml-2 overflow-y-auto" />
-          <MenuSubOptions className="mobile:h-[180px] overflow-scroll no-native-scrollbar" />
-          <VersionInfoBlock />
-        </Col>
+    <Col
+      domRef={sideMenuRef}
+      className={twMerge(
+        `h-full overflow-y-auto w-56 mobile:w-48 mobile:rounded-tr-2xl mobile:rounded-br-2xl`,
+        className
+      )}
+      style={{
+        background: isMobile
+          ? 'linear-gradient(242.18deg, rgba(57, 208, 216, 0.08) 68.05%, rgba(57, 208, 216, 0.02) 86.71%), #0C0926'
+          : undefined,
+        boxShadow: isMobile ? '8px 0px 48px rgba(171, 196, 255, 0.12)' : undefined
+      }}
+    >
+      {isMobile && (
+        <Row className="items-center justify-between p-6 mobile:p-4 mobile:pl-8">
+          <Link href="/">
+            <Image src="/logo/logo-with-text.svg" className="mobile:scale-75" />
+          </Link>
+          <Icon
+            size={isMobile ? 'sm' : 'md'}
+            heroIconName="x"
+            className="text-[rgba(57,208,216,0.8)] clickable clickable-mask-offset-2"
+            onClick={onClickCloseBtn}
+          />
+        </Row>
+      )}
+      <Col className="grid grid-rows-[2fr,1fr,auto] flex-1 overflow-hidden">
+        <MenuRouters className="shrink min-h-[120px] mr-2 mb-2 mobile:ml-2 overflow-y-auto" />
+        <MenuSubOptions className="mobile:h-[180px] overflow-scroll no-native-scrollbar" />
+        <VersionInfoBlock />
       </Col>
-    </>
+    </Col>
   )
 }
 
