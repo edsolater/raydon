@@ -3,7 +3,6 @@ import { twMerge } from 'tailwind-merge'
 
 import { Transition as HeadlessTransition } from '@headlessui/react'
 import { cssTransitionTimeFnOutQuadratic, Div, opacityInOut, Transition, TransitionProps } from '@edsolater/uikit'
-import { inherits } from 'util'
 
 export default function FadeInStable({
   heightOrWidth = 'height',
@@ -130,7 +129,7 @@ export function FadeIn({
   children,
   heightOrWidth = 'height',
   show = Boolean(children),
-  duration = 600,
+  duration = 1000,
   transitionTimeFuncing = cssTransitionTimeFnOutQuadratic,
   transitionPresets = [opacityInOut({ min: 0.3 })],
   ignoreEnterTransition,
@@ -159,6 +158,7 @@ export function FadeIn({
       presets={transitionPresets}
       style={{ overflow: 'hidden', position: 'absolute', visibility: 'hidden' }}
       onBeforeEnter={({ contentDivRef: contentRef, from }) => {
+        // console.log('before enter')
         contentRef.current?.style.removeProperty('position')
         contentRef.current?.style.removeProperty('visibility')
         if (ignoreEnterTransition) return
@@ -177,6 +177,7 @@ export function FadeIn({
         contentRef.current?.style.removeProperty(heightOrWidth)
       }}
       onBeforeLeave={({ contentDivRef: contentRef, from }) => {
+        // console.log('before leave: ')
         if (ignoreLeaveTransition) return
 
         if (from === 'during-process') {
