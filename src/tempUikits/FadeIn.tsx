@@ -39,13 +39,13 @@ export default function FadeInStable({
       beforeEnter={() => {
         if (ignoreEnterTransition) {
           contentRef.current?.style.removeProperty('position')
-          contentRef.current?.style.removeProperty('visibility')
+          contentRef.current?.style.removeProperty('opacity')
           return
         }
 
         window.requestAnimationFrame(() => {
           contentRef.current?.style.removeProperty('position')
-          contentRef.current?.style.removeProperty('visibility')
+          contentRef.current?.style.removeProperty('opacity')
 
           if (inTransitionDuration.current) {
             contentRef.current?.style.setProperty('height', `${cachedElementHeight.current}px`)
@@ -108,7 +108,7 @@ export default function FadeInStable({
         contentRef.current?.style.removeProperty('height')
         contentRef.current?.style.removeProperty('width')
         contentRef.current?.style.setProperty('position', 'absolute')
-        contentRef.current?.style.setProperty('visibility', 'hidden')
+        contentRef.current?.style.setProperty('opacity', '0')
         innerChildren.current = null // clean from internal storage
         inTransitionDuration.current = false
       }}
@@ -116,7 +116,7 @@ export default function FadeInStable({
       {/* outer div can't set ref for it's being used by headless-ui <Transition/> */}
       <div
         ref={contentRef}
-        style={{ position: 'absolute', visibility: 'hidden', transition: '200ms' }}
+        style={{ position: 'absolute', opacity: 0, transition: '200ms' }}
         className={twMerge(`transition-all duration-200 ease overflow-hidden`)}
       >
         {innerChildren.current}
@@ -156,10 +156,10 @@ export function FadeIn({
       cssTransitionDurationMs={duration}
       cssTransitionTimingFunction={transitionTimeFuncing}
       presets={transitionPresets}
-      style={{ overflow: 'hidden', position: 'absolute', visibility: 'hidden' }}
+      style={{ overflow: 'hidden', position: 'absolute', opacity: '0' }}
       onBeforeEnter={({ contentDivRef: contentRef, from }) => {
         contentRef.current?.style.removeProperty('position')
-        contentRef.current?.style.removeProperty('visibility')
+        contentRef.current?.style.removeProperty('opacity')
         if (ignoreEnterTransition) return
         if (from === 'during-process') {
           contentRef.current?.style.setProperty(heightOrWidth, `${contentCachedTrueHeightOrWidth.current}px`)
@@ -189,7 +189,7 @@ export function FadeIn({
       onAfterLeave={({ contentDivRef: contentRef }) => {
         contentRef.current?.style.removeProperty(heightOrWidth)
         contentRef.current?.style.setProperty('position', 'absolute')
-        contentRef.current?.style.setProperty('visibility', 'hidden')
+        contentRef.current?.style.setProperty('opacity', '0')
         innerChildren.current = null // clear cache for friendlier js GC
       }}
     >
