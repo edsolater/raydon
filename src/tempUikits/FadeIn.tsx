@@ -129,7 +129,7 @@ export function FadeIn({
   children,
   heightOrWidth = 'height',
   show = Boolean(children),
-  duration = 1000,
+  duration = 600,
   transitionTimeFuncing = cssTransitionTimeFnOutQuadratic,
   transitionPresets = [opacityInOut({ min: 0.3 })],
   ignoreEnterTransition,
@@ -158,7 +158,6 @@ export function FadeIn({
       presets={transitionPresets}
       style={{ overflow: 'hidden', position: 'absolute', visibility: 'hidden' }}
       onBeforeEnter={({ contentDivRef: contentRef, from }) => {
-        // console.log('before enter')
         contentRef.current?.style.removeProperty('position')
         contentRef.current?.style.removeProperty('visibility')
         if (ignoreEnterTransition) return
@@ -173,13 +172,10 @@ export function FadeIn({
         }
       }}
       onAfterEnter={({ contentDivRef: contentRef }) => {
-        // console.log('after enter: ') // FIXME: too early
         contentRef.current?.style.removeProperty(heightOrWidth)
       }}
       onBeforeLeave={({ contentDivRef: contentRef, from }) => {
-        // console.log('before leave: ')
         if (ignoreLeaveTransition) return
-
         if (from === 'during-process') {
           contentRef.current?.style.setProperty(heightOrWidth, '0')
         } else {
@@ -191,7 +187,6 @@ export function FadeIn({
         }
       }}
       onAfterLeave={({ contentDivRef: contentRef }) => {
-        // console.log('after leave: ') // FIXME: too early
         contentRef.current?.style.removeProperty(heightOrWidth)
         contentRef.current?.style.setProperty('position', 'absolute')
         contentRef.current?.style.setProperty('visibility', 'hidden')
