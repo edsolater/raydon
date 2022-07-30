@@ -10,6 +10,7 @@ import { VersionTooOldDialog } from './VersionTooOldDialog'
 
 import Col from '@/tempUikits/Col'
 import { FadeIn } from '@/tempUikits/FadeIn'
+import { Div } from '@edsolater/uikit'
 
 /**
  * for easier to code and read
@@ -84,7 +85,7 @@ export default function PageLayout(props: {
         <>
           <TopNavbar className="grid-area-a" />
           <Col className="flex-container grid-area-b">
-            <FadeIn show={isSideBarMenuShown} heightOrWidth="width">
+            <FadeIn show={isSideBarMenuShown} heightOrWidth="width" noWrapperDivBox>
               <SideMenu />
             </FadeIn>
           </Col>

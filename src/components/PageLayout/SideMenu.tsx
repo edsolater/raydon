@@ -5,7 +5,7 @@ import { LinkAddress } from '@/types/constants'
 import { useRouter } from 'next/router'
 import { ReactNode, useEffect, useRef } from 'react'
 import { twMerge } from 'tailwind-merge'
-import { Col } from '@edsolater/uikit'
+import { Col, ColProps, Div, DivProps } from '@edsolater/uikit'
 import Image from '../../tempUikits/Image'
 import Link from '../../tempUikits/Link'
 import Row from '../../tempUikits/Row'
@@ -23,7 +23,7 @@ import { VersionInfoBlock } from './VersionInfoBlock'
  * - {@link CommunityPopover `<CommunityPopover>`}
  * - {@link SlippageTolerancePopover `<SlippageTolerancePopover>`}
  */
-export function SideMenu({ className, onClickCloseBtn }: { className?: string; onClickCloseBtn?(): void }) {
+export function SideMenu({ onClickCloseBtn, ...divProps }: { onClickCloseBtn?(): void } & DivProps) {
   const isMobile = useAppSettings((s) => s.isMobile)
   const sideMenuRef = useRef<HTMLDivElement>(null)
 
@@ -38,17 +38,21 @@ export function SideMenu({ className, onClickCloseBtn }: { className?: string; o
 
   return (
     <Col
-      domRef={sideMenuRef}
-      className={twMerge(
-        `h-full overflow-y-auto w-56 mobile:w-48 mobile:rounded-tr-2xl mobile:rounded-br-2xl`,
-        className
-      )}
-      style={{
-        background: isMobile
-          ? 'linear-gradient(242.18deg, rgba(57, 208, 216, 0.08) 68.05%, rgba(57, 208, 216, 0.02) 86.71%), #0C0926'
-          : undefined,
-        boxShadow: isMobile ? '8px 0px 48px rgba(171, 196, 255, 0.12)' : undefined
-      }}
+      {...divProps}
+      domRef={[divProps.domRef, sideMenuRef]}
+      className={[
+        divProps.className,
+        twMerge(`h-full overflow-y-auto w-56 mobile:w-48 mobile:rounded-tr-2xl mobile:rounded-br-2xl`)
+      ]}
+      style={[
+        divProps.style,
+        {
+          background: isMobile
+            ? 'linear-gradient(242.18deg, rgba(57, 208, 216, 0.08) 68.05%, rgba(57, 208, 216, 0.02) 86.71%), #0C0926'
+            : undefined,
+          boxShadow: isMobile ? '8px 0px 48px rgba(171, 196, 255, 0.12)' : undefined
+        }
+      ]}
     >
       {isMobile && (
         <Row className="items-center justify-between p-6 mobile:p-4 mobile:pl-8">
