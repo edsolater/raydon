@@ -2,10 +2,10 @@ import useAppSettings from '@/application/appSettings/useAppSettings'
 import { setCssVarible } from '@/functions/dom/cssVariable'
 import { inClient } from '@/functions/judgers/isSSR'
 import { LinkAddress } from '@/types/constants'
+import { Col, Div, DivProps } from '@edsolater/uikit'
 import { useRouter } from 'next/router'
 import { ReactNode, useEffect, useRef } from 'react'
 import { twMerge } from 'tailwind-merge'
-import { Col, ColProps, Div, DivProps } from '@edsolater/uikit'
 import Image from '../../tempUikits/Image'
 import Link from '../../tempUikits/Link'
 import Row from '../../tempUikits/Row'
@@ -67,11 +67,11 @@ export function SideMenu({ onClickCloseBtn, ...divProps }: { onClickCloseBtn?():
           />
         </Row>
       )}
-      <Col className="grid grid-rows-[2fr,1fr,auto] flex-1 overflow-hidden">
+      <Div className="grid grid-rows-[2fr,1fr,auto] flex-1 overflow-hidden">
         <MenuRouters className="shrink min-h-[120px] mr-2 mb-2 mobile:ml-2 overflow-y-auto" />
         <MenuSubOptions className="mobile:h-[180px] overflow-scroll no-native-scrollbar" />
         <VersionInfoBlock />
-      </Col>
+      </Div>
     </Col>
   )
 }
