@@ -87,7 +87,7 @@ export default function Swap() {
         <SwapHead />
         <SwapCard />
         {/* <UnwrapWSOL /> */}
-        <KLineChart />
+        {/* <KLineChart /> TEMP for test*/}
       </PageLayout>
     </SwapUIContextProvider>
   )

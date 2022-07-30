@@ -1,8 +1,17 @@
-import { Fragment, ReactNode, useRef } from 'react'
+import { Fragment, ReactNode, useEffect, useMemo, useRef } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { Transition as HeadlessTransition } from '@headlessui/react'
-import { cssTransitionTimeFnOutQuadratic, Div, opacityInOut, Transition, TransitionProps } from '@edsolater/uikit'
+import {
+  CSSStyle,
+  cssTransitionTimeFnOutQuadratic,
+  Div,
+  DivProps,
+  ICSS,
+  opacityInOut,
+  Transition,
+  TransitionProps
+} from '@edsolater/uikit'
 
 export default function FadeInStable({
   heightOrWidth = 'height',
@@ -125,38 +134,51 @@ export default function FadeInStable({
   )
 }
 
-export function FadeIn({
-  children,
-  heightOrWidth = 'height',
-  show = Boolean(children),
-  duration = 600,
-  transitionTimeFuncing = cssTransitionTimeFnOutQuadratic,
-  transitionPresets = [opacityInOut({ min: 0.3 })],
-  ignoreEnterTransition,
-  ignoreLeaveTransition
-}: {
+type FadeInProps = {
   heightOrWidth?: 'height' | 'width'
   show?: boolean
   duration?: number
   transitionTimeFuncing?: string
   /** advanced settings */
   transitionPresets?: TransitionProps['presets']
-
   ignoreEnterTransition?: boolean
   ignoreLeaveTransition?: boolean
   children?: ReactNode // if immediately, inner content maybe be still not render ready
-}) {
+} & TransitionProps
+
+const baseTransitionStyle = { overflow: 'hidden' } as CSSStyle
+
+export function FadeIn({
+  children,
+  heightOrWidth = 'height',
+  show = Boolean(children),
+  appear,
+
+  duration = 600,
+  transitionTimeFuncing = cssTransitionTimeFnOutQuadratic,
+  transitionPresets = [opacityInOut({ min: 0.3 })],
+  ignoreEnterTransition,
+  ignoreLeaveTransition
+}: FadeInProps) {
+  const init = useInitFlag()
+
   const contentCachedTrueHeightOrWidth = useRef<number>()
   const innerChildren = useRef<ReactNode>(children)
   if (children) innerChildren.current = children // cache for close transition
 
+  const haveInitTransition = show && appear
+  const innerStyle = useRef([
+    baseTransitionStyle,
+    show && !appear ? undefined : { position: 'absolute', opacity: '0' }
+  ] as DivProps['style']) // cache for not change in rerender
   return (
     <Transition
       show={Boolean(show)}
+      appear={appear}
       cssTransitionDurationMs={duration}
       cssTransitionTimingFunction={transitionTimeFuncing}
       presets={transitionPresets}
-      style={{ overflow: 'hidden', position: 'absolute', opacity: '0' }}
+      style={innerStyle.current}
       onBeforeEnter={({ contentDivRef: contentRef, from }) => {
         contentRef.current?.style.removeProperty('position')
         contentRef.current?.style.removeProperty('opacity')
@@ -172,6 +194,10 @@ export function FadeIn({
         }
       }}
       onAfterEnter={({ contentDivRef: contentRef }) => {
+        if (init && !haveInitTransition) {
+          contentRef.current?.style.removeProperty('position')
+          contentRef.current?.style.removeProperty('opacity')
+        }
         contentRef.current?.style.removeProperty(heightOrWidth)
       }}
       onBeforeLeave={({ contentDivRef: contentRef, from }) => {
@@ -190,11 +216,23 @@ export function FadeIn({
         contentRef.current?.style.removeProperty(heightOrWidth)
         contentRef.current?.style.setProperty('position', 'absolute')
         contentRef.current?.style.setProperty('opacity', '0')
-        innerChildren.current = null // clear cache for friendlier js GC
+
+        // change ref's value to rerender rerender may use wrong value of innerStyle
+        innerStyle.current = [baseTransitionStyle, { position: 'absolute', opacity: '0' }] as DivProps['style']
+        // clear cache for friendlier js GC
+        innerChildren.current = null
       }}
     >
       {/* <FadeIn> must have o always exist Div to isolate children's css style  */}
       <Div>{innerChildren.current}</Div>
     </Transition>
   )
+}
+
+function useInitFlag() {
+  const inInit = useRef(true)
+  useEffect(() => () => {
+    inInit.current = false
+  })
+  return inInit.current // Value will only updated by rerender
 }
