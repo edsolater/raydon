@@ -39,7 +39,7 @@ export function SideMenu({ onClickCloseBtn, ...divProps }: { onClickCloseBtn?():
   return (
     <Div
       {...divProps}
-      className_="grid grid-rows-[2fr,1fr,auto] overflow-hidden w-56 mobile:w-48 mobile:rounded-tr-2xl mobile:rounded-br-2xl"
+      className_="grid grid-rows-[2fr,1fr,auto] overflow-hidden h-full w-56 mobile:w-48 mobile:rounded-tr-2xl mobile:rounded-br-2xl"
       domRef_={sideMenuRef}
       style_={{
         background: isMobile

@@ -85,7 +85,7 @@ export default function PageLayout(props: {
         <>
           <TopNavbar className="grid-area-a" />
           <Col className="flex-container grid-area-b">
-            <FadeIn show={isSideBarMenuShown} heightOrWidth="width" noWrapperDivBox>
+            <FadeIn show={isSideBarMenuShown} heightOrWidth="width" wrapperDivBoxProps={{ icss: { height: '100%' } }}>
               <SideMenu />
             </FadeIn>
           </Col>

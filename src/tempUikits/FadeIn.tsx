@@ -145,7 +145,7 @@ type FadeInProps = {
   ignoreLeaveTransition?: boolean
   children?: ReactNode // if immediately, inner content maybe be still not render ready
   /** when set this, `<FadeIn>` will not have additional <Div> . (direct `<FadeIn>`'s child must be `<Div>`-like) */
-  noWrapperDivBox?: boolean
+  wrapperDivBoxProps?: DivProps
 } & TransitionProps
 
 const baseTransitionStyle = { overflow: 'hidden' } as CSSStyle
@@ -156,12 +156,12 @@ export function FadeIn({
   show = Boolean(children),
   appear,
 
-  duration = 600,
+  duration = 300,
   transitionTimeFuncing = cssTransitionTimeFnOutQuadratic,
   transitionPresets = [opacityInOut({ min: 0.3 })],
   ignoreEnterTransition,
   ignoreLeaveTransition,
-  noWrapperDivBox
+  wrapperDivBoxProps
 }: FadeInProps) {
   const init = useInitFlag()
 
@@ -227,7 +227,8 @@ export function FadeIn({
         // innerChildren.current = null
       }}
     >
-      {noWrapperDivBox ? innerChildren.current : <Div>{innerChildren.current}</Div>}
+      {/* Fade in 's css:width setting may crashed by react rerender without `<Div>`  */}
+      <Div {...wrapperDivBoxProps}>{innerChildren.current}</Div>
     </Transition>
   )
 }
