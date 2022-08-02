@@ -29,7 +29,7 @@ export function SearchAmmDialog({
   const parseTokensFromSearchInput = async (currentValue: string) => {
     try {
       const { getToken } = useToken.getState()
-      assert(isValidPublicKey(currentValue), 'invalid public key')
+      assert(isValidPublicKey(currentValue), 'Invalid public key')
 
       const ammFindResult = findTokenMintByAmmId(currentValue.trim())
       if (ammFindResult) {
@@ -47,7 +47,7 @@ export function SearchAmmDialog({
         return
       }
 
-      throw new Error(`fail to extract info throungh this AMMId or MarketId`)
+      throw new Error(`Fail to extract info throungh this AMMId or MarketId`)
     } catch (err) {
       const { logError } = useNotification.getState()
       logError(String(err))

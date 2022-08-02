@@ -61,6 +61,7 @@ import { searchItems } from '@/functions/searchItems'
 import { toggleSetItem } from '@/functions/setMethods'
 import useSort from '@/hooks/useSort'
 import { autoSuffixNumberish } from '@/functions/format/autoSuffixNumberish'
+import { AddressItem } from '@/components/AddressItem'
 
 export default function FarmsPage() {
   useFarmUrlParser()
@@ -116,7 +117,7 @@ function ToolsButton({ className }: { className?: string }) {
                 <FarmStakedOnlyBlock />
                 <FarmRefreshCircleBlock />
                 <FarmTimeBasisSelectorBox />
-                <FarmCreateFarmEntryBlock />
+                {/* <FarmCreateFarmEntryBlock /> */} {/* TODO temp hide create farm entry in mobile */}
               </Grid>
             </Card>
           </div>
@@ -180,7 +181,9 @@ function FarmSearchBlock({ className }: { className?: string }) {
 function FarmStakedOnlyBlock({ className }: { className?: string }) {
   const onlySelfFarms = useFarms((s) => s.onlySelfFarms)
   const connected = useWallet((s) => s.connected)
+  const currentTab = useFarms((s) => s.currentTab)
   if (!connected) return null
+  if (currentTab === 'Staked') return null // no staked switcher if it is staked
   return (
     <Row className="justify-self-end  mobile:justify-self-auto items-center">
       <span className="text-[rgba(196,214,255,0.5)] whitespace-nowrap font-medium text-sm mobile:text-xs">
@@ -237,8 +240,8 @@ function FarmTabBlock({ className }: { className?: string }) {
   const currentTab = useFarms((s) => s.currentTab)
   const isMobile = useAppSettings((s) => s.isMobile)
   return isMobile ? (
-    <Tabs
-      showOffset={2}
+    <RowTabs
+      // showOffset={2} // TODO: temp for mobile
       currentValue={currentTab}
       urlSearchQueryKey="tab"
       values={shakeFalsyItem(['Raydium', 'Fusion', 'Ecosystem', 'Staked'] as const)}
@@ -337,7 +340,9 @@ function FarmCard() {
   const owner = useWallet((s) => s.owner)
   const isLoading = useFarms((s) => s.isLoading)
   const timeBasis = useFarms((s) => s.timeBasis)
-  const dataSource = hydratedInfos.length ? hydratedInfos : jsonInfos
+  const dataSource = (
+    (hydratedInfos.length ? hydratedInfos : jsonInfos) as (FarmPoolJsonInfo | HydratedFarmInfo)[]
+  ).filter((i) => !isMintEqual(i.lpMint, RAYMint))
 
   const tabedDataSource = useMemo(
     () =>
@@ -419,19 +424,22 @@ function FarmCard() {
   const innerFarmDatabaseWidgets = isMobile ? (
     <div>
       <Row className="mb-4">
-        <FarmSearchBlock className="grow-2 mr-3" />
-        <FarmTableSorterBlock
-          className="grow"
-          onChange={(newSortKey) => {
-            newSortKey
-              ? setSortConfig({
-                  key: newSortKey,
-                  sortCompare:
-                    newSortKey === 'favorite' ? (i) => favouriteIds?.includes(toPubString(i.id)) : (i) => i[newSortKey]
-                })
-              : clearSortConfig()
-          }}
-        />
+        <Grid className="grow gap-3 grid-cols-auto-fit">
+          <FarmSearchBlock />
+          <FarmTableSorterBlock
+            onChange={(newSortKey) => {
+              newSortKey
+                ? setSortConfig({
+                    key: newSortKey,
+                    sortCompare:
+                      newSortKey === 'favorite'
+                        ? (i) => favouriteIds?.includes(toPubString(i.id))
+                        : (i) => i[newSortKey]
+                  })
+                : clearSortConfig()
+            }}
+          />
+        </Grid>
         <ToolsButton className="self-center" />
       </Row>
     </div>
@@ -683,11 +691,18 @@ function FarmRewardBadge({
             {toUTC(reward.openTime, { hideTimeDetail: true })} ~ {toUTC(reward.endTime, { hideTimeDetail: true })}
           </div>
         )}
-        <FarmCardTooltipPanelAddressItem
-          className="opacity-50 mt-2 contrast-75"
-          type="token"
-          address={reward.token?.mint.toString() ?? '--'}
-        />
+        {reward.token?.mint && (
+          <AddressItem
+            showDigitCount={6}
+            addressType="token"
+            canCopy
+            canExternalLink
+            textClassName="text-xs"
+            className="w-full opacity-50 mt-2 contrast-75"
+          >
+            {toPubString(reward.token.mint)}
+          </AddressItem>
+        )}
       </Tooltip.Panel>
     </Tooltip>
   )
@@ -754,15 +769,13 @@ function FarmCardDatabaseBodyCollapseItemFace({
             <Row className="flex-wrap gap-2 w-full pr-8">
               {isJsonFarmInfo(info)
                 ? '--'
-                : info.rewards
-                    .filter((i) => i.perSecond != 0)
-                    .map((reward) => {
-                      return (
-                        <Fragment key={toPubString(reward.rewardVault)}>
-                          <FarmRewardBadge farmInfo={info} reward={reward} />
-                        </Fragment>
-                      )
-                    })}
+                : info.rewards.map((reward) => {
+                    return (
+                      <Fragment key={toPubString(reward.rewardVault)}>
+                        <FarmRewardBadge farmInfo={info} reward={reward} />
+                      </Fragment>
+                    )
+                  })}
             </Row>
           }
         />
@@ -914,7 +927,7 @@ function FarmCardDatabaseBodyCollapseItemFace({
           />
 
           <TextInfoItem
-            name={`Total APR(${timeBasis})`}
+            name={`APR(${timeBasis})`}
             value={
               isJsonFarmInfo(info) ? (
                 '--'
@@ -981,6 +994,7 @@ function FarmCardDatabaseBodyCollapseItemContent({ farmInfo }: { farmInfo: Hydra
   const hasLp = isMeaningfulNumber(balances[toPubString(farmInfo.lpMint)])
   const hasPendingReward = farmInfo.rewards.some(({ userPendingReward }) => isMeaningfulNumber(userPendingReward))
   const logSuccess = useNotification((s) => s.logSuccess)
+  const isApprovePanelShown = useAppSettings((s) => s.isApprovePanelShown)
   return (
     <div
       className="rounded-b-3xl mobile:rounded-b-lg overflow-hidden"
@@ -1121,22 +1135,25 @@ function FarmCardDatabaseBodyCollapseItemContent({ farmInfo }: { farmInfo: Hydra
                   Pending rewards
                 </div>
                 <Grid
-                  className={`gap-board clip-insert-4 ${farmInfo.rewards.length > 1 ? 'grid-cols-2' : 'grid-cols-1'}`}
+                  className={`gap-board 
+                   ${farmInfo.rewards.length > 1 ? 'grid-cols-2' : 'grid-cols-1'}`}
+                  style={{
+                    clipPath: 'inset(17px)', // 1px for gap-board
+                    margin: '-17px'
+                  }}
                 >
-                  {farmInfo.rewards
-                    ?.filter((i) => i.perSecond != 0)
-                    .map((reward, idx) => (
-                      <div key={idx} className="p-4">
-                        <div className={`text-white font-medium text-base mobile:text-xs mb-0.5`}>
-                          {reward.userPendingReward ? toString(reward.userPendingReward) : 0} {reward.token?.symbol}
-                        </div>
-                        <div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-2xs">
-                          {prices?.[String(reward.token?.mint)] && isMeaningfulNumber(reward?.userPendingReward)
-                            ? toUsdVolume(toTotalPrice(reward.userPendingReward, prices[String(reward.token?.mint)]))
-                            : null}
-                        </div>
+                  {farmInfo.rewards.map((reward, idx) => (
+                    <div key={idx} className="p-4">
+                      <div className={`text-white font-medium text-base mobile:text-xs`}>
+                        {reward.userPendingReward ? toString(reward.userPendingReward) : 0} {reward.token?.symbol}
                       </div>
-                    ))}
+                      <div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-xs">
+                        {prices?.[String(reward.token?.mint)] && reward?.userPendingReward
+                          ? toUsdVolume(toTotalPrice(reward.userPendingReward, prices[String(reward.token?.mint)]))
+                          : null}
+                      </div>
+                    </div>
+                  ))}
                 </Grid>
               </div>
             ) : (
@@ -1153,10 +1170,10 @@ function FarmCardDatabaseBodyCollapseItemContent({ farmInfo }: { farmInfo: Hydra
                         <div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-2xs mb-1">
                           Pending rewards
                         </div>
-                        <div className={`text-white font-medium text-base mobile:text-xs mb-0.5`}>
+                        <div className={`text-white font-medium text-base mobile:text-xs`}>
                           {reward.userPendingReward ? toString(reward.userPendingReward) : 0} {reward.token?.symbol}
                         </div>
-                        <div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-2xs">
+                        <div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-xs">
                           {prices?.[String(reward.token?.mint)] && reward?.userPendingReward
                             ? toUsdVolume(toTotalPrice(reward.userPendingReward, prices[String(reward.token?.mint)]))
                             : null}
@@ -1169,6 +1186,7 @@ function FarmCardDatabaseBodyCollapseItemContent({ farmInfo }: { farmInfo: Hydra
             <Button
               // disable={Number(info.pendingReward?.numerator) <= 0}
               className="frosted-glass-teal rounded-xl mobile:w-full mobile:py-2 mobile:text-xs whitespace-nowrap"
+              isLoading={isApprovePanelShown}
               onClick={() => {
                 txFarmHarvest(farmInfo, {
                   isStaking: false,
@@ -1310,6 +1328,9 @@ function FarmStakeLpDialog() {
   const stakeDialogMode = useFarms((s) => s.stakeDialogMode)
 
   const [amount, setAmount] = useState<string>()
+
+  const isApprovePanelShown = useAppSettings((s) => s.isApprovePanelShown)
+
   const userHasLpAccount = useMemo(
     () =>
       Boolean(stakeDialogFarmInfo?.lpMint) &&
@@ -1327,16 +1348,6 @@ function FarmStakeLpDialog() {
     if (!stakeDialogFarmInfo?.lp || !amount) return undefined
     return toTokenAmount(stakeDialogFarmInfo.lp, amount, { alreadyDecimaled: true })
   }, [stakeDialogFarmInfo, amount])
-  const isAvailableInput = useMemo(
-    () =>
-      Boolean(
-        userInputTokenAmount &&
-          gt(userInputTokenAmount, 0) &&
-          avaliableTokenAmount &&
-          gte(avaliableTokenAmount, userInputTokenAmount)
-      ),
-    [avaliableTokenAmount, userInputTokenAmount]
-  )
 
   // for keyboard navigation
   const coinInputBoxComponentRef = useRef<CoinInputBoxHandle>()
@@ -1387,11 +1398,16 @@ function FarmStakeLpDialog() {
             <Button
               className="frosted-glass-teal"
               componentRef={buttonComponentRef}
+              isLoading={isApprovePanelShown}
               validators={[
                 { should: connected },
                 { should: stakeDialogFarmInfo?.lp },
-                { should: isAvailableInput },
                 { should: amount },
+                { should: gt(userInputTokenAmount, 0) },
+                {
+                  should: gte(avaliableTokenAmount, userInputTokenAmount),
+                  fallbackProps: { children: 'Insufficient Lp Balance' }
+                },
                 {
                   should: stakeDialogMode == 'withdraw' ? true : userHasLpAccount,
                   fallbackProps: { children: 'No Stakable LP' }
@@ -1410,7 +1426,7 @@ function FarmStakeLpDialog() {
             >
               {stakeDialogMode === 'withdraw' ? 'Unstake LP' : 'Stake LP'}
             </Button>
-            <Button type="text" className="text-sm backdrop-filter-none" onClick={close}>
+            <Button type="text" disabled={isApprovePanelShown} className="text-sm backdrop-filter-none" onClick={close}>
               Cancel
             </Button>
           </Row>

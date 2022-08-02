@@ -874,6 +874,7 @@ function LotteryProjectInfoPanel({ className }: { className?: string }) {
 function LotteryInputPanel({ className }: { className?: string }) {
   const tempJoined = useIdo((s) => s.tempJoined)
   const idoInfo = useIdo((s) => (s.currentIdoId ? s.idoHydratedInfos[s.currentIdoId] : undefined))
+  const isApprovePanelShown = useAppSettings((s) => s.isApprovePanelShown)
   const { connected, balances, checkWalletHasEnoughBalance, owner } = useWallet()
   const refreshIdo = useIdo((s) => s.refreshIdo)
   const refreshSelf = () => refreshIdo(idoInfo?.id)
@@ -1016,6 +1017,7 @@ function LotteryInputPanel({ className }: { className?: string }) {
       </div>
       <Button
         className="block w-full frosted-glass-teal"
+        isLoading={isApprovePanelShown}
         validators={[
           {
             should: !idoInfo?.isClosed,

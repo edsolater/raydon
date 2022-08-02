@@ -5,22 +5,17 @@ import {
   parsedHydratedRewardInfoToUiRewardInfo
 } from '@/application/createFarm/parseRewardInfo'
 import txClaimReward from '@/application/createFarm/txClaimReward'
-import { userCreatedFarmKey } from '@/application/createFarm/txCreateNewFarm'
 import { UIRewardInfo } from '@/application/createFarm/type'
 import useCreateFarms, { cleanStoreEmptyRewards } from '@/application/createFarm/useCreateFarm'
-import { hydrateFarmInfo } from '@/application/farms/handleFarmInfo'
 import { HydratedFarmInfo } from '@/application/farms/type'
 import useFarms from '@/application/farms/useFarms'
 import { routeBack, routeTo } from '@/application/routeTools'
 import useWallet from '@/application/wallet/useWallet'
 import { AddressItem } from '@/components/AddressItem'
-import Button from '@/tempUikits/Button'
-import Card from '@/tempUikits/Card'
 import Icon from '@/components/Icon'
 import PageLayout from '@/components/PageLayout'
-import Row from '@/tempUikits/Row'
 import { isDateBefore } from '@/functions/date/judges'
-import { parseDurationAbsolute } from '@/functions/date/parseDuration'
+import { getDuration, parseDurationAbsolute } from '@/functions/date/parseDuration'
 import toPubString from '@/functions/format/toMintString'
 import { isMintEqual } from '@/functions/judgers/areEqual'
 import { isValidPublicKey } from '@/functions/judgers/dateType'
@@ -32,6 +27,9 @@ import { EditableRewardSummary } from '@/pageComponents/createFarm/EditableRewar
 import { NewRewardIndicatorAndForm } from '@/pageComponents/createFarm/NewRewardIndicatorAndForm'
 import { PoolInfoSummary } from '@/pageComponents/createFarm/PoolInfoSummery'
 import RewardInputDialog from '@/pageComponents/createFarm/RewardEditDialog'
+import Button from '@/tempUikits/Button'
+import Card from '@/tempUikits/Card'
+import Row from '@/tempUikits/Row'
 import produce from 'immer'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
@@ -217,6 +215,18 @@ export default function FarmEditPage() {
                 children: 'Insufficient start time'
               }
             },
+            ...meaningFullRewards.map((reward) => {
+              const minBoundary =
+                reward.endTime && reward.startTime && reward.token
+                  ? div(getDuration(reward.endTime, reward.startTime) / 1000, 10 ** reward.token.decimals)
+                  : undefined
+              return {
+                should: gte(reward.amount, minBoundary),
+                fallbackProps: {
+                  children: `Emission rewards is lower than min required`
+                }
+              }
+            }),
             {
               should: meaningFullRewards.every((reward) => {
                 const durationTime =

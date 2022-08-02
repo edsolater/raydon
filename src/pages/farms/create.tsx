@@ -236,6 +236,7 @@ export default function CreateFarmPage() {
             {cachedInputs}
             <Button
               type="text"
+              className="w-max"
               disabled={rewards.length >= 5}
               onClick={() => {
                 useCreateFarms.setState({
@@ -335,6 +336,18 @@ export default function CreateFarmPage() {
                   children: 'Insufficient duration'
                 }
               },
+              ...meaningFullRewards.map((reward) => {
+                const minBoundary =
+                  reward.endTime && reward.startTime && reward.token
+                    ? div(getDuration(reward.endTime, reward.startTime) / 1000, 10 ** reward.token.decimals)
+                    : undefined
+                return {
+                  should: gte(reward.amount, minBoundary),
+                  fallbackProps: {
+                    children: `Emission rewards is lower than min required`
+                  }
+                }
+              }),
               {
                 should: meaningFullRewards.every((reward) => {
                   const durationTime =

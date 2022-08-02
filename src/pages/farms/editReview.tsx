@@ -14,6 +14,7 @@ import { EditableRewardSummary } from '@/pageComponents/createFarm/EditableRewar
 import { NewAddedRewardSummary } from '@/pageComponents/createFarm/NewAddedRewardSummary'
 import { PoolInfoSummary } from '@/pageComponents/createFarm/PoolInfoSummery'
 import { useEffect, useMemo } from 'react'
+import useAppSettings from '@/application/appSettings/useAppSettings'
 
 function useAvailableCheck() {
   useEffect(() => {
@@ -25,6 +26,7 @@ function useAvailableCheck() {
 export default function EditReviewPage() {
   const getToken = useToken((s) => s.getToken)
   const { poolId, rewards, farmId } = useCreateFarms()
+  const isApprovePanelShown = useAppSettings((s) => s.isApprovePanelShown)
   const canCreateFarm = useMemo(
     () =>
       tryCatch(
@@ -95,6 +97,7 @@ export default function EditReviewPage() {
         <Row className="gap-5 mt-12 justify-center">
           <Button
             className="frosted-glass-teal"
+            isLoading={isApprovePanelShown}
             size="lg"
             validators={[{ should: newRewards.length > 0 || editedRewards.length > 0 }]}
             onClick={() => {

@@ -61,6 +61,7 @@ import { isMintEqual } from '@/functions/judgers/areEqual'
 import { SplToken } from '@/application/token/type'
 import { capitalize } from '@/functions/changeCase'
 import { objectShakeFalsy } from '@/functions/objectMethods'
+import { AddressItem } from '@/components/AddressItem'
 
 const { ContextProvider: LiquidityUIContextProvider, useStore: useLiquidityContextStore } = createContextStore({
   hasAcceptedPriceChange: false,
@@ -87,8 +88,8 @@ function LiquidityEffect() {
   useLiquidityUrlParser()
   useLiquidityInitCoinFiller()
   useLiquidityAmmSelector()
-  //  auto fresh  liquidity's coin1Amount and coin2Amount
-  useLiquidityAmountCalculator()
+  // //  auto fresh  liquidity's coin1Amount and coin2Amount
+  // useLiquidityAmountCalculator()
   return null
 }
 
@@ -157,9 +158,9 @@ function useLiquidityWarning() {
     }
   }
   // box state
-  const [isPanelShown, setIsPanelShown] = useState(false)
-
-  const needPanelShown = !hasUserPermanentConfirmed && !hasUserTemporaryConfirmed && Boolean(currentJsonInfo)
+  const [isPanelShown, setIsPanelShown] = useState(
+    () => !hasUserPermanentConfirmed && !hasUserTemporaryConfirmed && Boolean(currentJsonInfo)
+  )
 
   useEffect(() => {
     if (!coin1 || !coin2) {
@@ -169,12 +170,6 @@ function useLiquidityWarning() {
       setIsPanelShown(noPermanent)
     }
   }, [coin1, coin2, currentJsonInfo])
-
-  useEffect(() => {
-    if (needPanelShown) {
-      setIsPanelShown(true)
-    }
-  }, [needPanelShown])
 
   const closePanel = () => setIsPanelShown(false)
 
@@ -191,47 +186,43 @@ function useLiquidityWarning() {
 
 function ConfirmRiskPanel({
   className,
-  isPanelOpen,
   temporarilyConfirm,
   permanentlyConfirm,
   onTemporarilyConfirm,
   onPermanentlyConfirm
 }: {
   className?: string
-  isPanelOpen?: boolean
   temporarilyConfirm?: boolean
   permanentlyConfirm?: boolean
   onTemporarilyConfirm?: (checkState: boolean) => void
   onPermanentlyConfirm?: (checkState: boolean) => void
 }) {
   return (
-    <FadeInStable show={isPanelOpen}>
-      <div className={twMerge('bg-[#141041] rounded-xl py-3 px-6 mobile:px-4', className)}>
-        <div className="text-sm">
-          I have read{' '}
-          <Link href="https://raydium.gitbook.io/raydium/exchange-trade-and-swap/liquidity-pools">
-            Raydium's Liquidity Guide
-          </Link>{' '}
-          and understand the risks involved with providing liquidity and impermanent loss.
-        </div>
-
-        <Checkbox
-          checkBoxSize="sm"
-          className="my-2 w-max"
-          checked={temporarilyConfirm}
-          onChange={onTemporarilyConfirm}
-          label={<div className="text-sm italic text-[rgba(171,196,255,0.5)]">Confirm</div>}
-        />
-
-        <Checkbox
-          checkBoxSize="sm"
-          className="my-2 w-max"
-          checked={permanentlyConfirm}
-          onChange={onPermanentlyConfirm}
-          label={<div className="text-sm italic text-[rgba(171,196,255,0.5)]">Do not warn again for this pool</div>}
-        />
+    <div className={twMerge('bg-[#141041] rounded-xl py-3 px-6 mobile:px-4', className)}>
+      <div className="text-sm">
+        I have read{' '}
+        <Link href="https://raydium.gitbook.io/raydium/exchange-trade-and-swap/liquidity-pools">
+          Raydium's Liquidity Guide
+        </Link>{' '}
+        and understand the risks involved with providing liquidity and impermanent loss.
       </div>
-    </FadeInStable>
+
+      <Checkbox
+        checkBoxSize="sm"
+        className="my-2 w-max"
+        checked={temporarilyConfirm}
+        onChange={onTemporarilyConfirm}
+        label={<div className="text-sm italic text-[rgba(171,196,255,0.5)]">Confirm</div>}
+      />
+
+      <Checkbox
+        checkBoxSize="sm"
+        className="my-2 w-max"
+        checked={permanentlyConfirm}
+        onChange={onPermanentlyConfirm}
+        label={<div className="text-sm italic text-[rgba(171,196,255,0.5)]">Do not warn again for this pool</div>}
+      />
+    </div>
   )
 }
 
@@ -297,12 +288,12 @@ function LiquidityCard() {
     <CyberpunkStyleCard
       domRef={cardRef}
       wrapperClassName="w-[min(456px,100%)] self-center cyberpunk-bg-light"
-      className="py-8 pt-4 px-6 mobile:py-5"
+      className="py-8 pt-4 px-6 mobile:py-5 mobile:px-3"
     >
       {/* input twin */}
       <>
         <CoinInputBox
-          className="mt-5"
+          className="mt-5 mobile:mt-0"
           disabled={isApprovePanelShown}
           noDisableStyle
           componentRef={coinInputBox1ComponentRef}
@@ -340,21 +331,25 @@ function LiquidityCard() {
             <Icon
               size="sm"
               heroIconName="search"
-              className="p-2 frosted-glass frosted-glass-teal rounded-full mr-4 clickable text-[#39D0D8] select-none"
+              className={`p-2 frosted-glass frosted-glass-teal rounded-full mr-4 clickable text-[#39D0D8] select-none ${
+                isApprovePanelShown ? 'not-clickable' : ''
+              }`}
               onClick={() => {
                 useLiquidity.setState({ isSearchAmmDialogOpen: true })
               }}
             />
-            <RefreshCircle
-              run={!isApprovePanelShown}
-              refreshKey="liquidity/add"
-              popPlacement="right-bottom"
-              freshFunction={() => {
-                if (isApprovePanelShown) return
-                refreshLiquidity()
-                refreshTokenPrice()
-              }}
-            />
+            <div className={isApprovePanelShown ? 'not-clickable' : 'clickable'}>
+              <RefreshCircle
+                run={!isApprovePanelShown}
+                refreshKey="liquidity/add"
+                popPlacement="right-bottom"
+                freshFunction={() => {
+                  if (isApprovePanelShown) return
+                  refreshLiquidity()
+                  refreshTokenPrice()
+                }}
+              />
+            </div>
           </Row>
         </div>
 
@@ -382,26 +377,24 @@ function LiquidityCard() {
           token={coin2}
         />
       </>
-
       {/* info panel */}
-      <FadeInStable show={hasFoundLiquidityPool}>
-        <LiquidityCardInfo className="mt-5" />
-      </FadeInStable>
+      <FadeIn>{hasFoundLiquidityPool && <LiquidityCardInfo className="mt-5" />}</FadeIn>
 
       {/* confirm panel */}
-      <ConfirmRiskPanel
-        className="mt-5"
-        isPanelOpen={needConfirmPanel && connected}
-        temporarilyConfirm={hasUserTemporaryConfirmed}
-        permanentlyConfirm={hasUserPermanentConfirmed}
-        onTemporarilyConfirm={toggleTemporarilyConfirm}
-        onPermanentlyConfirm={togglePermanentlyConfirm}
-      />
-
+      {needConfirmPanel && connected && (
+        <ConfirmRiskPanel
+          className="mt-5"
+          temporarilyConfirm={hasUserTemporaryConfirmed}
+          permanentlyConfirm={hasUserPermanentConfirmed}
+          onTemporarilyConfirm={toggleTemporarilyConfirm}
+          onPermanentlyConfirm={togglePermanentlyConfirm}
+        />
+      )}
       {/* supply button */}
       <Button
         className="block frosted-glass-teal w-full mt-5"
         componentRef={liquidityButtonComponentRef}
+        isLoading={isApprovePanelShown}
         validators={[
           {
             should: hasFoundLiquidityPool,
@@ -449,10 +442,8 @@ function LiquidityCard() {
       >
         Add Liquidity
       </Button>
-
       {/* alert user if sol is not much */}
       <RemainSOLAlert />
-
       {/** coin selector panel */}
       <TokenSelectorDialog
         open={isCoinSelectorOn}
@@ -594,7 +585,7 @@ function LiquidityCardInfo({ className }: { className?: string }) {
         <FadeIn>
           {(coin1Amount || coin2Amount) && (
             <LiquidityCardItem
-              fieldName={`Max Amount`}
+              fieldName="Max Amount"
               fieldValue={`${formatNumber(focusSide === 'coin1' ? coin2Amount || '' : coin1Amount ?? '', {
                 fractionLength: 'auto'
               })} ${focusSide === 'coin1' ? coin2?.symbol ?? 'unknown' : coin1?.symbol ?? 'unknown'}`}
@@ -622,7 +613,7 @@ function LiquidityCardInfo({ className }: { className?: string }) {
           }
         />
         <LiquidityCardItem
-          fieldName={`LP supply`}
+          fieldName="LP supply"
           fieldValue={
             <Row className="items-center gap-2">
               {isStable && <Badge className="self-center">Stable</Badge>}
@@ -698,7 +689,7 @@ function LiquidityCardItem({
           </Tooltip>
         )}
       </Row>
-      <div className="text-xs font-medium text-white">{fieldValue}</div>
+      <div className="text-xs font-medium text-white text-right">{fieldValue}</div>
     </Row>
   )
 }
@@ -747,25 +738,15 @@ function LiquidityCardTooltipPanelAddressItem({
   return (
     <Row className={twMerge('grid gap-2 items-center grid-cols-[5em,1fr,auto,auto]', className)}>
       <div className="text-xs font-normal text-white">{label}</div>
-      <Row className="px-1 py-0.5 text-xs font-normal text-white bg-[#141041] rounded justify-center">
-        {/* setting text-overflow empty string will make effect in FireFox, not Chrome */}
-        <div className="self-end overflow-hidden tracking-wide">{address.slice(0, 5)}</div>
-        <div className="tracking-wide">...</div>
-        <div className="overflow-hidden tracking-wide">{address.slice(-5)}</div>
-      </Row>
-      <Row className="gap-1 items-center">
-        <Icon
-          size="sm"
-          heroIconName="clipboard-copy"
-          className="clickable text-[#ABC4FF]"
-          onClick={() => {
-            copyToClipboard(address)
-          }}
-        />
-        <Link href={`https://solscan.io/${type}/${address}`}>
-          <Icon size="sm" heroIconName="external-link" className="clickable text-[#ABC4FF]" />
-        </Link>
-      </Row>
+      <AddressItem
+        showDigitCount={5}
+        addressType={type}
+        canCopy
+        canExternalLink
+        textClassName="flex text-xs font-normal text-white bg-[#141041] rounded justify-center"
+      >
+        {address}
+      </AddressItem>
     </Row>
   )
 }
@@ -804,10 +785,10 @@ function UserLiquidityExhibition() {
             return (
               <List.Item key={idx}>
                 <FadeIn>
-                  <Collapse className="py-4 px-6 mobile:px-4 ring-inset ring-1.5 ring-[rgba(171,196,255,.5)] rounded-3xl mobile:rounded-xl">
+                  <Collapse className="ring-inset ring-1.5 ring-[rgba(171,196,255,.5)] rounded-3xl mobile:rounded-xl">
                     <Collapse.Face>
                       {(open) => (
-                        <Row className="items-center justify-between">
+                        <Row className="items-center justify-between py-4 px-6 mobile:px-4">
                           <Row className="gap-2 items-center">
                             <CoinAvatarPair
                               className="justify-self-center"
@@ -828,99 +809,101 @@ function UserLiquidityExhibition() {
                       )}
                     </Collapse.Face>
                     <Collapse.Body>
-                      <Col className="border-t-1.5 border-[rgba(171,196,255,.5)] mt-5 mobile:mt-4 py-5 gap-3">
-                        <Row className="justify-between">
-                          <div className="text-xs mobile:text-2xs font-medium text-[#abc4ff]">Pooled (Base)</div>
-                          <div className="text-xs mobile:text-2xs font-medium text-white">
-                            {toString(info.userBasePooled) || '--'} {info.baseToken?.symbol}
-                          </div>
-                        </Row>
-                        <Row className="justify-between">
-                          <div className="text-xs mobile:text-2xs font-medium text-[#abc4ff]">Pooled (Quote)</div>
-                          <div className="text-xs mobile:text-2xs font-medium text-white">
-                            {toString(info.userQuotePooled) || '--'} {info.quoteToken?.symbol}
-                          </div>
-                        </Row>
-                        <Row className="justify-between">
-                          <div className="text-xs mobile:text-2xs font-medium text-[#abc4ff]">Your Liquidity</div>
-                          <div className="text-xs mobile:text-2xs font-medium text-white">
-                            {info.lpMint
-                              ? toString(div(rawBalances[String(info.lpMint)], 10 ** info.lpDecimals), {
-                                  decimalLength: `auto ${info.lpDecimals}`
-                                })
-                              : '--'}{' '}
-                            LP
-                          </div>
-                        </Row>
-                        <Row className="justify-between">
-                          <div className="text-xs mobile:text-2xs font-medium text-[#abc4ff]">Your share</div>
-                          <div className="text-xs mobile:text-2xs font-medium text-white">
-                            {computeSharePercentValue(info.sharePercent)}
-                          </div>
-                        </Row>
-                      </Col>
-                      <Row className="gap-4 mb-1">
-                        <Button
-                          className="text-base mobile:text-sm font-medium frosted-glass frosted-glass-teal rounded-xl flex-grow"
-                          onClick={() => {
-                            useLiquidity.setState({
-                              currentJsonInfo: info.jsonInfo
-                            })
-                            scrollToInputBox()
-                          }}
-                        >
-                          Add Liquidity
-                        </Button>
-                        <Tooltip>
-                          <Icon
-                            size="smi"
-                            iconSrc="/icons/pools-farm-entry.svg"
-                            className={`grid place-items-center w-10 h-10 mobile:w-8 mobile:h-8 ring-inset ring-1 mobile:ring-1 ring-[rgba(171,196,255,.5)] rounded-xl mobile:rounded-lg text-[rgba(171,196,255,.5)] clickable-filter-effect ${
-                              correspondingFarm ? 'clickable' : 'not-clickable'
-                            }`}
+                      <div className="pb-4 px-6 mobile:px-4">
+                        <Col className="border-t-1.5 border-[rgba(171,196,255,.5)] py-5 gap-3 ">
+                          <Row className="justify-between">
+                            <div className="text-xs mobile:text-2xs font-medium text-[#abc4ff]">Pooled (Base)</div>
+                            <div className="text-xs mobile:text-2xs font-medium text-white">
+                              {toString(info.userBasePooled) || '--'} {info.baseToken?.symbol}
+                            </div>
+                          </Row>
+                          <Row className="justify-between">
+                            <div className="text-xs mobile:text-2xs font-medium text-[#abc4ff]">Pooled (Quote)</div>
+                            <div className="text-xs mobile:text-2xs font-medium text-white">
+                              {toString(info.userQuotePooled) || '--'} {info.quoteToken?.symbol}
+                            </div>
+                          </Row>
+                          <Row className="justify-between">
+                            <div className="text-xs mobile:text-2xs font-medium text-[#abc4ff]">Your Liquidity</div>
+                            <div className="text-xs mobile:text-2xs font-medium text-white">
+                              {info.lpMint
+                                ? toString(div(rawBalances[String(info.lpMint)], 10 ** info.lpDecimals), {
+                                    decimalLength: `auto ${info.lpDecimals}`
+                                  })
+                                : '--'}{' '}
+                              LP
+                            </div>
+                          </Row>
+                          <Row className="justify-between">
+                            <div className="text-xs mobile:text-2xs font-medium text-[#abc4ff]">Your share</div>
+                            <div className="text-xs mobile:text-2xs font-medium text-white">
+                              {computeSharePercentValue(info.sharePercent)}
+                            </div>
+                          </Row>
+                        </Col>
+                        <Row className="gap-4 mb-1">
+                          <Button
+                            className="text-base mobile:text-sm font-medium frosted-glass frosted-glass-teal rounded-xl flex-grow"
                             onClick={() => {
-                              routeTo('/farms', {
-                                //@ts-expect-error no need to care about enum of this error
-                                queryProps: objectShakeFalsy({
-                                  currentTab: correspondingFarm?.category
-                                    ? capitalize(correspondingFarm?.category)
-                                    : undefined,
-                                  newExpandedItemId: toPubString(correspondingFarm?.id),
-                                  searchText: String(correspondingFarm?.id)
-                                })
+                              useLiquidity.setState({
+                                currentJsonInfo: info.jsonInfo
                               })
+                              scrollToInputBox()
                             }}
-                          />
-                          <Tooltip.Panel>Farm</Tooltip.Panel>
-                        </Tooltip>
-                        <Tooltip>
-                          <Icon
-                            iconSrc="/icons/msic-swap-h.svg"
-                            size="smi"
-                            className="grid place-items-center w-10 h-10 mobile:w-8 mobile:h-8 ring-inset ring-1 mobile:ring-1 ring-[rgba(171,196,255,.5)] rounded-xl mobile:rounded-lg text-[rgba(171,196,255,.5)] clickable clickable-filter-effect"
-                            onClick={() => {
-                              routeTo('/swap', {
-                                queryProps: {
-                                  coin1: info.baseToken,
-                                  coin2: info.quoteToken
-                                }
-                              })
-                            }}
-                          />
-                          <Tooltip.Panel>Swap</Tooltip.Panel>
-                        </Tooltip>
-                        <Tooltip>
-                          <Icon
-                            size="smi"
-                            iconSrc="/icons/pools-remove-liquidity-entry.svg"
-                            className={`grid place-items-center w-10 h-10 mobile:w-8 mobile:h-8 ring-inset ring-1 mobile:ring-1 ring-[rgba(171,196,255,.5)] rounded-xl mobile:rounded-lg text-[rgba(171,196,255,.5)] clickable clickable-filter-effect`}
-                            onClick={() => {
-                              useLiquidity.setState({ currentJsonInfo: info.jsonInfo, isRemoveDialogOpen: true })
-                            }}
-                          />
-                          <Tooltip.Panel>Remove Liquidity</Tooltip.Panel>
-                        </Tooltip>
-                      </Row>
+                          >
+                            Add Liquidity
+                          </Button>
+                          <Tooltip>
+                            <Icon
+                              size="smi"
+                              iconSrc="/icons/pools-farm-entry.svg"
+                              className={`grid place-items-center w-10 h-10 mobile:w-8 mobile:h-8 ring-inset ring-1 mobile:ring-1 ring-[rgba(171,196,255,.5)] rounded-xl mobile:rounded-lg text-[rgba(171,196,255,.5)] clickable-filter-effect ${
+                                correspondingFarm ? 'clickable' : 'not-clickable'
+                              }`}
+                              onClick={() => {
+                                routeTo('/farms', {
+                                  //@ts-expect-error no need to care about enum of this error
+                                  queryProps: objectShakeFalsy({
+                                    currentTab: correspondingFarm?.category
+                                      ? capitalize(correspondingFarm?.category)
+                                      : undefined,
+                                    newExpandedItemId: toPubString(correspondingFarm?.id),
+                                    searchText: [info.baseToken?.symbol, info.quoteToken?.symbol].join(' ')
+                                  })
+                                })
+                              }}
+                            />
+                            <Tooltip.Panel>Farm</Tooltip.Panel>
+                          </Tooltip>
+                          <Tooltip>
+                            <Icon
+                              iconSrc="/icons/msic-swap-h.svg"
+                              size="smi"
+                              className="grid place-items-center w-10 h-10 mobile:w-8 mobile:h-8 ring-inset ring-1 mobile:ring-1 ring-[rgba(171,196,255,.5)] rounded-xl mobile:rounded-lg text-[rgba(171,196,255,.5)] clickable clickable-filter-effect"
+                              onClick={() => {
+                                routeTo('/swap', {
+                                  queryProps: {
+                                    coin1: info.baseToken,
+                                    coin2: info.quoteToken
+                                  }
+                                })
+                              }}
+                            />
+                            <Tooltip.Panel>Swap</Tooltip.Panel>
+                          </Tooltip>
+                          <Tooltip>
+                            <Icon
+                              size="smi"
+                              iconSrc="/icons/pools-remove-liquidity-entry.svg"
+                              className={`grid place-items-center w-10 h-10 mobile:w-8 mobile:h-8 ring-inset ring-1 mobile:ring-1 ring-[rgba(171,196,255,.5)] rounded-xl mobile:rounded-lg text-[rgba(171,196,255,.5)] clickable clickable-filter-effect`}
+                              onClick={() => {
+                                useLiquidity.setState({ currentJsonInfo: info.jsonInfo, isRemoveDialogOpen: true })
+                              }}
+                            />
+                            <Tooltip.Panel>Remove Liquidity</Tooltip.Panel>
+                          </Tooltip>
+                        </Row>
+                      </div>
                     </Collapse.Body>
                   </Collapse>
                 </FadeIn>
@@ -968,7 +951,7 @@ function CreatePoolCardEntry() {
             }}
           >
             <Icon className="mr-2" heroIconName="plus" />
-            Create Pool
+            <div>Create Pool</div>
           </Button>
         </Row>
       </Card>

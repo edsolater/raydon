@@ -64,6 +64,7 @@ import { Badge } from '@/tempUikits/Badge'
 import txUnwrapAllWSOL, { txUnwrapWSOL } from '@/application/swap/txUnwrapWSOL'
 import { isMintEqual } from '@/functions/judgers/areEqual'
 import txWrapSOL from '@/application/swap/txWrapSOL'
+import { AddressItem } from '@/components/AddressItem'
 
 function SwapEffect() {
   useSwapInitCoinFiller()
@@ -94,7 +95,7 @@ export default function Swap() {
 }
 
 // to check if downCoin is unOfficial (not is raydium token list but in solana token list)
-function useunOfficialTokenConfirmState(): { hasConfirmed: boolean; popConfirm: () => void } {
+function useUnofficialTokenConfirmState(): { hasConfirmed: boolean; popConfirm: () => void } {
   const directionReversed = useSwap((s) => s.directionReversed)
   const coin1 = useSwap((s) => s.coin1)
   const coin2 = useSwap((s) => s.coin2)
@@ -203,7 +204,7 @@ function SwapCard() {
   const routes = useSwap((s) => s.routes)
   const swapable = useSwap((s) => s.swapable)
   const refreshTokenPrice = useToken((s) => s.refreshTokenPrice)
-  const { hasConfirmed, popConfirm: popunOfficialConfirm } = useunOfficialTokenConfirmState()
+  const { hasConfirmed, popConfirm: popUnofficialConfirm } = useUnofficialTokenConfirmState()
   const { hasAcceptedPriceChange, swapButtonComponentRef, coinInputBox1ComponentRef, coinInputBox2ComponentRef } =
     useSwapContextStore()
 
@@ -257,7 +258,7 @@ function SwapCard() {
       className="py-8 pt-4 px-6 mobile:py-5 mobile:px-3"
     >
       {/* input twin */}
-      <div className="space-y-5 mt-5">
+      <div className="space-y-5 mt-5 mobile:mt-0">
         <CoinInputBox
           domRef={swapElementBox1}
           disabled={isApprovePanelShown}
@@ -309,7 +310,7 @@ function SwapCard() {
               </div>
             )}
           </Row>
-          <div className="absolute right-0">
+          <div className={`absolute right-0 ${isApprovePanelShown ? 'not-clickable' : 'clickable'}`}>
             <RefreshCircle
               run={!isApprovePanelShown}
               refreshKey="swap"
@@ -360,6 +361,7 @@ function SwapCard() {
         <Button
           className="w-full frosted-glass-teal mt-5"
           componentRef={swapButtonComponentRef}
+          isLoading={isApprovePanelShown}
           validators={[
             {
               should: walletConnected,
@@ -394,6 +396,7 @@ function SwapCard() {
         <Button
           className="w-full frosted-glass-teal mt-5"
           componentRef={swapButtonComponentRef}
+          isLoading={isApprovePanelShown}
           validators={[
             {
               should: walletConnected,
@@ -411,7 +414,7 @@ function SwapCard() {
               should: hasConfirmed,
               forceActive: true,
               fallbackProps: {
-                onClick: popunOfficialConfirm,
+                onClick: popUnofficialConfirm,
                 children: 'Confirm unOfficial warning' // user may never see this
               }
             },
@@ -436,19 +439,18 @@ function SwapCard() {
               fallbackProps: { children: 'Enter an amount' }
             },
             {
-              should: haveEnoughUpCoin,
-              fallbackProps: { children: `Insufficient ${upCoin?.symbol ?? ''} balance` }
+              should: hasAcceptedPriceChange,
+              fallbackProps: { children: `Accept price change` }
             },
             {
               should: priceImpact && lte(priceImpact, 0.05),
               forceActive: true,
               fallbackProps: {
-                onClick: () => popPriceConfirm({ priceImpact })
+                onClick: ({ ev }) => {
+                  ev.stopPropagation()
+                  return popPriceConfirm({ priceImpact })
+                }
               }
-            },
-            {
-              should: hasAcceptedPriceChange,
-              fallbackProps: { children: `Accept price change` }
             }
           ]}
           onClick={txSwap}
@@ -757,13 +759,13 @@ function SwapCardInfo({ className }: { className?: string }) {
       {maxSpent ? (
         <SwapCardItem
           fieldName="Maximum Spent"
-          fieldValue={`${maxSpent ?? ''} ${(focusSide === 'coin1' ? coin2 : coin1)?.symbol ?? '--'}`}
+          fieldValue={`${maxSpent ?? ''} ${upCoin?.symbol ?? '--'}`}
           tooltipContent="The max amount of tokens you will spend on this trade"
         />
       ) : (
         <SwapCardItem
           fieldName="Minimum Received"
-          fieldValue={`${minReceived ?? ''} ${(focusSide === 'coin1' ? coin2 : coin1)?.symbol ?? '--'}`}
+          fieldValue={`${minReceived ?? ''} ${downCoin?.symbol ?? '--'}`}
           tooltipContent="The least amount of tokens you will recieve on this trade"
         />
       )}
@@ -866,7 +868,7 @@ function SwapCardItem({
           </Tooltip>
         )}
       </Row>
-      <div className="text-xs font-medium text-white" style={{ color: fieldValueTextColor }}>
+      <div className="text-xs font-medium text-white text-right" style={{ color: fieldValueTextColor }}>
         {fieldValue}
       </div>
     </Row>
@@ -939,25 +941,15 @@ function SwapCardTooltipPanelAddressItem({
   return (
     <Row className={twMerge('grid gap-2 items-center grid-cols-[5em,1fr,auto,auto]', className)}>
       <div className="text-xs font-normal text-white">{label}</div>
-      <Row className="px-1 py-0.5 text-xs font-normal text-white bg-[#141041] rounded justify-center">
-        {/* setting text-overflow empty string will make effect in FireFox, not Chrome */}
-        <div className="self-end overflow-hidden tracking-wide">{address.slice(0, 5)}</div>
-        <div className="tracking-wide">...</div>
-        <div className="overflow-hidden tracking-wide">{address.slice(-5)}</div>
-      </Row>
-      <Row className="gap-1 items-center">
-        <Icon
-          size="sm"
-          heroIconName="clipboard-copy"
-          className="clickable text-[#ABC4FF]"
-          onClick={() => {
-            copyToClipboard(address)
-          }}
-        />
-        <Link href={`https://solscan.io/${type}/${address}`}>
-          <Icon size="sm" heroIconName="external-link" className="clickable text-[#ABC4FF]" />
-        </Link>
-      </Row>
+      <AddressItem
+        showDigitCount={5}
+        addressType={type}
+        canCopy
+        canExternalLink
+        textClassName="flex text-xs font-normal text-white bg-[#141041] rounded justify-center"
+      >
+        {address}
+      </AddressItem>
     </Row>
   )
 }

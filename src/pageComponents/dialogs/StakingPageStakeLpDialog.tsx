@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from 'react'
-import { ZERO } from '@raydium-io/raydium-sdk'
 import txFarmDeposit from '@/application/farms/txFarmDeposit'
 import txFarmWithdraw from '@/application/farms/txFarmWithdraw'
 import useStaking from '@/application/staking/useStaking'
@@ -12,6 +11,8 @@ import ResponsiveDialogDrawer from '@/tempUikits/ResponsiveDialogDrawer'
 import Row from '@/tempUikits/Row'
 import { toTokenAmount } from '@/functions/format/toTokenAmount'
 import { toString } from '@/functions/numberish/toString'
+import { gt, gte } from '@/functions/numberish/compare'
+import useAppSettings from '@/application/appSettings/useAppSettings'
 
 export function StakingPageStakeLpDialog() {
   const connected = useWallet((s) => s.connected)
@@ -22,6 +23,7 @@ export function StakingPageStakeLpDialog() {
   const stakeDialogMode = useStaking((s) => s.stakeDialogMode)
   const isStakeDialogOpen = useStaking((s) => s.isStakeDialogOpen)
   const [amount, setAmount] = useState<string>()
+  const isApprovePanelShown = useAppSettings((s) => s.isApprovePanelShown)
 
   const userHasLp = useMemo(
     () =>
@@ -40,16 +42,6 @@ export function StakingPageStakeLpDialog() {
     if (!stakeDialogInfo?.lp || !amount) return undefined
     return toTokenAmount(stakeDialogInfo.lp, amount, { alreadyDecimaled: true })
   }, [stakeDialogInfo, amount])
-  const isAvailableInput = useMemo(
-    () =>
-      Boolean(
-        userInputTokenAmount &&
-          userInputTokenAmount.numerator.gt(ZERO) &&
-          avaliableTokenAmount &&
-          avaliableTokenAmount.subtract(userInputTokenAmount).numerator.gte(ZERO)
-      ),
-    [avaliableTokenAmount, userInputTokenAmount]
-  )
   return (
     <ResponsiveDialogDrawer
       open={isStakeDialogOpen}
@@ -89,11 +81,16 @@ export function StakingPageStakeLpDialog() {
           <Row className="flex-col gap-1">
             <Button
               className="frosted-glass-teal"
+              isLoading={isApprovePanelShown}
               validators={[
                 { should: connected },
                 { should: stakeDialogInfo?.lp },
-                { should: isAvailableInput },
                 { should: amount },
+                { should: gt(userInputTokenAmount, 0) },
+                {
+                  should: gte(avaliableTokenAmount, userInputTokenAmount),
+                  fallbackProps: { children: 'Insufficient RAY Balance' }
+                },
                 {
                   should: stakeDialogMode === 'withdraw' ? true : userHasLp,
                   fallbackProps: { children: stakeDialogMode === 'withdraw' ? 'No Unstakable RAY' : 'No Stakable RAY' }
@@ -112,7 +109,7 @@ export function StakingPageStakeLpDialog() {
             >
               {stakeDialogMode === 'withdraw' ? 'Unstake RAY' : 'Stake RAY'}
             </Button>
-            <Button type="text" className="text-sm backdrop-filter-none" onClick={close}>
+            <Button type="text" disabled={isApprovePanelShown} className="text-sm backdrop-filter-none" onClick={close}>
               Cancel
             </Button>
           </Row>
