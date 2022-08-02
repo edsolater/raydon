@@ -49,7 +49,7 @@ export function SideMenu({ onClickCloseBtn, ...divProps }: { onClickCloseBtn?():
       }}
     >
       <MenuRouters className="shrink min-h-[120px] mr-2 mb-2 mobile:ml-2 overflow-y-auto" />
-      <MenuSubOptions className="mobile:h-[180px] overflow-scroll no-native-scrollbar" />
+      <MenuSubOptions className="overflow-scroll no-native-scrollbar" />
       <VersionInfoBlock />
     </Div>
   )

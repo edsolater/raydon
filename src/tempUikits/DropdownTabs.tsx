@@ -1,11 +1,11 @@
 import useAppSettings from '@/application/appSettings/useAppSettings'
+import Icon from '@/components/Icon'
 import toPercentString from '@/functions/format/toPercentString'
 import { shrinkToValue } from '@/functions/shrinkToValue'
 import { useUrlQuery } from '@/hooks/useUrlQuery'
 import { useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import Collapse, { CollapseHandler } from './Collapse'
-import Icon from '../components/Icon'
 import RadioGroup, { RadioGroupProps } from './RadioGroup'
 import Row from './Row'
 

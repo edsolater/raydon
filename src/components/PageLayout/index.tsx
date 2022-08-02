@@ -63,7 +63,7 @@ export default function PageLayout(props: {
         overflow: 'hidden', // establish a BFC
         willChange: 'opacity'
       }}
-      className={`w-screen mobile:w-full h-screen mobile:h-full`}
+      className={`w-full mobile:w-full h-full mobile:h-full`}
     >
       <RPCPerformanceBanner className="grid-area-d" />
       {isMobile ? (
@@ -78,7 +78,7 @@ export default function PageLayout(props: {
             onClose={() => useAppSettings.setState({ isSideBarMenuShown: false })}
             onOpen={() => useAppSettings.setState({ isSideBarMenuShown: true })}
           >
-            {({ close }) => <SideMenu className="flex-container h-screen" onClickCloseBtn={close} />}
+            {({ close }) => <SideMenu className="flex-container h-full" onClickCloseBtn={close} />}
           </Drawer>
         </>
       ) : (

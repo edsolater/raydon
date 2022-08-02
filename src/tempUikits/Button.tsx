@@ -7,6 +7,7 @@ import { shrinkToValue } from '@/functions/shrinkToValue'
 import { BooleanLike, MayFunction } from '@/types/constants'
 import { MayArray } from '@/types/generics'
 import Row from './Row'
+import LoadingCircleSmall from './LoadingCircleSmall'
 
 export interface ButtonHandle {
   click?: () => void
@@ -22,7 +23,7 @@ export interface ButtonProps {
   type?: 'solid' | 'outline' | 'text'
   /** unused tailwind style class string will be tree-shaked  */
   className?: string
-  isLoading?: boolean // TODO: imply it
+  isLoading?: boolean
   /** must all condition passed */
   validators?: MayArray<{
     /** must return true to pass this validator */
@@ -50,11 +51,20 @@ export default function Button({ validators, ...restProps }: ButtonProps) {
     ...restProps,
     ...failedValidator?.fallbackProps
   }
-  const { type = 'solid', className = '', size, children, onClick, componentRef, suffix, prefix } = mergedProps
+  const {
+    type = 'solid',
+    className = '',
+    size,
+    children,
+    onClick,
+    componentRef,
+    suffix,
+    prefix,
+    isLoading
+  } = mergedProps
 
   const haveFallbackClick = Boolean(failedValidator?.fallbackProps?.onClick)
-  const isActive = failedValidator?.forceActive || (!failedValidator && !mergedProps.disabled)
-  const disable = !isActive
+  const isActive = !isLoading && (failedValidator?.forceActive || (!failedValidator && !mergedProps.disabled))
 
   const ref = useRef<HTMLButtonElement>(null)
   useImperativeHandle(componentRef, () => ({
@@ -69,29 +79,25 @@ export default function Button({ validators, ...restProps }: ButtonProps) {
     <button
       ref={ref}
       onClick={(ev) => {
-        if (disable) ev.stopPropagation()
-        if (haveFallbackClick) onClick?.({ ev })
-        if (!disable) onClick?.({ ev })
+        if (!isActive) ev.stopPropagation()
+        if (isActive || haveFallbackClick) onClick?.({ ev })
       }}
       className={twMerge(
         'Button select-none',
         type === 'text'
-          ? textButtonTailwind({ size, disable, haveFallbackClick })
+          ? textButtonTailwind({ size, disable: !isActive, haveFallbackClick })
           : type === 'outline'
-          ? outlineButtonTailwind({ size, disable, haveFallbackClick })
-          : solidButtonTailwind({ size, disable, haveFallbackClick }),
+          ? outlineButtonTailwind({ size, disable: !isActive, haveFallbackClick })
+          : solidButtonTailwind({ size, disable: !isActive, haveFallbackClick }),
         className
       )}
     >
-      {suffix || prefix ? (
-        <Row className="justify-center items-center gap-1">
-          {prefix}
-          <div>{children}</div>
-          {suffix}
-        </Row>
-      ) : (
-        children
-      )}
+      <Row className="justify-center items-center gap-2">
+        {isLoading && <LoadingCircleSmall className="w-4 h-4" />}
+        {prefix}
+        {children}
+        {suffix}
+      </Row>
     </button>
   )
 }

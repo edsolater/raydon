@@ -43,7 +43,7 @@ export function CommunityPopover() {
         <Item href="https://discord.gg/raydium" iconSrc="/icons/media-discord.svg" text="Discord" />
         <PageLayoutPopoverDrawer
           renderPopoverContent={({ close }) => (
-            <Col className="divide-y-1.5 divide-[rgba(171,196,255,0.2)]">
+            <Col className="divide-y-1.5 max-h-[60vh] overflow-auto divide-[rgba(171,196,255,0.2)]">
               <Item
                 href="https://t.me/raydiumprotocol"
                 iconSrc="/icons/media-telegram.svg"
