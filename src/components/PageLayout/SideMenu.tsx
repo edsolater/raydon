@@ -39,7 +39,7 @@ export function SideMenu({ onClickCloseBtn, ...divProps }: { onClickCloseBtn?():
   return (
     <Div
       {...divProps}
-      className_="grid grid-rows-[2fr,1fr,auto] overflow-hidden h-full w-56 mobile:w-48 mobile:rounded-tr-2xl mobile:rounded-br-2xl"
+      className_="grid grid-rows-[3fr,1fr,auto] h-full w-56 mobile:w-48 mobile:pt-4 mobile:pb-2"
       domRef_={sideMenuRef}
       style_={{
         background: isMobile
@@ -48,7 +48,7 @@ export function SideMenu({ onClickCloseBtn, ...divProps }: { onClickCloseBtn?():
         boxShadow: isMobile ? '8px 0px 48px rgba(171, 196, 255, 0.12)' : undefined
       }}
     >
-      <MenuRouters className="shrink min-h-[120px] mr-2 mb-2 mobile:ml-2 overflow-y-auto" />
+      <MenuRouters className="shrink mr-2 mb-2 mobile:ml-2 overflow-y-auto" />
       <MenuSubOptions className="overflow-scroll no-native-scrollbar" />
       <VersionInfoBlock />
     </Div>
@@ -119,7 +119,7 @@ function LinkItem({
     <Link
       href={href}
       noTextStyle
-      className={`group block py-2.5 mobile:py-2 px-4 mobile:px-1 rounded-xl mobile:rounded-lg hover:bg-[rgba(57,208,216,0.05)] ${
+      className={`group block py-2.5 mobile:py-1.5 px-4 mobile:px-1 rounded-xl mobile:rounded-lg hover:bg-[rgba(57,208,216,0.05)] ${
         isCurrentRoutePath ? 'bg-[rgba(57,208,216,0.1)]' : ''
       }`}
     >
@@ -195,7 +195,7 @@ function OptionItem({
     <Link
       href={href}
       noTextStyle
-      className="block py-3 mobile:py-3 px-8 pl-6 mobile:px-5 hover:bg-[rgba(57,208,216,0.1)] active:bg-[rgba(41,157,163,0.3)] cursor-pointer group"
+      className="block py-3 mobile:py-1.5 px-8 pl-6 mobile:px-5 hover:bg-[rgba(57,208,216,0.1)] active:bg-[rgba(41,157,163,0.3)] cursor-pointer group"
     >
       <Row className="items-center w-full mobile:justify-center" onClick={onClick}>
         <Icon

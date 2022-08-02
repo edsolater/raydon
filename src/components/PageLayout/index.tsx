@@ -78,7 +78,7 @@ export default function PageLayout(props: {
             onClose={() => useAppSettings.setState({ isSideBarMenuShown: false })}
             onOpen={() => useAppSettings.setState({ isSideBarMenuShown: true })}
           >
-            {({ close }) => <SideMenu className="flex-container h-full" onClickCloseBtn={close} />}
+            {({ close }) => <SideMenu className="h-full" onClickCloseBtn={close} />}
           </Drawer>
         </>
       ) : (
