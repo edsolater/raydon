@@ -40,17 +40,13 @@ export function TopNavbar({
     </Row>
   )
   const mobileNavContent = (
-    <Grid className="grid-cols-3 items-center">
-      <div className="frosted-glass-teal rounded-lg p-2 clickable justify-self-start" onClick={onOpenMenu}>
-        <Icon className="w-4 h-4" iconClassName="w-4 h-4" iconSrc="/icons/msic-menu.svg" />
-      </div>
-
+    <Grid className="grid-cols-2 items-center">
       {barTitle ? (
-        <div onClick={onOpenMenu} className="text-lg font-semibold place-self-center text-white -mb-1">
+        <div onClick={onOpenMenu} className="text-base font-semibold  text-white -mb-1">
           {barTitle}
         </div>
       ) : (
-        <Link className="place-self-center" href="/">
+        <Link className="" href="/">
           <Image className="cursor-pointer" src="/logo/logo-only-icon.svg" />
         </Link>
       )}

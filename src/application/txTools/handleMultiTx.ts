@@ -24,7 +24,7 @@ import { mergeFunction } from '@/functions/merge'
 import { getRecentBlockhash } from './attachRecentBlockhash'
 import { getRichWalletTokenAccounts } from '../wallet/useTokenAccountsRefresher'
 import { shrinkToValue } from '@/functions/shrinkToValue'
-import PageLayout from '@/components/PageLayout'
+import PageLayout from '@/components/PageLayout/PageLayout'
 import { toHumanReadable } from '@/functions/format/toHumanReadable'
 
 //#region ------------------- basic info -------------------

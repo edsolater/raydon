@@ -23,7 +23,11 @@ import { VersionInfoBlock } from './VersionInfoBlock'
  * - {@link CommunityPopover `<CommunityPopover>`}
  * - {@link SlippageTolerancePopover `<SlippageTolerancePopover>`}
  */
-export function SideMenu({ onClickCloseBtn, ...divProps }: { onClickCloseBtn?(): void } & DivProps) {
+export function SideMenu({
+  onClickCloseBtn,
+  onRoute,
+  ...divProps
+}: { onClickCloseBtn?(): void; onRoute?(): void } & DivProps) {
   const isMobile = useAppSettings((s) => s.isMobile)
   const sideMenuRef = useRef<HTMLDivElement>(null)
 
@@ -39,7 +43,7 @@ export function SideMenu({ onClickCloseBtn, ...divProps }: { onClickCloseBtn?():
   return (
     <Div
       {...divProps}
-      className_="grid grid-rows-[3fr,1fr,auto] h-full w-56 mobile:w-48 mobile:pt-4 mobile:pb-2"
+      className_="grid grid-rows-[2fr,1fr,auto] h-full w-56 mobile:w-48 mobile:pt-4 mobile:pb-2"
       domRef_={sideMenuRef}
       style_={{
         background: isMobile
@@ -48,53 +52,113 @@ export function SideMenu({ onClickCloseBtn, ...divProps }: { onClickCloseBtn?():
         boxShadow: isMobile ? '8px 0px 48px rgba(171, 196, 255, 0.12)' : undefined
       }}
     >
-      <MenuRouters className="shrink mr-2 mb-2 mobile:ml-2 overflow-y-auto" />
+      <MenuRouters className="shrink mr-2 mb-2 mobile:ml-2 overflow-y-auto" onRoute={onRoute} />
       <MenuSubOptions className="overflow-scroll no-native-scrollbar" />
       <VersionInfoBlock />
     </Div>
   )
 }
 
-function MenuRouters({ className }: { className: string }) {
+function MenuRouters({ className, onRoute }: { className: string; onRoute?(to: string): void }) {
   const isInLocalhost = useAppSettings((s) => s.isInLocalhost)
   const { pathname } = useRouter()
-
   return (
     <div className={twMerge('py-4 space-y-1 mobile:py-0 px-2', className)}>
-      <LinkItem icon="/icons/entry-icon-trade.svg" href="https://dex.raydium.io/">
+      <LinkItem
+        onClick={() => {
+          onRoute?.('trade')
+        }}
+        icon="/icons/entry-icon-trade.svg"
+        href="https://dex.raydium.io/"
+      >
         Trading
       </LinkItem>
-      <LinkItem icon="/icons/entry-icon-swap.svg" href="/swap" isCurrentRoutePath={pathname.includes('swap')}>
+      <LinkItem
+        onClick={() => {
+          onRoute?.('swap')
+        }}
+        icon="/icons/entry-icon-swap.svg"
+        href="/swap"
+        isCurrentRoutePath={pathname.includes('swap')}
+      >
         Swap
       </LinkItem>
       <LinkItem
+        onClick={() => {
+          onRoute?.('liquidity/add')
+        }}
         icon="/icons/entry-icon-liquidity.svg"
         href="/liquidity/add"
         isCurrentRoutePath={pathname.includes('liquidity')}
       >
         Liquidity
       </LinkItem>
-      <LinkItem icon="/icons/entry-icon-pools.svg" href="/pools" isCurrentRoutePath={pathname.includes('pools')}>
+      <LinkItem
+        onClick={() => {
+          onRoute?.('pools')
+        }}
+        icon="/icons/entry-icon-pools.svg"
+        href="/pools"
+        isCurrentRoutePath={pathname.includes('pools')}
+      >
         Pools
       </LinkItem>
-      <LinkItem icon="/icons/entry-icon-farms.svg" href="/farms" isCurrentRoutePath={pathname.includes('farms')}>
+      <LinkItem
+        onClick={() => {
+          onRoute?.('farms')
+        }}
+        icon="/icons/entry-icon-farms.svg"
+        href="/farms"
+        isCurrentRoutePath={pathname.includes('farms')}
+      >
         Farms
       </LinkItem>
-      <LinkItem icon="/icons/entry-icon-staking.svg" href="/staking" isCurrentRoutePath={pathname.includes('staking')}>
+      <LinkItem
+        onClick={() => {
+          onRoute?.('staking')
+        }}
+        icon="/icons/entry-icon-staking.svg"
+        href="/staking"
+        isCurrentRoutePath={pathname.includes('staking')}
+      >
         Staking
       </LinkItem>
-      <LinkItem icon="/icons/entry-icon-acceleraytor.svg" href="/acceleraytor/list">
+      <LinkItem
+        onClick={() => {
+          onRoute?.('acceleraytor')
+        }}
+        icon="/icons/entry-icon-acceleraytor.svg"
+        href="/acceleraytor/list"
+      >
         AcceleRaytor
       </LinkItem>
       {isInLocalhost && (
-        <LinkItem icon="/icons/entry-icon-acceleraytor.svg" href="/acceleraytor/basement">
+        <LinkItem
+          onClick={() => {
+            onRoute?.('basement')
+          }}
+          icon="/icons/entry-icon-acceleraytor.svg"
+          href="/acceleraytor/basement"
+        >
           Basement
         </LinkItem>
       )}
-      <LinkItem icon="/icons/entry-icon-dropzone.svg" href="https://dropzone.raydium.io/">
+      <LinkItem
+        onClick={() => {
+          onRoute?.('dropzone')
+        }}
+        icon="/icons/entry-icon-dropzone.svg"
+        href="https://dropzone.raydium.io/"
+      >
         Dropzone
       </LinkItem>
-      <LinkItem icon="/icons/entry-icon-nft.svg" href="https://nft.raydium.io/">
+      <LinkItem
+        onClick={() => {
+          onRoute?.('NFT')
+        }}
+        icon="/icons/entry-icon-nft.svg"
+        href="https://nft.raydium.io/"
+      >
         NFT
       </LinkItem>
     </div>
@@ -105,12 +169,14 @@ function LinkItem({
   children,
   href,
   icon,
-  isCurrentRoutePath
+  isCurrentRoutePath,
+  onClick
 }: {
   children?: ReactNode
   href?: string
   icon?: string
   isCurrentRoutePath?: boolean
+  onClick?: () => void
 }) {
   const isInnerLink = href?.startsWith('/')
   const isExternalLink = !isInnerLink
@@ -122,6 +188,7 @@ function LinkItem({
       className={`group block py-2.5 mobile:py-1.5 px-4 mobile:px-1 rounded-xl mobile:rounded-lg hover:bg-[rgba(57,208,216,0.05)] ${
         isCurrentRoutePath ? 'bg-[rgba(57,208,216,0.1)]' : ''
       }`}
+      onClick={onClick}
     >
       <Row className="items-center">
         <div className="grid bg-gradient-to-br from-[rgba(57,208,216,0.2)] to-[rgba(57,208,216,0)] rounded-lg p-1.5 mr-3">

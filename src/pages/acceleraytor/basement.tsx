@@ -1,7 +1,7 @@
 import React, { ReactNode, useMemo } from 'react'
 
 import Grid from '@/tempUikits/Grid'
-import PageLayout from '@/components/PageLayout'
+import PageLayout from '@/components/PageLayout/PageLayout'
 import useIdo from '@/application/ido/useIdo'
 import { AddressItem } from '@/components/AddressItem'
 import { ThreeSlotItem } from '@/tempUikits/ThreeSlotItem'

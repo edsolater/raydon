@@ -1,5 +1,5 @@
 import { routeTo } from '@/application/routeTools'
-import PageLayout from '@/components/PageLayout'
+import PageLayout from '@/components/PageLayout/PageLayout'
 import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect '
 
 export default function RemoveLiquidityPage() {

@@ -65,32 +65,34 @@ export default function PageLayout(props: {
       }}
       className={`w-full mobile:w-full h-full mobile:h-full`}
     >
+      {/* top info bar */}
       <RPCPerformanceBanner className="grid-area-d" />
+
+      {/* top nav bar */}
+      <TopNavbar
+        barTitle={props.mobileBarTitle}
+        className="grid-area-a"
+        onOpenMenu={() => useAppSettings.setState({ isSideBarMenuShown: true })}
+      />
+
+      {/* side menu */}
       {isMobile ? (
-        <>
-          <TopNavbar
-            barTitle={props.mobileBarTitle}
-            className="grid-area-a"
-            onOpenMenu={() => useAppSettings.setState({ isSideBarMenuShown: true })}
-          />
-          <Drawer
-            open={Boolean(isSideBarMenuShown)}
-            onClose={() => useAppSettings.setState({ isSideBarMenuShown: false })}
-            onOpen={() => useAppSettings.setState({ isSideBarMenuShown: true })}
-          >
-            {({ close }) => <SideMenu className="h-full" onClickCloseBtn={close} />}
-          </Drawer>
-        </>
+        <Drawer
+          open={Boolean(isSideBarMenuShown)}
+          onClose={() => useAppSettings.setState({ isSideBarMenuShown: false })}
+          onOpen={() => useAppSettings.setState({ isSideBarMenuShown: true })}
+        >
+          {({ close }) => <SideMenu className="h-full" onClickCloseBtn={close} onRoute={close} />}
+        </Drawer>
       ) : (
-        <>
-          <TopNavbar className="grid-area-a" />
-          <Col className="flex-container grid-area-b">
-            <FadeIn show={isSideBarMenuShown} heightOrWidth="width" wrapperDivBoxProps={{ icss: { height: '100%' } }}>
-              <SideMenu />
-            </FadeIn>
-          </Col>
-        </>
+        <Col className="flex-container grid-area-b">
+          <FadeIn show={isSideBarMenuShown} heightOrWidth="width" wrapperDivBoxProps={{ icss: { height: '100%' } }}>
+            <SideMenu />
+          </FadeIn>
+        </Col>
       )}
+
+      {/* content */}
       <main
         // always occupy scrollbar space
         className={twMerge(
