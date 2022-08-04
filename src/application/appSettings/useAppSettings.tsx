@@ -56,7 +56,7 @@ const useAppSettings = create<AppSettingsStore>(() => ({
   isTablet: false,
   isPc: true,
 
-  isSideBarMenuShown: !isMobile(),
+  isSideBarMenuShown: !isMobile,
   isApprovePanelShown: false,
 
   inCleanUrlMode: false,

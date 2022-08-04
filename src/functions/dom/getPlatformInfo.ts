@@ -1,7 +1,30 @@
-import { cache } from '@edsolater/fnkit'
 import { inClient } from '@/functions/judgers/isSSR'
 
-export function getPlatformInfo() {
+type PlatformInfo = {
+  isAndroid: boolean
+  isIOS: boolean
+  isWechat: boolean
+  isMobile: boolean
+  isPc: boolean
+  isMacOS: boolean
+}
+let platformInfo: PlatformInfo = {
+  isAndroid: false,
+  isIOS: false,
+  isWechat: false,
+  isMacOS: false,
+  isMobile: false,
+  isPc: false
+}
+
+if (inClient) {
+  const result = getPlatformInfo()
+  if (result) {
+    platformInfo = result
+  }
+}
+
+export function getPlatformInfo(): PlatformInfo | undefined {
   if (!inClient) return
   const ua = navigator.userAgent
   const isAndroid = ua.indexOf('Android') > -1 || ua.indexOf('Adr') > -1
@@ -21,5 +44,5 @@ export function getPlatformInfo() {
   }
 }
 
-export const isMobile = cache(() => !!getPlatformInfo()?.isMobile)
-export const isPc = cache(() => !!getPlatformInfo()?.isPc)
+export const isMobile = platformInfo.isMobile
+export const isPc = platformInfo.isPc
