@@ -59,9 +59,11 @@ import { gt, gte, isMeaningfulNumber } from '@/functions/numberish/compare'
 import { toString } from '@/functions/numberish/toString'
 import { searchItems } from '@/functions/searchItems'
 import { toggleSetItem } from '@/functions/setMethods'
-import useSort from '@/hooks/useSort'
+import useSort, { UseSortControls } from '@/hooks/useSort'
 import { autoSuffixNumberish } from '@/functions/format/autoSuffixNumberish'
 import { AddressItem } from '@/components/AddressItem'
+import { isMobile } from '@/functions/dom/getPlatformInfo'
+import { Div, DivProps } from '@edsolater/uikit'
 
 export default function FarmsPage() {
   useFarmUrlParser()
@@ -328,22 +330,20 @@ function FarmRefreshCircleBlock({ className }: { className?: string }) {
   )
 }
 
-function FarmCard() {
+function FarmCardDatabaseWidgets({
+  sortControls: { setConfig, clearSortConfig },
+  ...restProps
+}: {
+  sortControls: UseSortControls<(FarmPoolJsonInfo | HydratedFarmInfo)[]>
+} & DivProps) {
+  const [favouriteIds] = useFarmFavoriteIds()
+  const owner = useWallet((s) => s.owner)
+  const currentTab = useFarms((s) => s.currentTab)
   const jsonInfos = useFarms((s) => s.jsonInfos)
   const hydratedInfos = useFarms((s) => s.hydratedInfos)
-  const currentTab = useFarms((s) => s.currentTab)
-  const onlySelfFarms = useFarms((s) => s.onlySelfFarms)
-  const onlySelfCreatedFarms = useFarms((s) => s.onlySelfCreatedFarms)
-  const searchText = useFarms((s) => s.searchText)
-  const [favouriteIds] = useFarmFavoriteIds()
-  const isMobile = useAppSettings((s) => s.isMobile)
-  const owner = useWallet((s) => s.owner)
-  const isLoading = useFarms((s) => s.isLoading)
-  const timeBasis = useFarms((s) => s.timeBasis)
   const dataSource = (
     (hydratedInfos.length ? hydratedInfos : jsonInfos) as (FarmPoolJsonInfo | HydratedFarmInfo)[]
   ).filter((i) => !isMintEqual(i.lpMint, RAYMint))
-
   const tabedDataSource = useMemo(
     () =>
       (dataSource as (FarmPoolJsonInfo | HydratedFarmInfo)[]).filter((i) =>
@@ -361,51 +361,6 @@ function FarmCard() {
   )
   const haveSelfCreatedFarm = tabedDataSource.some((i) => isMintEqual(i.creator, owner))
 
-  const applyFiltersDataSource = useMemo(
-    () =>
-      tabedDataSource
-        .filter((i) =>
-          onlySelfFarms && isHydratedFarmInfo(i) ? i.ledger && isMeaningfulNumber(i.ledger.deposited) : true
-        ) // Switch
-        .filter((i) => (i.version === 6 && onlySelfCreatedFarms && owner ? isMintEqual(i.creator, owner) : true)), // Switch
-    [onlySelfFarms, searchText, onlySelfCreatedFarms, tabedDataSource, owner]
-  )
-
-  const applySearchedDataSource = useMemo(
-    () =>
-      searchItems(applyFiltersDataSource, {
-        text: searchText,
-        matchConfigs: (i) =>
-          isHydratedFarmInfo(i)
-            ? [
-                { text: toPubString(i.id), entirely: true },
-                { text: i.ammId, entirely: true },
-                { text: toPubString(i.base?.mint), entirely: true },
-                { text: toPubString(i.quote?.mint), entirely: true },
-                i.base?.symbol,
-                i.quote?.symbol
-                // { text: toSentenceCase(i.base?.name ?? '').split(' '), entirely: true },
-                // { text: toSentenceCase(i.quote?.name ?? '').split(' '), entirely: true }
-              ]
-            : [{ text: toPubString(i.id), entirely: true }]
-      }),
-    [applyFiltersDataSource, searchText]
-  )
-
-  const {
-    sortedData,
-    setConfig: setSortConfig,
-    sortConfig,
-    clearSortConfig
-  } = useSort(applySearchedDataSource, {
-    defaultSort: {
-      key: 'defaultKey',
-      sortCompare: [
-        /* (i) => i.isUpcomingPool, */ /* (i) => i.isNewPool, */ (i) => favouriteIds?.includes(toPubString(i.id))
-      ]
-    }
-  })
-
   const farmCardTitleInfo =
     currentTab === 'Ecosystem'
       ? {
@@ -420,7 +375,6 @@ function FarmCard() {
       ? { title: 'Your Staked Farms', description: 'You are currently staked in these farms' }
       : { title: 'Raydium Farms', description: 'Stake LP tokens and earn token rewards' }
 
-  // NOTE: filter widgets
   const innerFarmDatabaseWidgets = isMobile ? (
     <div>
       <Row className="mb-4">
@@ -429,7 +383,7 @@ function FarmCard() {
           <FarmTableSorterBlock
             onChange={(newSortKey) => {
               newSortKey
-                ? setSortConfig({
+                ? setConfig({
                     key: newSortKey,
                     sortCompare:
                       newSortKey === 'favorite'
@@ -466,9 +420,86 @@ function FarmCard() {
     </Row>
   )
 
+  return <Div {...restProps}>{innerFarmDatabaseWidgets}</Div>
+}
+
+function FarmCard() {
+  const jsonInfos = useFarms((s) => s.jsonInfos)
+  const hydratedInfos = useFarms((s) => s.hydratedInfos)
+  const currentTab = useFarms((s) => s.currentTab)
+  const onlySelfFarms = useFarms((s) => s.onlySelfFarms)
+  const onlySelfCreatedFarms = useFarms((s) => s.onlySelfCreatedFarms)
+  const searchText = useFarms((s) => s.searchText)
+  const [favouriteIds] = useFarmFavoriteIds()
+  const isMobile = useAppSettings((s) => s.isMobile)
+  const owner = useWallet((s) => s.owner)
+  const isLoading = useFarms((s) => s.isLoading)
+  const timeBasis = useFarms((s) => s.timeBasis)
+  const dataSource = (
+    (hydratedInfos.length ? hydratedInfos : jsonInfos) as (FarmPoolJsonInfo | HydratedFarmInfo)[]
+  ).filter((i) => !isMintEqual(i.lpMint, RAYMint))
+
+  const tabedDataSource = useMemo(
+    () =>
+      (dataSource as (FarmPoolJsonInfo | HydratedFarmInfo)[]).filter((i) =>
+        currentTab === 'Fusion'
+          ? i.category === 'fusion' && (isHydratedFarmInfo(i) ? !i.isClosedPool : true)
+          : currentTab === 'Staked'
+          ? isHydratedFarmInfo(i)
+            ? isMeaningfulNumber(i.ledger?.deposited)
+            : false
+          : currentTab === 'Ecosystem'
+          ? i.category === 'ecosystem'
+          : i.category === 'raydium' && (isHydratedFarmInfo(i) ? !i.isClosedPool : true)
+      ),
+    [currentTab, dataSource]
+  )
+
+  const applyFiltersDataSource = useMemo(
+    () =>
+      tabedDataSource
+        .filter((i) =>
+          onlySelfFarms && isHydratedFarmInfo(i) ? i.ledger && isMeaningfulNumber(i.ledger.deposited) : true
+        ) // Switch
+        .filter((i) => (i.version === 6 && onlySelfCreatedFarms && owner ? isMintEqual(i.creator, owner) : true)), // Switch
+    [onlySelfFarms, searchText, onlySelfCreatedFarms, tabedDataSource, owner]
+  )
+
+  const applySearchedDataSource = useMemo(
+    () =>
+      searchItems(applyFiltersDataSource, {
+        text: searchText,
+        matchConfigs: (i) =>
+          isHydratedFarmInfo(i)
+            ? [
+                { text: toPubString(i.id), entirely: true },
+                { text: i.ammId, entirely: true },
+                { text: toPubString(i.base?.mint), entirely: true },
+                { text: toPubString(i.quote?.mint), entirely: true },
+                i.base?.symbol,
+                i.quote?.symbol
+                // { text: toSentenceCase(i.base?.name ?? '').split(' '), entirely: true },
+                // { text: toSentenceCase(i.quote?.name ?? '').split(' '), entirely: true }
+              ]
+            : [{ text: toPubString(i.id), entirely: true }]
+      }),
+    [applyFiltersDataSource, searchText]
+  )
+
+  const sortControls = useSort(applySearchedDataSource, {
+    defaultSort: {
+      key: 'defaultKey',
+      sortCompare: [
+        /* (i) => i.isUpcomingPool, */ /* (i) => i.isNewPool, */ (i) => favouriteIds?.includes(toPubString(i.id))
+      ]
+    }
+  })
+
+  const { sortedData, setConfig: setSortConfig, sortConfig } = sortControls
+
   return (
     <>
-      {innerFarmDatabaseWidgets}
+      <FarmCardDatabaseWidgets sortControls={sortControls} />
       {!isMobile && (
         <Row
           type="grid-x"

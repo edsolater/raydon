@@ -25,6 +25,14 @@ export type SortConfigItem<D extends Record<string, any>[]> = {
 
 type SimplifiedSortConfig<D extends Record<string, any>[]> = ExactPartial<SortConfigItem<D>, 'mode' | 'sortModeQueue'>
 
+export type UseSortControls<D extends Record<string, any>[]> = {
+  sortedData: D[number][]
+  sortConfigs: SortConfigItem<D>[]
+  sortConfig: SortConfigItem<D> | undefined
+  setConfig: (simpleConfig: SimplifiedSortConfig<D>) => void
+  clearSortConfig: () => void
+}
+
 /**
  * don't support too smart configs
  * @param sourceDataList
@@ -37,7 +45,7 @@ export default function useSort<D extends Record<string, any>[]>(
     // /** always at sort bottom */
     // sortBottom?: MayArray<(item: D[number]) => any>
   }
-) {
+): UseSortControls<D> {
   function parseSortConfig(
     simpleConfig: SimplifiedSortConfig<D>,
     prevConfigs?: SortConfigItem<D>[]
