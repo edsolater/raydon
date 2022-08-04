@@ -1,13 +1,12 @@
-import React, { CSSProperties } from 'react'
-import { twMerge } from 'tailwind-merge'
 import useAppSettings from '@/application/appSettings/useAppSettings'
+import { Div, DivProps } from '@edsolater/uikit'
+import { twMerge } from 'tailwind-merge'
 import Grid from '../../tempUikits/Grid'
-import Icon from '../Icon'
 import Image from '../../tempUikits/Image'
 import Link from '../../tempUikits/Link'
+import Row from '../../tempUikits/Row'
 import MessageBoardWidget from '../navWidgets/MessageBoardWidget'
 import WalletWidget from '../navWidgets/WalletWidget'
-import Row from '../../tempUikits/Row'
 
 /**
  * depend component:
@@ -16,16 +15,9 @@ import Row from '../../tempUikits/Row'
  */
 export function TopNavbar({
   barTitle,
-  className,
-  style,
-  onOpenMenu
-}: {
-  className?: string
-  barTitle?: string
-  style?: CSSProperties
-  // TODO: move it into useAppSetting()
-  onOpenMenu?: () => void
-}) {
+  onOpenMenu,
+  ...restProps
+}: { barTitle?: string; onOpenMenu?: () => void } & DivProps) {
   const isMobile = useAppSettings((s) => s.isMobile)
   const pcNavContent = (
     <Row className="justify-between items-center">
@@ -58,11 +50,15 @@ export function TopNavbar({
     </Grid>
   )
   return (
-    <nav
-      className={twMerge('select-none text-white px-12 py-4 mobile:px-5 mobile:py-3 transition-all', className)}
-      style={style}
+    <Div
+      as="nav"
+      className_={twMerge('select-none text-white px-12 py-4 mobile:px-5 mobile:py-3 transition-all')}
+      icss_={{
+        background: 'var(--navbar-bg)'
+      }}
+      {...restProps}
     >
       {isMobile ? mobileNavContent : pcNavContent}
-    </nav>
+    </Div>
   )
 }

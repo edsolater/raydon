@@ -59,13 +59,13 @@ const config = {
         'pop-over-ring-2': 'var(--pop-over-ring-2)',
         'link-color': 'var(--link-color)',
         'link-decorator': 'var(--link-decorator)',
-        'card-color': 'var(--card-color)',
+        'card-color': 'var(--light-card)',
         'app-line': 'var(--app-line-color)',
         'formkit-ground': 'var(--formkit-ground-color)',
         'formkit-line': 'var(--formkit-line-color)',
 
         // 👇🎃 other color
-        'dropzone-card-bg': 'var(--card-color-dark)'
+        'dropzone-card-bg': 'var(--dark-card)'
       },
       fontSize: {
         '2xs': '10px'

@@ -1,3 +1,4 @@
+import { cache } from '@edsolater/fnkit'
 import { inClient } from '@/functions/judgers/isSSR'
 
 export function getPlatformInfo() {
@@ -19,3 +20,6 @@ export function getPlatformInfo() {
     isMacOS
   }
 }
+
+export const isMobile = cache(() => !!getPlatformInfo()?.isMobile)
+export const isPc = cache(() => !!getPlatformInfo()?.isPc)

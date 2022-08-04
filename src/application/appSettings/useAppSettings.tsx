@@ -1,7 +1,7 @@
 import create from 'zustand'
 
+import { isMobile } from '@/functions/dom/getPlatformInfo'
 import { Numberish } from '@/types/constants'
-import { getPlatformInfo } from '@/functions/dom/getPlatformInfo'
 
 // it is some global uiStates
 
