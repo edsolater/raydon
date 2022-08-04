@@ -49,6 +49,7 @@ import RecentTransactionDialog from '@/pageComponents/dialogs/RecentTransactionD
 import WalletSelectorDialog from '@/pageComponents/dialogs/WalletSelectorDialog'
 
 import '../styles/index.css'
+import NoSsr from '@/components/NoSsr'
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const { pathname } = useRouter()
@@ -77,23 +78,25 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   }, [])
 
   return (
-    <SolanaWalletProviders>
-      {/* initializations hooks */}
-      <ClientInitialization />
-      {pathname !== '/' && <ApplicationsInitializations />}
+    <NoSsr>
+      <SolanaWalletProviders>
+        {/* initializations hooks */}
+        <ClientInitialization />
+        {pathname !== '/' && <ApplicationsInitializations />}
 
-      <div className="app">
-        <NextNProgress color="#34ade5" showOnShallow={false} />
+        <div className="app">
+          <NextNProgress color="#34ade5" showOnShallow={false} />
 
-        {/* Page Components */}
-        <Component {...pageProps} />
+          {/* Page Components */}
+          <Component {...pageProps} />
 
-        {/* Global Components */}
-        <RecentTransactionDialog />
-        <WalletSelectorDialog />
-        <NotificationSystemStack />
-      </div>
-    </SolanaWalletProviders>
+          {/* Global Components */}
+          <RecentTransactionDialog />
+          <WalletSelectorDialog />
+          <NotificationSystemStack />
+        </div>
+      </SolanaWalletProviders>
+    </NoSsr>
   )
 }
 
