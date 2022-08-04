@@ -65,7 +65,7 @@ import { AddressItem } from '@/components/AddressItem'
 import { isMobile } from '@/functions/dom/getPlatformInfo'
 import { Div, DivProps } from '@edsolater/uikit'
 
-export default function FarmsPage() {
+export default function FarmPage() {
   useFarmUrlParser()
   useFarmResetSelfCreatedByOwner()
   return (
@@ -423,6 +423,126 @@ function FarmCardDatabaseWidgets({
   return <Div {...restProps}>{innerFarmDatabaseWidgets}</Div>
 }
 
+function FarmCardDatabaseBodyHeader({
+  sortControls: { setConfig, sortConfig },
+  ...restProps
+}: {
+  sortControls: UseSortControls<(FarmPoolJsonInfo | HydratedFarmInfo)[]>
+} & DivProps) {
+  const [favouriteIds] = useFarmFavoriteIds()
+  const timeBasis = useFarms((s) => s.timeBasis)
+  return (
+    <Div
+      {...restProps}
+      className_="grid grid-flow-col mb-3 h-12  sticky -top-6 backdrop-filter z-10 backdrop-blur-md bg-[rgba(20,16,65,0.2)] mr-scrollbar rounded-xl mobile:rounded-lg gap-2 grid-cols-[auto,1.5fr,1.2fr,1fr,1fr,auto]"
+    >
+      <Row
+        className="group w-20 pl-10 font-medium text-[#ABC4FF] text-sm items-center cursor-pointer  clickable clickable-filter-effect no-clicable-transform-effect"
+        onClick={() => {
+          setConfig({
+            key: 'favorite',
+            sortModeQueue: ['decrease', 'none'],
+            sortCompare: (i) => favouriteIds?.includes(toPubString(i.id))
+          })
+        }}
+      >
+        <Icon
+          className={`ml-1 ${
+            sortConfig?.key === 'favorite' && sortConfig.mode !== 'none'
+              ? 'opacity-100'
+              : 'opacity-0 group-hover:opacity-30'
+          } transition`}
+          size="sm"
+          iconSrc="/icons/msic-sort-only-down.svg"
+        />
+      </Row>
+      {/* table head column: Farm */}
+      <Row
+        className="font-medium text-[#ABC4FF] text-sm items-center cursor-pointer clickable clickable-filter-effect no-clicable-transform-effect"
+        onClick={() => {
+          setConfig({
+            key: 'name',
+            sortModeQueue: ['increase', 'decrease', 'none'],
+            sortCompare: (i) => (isHydratedFarmInfo(i) ? i.name : undefined)
+          })
+        }}
+      >
+        <div className="mr-16"></div>
+        Farm
+        <Icon
+          className="ml-1"
+          size="sm"
+          iconSrc={
+            sortConfig?.key === 'name' && sortConfig.mode !== 'none'
+              ? sortConfig?.mode === 'decrease'
+                ? '/icons/msic-sort-down.svg'
+                : '/icons/msic-sort-up.svg'
+              : '/icons/msic-sort.svg'
+          }
+        />
+      </Row>
+
+      {/* table head column: Pending Reward */}
+      <div className=" font-medium self-center text-[#ABC4FF] text-sm">Pending Reward</div>
+
+      {/* table head column: Total APR */}
+      <Row
+        className=" font-medium items-center text-[#ABC4FF] text-sm cursor-pointer gap-1  clickable clickable-filter-effect no-clicable-transform-effect"
+        onClick={() => {
+          const key = timeBasis === '24H' ? 'totalApr24h' : timeBasis === '7D' ? 'totalApr7d' : 'totalApr30d'
+          setConfig({
+            key,
+            sortCompare: (i) => (isHydratedFarmInfo(i) ? i[key] : undefined)
+          })
+        }}
+      >
+        Total APR {timeBasis}
+        <Tooltip>
+          <Icon className="ml-1" size="sm" heroIconName="question-mark-circle" />
+          <Tooltip.Panel>Estimated APR based on trading fees earned by the pool in the past {timeBasis}</Tooltip.Panel>
+        </Tooltip>
+        <Icon
+          className="ml-1"
+          size="sm"
+          iconSrc={
+            sortConfig?.key.startsWith('totalApr') && sortConfig.mode !== 'none'
+              ? sortConfig?.mode === 'decrease'
+                ? '/icons/msic-sort-down.svg'
+                : '/icons/msic-sort-up.svg'
+              : '/icons/msic-sort.svg'
+          }
+        />
+      </Row>
+
+      {/* table head column: TVL */}
+      <Row
+        className=" font-medium text-[#ABC4FF] text-sm items-center cursor-pointer  clickable clickable-filter-effect no-clicable-transform-effect"
+        onClick={() =>
+          setConfig({
+            key: 'tvl',
+            sortCompare: (i) => (isHydratedFarmInfo(i) ? i.tvl : undefined)
+          })
+        }
+      >
+        TVL
+        <Icon
+          className="ml-1"
+          size="sm"
+          iconSrc={
+            sortConfig?.key === 'tvl' && sortConfig.mode !== 'none'
+              ? sortConfig?.mode === 'decrease'
+                ? '/icons/msic-sort-down.svg'
+                : '/icons/msic-sort-up.svg'
+              : '/icons/msic-sort.svg'
+          }
+        />
+      </Row>
+      <FarmRefreshCircleBlock className="pr-8 self-center" />
+    </Div>
+  )
+}
+
+// TODO: FarmCardData to be context
 function FarmCard() {
   const jsonInfos = useFarms((s) => s.jsonInfos)
   const hydratedInfos = useFarms((s) => s.hydratedInfos)
@@ -434,7 +554,6 @@ function FarmCard() {
   const isMobile = useAppSettings((s) => s.isMobile)
   const owner = useWallet((s) => s.owner)
   const isLoading = useFarms((s) => s.isLoading)
-  const timeBasis = useFarms((s) => s.timeBasis)
   const dataSource = (
     (hydratedInfos.length ? hydratedInfos : jsonInfos) as (FarmPoolJsonInfo | HydratedFarmInfo)[]
   ).filter((i) => !isMintEqual(i.lpMint, RAYMint))
@@ -495,118 +614,11 @@ function FarmCard() {
     }
   })
 
-  const { sortedData, setConfig: setSortConfig, sortConfig } = sortControls
-
   return (
     <>
       <FarmCardDatabaseWidgets sortControls={sortControls} />
-      {!isMobile && (
-        <Row
-          type="grid-x"
-          className="mb-3 h-12  sticky -top-6 backdrop-filter z-10 backdrop-blur-md bg-[rgba(20,16,65,0.2)] mr-scrollbar rounded-xl mobile:rounded-lg gap-2 grid-cols-[auto,1.5fr,1.2fr,1fr,1fr,auto]"
-        >
-          <Row
-            className="group w-20 pl-10 font-medium text-[#ABC4FF] text-sm items-center cursor-pointer  clickable clickable-filter-effect no-clicable-transform-effect"
-            onClick={() => {
-              setSortConfig({
-                key: 'favorite',
-                sortModeQueue: ['decrease', 'none'],
-                sortCompare: (i) => favouriteIds?.includes(toPubString(i.id))
-              })
-            }}
-          >
-            <Icon
-              className={`ml-1 ${
-                sortConfig?.key === 'favorite' && sortConfig.mode !== 'none'
-                  ? 'opacity-100'
-                  : 'opacity-0 group-hover:opacity-30'
-              } transition`}
-              size="sm"
-              iconSrc="/icons/msic-sort-only-down.svg"
-            />
-          </Row>
-          {/* table head column: Farm */}
-          <Row
-            className="font-medium text-[#ABC4FF] text-sm items-center cursor-pointer clickable clickable-filter-effect no-clicable-transform-effect"
-            onClick={() => {
-              setSortConfig({
-                key: 'name',
-                sortModeQueue: ['increase', 'decrease', 'none'],
-                sortCompare: (i) => (isHydratedFarmInfo(i) ? i.name : undefined)
-              })
-            }}
-          >
-            <div className="mr-16"></div>
-            Farm
-            <Icon
-              className="ml-1"
-              size="sm"
-              iconSrc={
-                sortConfig?.key === 'name' && sortConfig.mode !== 'none'
-                  ? sortConfig?.mode === 'decrease'
-                    ? '/icons/msic-sort-down.svg'
-                    : '/icons/msic-sort-up.svg'
-                  : '/icons/msic-sort.svg'
-              }
-            />
-          </Row>
-
-          {/* table head column: Pending Reward */}
-          <div className=" font-medium self-center text-[#ABC4FF] text-sm">Pending Reward</div>
-
-          {/* table head column: Total APR */}
-          <Row
-            className=" font-medium items-center text-[#ABC4FF] text-sm cursor-pointer gap-1  clickable clickable-filter-effect no-clicable-transform-effect"
-            onClick={() => {
-              const key = timeBasis === '24H' ? 'totalApr24h' : timeBasis === '7D' ? 'totalApr7d' : 'totalApr30d'
-              setSortConfig({ key, sortCompare: (i) => (isHydratedFarmInfo(i) ? i[key] : undefined) })
-            }}
-          >
-            Total APR {timeBasis}
-            <Tooltip>
-              <Icon className="ml-1" size="sm" heroIconName="question-mark-circle" />
-              <Tooltip.Panel>
-                Estimated APR based on trading fees earned by the pool in the past {timeBasis}
-              </Tooltip.Panel>
-            </Tooltip>
-            <Icon
-              className="ml-1"
-              size="sm"
-              iconSrc={
-                sortConfig?.key.startsWith('totalApr') && sortConfig.mode !== 'none'
-                  ? sortConfig?.mode === 'decrease'
-                    ? '/icons/msic-sort-down.svg'
-                    : '/icons/msic-sort-up.svg'
-                  : '/icons/msic-sort.svg'
-              }
-            />
-          </Row>
-
-          {/* table head column: TVL */}
-          <Row
-            className=" font-medium text-[#ABC4FF] text-sm items-center cursor-pointer  clickable clickable-filter-effect no-clicable-transform-effect"
-            onClick={() =>
-              setSortConfig({ key: 'tvl', sortCompare: (i) => (isHydratedFarmInfo(i) ? i.tvl : undefined) })
-            }
-          >
-            TVL
-            <Icon
-              className="ml-1"
-              size="sm"
-              iconSrc={
-                sortConfig?.key === 'tvl' && sortConfig.mode !== 'none'
-                  ? sortConfig?.mode === 'decrease'
-                    ? '/icons/msic-sort-down.svg'
-                    : '/icons/msic-sort-up.svg'
-                  : '/icons/msic-sort.svg'
-              }
-            />
-          </Row>
-          <FarmRefreshCircleBlock className="pr-8 self-center" />
-        </Row>
-      )}
-
-      <FarmCardDatabaseBody isLoading={isLoading} infos={sortedData} />
+      {!isMobile && <FarmCardDatabaseBodyHeader sortControls={sortControls} />}
+      <FarmCardDatabaseBody isLoading={isLoading} infos={sortControls.sortedData} />
     </>
   )
 }
