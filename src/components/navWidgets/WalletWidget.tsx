@@ -1,19 +1,16 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import useWallet from '@/application/wallet/useWallet'
-import copyToClipboard from '@/functions/dom/copyToClipboard'
 import useToggle from '@/hooks/useToggle'
 
 import Button from '../../tempUikits/Button'
+import { FadeIn } from '../../tempUikits/FadeIn'
+import Row from '../../tempUikits/Row'
+import { ThreeSlotItem } from '../../tempUikits/ThreeSlotItem'
+import { AddressItem } from '../AddressItem'
 import Icon from '../Icon'
 import PageLayoutPopoverDrawer from '../PageLayoutPopoverDrawer'
-import Row from '../../tempUikits/Row'
-import { FadeIn } from '../../tempUikits/FadeIn'
-import { ThreeSlotItem } from '../../tempUikits/ThreeSlotItem'
-import { PublicKeyish } from '@/types/constants'
-import toPubString from '@/functions/format/toMintString'
-import { AddressItem } from '../AddressItem'
 
 /** this should be used in ./Navbar.tsx */
 export default function WalletWidget() {
@@ -71,18 +68,14 @@ export default function WalletWidget() {
       )}
     >
       {isMobile ? (
-        <Button
-          className="frosted-glass frosted-glass-teal rounded-lg p-2"
+        <Icon
+          iconSrc={connected ? '/icons/msic-wallet-connected.svg' : '/icons/coin-wallet.svg'}
           onClick={() => {
             if (!publicKey) useAppSettings.setState({ isWalletSelectorShown: true })
           }}
-        >
-          <Icon
-            className="w-4 h-4"
-            iconClassName="w-4 h-4"
-            iconSrc={connected ? '/icons/msic-wallet-connected.svg' : '/icons/msic-wallet.svg'}
-          />
-        </Button>
+          forceColor="var(--secondary-text)"
+          icss={{ width: 24, height: 24 }}
+        />
       ) : (
         <Button
           className="frosted-glass frosted-glass-teal"

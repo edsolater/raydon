@@ -40,6 +40,7 @@ import {
 import { ArrowCircleRightIcon } from '@heroicons/react/outline'
 
 import { getFileNameOfURI } from '../functions/dom/getFileNameOfURI'
+import { Div, DivProps, Image } from '@edsolater/uikit'
 
 export type AppHeroIconName =
   | 'menu'
@@ -76,24 +77,24 @@ export type AppHeroIconName =
   | 'link'
   | ' '
 
-export interface IconProps {
-  className?: string
+export interface IconProps extends DivProps {
+  /** clickable icon can have special css */
+  clickable?: boolean
   iconClassName?: string
   // TODO heroIcon?: (props: React.ComponentProps<'svg'>) => JSX.Element
   heroIconName?: AppHeroIconName
   iconSrc?: string
   /** sx: 12px; sm: 16px; smi: 20px; md: 24px; lg: 32px (default: md) */
   size?: 'xs' | 'sm' | 'smi' | 'md' | 'lg'
-  domRef?: RefObject<any>
   /** component outer display will be block not-inline (TODO: it's nice if it can stay in className)*/
   inline?: boolean
   onHover?: UseHoverOptions['onHover']
   /* this prop will auto add some tailwind class for Icon */
-  onClick?: UseClickOptions['onClick']
   forceColor?: string // TODO: <Icon> can basicly change theme color
 }
 
 export default function Icon({
+  clickable,
   heroIconName,
   iconClassName,
   iconSrc,
@@ -101,16 +102,16 @@ export default function Icon({
   inline,
   onHover,
   /* this prop will auto add some tailwind class for Icon */
-  onClick,
   forceColor,
-  domRef,
   className,
   /** sx: 12px; sm: 16px; smi: 20px;  md: 24px; lg: 32px (default: md) */
-  size = 'md'
+  size = 'md',
+  ...restProps
 }: IconProps) {
   const selfRef = useRef()
-  const styleClass = twMerge(`Icon ${inline ? 'inline-grid' : 'grid'} h-[max-content] w-[max-content]`, className)
-  useClick(selfRef, { onClick, disable: !onClick })
+  const clickableClassName =
+    'opacity-75 hover:opacity-90 active:opacity-70 clickable clickable-filter-effect clickable-mask-offset-3'
+  const styleClass = twMerge(`Icon ${inline ? 'inline-grid' : 'grid'}`, clickable && clickableClassName, className)
   useHover(selfRef, { onHover, disable: !onHover })
 
   if (heroIconName) {
@@ -183,7 +184,7 @@ export default function Icon({
         ? ({ className }: { className?: string }) => <div className={className} />
         : Fragment
     return (
-      <div className={twMerge(styleClass)} ref={mergeRef(selfRef, domRef)}>
+      <Div {...restProps} className_={styleClass} domRef_={selfRef}>
         <HeroIconComponent
           /** HeroIcon can't use ref */
           className={twMerge(
@@ -201,32 +202,48 @@ export default function Icon({
             iconClassName
           )}
         />
-      </div>
+      </Div>
     )
   }
 
   if (iconSrc) {
     return (
-      <div className={styleClass} ref={mergeRef(selfRef, domRef)}>
-        <img
-          src={iconSrc}
-          alt={getFileNameOfURI(iconSrc ?? '')}
-          className={twMerge(
-            `select-none w-full h-full ${
-              size === 'md'
-                ? 'h-6 w-6'
-                : size === 'smi'
-                ? 'h-5 w-5'
-                : size === 'sm'
-                ? 'h-4 w-4'
-                : size === 'xs'
-                ? 'h-3 w-3'
-                : 'h-8 w-8'
-            }`,
-            iconClassName
-          )}
-        />
-      </div>
+      <>
+        {forceColor ? (
+          <Div
+            {...restProps}
+            className_={styleClass}
+            icss_={{
+              background: forceColor,
+              mask: `url(${iconSrc})`,
+              maskSize: '100% 100%',
+              width: size === 'lg' ? 32 : size === 'smi' ? 20 : size === 'sm' ? 16 : size === 'xs' ? 12 : 24,
+              height: size === 'lg' ? 32 : size === 'smi' ? 20 : size === 'sm' ? 16 : size === 'xs' ? 12 : 24
+            }}
+          ></Div>
+        ) : (
+          <Div {...restProps} domRef_={selfRef}>
+            <Image
+              src={iconSrc}
+              alt={getFileNameOfURI(iconSrc ?? '')}
+              className={twMerge(
+                `select-none w-full h-full ${
+                  size === 'md'
+                    ? 'h-6 w-6'
+                    : size === 'smi'
+                    ? 'h-5 w-5'
+                    : size === 'sm'
+                    ? 'h-4 w-4'
+                    : size === 'xs'
+                    ? 'h-3 w-3'
+                    : 'h-8 w-8'
+                }`,
+                iconClassName
+              )}
+            />
+          </Div>
+        )}
+      </>
     )
   }
 

@@ -1,11 +1,12 @@
 /* For the darkmode, or tailwindcss urgly and tedious `:dark` */
 :root {
-  --primary: #e3e3e3;
-  --secondary: #bebebe;
+  --primary-text: #abc5f1;
+  --secondary-text: #87a4b8;
+  --ternary-text: #abc5f180;
 
-  --light-text: hsl(216, 53%, 91%);
-  --app-bg: hsl(216, 7%, 9%);
-  --app-bg-lighter: hsl(216, 6%, 16%);
+  --light-text: hsl(224, 53%, 91%);
+  --app-bg: hsl(224, 7%, 9%);
+  --app-bg-lighter: hsl(224, 6%, 16%);
   --navbar-bg: var(--app-bg);
 
   --text-light: #eeeeee;

@@ -81,9 +81,10 @@ export default function MessageBoardWidget() {
         )}
       >
         <Icon
+          clickable
           size={isMobile ? 'smi' : 'md'}
-          heroIconName="bell"
-          className="text-[#ABC4FF] opacity-60 hover:opacity-75 clickable clickable-filter-effect clickable-mask-offset-3"
+          iconSrc="/icons/notification.svg"
+          forceColor="var(--ternary-text)"
         />
       </PageLayoutPopoverDrawer>
       <ResponsiveDialogDrawer
