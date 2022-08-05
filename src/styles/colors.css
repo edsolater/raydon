@@ -46,8 +46,8 @@
   --link-color: #5ac4be;
   --link-decorator: hsla(251, 99%, 64%, 0.9);
 
-  --light-card: hsl(0deg, 0%, 100%);
-  --dark-card: hsl(216, 5%, 26%);
+  --card-bg: hsl(224, 3%, 19%);
+  --card-bg-light: hsl(224, 3%, 24%);
 
   --formkit-ground-color: hsl(264deg, 31%, 94%);
   --formkit-line-color: hsl(263deg, 47%, 86%);

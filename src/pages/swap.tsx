@@ -249,10 +249,9 @@ function SwapCard() {
 
   const isApprovePanelShown = useAppSettings((s) => s.isApprovePanelShown)
   return (
-    <CyberpunkStyleCard
+    <Card
       domRef={cardRef}
-      wrapperClassName="w-[min(456px,100%)] self-center cyberpunk-bg-light"
-      className="py-8 pt-4 px-6 mobile:py-5 mobile:px-3"
+      className="w-[min(456px,100%)] self-center cyberpuzzzznk-bg-light py-8 pt-4 px-6 mobile:py-5 mobile:px-3"
     >
       {/* input twin */}
       <div className="space-y-5 mt-5 mobile:mt-0">
@@ -477,7 +476,7 @@ function SwapCard() {
         }}
         close={turnOffCoinSelector}
       />
-    </CyberpunkStyleCard>
+    </Card>
   )
 
   function popPriceConfirm({ priceImpact }: { priceImpact?: Numberish }) {

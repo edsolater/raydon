@@ -1,5 +1,5 @@
 import useAppSettings from '@/application/appSettings/useAppSettings'
-import { useMemo } from 'react'
+import { CSSProperties, useMemo } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import Card, { CardProps } from './Card'
@@ -17,7 +17,11 @@ export default function CyberpunkStyleCard({
   size = 'lg',
   cssGradientRotate,
   ...restProps
-}: CardProps & { haveMinHeight?: boolean; wrapperClassName?: string; cssGradientRotate?: number /* unit: deg */ }) {
+}: Omit<CardProps, 'style'> & { style?: CSSProperties } & {
+  haveMinHeight?: boolean
+  wrapperClassName?: string
+  cssGradientRotate?: number /* unit: deg */
+}) {
   const isMobile = useAppSettings((s) => s.isMobile)
   const borderRoundSize = useMemo(() => {
     if (restProps.style?.borderRadius) return `calc(${restProps.style.borderRadius} + ${cyberpunkBoarderWidth}px)`

@@ -41,18 +41,16 @@ import { Numberish } from '@/types/constants'
 import DecimalInput from './DecimalInput'
 import { isMintEqual } from '@/functions/judgers/areEqual'
 import { useSignalState } from '@/hooks/useSignalState'
+import { Div, DivProps } from '@edsolater/uikit'
 
 export interface CoinInputBoxHandle {
   focusInput?: () => void
   selectToken?: () => void
 }
 
-export interface CoinInputBoxProps {
+export interface CoinInputBoxProps extends DivProps {
   // basic
-  className?: string
-  domRef?: RefObject<any>
   componentRef?: RefObject<any>
-  style?: CSSProperties
   // data
   value?: string
   token?: Token
@@ -105,10 +103,7 @@ export interface CoinInputBoxProps {
  * support to input both token and lpToken
  */
 export default function CoinInputBox({
-  className,
-  domRef,
   componentRef,
-  style,
 
   disabled,
   noDisableStyle,
@@ -135,7 +130,8 @@ export default function CoinInputBox({
   hideMaxButton,
   haveHalfButton,
   haveCoinIcon,
-  showTokenSelectIcon
+  showTokenSelectIcon,
+  ...restProps
 }: CoinInputBoxProps) {
   const disabledInput = disabled || innerDisabledInput
   const disabledTokenSelect = disabled || innerDisabledTokenSelect
@@ -243,135 +239,136 @@ export default function CoinInputBox({
   const canSwitchSOLWSOL = disabledTokenSelect && allowSOLWSOLSwitch && isMintEqual(token?.mint, WSOLMint)
 
   return (
-    <Row
-      className={twMerge(
-        `flex-col bg-[#141041] cursor-text rounded-xl py-3 px-6 mobile:px-4 ${
-          disabled && !noDisableStyle ? 'pointer-events-none-entirely cursor-default opacity-50' : ''
-        }`,
-        className
-      )}
-      style={style}
-      domRef={domRef}
-      htmlPorps={{
-        tabIndex: 0
-      }}
-      onClick={focusInput}
+    <Div
+      {...restProps}
+      icss_={{ background: 'var(--card-bg-light)' }}
+      className={`flex flex-col bg-[var(--card-bg-light)] cursor-text rounded-xl py-3 px-6 mobile:px-4 ${
+        disabled && !noDisableStyle ? 'pointer-events-none-entirely cursor-default opacity-50' : ''
+      }`}
     >
-      {/* from & balance */}
-      <Row className="justify-between mb-2 mobile:mb-4">
-        <div className="text-xs mobile:text-2xs text-[rgba(171,196,255,.5)]">{topLeftLabel}</div>
-        <div
-          className={`text-xs mobile:text-2xs justify-self-end text-[rgba(171,196,255,.5)] ${
-            disabledInput ? '' : 'clickable no-clicable-transform-effect clickable-filter-effect'
-          }`}
-          onClick={() => {
-            if (disabledInput) return
-            fillAmountWithBalance(1)
-          }}
-        >
-          {topRightLabel ?? `Balance: ${toString(maxValue) || (connected ? '--' : '(Wallet not connected)')}`}
-        </div>
-      </Row>
+      <Row
+        className={`flex-col`}
+        htmlPorps={{
+          tabIndex: 0
+        }}
+        onClick={focusInput}
+      >
+        {/* from & balance */}
+        <Row className="justify-between mb-2 mobile:mb-4">
+          <div className="text-xs mobile:text-2xs text-[rgba(171,196,255,.5)]">{topLeftLabel}</div>
+          <div
+            className={`text-xs mobile:text-2xs justify-self-end text-[rgba(171,196,255,.5)] ${
+              disabledInput ? '' : 'clickable no-clicable-transform-effect clickable-filter-effect'
+            }`}
+            onClick={() => {
+              if (disabledInput) return
+              fillAmountWithBalance(1)
+            }}
+          >
+            {topRightLabel ?? `Balance: ${toString(maxValue) || (connected ? '--' : '(Wallet not connected)')}`}
+          </div>
+        </Row>
 
-      {/* input-container */}
-      <Row className="col-span-full items-center">
-        {!hideTokenPart && (
-          <>
-            <Row
-              className={`items-center gap-1.5 ${
-                (showTokenSelectIcon && !disabledTokenSelect) || canSwitchSOLWSOL
-                  ? 'clickable clickable-mask-offset-2'
-                  : ''
-              }`}
-              onClick={(ev) => {
-                ev.stopPropagation()
-                ev.preventDefault()
-                if (canSwitchSOLWSOL) onTryToSwitchSOLWSOL?.()
-                if (disabledTokenSelect) return
-                onTryToTokenSelect?.()
-              }}
-              htmlPorps={{
-                title: canSwitchSOLWSOL
-                  ? isQuantumSOLVersionSOL(token)
-                    ? 'switch to WSOL'
-                    : 'switch to SOL'
-                  : undefined
-              }}
-            >
-              {haveCoinIcon && token && <CoinAvatar token={token} size={isMobile ? 'smi' : 'md'} />}
-              <div
-                className={`text-[rgb(171,196,255)] max-w-[7em] ${
-                  token ? 'min-w-[2em]' : ''
-                } overflow-hidden text-ellipsis font-medium text-base flex-grow mobile:text-sm whitespace-nowrap`}
+        {/* input-container */}
+        <Row className="col-span-full items-center">
+          {!hideTokenPart && (
+            <>
+              <Row
+                className={`items-center gap-1.5 ${
+                  (showTokenSelectIcon && !disabledTokenSelect) || canSwitchSOLWSOL
+                    ? 'clickable clickable-mask-offset-2'
+                    : ''
+                }`}
+                onClick={(ev) => {
+                  ev.stopPropagation()
+                  ev.preventDefault()
+                  if (canSwitchSOLWSOL) onTryToSwitchSOLWSOL?.()
+                  if (disabledTokenSelect) return
+                  onTryToTokenSelect?.()
+                }}
+                htmlPorps={{
+                  title: canSwitchSOLWSOL
+                    ? isQuantumSOLVersionSOL(token)
+                      ? 'switch to WSOL'
+                      : 'switch to SOL'
+                    : undefined
+                }}
               >
-                {token?.symbol ?? '--'}
-              </div>
-              {showTokenSelectIcon && !disabledTokenSelect && (
-                <Icon size="xs" heroIconName="chevron-down" className="text-[#ABC4FF]" />
+                {haveCoinIcon && token && <CoinAvatar token={token} size={isMobile ? 'smi' : 'md'} />}
+                <div
+                  className={`text-[rgb(171,196,255)] max-w-[7em] ${
+                    token ? 'min-w-[2em]' : ''
+                  } overflow-hidden text-ellipsis font-medium text-base flex-grow mobile:text-sm whitespace-nowrap`}
+                >
+                  {token?.symbol ?? '--'}
+                </div>
+                {showTokenSelectIcon && !disabledTokenSelect && (
+                  <Icon size="xs" heroIconName="chevron-down" className="text-[#ABC4FF]" />
+                )}
+              </Row>
+              {/* divider */}
+              <div className="my-1 mx-4 mobile:my-0 mobile:mx-2 border-r border-[rgba(171,196,255,0.5)] self-stretch" />
+            </>
+          )}
+          <Row className="justify-between flex-grow-2">
+            <Row className="gap-px items-center mr-2">
+              {!hideMaxButton && (
+                <Button
+                  disabled={disabledInput}
+                  className="py-0.5 px-1.5 rounded text-[rgba(171,196,255,.5)] font-bold bg-[#1B1659] bg-opacity-80 text-xs mobile:text-2xs transition"
+                  onClick={() => {
+                    fillAmountWithBalance(1)
+                  }}
+                >
+                  Max
+                </Button>
+              )}
+              {haveHalfButton && (
+                <Button
+                  disabled={disabledInput}
+                  className="py-0.5 px-1.5 rounded text-[rgba(171,196,255,.5)] font-bold bg-[#1B1659] bg-opacity-80 text-xs mobile:text-2xs transition"
+                  onClick={() => {
+                    fillAmountWithBalance(0.5)
+                  }}
+                >
+                  Half
+                </Button>
               )}
             </Row>
-            {/* divider */}
-            <div className="my-1 mx-4 mobile:my-0 mobile:mx-2 border-r border-[rgba(171,196,255,0.5)] self-stretch" />
-          </>
-        )}
-        <Row className="justify-between flex-grow-2">
-          <Row className="gap-px items-center mr-2">
-            {!hideMaxButton && (
-              <Button
-                disabled={disabledInput}
-                className="py-0.5 px-1.5 rounded text-[rgba(171,196,255,.5)] font-bold bg-[#1B1659] bg-opacity-80 text-xs mobile:text-2xs transition"
-                onClick={() => {
-                  fillAmountWithBalance(1)
-                }}
-              >
-                Max
-              </Button>
-            )}
-            {haveHalfButton && (
-              <Button
-                disabled={disabledInput}
-                className="py-0.5 px-1.5 rounded text-[rgba(171,196,255,.5)] font-bold bg-[#1B1659] bg-opacity-80 text-xs mobile:text-2xs transition"
-                onClick={() => {
-                  fillAmountWithBalance(0.5)
-                }}
-              >
-                Half
-              </Button>
-            )}
+            <DecimalInput
+              className="font-medium text-lg text-white flex-grow w-full"
+              disabled={disabledInput}
+              decimalCount={token?.decimals}
+              componentRef={inputRef}
+              placeholder={hasPlaceholder ? '0.0' : undefined}
+              value={inputedAmount}
+              onUserInput={(t) => {
+                setInputedAmount(String(t || ''))
+              }}
+              onEnter={onEnter}
+              inputClassName="text-right mobile:text-sm font-medium text-white"
+              onBlur={(input) => {
+                isOutsideValueLocked.current = false
+                onBlur?.(input || undefined)
+              }}
+              onFocus={() => {
+                isOutsideValueLocked.current = true
+              }}
+            />
           </Row>
-          <DecimalInput
-            className="font-medium text-lg text-white flex-grow w-full"
-            disabled={disabledInput}
-            decimalCount={token?.decimals}
-            componentRef={inputRef}
-            placeholder={hasPlaceholder ? '0.0' : undefined}
-            value={inputedAmount}
-            onUserInput={(t) => {
-              setInputedAmount(String(t || ''))
-            }}
-            onEnter={onEnter}
-            inputClassName="text-right mobile:text-sm font-medium text-white"
-            onBlur={(input) => {
-              isOutsideValueLocked.current = false
-              onBlur?.(input || undefined)
-            }}
-            onFocus={() => {
-              isOutsideValueLocked.current = true
-            }}
-          />
         </Row>
-      </Row>
 
-      {/* price-predictor */}
-      {!hidePricePredictor && (
-        <div
-          className={`text-xs mobile:text-2xs text-[rgba(171,196,255,.5)] ${
-            !inputedAmount || inputedAmount === '0' ? 'invisible' : ''
-          } text-ellipsis overflow-hidden text-right`}
-        >
-          {totalPrice ? toUsdVolume(totalPrice) : '--'}
-        </div>
-      )}
-    </Row>
+        {/* price-predictor */}
+        {!hidePricePredictor && (
+          <div
+            className={`text-xs mobile:text-2xs text-[rgba(171,196,255,.5)] ${
+              !inputedAmount || inputedAmount === '0' ? 'invisible' : ''
+            } text-ellipsis overflow-hidden text-right`}
+          >
+            {totalPrice ? toUsdVolume(totalPrice) : '--'}
+          </div>
+        )}
+      </Row>
+    </Div>
   )
 }
