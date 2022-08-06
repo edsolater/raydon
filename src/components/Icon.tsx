@@ -184,7 +184,7 @@ export default function Icon({
         ? ({ className }: { className?: string }) => <div className={className} />
         : Fragment
     return (
-      <Div {...restProps} className_={styleClass} domRef_={selfRef}>
+      <Div {...restProps} className_={styleClass} domRef_={selfRef} style_={{ color: forceColor }}>
         <HeroIconComponent
           /** HeroIcon can't use ref */
           className={twMerge(
@@ -222,7 +222,7 @@ export default function Icon({
             }}
           ></Div>
         ) : (
-          <Div {...restProps} domRef_={selfRef}>
+          <Div {...restProps} className_={styleClass} domRef_={selfRef}>
             <Image
               src={iconSrc}
               alt={getFileNameOfURI(iconSrc ?? '')}

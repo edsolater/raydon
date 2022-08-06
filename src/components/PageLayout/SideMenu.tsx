@@ -2,13 +2,12 @@ import useAppSettings from '@/application/appSettings/useAppSettings'
 import { setCssVarible } from '@/functions/dom/cssVariable'
 import { inClient } from '@/functions/judgers/isSSR'
 import { LinkAddress } from '@/types/constants'
-import { Col, Div, DivProps } from '@edsolater/uikit'
+import { Col, Div, DivProps, Row } from '@edsolater/uikit'
 import { useRouter } from 'next/router'
 import { ReactNode, useEffect, useRef } from 'react'
 import { twMerge } from 'tailwind-merge'
 import Image from '../../tempUikits/Image'
 import Link from '../../tempUikits/Link'
-import Row from '../../tempUikits/Row'
 import Icon, { AppHeroIconName } from '../Icon'
 import PageLayoutPopoverDrawer from '../PageLayoutPopoverDrawer'
 import { CommunityPopover } from './CommunityWidget'
@@ -186,25 +185,25 @@ function LinkItem({
       href={href}
       noTextStyle
       className={`group block py-2.5 mobile:py-1.5 px-4 mobile:px-1 rounded-xl mobile:rounded-lg hover:bg-[rgba(57,208,216,0.05)] ${
-        isCurrentRoutePath ? 'bg-[rgba(57,208,216,0.1)]' : ''
+        isCurrentRoutePath ? 'bg-bg-link-active' : ''
       }`}
       onClick={onClick}
     >
-      <Row className="items-center">
-        <div className="grid bg-gradient-to-br from-[rgba(57,208,216,0.2)] to-[rgba(57,208,216,0)] rounded-lg p-1.5 mr-3">
-          <Icon size={isMobile ? 'xs' : 'sm'} iconSrc={icon} />
-        </div>
+      <Div icss={{ display: 'flex', alignItems: 'center', justifyContent: 'stretch' }}>
+        <Icon forceColor="var(--icon-link)" className="mr-3" size={isMobile ? 'xs' : 'sm'} iconSrc={icon} />
         <Row
-          className={`grow items-center justify-between text-[#ACE3E5] ${
-            isCurrentRoutePath ? 'text-[rgba(57,208,216,1)]' : ''
-          } text-sm mobile:text-xs font-medium`}
+          className={twMerge(
+            `items-center justify-between text-link ${
+              isCurrentRoutePath ? 'text-link-active' : ''
+            } text-sm mobile:text-xs font-medium`
+          )}
         >
           <div>{children}</div>
           {isExternalLink && (
             <Icon inline className="opacity-80" size={isMobile ? 'xs' : 'sm'} heroIconName="external-link" />
           )}
         </Row>
-      </Row>
+      </Div>
     </Link>
   )
 }
@@ -266,19 +265,20 @@ function OptionItem({
     >
       <Row className="items-center w-full mobile:justify-center" onClick={onClick}>
         <Icon
-          className="mr-3 text-[rgba(57,208,216,1)]"
+          forceColor="var(--icon-link)"
+          className="mr-3"
           size={isMobile ? 'xs' : 'sm'}
           iconSrc={iconSrc}
           heroIconName={heroIconName}
         />
         <span
-          className={`text-[#ACE3E5] text-sm mobile:text-xs font-medium flex-grow ${
-            href ? 'group-hover:text-[rgba(57,208,216,1)]' : ''
+          className={`text-link text-sm mobile:text-xs font-medium flex-grow ${
+            href ? 'group-hover:text-link-active' : ''
           }`}
         >
           {children}
         </span>
-        {!noArrow && <Icon size={isMobile ? 'xs' : 'sm'} heroIconName="chevron-right" iconClassName="text-[#ACE3E6]" />}
+        {!noArrow && <Icon size={isMobile ? 'xs' : 'sm'} heroIconName="chevron-right" iconClassName="text-secondary" />}
       </Row>
     </Link>
   )

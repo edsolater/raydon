@@ -18,6 +18,10 @@ const config = {
         // 👇 app color
         primary: 'var(--text-main)', // text color
         secondary: 'var(--text-sub)', // text color
+        link: 'var(--text-link)', // text link color
+        'link-active': 'var(--text-link-active)', // text link color
+        'bg-link-active': 'var(--bg-link-active)', // text link color
+
         'style-color-fuchsia': '#da2eef',
         'style-color-blue': '#2b6aff',
         'style-color-cyan': '#39d0d8',

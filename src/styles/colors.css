@@ -8,8 +8,14 @@
   --text-ternary: #abc5f180;
   --text-light: hsl(224, 53%, 91%);
 
+  --text-link-active: hsl(224, 100%, 84%);
+  --text-link: hsl(224, 100%, 61%);
   --text-main: dodgerblue;
   --text-sub: #abc4ff80;
+
+  --icon-link: hsl(224, 100%, 86%);
+
+  --bg-link-active: hsl(224, 100%, 90%, 0.1);
 
   --navbar-bg: var(--app-bg);
 
