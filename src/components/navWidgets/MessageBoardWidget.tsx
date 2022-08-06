@@ -84,7 +84,7 @@ export default function MessageBoardWidget() {
           clickable
           size={isMobile ? 'smi' : 'md'}
           iconSrc="/icons/notification.svg"
-          forceColor="var(--text-ternary)"
+          forceColor="var(--text-tertiary)"
         />
       </PageLayoutPopoverDrawer>
       <ResponsiveDialogDrawer

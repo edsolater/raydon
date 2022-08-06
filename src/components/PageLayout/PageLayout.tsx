@@ -5,23 +5,16 @@ import { twMerge } from 'tailwind-merge'
 import Drawer from '../../tempUikits/Drawer'
 import { RPCPerformanceBanner } from './RPCPerformanceBanner'
 import { SideMenu } from './SideMenu'
-import { TopNavbar } from './TopNavbar'
+import { TopNavbar, TopNavbarProps } from './TopNavbar'
 import { VersionTooOldDialog } from './VersionTooOldDialog'
 
 import Col from '@/tempUikits/Col'
 import { FadeIn } from '@/tempUikits/FadeIn'
 import { Div } from '@edsolater/uikit'
+import MessageBoardWidget from '../navWidgets/MessageBoardWidget'
+import WalletWidget from '../navWidgets/WalletWidget'
+import { RootLogo } from './RootLogo'
 
-/**
- * for easier to code and read
- *
- * TEMP: add haveData to fix scrolling bug
- *
- * depend component:
- * - {@link SideMenu `<SideMenu>`}
- * - {@link TopNavbar `<TopNavbar>`}
- * - {@link VersionTooOldDialog `<VersionTooOldDialog>`}
- */
 export default function PageLayout(props: {
   /** only mobile  */
   mobileBarTitle?: string
@@ -36,6 +29,7 @@ export default function PageLayout(props: {
   contentButtonPaddingShorter?: boolean // it will cause content bottom padding shorter than usual
   contentTopPaddingShorter?: boolean // it will cause content top padding shorter than usual
 
+  propsForTopNavbar?: TopNavbarProps
   // showWalletWidget?: boolean
   // showRpcWidget?: boolean
   // showLanguageWidget?: boolean
@@ -70,9 +64,23 @@ export default function PageLayout(props: {
 
       {/* top nav bar */}
       <TopNavbar
-        barTitle={props.mobileBarTitle}
         className="grid-area-a"
+        {...props.propsForTopNavbar}
         onOpenMenu={() => useAppSettings.setState({ isSideBarMenuShown: true })}
+        barTitle={props.mobileBarTitle}
+        renderSlot1={
+          <>
+            <RootLogo />
+            {props.propsForTopNavbar?.renderSlot1}
+          </>
+        }
+        renderSlot3={
+          <>
+            <MessageBoardWidget />
+            <WalletWidget />
+            {props.propsForTopNavbar?.renderSlot3}
+          </>
+        }
       />
 
       {/* side menu */}
