@@ -80,11 +80,10 @@ export default function CreateFarmReviewPage() {
   const estimatedIndicator = (
     <Col className="mt-4 text-sm font-medium items-center">
       <div>
-        <span className="text-[#abc4ff80]">Fee:</span> <span className="text-[#abc4ff]">300 RAY</span>
+        <span className="text-[#abc4ff80]">Fee:</span> <span className="text-primary">300 RAY</span>
       </div>
       <div>
-        <span className="text-[#abc4ff80]">Est. transaction fee:</span>{' '}
-        <span className="text-[#abc4ff]">0.002 SOL</span>
+        <span className="text-[#abc4ff80]">Est. transaction fee:</span> <span className="text-primary">0.002 SOL</span>
       </div>
     </Col>
   )
@@ -106,12 +105,12 @@ export default function CreateFarmReviewPage() {
         </div>
 
         <div className="mb-8">
-          <div className="mb-3 text-[#abc4ff] text-sm font-medium justify-self-start">Pool</div>
+          <div className="mb-3 text-primary text-sm font-medium justify-self-start">Pool</div>
           <PoolInfoSummary />
         </div>
 
         <div className="mb-6">
-          <div className="mb-3 text-[#abc4ff] text-sm font-medium justify-self-start">Farm rewards</div>
+          <div className="mb-3 text-primary text-sm font-medium justify-self-start">Farm rewards</div>
           <NewAddedRewardSummary canUserEdit={false} />
         </div>
 
@@ -135,7 +134,7 @@ export default function CreateFarmReviewPage() {
         {created ? (
           <Col>
             <Row className="w-full gap-2 justify-center my-8">
-              <Row className="items-center text-sm mobile:text-xs font-medium text-[#ABC4FF] mobile:text-2xs">
+              <Row className="items-center text-sm mobile:text-xs font-medium text-primary mobile:text-2xs">
                 <div className="mr-1">Your Farm ID: </div>
               </Row>
               <AddressItem canCopy showDigitCount={'all'} className="text-white mobile:text-sm font-medium">

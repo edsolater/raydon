@@ -86,7 +86,7 @@ export default function DropdownTabs<T extends string>({
           <Row
             onClick={onClickFace}
             className={`grow-2 justify-center items-center ${
-              isValueSelected ? 'text-white' : 'text-[#abc4ff]'
+              isValueSelected ? 'text-white' : 'text-primary'
             } text-sm mobile:text-xs font-medium whitespace-nowrap active:backdrop-brightness-90`}
           >
             {collapseFaceValue}
@@ -142,7 +142,7 @@ export default function DropdownTabs<T extends string>({
             itemClassName={(checked) =>
               twMerge(
                 `my-3 px-3 text-sm mobile:text-xs font-medium whitespace-nowrap ${
-                  checked ? 'text-white' : 'text-[#ABC4FF]'
+                  checked ? 'text-white' : 'text-primary'
                 }`,
                 shrinkToValue(restProps.itemClassName, [checked])
               )

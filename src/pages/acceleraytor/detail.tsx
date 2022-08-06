@@ -70,7 +70,7 @@ function NavButtons({ className }: { className?: string }) {
     <Row className={twMerge('items-center justify-between', className)}>
       <Button
         type="text"
-        className="text-sm text-[#ABC4FF] opacity-50 px-0"
+        className="text-sm text-primary opacity-50 px-0"
         prefix={<Icon heroIconName="chevron-left" size="sm" />}
         onClick={() => routeTo('/acceleraytor/list')}
       >
@@ -78,7 +78,7 @@ function NavButtons({ className }: { className?: string }) {
       </Button>
 
       <Link
-        className={`rounded-none font-medium text-sm text-[#ABC4FF] opacity-50 flex gap-1 items-center ${
+        className={`rounded-none font-medium text-sm text-primary opacity-50 flex gap-1 items-center ${
           idoInfo?.projectDetailLink ? 'opacity-50' : 'opacity-0'
         } transition`}
         href={idoInfo?.projectDetailLink}
@@ -167,7 +167,7 @@ function TicketItem({
   if (!ticket) return null
   return (
     <Row className={twMerge('items-center gap-1', className)} style={style}>
-      <div className={`text-xs font-semibold ${ticket.isWinning ? 'text-[#39D0D8]' : 'text-[#ABC4FF]'} `}>
+      <div className={`text-xs font-semibold ${ticket.isWinning ? 'text-[#39D0D8]' : 'text-primary'} `}>
         {ticket.no}
       </div>
       {idoInfo?.isClosed && (
@@ -235,7 +235,7 @@ function WinningTicketPanel({ className }: { className?: string }) {
                 ) : (
                   <div></div>
                 )}
-                <div className="text-xs font-semibold  text-[#ABC4FF] opacity-50">
+                <div className="text-xs font-semibold  text-primary opacity-50">
                   {
                     {
                       '0': 'Lucky Ending Numbers',
@@ -298,7 +298,7 @@ function WinningTicketPanel({ className }: { className?: string }) {
                       </Button>
                       <FadeIn>
                         {gt(idoInfo.winningTickets?.length, 0) && eq(idoInfo.ledger.baseWithdrawn, 0) && (
-                          <div className="text-xs mt-1 font-semibold text-[#ABC4FF] opacity-50">
+                          <div className="text-xs mt-1 font-semibold text-primary opacity-50">
                             {idoInfo.winningTickets?.length} winning tickets
                           </div>
                         )}
@@ -339,7 +339,7 @@ function WinningTicketPanel({ className }: { className?: string }) {
                       </Button>
                       <FadeIn>
                         {eq(idoInfo.ledger?.quoteWithdrawn, 0) && (
-                          <div className="text-xs mt-1 font-semibold text-[#ABC4FF] opacity-50">
+                          <div className="text-xs mt-1 font-semibold text-primary opacity-50">
                             {(idoInfo.depositedTickets?.length ?? 0) - (idoInfo.winningTickets?.length ?? 0)}{' '}
                             non-winning tickets
                           </div>
@@ -360,7 +360,7 @@ function WinningTicketPanel({ className }: { className?: string }) {
                     You have deposited successfully
                   </div>
                 )}
-                <div className="text-sm mb-5 font-semibold  text-[#ABC4FF] opacity-50">Your ticket numbers</div>
+                <div className="text-sm mb-5 font-semibold  text-primary opacity-50">Your ticket numbers</div>
                 <Grid
                   className="gap-board -mx-5"
                   style={{
@@ -401,13 +401,13 @@ function LotteryStateInfoPanel({ className }: { className?: string }) {
   }) =>
     isMobile ? (
       <Grid className={twMerge('grid-cols-[3fr,4fr] items-center p-3 px-4 gap-3', className)}>
-        <div className="text-xs font-bold text-[#ABC4FF] opacity-50">{fieldName}</div>
+        <div className="text-xs font-bold text-primary opacity-50">{fieldName}</div>
         <div className="text-sm font-semibold text-white">{fieldValue}</div>
       </Grid>
     ) : (
       <div className={twMerge('py-3 px-4', className)}>
         <div>{fieldValue}</div>
-        <div className="text-[#abc4ff] font-bold text-xs mt-1">{fieldName}</div>
+        <div className="text-primary font-bold text-xs mt-1">{fieldName}</div>
       </div>
     )
   return (
@@ -429,7 +429,7 @@ function LotteryStateInfoPanel({ className }: { className?: string }) {
           <div className="text-center mobile:text-left text-base font-semibold text-white">
             {idoInfo.base?.symbol ?? 'UNKNOWN'}
           </div>
-          <div className="text-center mobile:text-left text-sm text-[#ABC4FF] opacity-50">{idoInfo.projectName}</div>
+          <div className="text-center mobile:text-left text-sm text-primary opacity-50">{idoInfo.projectName}</div>
         </div>
         <Badge
           size="md"
@@ -616,7 +616,7 @@ function LotteryStateInfoPanel({ className }: { className?: string }) {
                   Stake
                 </Button>
 
-                <div className="text-xs text-center text-[#ABC4FF] mt-1">
+                <div className="text-xs text-center text-primary mt-1">
                   APR: {toPercentString(stakingHydratedInfo?.totalApr7d)}
                 </div>
               </Col>
@@ -660,13 +660,13 @@ function LotteryLedgerPanel({ className }: { className?: string }) {
   const TopInfoPanelFieldItem = (props: { fieldName: ReactNode; fieldValue: ReactNode }) =>
     isMobile ? (
       <Grid className="grid-cols-[3fr,1fr] items-center p-3 px-4 gap-3">
-        <div className="text-xs font-bold text-[#ABC4FF] opacity-50">{props.fieldName}</div>
+        <div className="text-xs font-bold text-primary opacity-50">{props.fieldName}</div>
         <div className="text-sm font-semibold text-white">{props.fieldValue}</div>
       </Grid>
     ) : (
       <div className="px-6">
         <div className="text-base font-semibold text-white">{props.fieldValue}</div>
-        <div className="text-sm text-[#ABC4FF] font-bold">{props.fieldName}</div>
+        <div className="text-sm text-primary font-bold">{props.fieldName}</div>
       </div>
     )
 
@@ -699,7 +699,7 @@ function LotteryLedgerPanel({ className }: { className?: string }) {
           fieldValue={
             <Row className="items-baseline gap-1">
               <div>{connected ? formatNumber(toString(idoInfo.userAllocation) || 0) : '--'}</div>
-              <div className="text-sm text-[#ABC4FF] opacity-50"> {idoInfo.base?.symbol ?? ''}</div>
+              <div className="text-sm text-primary opacity-50"> {idoInfo.base?.symbol ?? ''}</div>
             </Row>
           }
         />
@@ -727,7 +727,7 @@ function LotteryProjectInfoPanel({ className }: { className?: string }) {
             <Link
               key={docName}
               href={linkAddress}
-              className="text-[#ABC4FF] opacity-50 capitalize mobile:text-xs font-semibold"
+              className="text-primary opacity-50 capitalize mobile:text-xs font-semibold"
             >
               {docName}
             </Link>
@@ -760,11 +760,11 @@ function LotteryProjectInfoPanel({ className }: { className?: string }) {
           >
             <Col className="items-center gap-3">
               <StepBadge n={1} />
-              <div className="text-sm text-center text-[#ABC4FF] font-semibold">Stake RAY</div>
+              <div className="text-sm text-center text-primary font-semibold">Stake RAY</div>
             </Col>
 
             <Col className="grow gap-3">
-              <div className="text-xs text-center text-[#ABC4FF] opacity-50">
+              <div className="text-xs text-center text-primary opacity-50">
                 Stake and Earn RAY to participate in pools. The more and longer you stake the more lottery tickets
                 you'll be eligible to join with.
               </div>
@@ -791,7 +791,7 @@ function LotteryProjectInfoPanel({ className }: { className?: string }) {
                   Stake
                 </Button>
 
-                <div className="text-xs text-center text-[#ABC4FF] opacity-50 mt-1">
+                <div className="text-xs text-center text-primary opacity-50 mt-1">
                   APR: {toPercentString(stakingHydratedInfo?.totalApr7d)}
                 </div>
               </Col>
@@ -805,11 +805,11 @@ function LotteryProjectInfoPanel({ className }: { className?: string }) {
           >
             <Col className="items-center gap-3">
               <StepBadge n={2} />
-              <div className="text-sm text-center text-[#ABC4FF] font-semibold">Deposit {idoInfo.quote?.symbol}</div>
+              <div className="text-sm text-center text-primary font-semibold">Deposit {idoInfo.quote?.symbol}</div>
             </Col>
 
             <Col className="grow gap-3">
-              <div className="text-xs text-center text-[#ABC4FF] opacity-50 space-y-3">
+              <div className="text-xs text-center text-primary opacity-50 space-y-3">
                 <p>
                   When the pool opens, deposit {idoInfo.quote?.symbol} for each ticket in order for it to be counted in
                   the lottery.
@@ -829,11 +829,11 @@ function LotteryProjectInfoPanel({ className }: { className?: string }) {
           >
             <Col className="items-center gap-3">
               <StepBadge n={3} />
-              <div className="text-sm text-center text-[#ABC4FF] font-semibold">Claim tokens</div>
+              <div className="text-sm text-center text-primary font-semibold">Claim tokens</div>
             </Col>
 
             <Col className="grow gap-3">
-              <div className="text-xs text-center text-[#ABC4FF] opacity-50 space-y-3">
+              <div className="text-xs text-center text-primary opacity-50 space-y-3">
                 <p>
                   If you have winning tickets you can claim your token allocation. You can then stake these tokens to
                   earn yield on them.
@@ -845,7 +845,7 @@ function LotteryProjectInfoPanel({ className }: { className?: string }) {
         </Row>
       </Row>
       <Link
-        className="pt-4 rounded-none flex-grow font-medium text-[#ABC4FF] text-xs flex justify-center gap-1 items-center"
+        className="pt-4 rounded-none flex-grow font-medium text-primary text-xs flex justify-center gap-1 items-center"
         href={idoInfo.projectDetailLink}
       >
         <Icon size="sm" inline heroIconName="information-circle" />
@@ -981,11 +981,11 @@ function LotteryInputPanel({ className }: { className?: string }) {
               } can be claimed after lottery ends and tokens after ${toUTC(idoInfo.startWithdrawTime)}.`
             ) : (
               <div>
-                <Link className="text-[#ABC4FF]" href="https://twitter.com/RaydiumProtocol">
+                <Link className="text-primary" href="https://twitter.com/RaydiumProtocol">
                   Follow us on Twitter
                 </Link>{' '}
                 or{' '}
-                <Link className="text-[#ABC4FF]" href="https://discord.gg/raydium">
+                <Link className="text-primary" href="https://discord.gg/raydium">
                   join our Discord
                 </Link>
                 to get notified when we lunch our next pool.
@@ -1078,7 +1078,7 @@ function LotteryInputPanel({ className }: { className?: string }) {
       </Button>
       <Link
         href={idoInfo.projectDetailLink}
-        className="text-xs text-center text-[#ABC4FF] opacity-50 font-semibold pt-3 border-t border-[rgba(171,196,255,0.1)]"
+        className="text-xs text-center text-primary opacity-50 font-semibold pt-3 border-t border-[rgba(171,196,255,0.1)]"
       >
         When can I withdraw?
       </Link>

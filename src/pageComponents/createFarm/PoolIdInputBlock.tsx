@@ -101,7 +101,7 @@ export function PoolIdInputBlock({
         candidates={candidates}
         value={selectedPool?.id}
         className="p-4 py-3 gap-2 bg-[#141041] rounded-xl min-w-[7em]"
-        inputClassName="font-medium mobile:text-xs text-[#abc4ff] placeholder-[#abc4Ff80]"
+        inputClassName="font-medium mobile:text-xs text-primary placeholder-[#abc4Ff80]"
         suffix={<Icon heroIconName="search" className="text-[rgba(196,214,255,0.5)]" />}
         placeholder="Search for a pool or paste AMM ID"
         renderCandidateItem={({ candidate, isSelected }) => (
@@ -115,7 +115,7 @@ export function PoolIdInputBlock({
               token2={tokens[candidate.quoteMint]}
               size={isMoblie ? 'smi' : 'md'}
             />
-            <div className="text-[#abc4ff] font-medium mobile:text-sm">
+            <div className="text-primary font-medium mobile:text-sm">
               {tokens[candidate.baseMint]?.symbol ?? 'UNKNOWN'}-{tokens[candidate.quoteMint]?.symbol ?? 'UNKNOWN'}
             </div>
             {pairInfoMap[candidate.id] ? (
@@ -163,7 +163,7 @@ export function PoolIdInputBlock({
                 token2={tokens[selectedPool.quoteMint]}
                 size={isMoblie ? 'smi' : 'md'}
               />
-              <div className="text-[#abc4ff] text-base mobile:text-sm font-medium">
+              <div className="text-primary text-base mobile:text-sm font-medium">
                 {tokens[selectedPool.baseMint]?.symbol ?? 'UNKNOWN'} -{' '}
                 {tokens[selectedPool.quoteMint]?.symbol ?? 'UNKNOWN'}
               </div>

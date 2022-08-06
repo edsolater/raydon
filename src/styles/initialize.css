@@ -10,7 +10,7 @@ body {
     'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
     'Segoe UI Symbol';
   font-feature-settings: 'ss04', 'tnum' 1;
-  color: var(--primary);
+  color: var(--text-main);
   background-color: var(--app-bg);
 }
 :root {

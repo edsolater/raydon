@@ -208,7 +208,7 @@ function PanelContent({ close }: { close(): void }) {
               <Icon
                 size="sm"
                 heroIconName="clipboard-copy"
-                className="clickable text-[#ABC4FF] ml-2"
+                className="clickable text-primary ml-2"
                 onClick={() => {
                   if (ammId) copyToClipboard(ammId)
                 }}
@@ -275,7 +275,7 @@ function InfoItem({
 
   return (
     <Row className={twMerge('w-full justify-between', className)}>
-      <Row className="items-center text-xs font-medium text-[#ABC4FF] mobile:text-2xs">
+      <Row className="items-center text-xs font-medium text-primary mobile:text-2xs">
         <div className="mr-1">{fieldName}</div>
       </Row>
       <div className="text-xs font-medium text-white mobile:text-2xs">
@@ -315,7 +315,7 @@ function AddressItem({
           <Icon
             size="sm"
             heroIconName="clipboard-copy"
-            className="clickable text-[#ABC4FF] ml-2"
+            className="clickable text-primary ml-2"
             onClick={() => {
               copyToClipboard(fieldValue)
             }}
@@ -350,15 +350,11 @@ function UserCreatedPoolsExhibitionPanel() {
                 {(open) => (
                   <Row className="items-center justify-between">
                     <Row className="gap-2 items-center">
-                      <div className="text-base font-normal text-[#abc4ff]">
+                      <div className="text-base font-normal text-primary">
                         AMM ID: {info.ammId.slice(0, 6)}...{info.ammId.slice(-6)}
                       </div>
                     </Row>
-                    <Icon
-                      size="sm"
-                      className="text-[#abc4ff]"
-                      heroIconName={`${open ? 'chevron-up' : 'chevron-down'}`}
-                    />
+                    <Icon size="sm" className="text-primary" heroIconName={`${open ? 'chevron-up' : 'chevron-down'}`} />
                   </Row>
                 )}
               </Collapse.Face>

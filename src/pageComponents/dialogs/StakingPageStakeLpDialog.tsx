@@ -61,7 +61,7 @@ export function StakingPageStakeLpDialog() {
             <div className="text-xl font-semibold text-white">
               {stakeDialogMode === 'withdraw' ? 'Unstake RAY' : 'Stake RAY'}
             </div>
-            <Icon className="text-[#ABC4FF] cursor-pointer" heroIconName="x" onClick={close} />
+            <Icon className="text-primary cursor-pointer" heroIconName="x" onClick={close} />
           </Row>
           {/* input-container-box */}
           <CoinInputBox

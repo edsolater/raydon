@@ -533,7 +533,7 @@ function LiquidityCardPriceIndicator({ className }: { className?: string }) {
 
   if (!price) return null
   return (
-    <Row className={twMerge('font-medium text-sm text-[#ABC4FF]', className)}>
+    <Row className={twMerge('font-medium text-sm text-primary', className)}>
       {1} {innerPriceLeftCoin?.symbol ?? '--'} ≈{' '}
       {toString(innerReversed ? div(1, price) : price, {
         decimalLength: isMobile ? 'auto 2' : 'auto',
@@ -680,7 +680,7 @@ function LiquidityCardItem({
 }) {
   return (
     <Row className={twMerge('w-full justify-between my-1.5', className)}>
-      <Row className="items-center text-xs font-medium text-[#ABC4FF]">
+      <Row className="items-center text-xs font-medium text-primary">
         <div className="mr-1">{fieldName}</div>
         {tooltipContent && (
           <Tooltip className={className} placement="bottom-right" forceOpen={debugForceOpen}>
@@ -796,13 +796,13 @@ function UserLiquidityExhibition() {
                               token2={info.quoteToken}
                               size={isMobile ? 'sm' : 'md'}
                             />
-                            <div className="text-base font-normal text-[#abc4ff]">
+                            <div className="text-base font-normal text-primary">
                               {info.baseToken?.symbol ?? ''}/{info.quoteToken?.symbol ?? ''}
                             </div>
                           </Row>
                           <Icon
                             size="sm"
-                            className="text-[#abc4ff]"
+                            className="text-primary"
                             heroIconName={`${open ? 'chevron-up' : 'chevron-down'}`}
                           />
                         </Row>
@@ -812,19 +812,19 @@ function UserLiquidityExhibition() {
                       <div className="pb-4 px-6 mobile:px-4">
                         <Col className="border-t-1.5 border-[rgba(171,196,255,.5)] py-5 gap-3 ">
                           <Row className="justify-between">
-                            <div className="text-xs mobile:text-2xs font-medium text-[#abc4ff]">Pooled (Base)</div>
+                            <div className="text-xs mobile:text-2xs font-medium text-primary">Pooled (Base)</div>
                             <div className="text-xs mobile:text-2xs font-medium text-white">
                               {toString(info.userBasePooled) || '--'} {info.baseToken?.symbol}
                             </div>
                           </Row>
                           <Row className="justify-between">
-                            <div className="text-xs mobile:text-2xs font-medium text-[#abc4ff]">Pooled (Quote)</div>
+                            <div className="text-xs mobile:text-2xs font-medium text-primary">Pooled (Quote)</div>
                             <div className="text-xs mobile:text-2xs font-medium text-white">
                               {toString(info.userQuotePooled) || '--'} {info.quoteToken?.symbol}
                             </div>
                           </Row>
                           <Row className="justify-between">
-                            <div className="text-xs mobile:text-2xs font-medium text-[#abc4ff]">Your Liquidity</div>
+                            <div className="text-xs mobile:text-2xs font-medium text-primary">Your Liquidity</div>
                             <div className="text-xs mobile:text-2xs font-medium text-white">
                               {info.lpMint
                                 ? toString(div(rawBalances[String(info.lpMint)], 10 ** info.lpDecimals), {
@@ -835,7 +835,7 @@ function UserLiquidityExhibition() {
                             </div>
                           </Row>
                           <Row className="justify-between">
-                            <div className="text-xs mobile:text-2xs font-medium text-[#abc4ff]">Your share</div>
+                            <div className="text-xs mobile:text-2xs font-medium text-primary">Your share</div>
                             <div className="text-xs mobile:text-2xs font-medium text-white">
                               {computeSharePercentValue(info.sharePercent)}
                             </div>

@@ -67,7 +67,7 @@ export function SearchAmmDialog({
         >
           <Row className="justify-between items-center mb-6">
             <div className="text-xl font-semibold text-white">Pool Search</div>
-            <Icon className="text-[#ABC4FF] cursor-pointer" heroIconName="x" onClick={closeDialog} />
+            <Icon className="text-primary cursor-pointer" heroIconName="x" onClick={closeDialog} />
           </Row>
 
           <InputBox

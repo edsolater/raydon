@@ -215,7 +215,7 @@ export function EditableRewardSummary({
                     >
                       <Row className="items-center gap-1">
                         <Icon iconSrc="/icons/create-farm-plus.svg" size="xs" className="text-[#abc4ff80]" />
-                        <div className="text-xs text-[#abc4ff] font-medium">Add more rewards</div>
+                        <div className="text-xs text-primary font-medium">Add more rewards</div>
                       </Row>
                       <div className="text-xs text-[#abc4ff80] font-medium">(no rate changed allowed)</div>
                     </Col>
@@ -235,7 +235,7 @@ export function EditableRewardSummary({
                           onClick={() => onClickIncreaseReward?.({ reward })}
                         >
                           <Icon iconSrc="/icons/create-farm-plus.svg" size="xs" className="text-[#abc4ff80]" />
-                          <div className="text-xs text-[#abc4ff] font-medium">Add more rewards</div>
+                          <div className="text-xs text-primary font-medium">Add more rewards</div>
                         </Row>
                       )}
 
@@ -268,7 +268,7 @@ export function EditableRewardSummary({
                       >
                         <Icon iconSrc="/icons/create-farm-roll-back.svg" size="xs" className="text-[#abc4ff80]" />
                         <Col>
-                          <Row className="text-xs text-[#abc4ff] font-medium">
+                          <Row className="text-xs text-primary font-medium">
                             <div>Claim unemmitted rewards</div>
                             <Tooltip>
                               <Icon className="ml-1" size="sm" heroIconName="question-mark-circle" />

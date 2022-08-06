@@ -23,17 +23,14 @@ export function VersionTooOldDialog() {
         >
           <Col className="items-center">
             <div className="font-semibold text-xl text-[#D8CB39] mb-3 text-center">New version available</div>
-            <div className="text-center mt-2  mb-6 text-[#ABC4FF]">Refresh the page to update and use the app.</div>
+            <div className="text-center mt-2  mb-6 text-primary">Refresh the page to update and use the app.</div>
 
             <div className="self-stretch">
               <Col>
-                <Button
-                  className={`text-[#ABC4FF]  frosted-glass-teal`}
-                  onClick={() => refreshWindow({ noCache: true })}
-                >
+                <Button className={`text-primary  frosted-glass-teal`} onClick={() => refreshWindow({ noCache: true })}>
                   Refresh
                 </Button>
-                <Button className="text-[#ABC4FF]" type="text" onClick={close}>
+                <Button className="text-primary" type="text" onClick={close}>
                   Update later
                 </Button>
               </Col>

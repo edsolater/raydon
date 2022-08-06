@@ -71,7 +71,7 @@ function StakingCard() {
     )
   return (
     <CyberpunkStyleCard>
-      <Row type="grid" className="gap-3 text-[#ABC4FF]">
+      <Row type="grid" className="gap-3 text-primary">
         {infos.map((info) => (
           <div key={String(info.id)}>
             <Collapse>

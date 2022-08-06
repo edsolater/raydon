@@ -57,7 +57,7 @@ export function RemoveLiquidityDialog({
         >
           <Row className="justify-between items-center mb-6">
             <div className="text-xl font-semibold text-white">Stake LP</div>
-            <Icon className="text-[#ABC4FF] cursor-pointer" heroIconName="x" onClick={closeDialog} />
+            <Icon className="text-primary cursor-pointer" heroIconName="x" onClick={closeDialog} />
           </Row>
 
           {/* input-container-box */}
@@ -109,11 +109,7 @@ export function RemoveLiquidityDialog({
             >
               Remove Liquidity
             </Button>
-            <Button
-              type="text"
-              className="text-sm text-[#ABC4FF] opacity-50 backdrop-filter-none"
-              onClick={closeDialog}
-            >
+            <Button type="text" className="text-sm text-primary opacity-50 backdrop-filter-none" onClick={closeDialog}>
               Cancel
             </Button>
           </Row>

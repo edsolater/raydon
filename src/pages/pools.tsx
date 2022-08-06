@@ -68,10 +68,10 @@ function PoolHeader() {
   return isMobile ? (
     <Row className="mx-auto my-2 text-base mobile:text-xs justify-self-start self-end text-[#abc4ff80] gap-4">
       <div className="whitespace-nowrap">
-        TVL: <span className="font-medium text-[#abc4ff]">${formatNumber(tvl)}</span>
+        TVL: <span className="font-medium text-primary">${formatNumber(tvl)}</span>
       </div>
       <div className="whitespace-nowrap">
-        Volume24H: <span className="font-medium text-[#abc4ff]">${formatNumber(volume24h)}</span>
+        Volume24H: <span className="font-medium text-primary">${formatNumber(volume24h)}</span>
       </div>
     </Row>
   ) : (
@@ -80,10 +80,10 @@ function PoolHeader() {
         <div className="text-2xl mobile:text-lg text-white font-semibold">Pools</div>
         <Row className="title text-base mobile:text-xs justify-self-start self-end text-[#abc4ff80] gap-4">
           <div className="whitespace-nowrap">
-            TVL: <span className="font-medium text-[#abc4ff]">${formatNumber(tvl)}</span>
+            TVL: <span className="font-medium text-primary">${formatNumber(tvl)}</span>
           </div>
           <div className="whitespace-nowrap">
-            Volume24H: <span className="font-medium text-[#abc4ff]">${formatNumber(volume24h)}</span>
+            Volume24H: <span className="font-medium text-primary">${formatNumber(volume24h)}</span>
           </div>
         </Row>
       </Row>
@@ -93,8 +93,8 @@ function PoolHeader() {
           routeTo('/liquidity/create')
         }}
       >
-        <Icon heroIconName="plus-circle" className="text-[#abc4ff]" size="sm" />
-        <span className="text-[#abc4ff] font-medium text-sm mobile:text-xs">Create Pool</span>
+        <Icon heroIconName="plus-circle" className="text-primary" size="sm" />
+        <span className="text-primary font-medium text-sm mobile:text-xs">Create Pool</span>
       </Row>
     </Grid>
   )
@@ -125,7 +125,7 @@ function ToolsButton({ className }: { className?: string }) {
     <>
       <Popover placement="bottom-right">
         <Popover.Button>
-          <div className={twMerge('mx-1 rounded-full p-2 text-[#abc4ff] clickable justify-self-start', className)}>
+          <div className={twMerge('mx-1 rounded-full p-2 text-primary clickable justify-self-start', className)}>
             <Icon className="w-4 h-4" iconClassName="w-4 h-4" heroIconName="dots-vertical" />
           </div>
         </Popover.Button>
@@ -334,7 +334,7 @@ function PoolCard() {
         className="mb-3 h-12 justify-between sticky -top-6 backdrop-filter z-10 backdrop-blur-md bg-[rgba(20,16,65,0.2)] mr-scrollbar rounded-xl mobile:rounded-lg gap-2 grid-cols-[auto,1.6fr,1fr,1fr,1fr,.8fr,auto]"
       >
         <Row
-          className="group w-20 pl-10 font-medium text-[#ABC4FF] text-sm items-center cursor-pointer  clickable clickable-filter-effect no-clicable-transform-effect"
+          className="group w-20 pl-10 font-medium text-primary text-sm items-center cursor-pointer  clickable clickable-filter-effect no-clicable-transform-effect"
           onClick={() => {
             setSortConfig({
               key: 'favorite',
@@ -360,7 +360,7 @@ function PoolCard() {
 
           {/* table head column: Pool */}
           <Row
-            className="font-medium text-[#ABC4FF] text-sm items-center cursor-pointer"
+            className="font-medium text-primary text-sm items-center cursor-pointer"
             onClick={() => {
               setSortConfig({
                 key: 'name',
@@ -386,7 +386,7 @@ function PoolCard() {
 
         {/* table head column: liquidity */}
         <Row
-          className="font-medium text-[#ABC4FF] text-sm items-center cursor-pointer clickable clickable-filter-effect no-clicable-transform-effect"
+          className="font-medium text-primary text-sm items-center cursor-pointer clickable clickable-filter-effect no-clicable-transform-effect"
           onClick={() => {
             setSortConfig({ key: 'liquidity', sortCompare: (i) => i.liquidity })
           }}
@@ -407,7 +407,7 @@ function PoolCard() {
 
         {/* table head column: volume24h */}
         <Row
-          className="font-medium text-[#ABC4FF] text-sm items-center cursor-pointer clickable clickable-filter-effect no-clicable-transform-effect"
+          className="font-medium text-primary text-sm items-center cursor-pointer clickable clickable-filter-effect no-clicable-transform-effect"
           onClick={() => {
             const key = timeBasis === '24H' ? 'volume24h' : timeBasis === '7D' ? 'volume7d' : 'volume30d'
             setSortConfig({ key, sortCompare: (i) => i[key] })
@@ -429,7 +429,7 @@ function PoolCard() {
 
         {/* table head column: fee7d */}
         <Row
-          className="font-medium text-[#ABC4FF] text-sm items-center cursor-pointer clickable clickable-filter-effect no-clicable-transform-effect"
+          className="font-medium text-primary text-sm items-center cursor-pointer clickable clickable-filter-effect no-clicable-transform-effect"
           onClick={() => {
             const key = timeBasis === '24H' ? 'fee24h' : timeBasis === '7D' ? 'fee7d' : 'fee30d'
             setSortConfig({ key, sortCompare: (i) => i[key] })
@@ -451,7 +451,7 @@ function PoolCard() {
 
         {/* table head column: volume24h */}
         <Row
-          className="font-medium text-[#ABC4FF] text-sm items-center cursor-pointer clickable clickable-filter-effect no-clicable-transform-effect"
+          className="font-medium text-primary text-sm items-center cursor-pointer clickable clickable-filter-effect no-clicable-transform-effect"
           onClick={() => {
             const key = timeBasis === '24H' ? 'apr24h' : timeBasis === '7D' ? 'apr7d' : 'apr30d'
             setSortConfig({ key, sortCompare: (i) => i[key] })
@@ -533,7 +533,7 @@ function PoolCardDatabaseBody({ sortedData }: { sortedData: HydratedPairItemInfo
   const loading = usePools((s) => s.loading)
   const [favouriteIds, setFavouriteIds] = usePoolFavoriteIds()
   return sortedData.length ? (
-    <List className="gap-3 mobile:gap-2 text-[#ABC4FF] flex-1 -mx-2 px-2" /* let scrollbar have some space */>
+    <List className="gap-3 mobile:gap-2 text-primary flex-1 -mx-2 px-2" /* let scrollbar have some space */>
       {sortedData.map((info) => (
         <List.Item key={info.lpMint}>
           <Collapse>

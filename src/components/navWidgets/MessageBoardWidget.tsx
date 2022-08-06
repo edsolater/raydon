@@ -33,10 +33,10 @@ function MessageItem({
       onClick={onClick}
     >
       <Row className="gap-4 items-center">
-        <div className={`text-[#ABC4FF] ${haveReaded ? 'opacity-40' : 'opacity-80'} font-semibold`}>{item.title}</div>
+        <div className={`text-primary ${haveReaded ? 'opacity-40' : 'opacity-80'} font-semibold`}>{item.title}</div>
         <Icon
           size="sm"
-          className={`text-[#ABC4FF] ${haveReaded ? 'opacity-40' : 'hidden'}`}
+          className={`text-primary ${haveReaded ? 'opacity-40' : 'hidden'}`}
           heroIconName="check-circle"
         />
       </Row>
@@ -84,7 +84,7 @@ export default function MessageBoardWidget() {
           clickable
           size={isMobile ? 'smi' : 'md'}
           iconSrc="/icons/notification.svg"
-          forceColor="var(--ternary-text)"
+          forceColor="var(--text-ternary)"
         />
       </PageLayoutPopoverDrawer>
       <ResponsiveDialogDrawer
@@ -105,7 +105,7 @@ export default function MessageBoardWidget() {
           >
             <Row className="justify-between items-center mb-6">
               <div className="text-3xl font-semibold text-white">{currentMessageBoardItem?.title}</div>
-              <Icon className="text-[#ABC4FF] cursor-pointer" heroIconName="x" onClick={close} />
+              <Icon className="text-primary cursor-pointer" heroIconName="x" onClick={close} />
             </Row>
             <div className="overflow-y-auto my-4">
               <Markdown className="my-6 whitespace-pre-line mobile:text-sm">

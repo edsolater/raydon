@@ -93,19 +93,19 @@ export default function ConfirmDialog(props: ConfirmDialogInfo & { domRef?: RefO
             <div className="mb-6 text-center">
               <div className="font-semibold text-xl text-white mb-3">{props.title}</div>
               {props.subtitle && <div className="font-semibold text-xl text-white">{props.subtitle}</div>}
-              {props.description && <div className="font-normal text-base text-[#ABC4FF]">{props.description}</div>}
+              {props.description && <div className="font-normal text-base text-primary">{props.description}</div>}
             </div>
 
             <div className="self-stretch">
               {props.additionalContent}
               <Col>
                 {!props.onlyConfirmButton && (
-                  <Button className="text-[#ABC4FF] frosted-glass-skygray" onClick={closeDialog}>
+                  <Button className="text-primary frosted-glass-skygray" onClick={closeDialog}>
                     {props.cancelButtonText ?? 'Cancel'}
                   </Button>
                 )}
                 <Button
-                  className={`text-[#ABC4FF] ${props.onlyConfirmButton ? 'frosted-glass-skygray' : ''}`}
+                  className={`text-primary ${props.onlyConfirmButton ? 'frosted-glass-skygray' : ''}`}
                   type="text"
                   onClick={confirm}
                 >

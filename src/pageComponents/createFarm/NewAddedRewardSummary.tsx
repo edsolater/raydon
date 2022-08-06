@@ -176,7 +176,7 @@ export function NewAddedRewardSummary({
                 <Icon
                   size="smi"
                   heroIconName="pencil"
-                  className="clickable clickable-opacity-effect text-[#abc4ff]"
+                  className="clickable clickable-opacity-effect text-primary"
                   onClick={() => {
                     onTryEdit?.(reward, reward.id === activeReward?.id)
                   }}
@@ -184,7 +184,7 @@ export function NewAddedRewardSummary({
                 <Icon
                   size="smi"
                   heroIconName="trash"
-                  className={`clickable text-[#abc4ff] ${rewards.length > 1 ? 'hover:text-[#DA2EEF]' : 'hidden'}`}
+                  className={`clickable text-primary ${rewards.length > 1 ? 'hover:text-[#DA2EEF]' : 'hidden'}`}
                   onClick={() => rewards.length > 1 && destorySelf()} // delete is wrong
                 />
               </Row>

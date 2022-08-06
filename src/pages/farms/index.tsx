@@ -105,7 +105,7 @@ function ToolsButton({ className }: { className?: string }) {
     <>
       <Popover placement="bottom-right">
         <Popover.Button>
-          <div className={twMerge('mx-1 rounded-full p-2 text-[#abc4ff] clickable justify-self-start', className)}>
+          <div className={twMerge('mx-1 rounded-full p-2 text-primary clickable justify-self-start', className)}>
             <Icon className="w-4 h-4" iconClassName="w-4 h-4" heroIconName="dots-vertical" />
           </div>
         </Popover.Button>
@@ -232,8 +232,8 @@ function FarmCreateFarmEntryBlock({ className }: { className?: string }) {
         routeTo('/farms/create')
       }}
     >
-      <Icon heroIconName="plus-circle" className="text-[#abc4ff]" size="sm" />
-      <span className="text-[#abc4ff] font-medium text-sm mobile:text-xs">Create Farm</span>
+      <Icon heroIconName="plus-circle" className="text-primary" size="sm" />
+      <span className="text-primary font-medium text-sm mobile:text-xs">Create Farm</span>
     </Row>
   )
 }
@@ -330,7 +330,7 @@ function FarmRefreshCircleBlock({ className }: { className?: string }) {
   )
 }
 
-function FarmCardDatabaseWidgets({
+function FarmCardDatabaseHeaders({
   sortControls: { setConfig, clearSortConfig },
   ...restProps
 }: {
@@ -434,10 +434,13 @@ function FarmCardDatabaseBodyHeader({
   return (
     <Div
       {...restProps}
-      className_="grid grid-flow-col mb-3 h-12  sticky -top-6 backdrop-filter z-10 backdrop-blur-md bg-[rgba(20,16,65,0.2)] mr-scrollbar rounded-xl mobile:rounded-lg gap-2 grid-cols-[auto,1.5fr,1.2fr,1fr,1fr,auto]"
+      className_="grid grid-flow-col mb-3 h-12  sticky -top-6 backdrop-filter z-10 mr-scrollbar rounded-xl mobile:rounded-lg gap-2 grid-cols-[auto,1.5fr,1.2fr,1fr,1fr,auto]"
+      icss_={{
+        background: 'var(--card-bg-light)'
+      }}
     >
       <Row
-        className="group w-20 pl-10 font-medium text-[#ABC4FF] text-sm items-center cursor-pointer  clickable clickable-filter-effect no-clicable-transform-effect"
+        className="group w-20 pl-10 font-medium text-sm items-center cursor-pointer  clickable clickable-filter-effect no-clicable-transform-effect"
         onClick={() => {
           setConfig({
             key: 'favorite',
@@ -458,7 +461,7 @@ function FarmCardDatabaseBodyHeader({
       </Row>
       {/* table head column: Farm */}
       <Row
-        className="font-medium text-[#ABC4FF] text-sm items-center cursor-pointer clickable clickable-filter-effect no-clicable-transform-effect"
+        className="font-medium text-primary text-sm items-center cursor-pointer clickable clickable-filter-effect no-clicable-transform-effect"
         onClick={() => {
           setConfig({
             key: 'name',
@@ -481,13 +484,11 @@ function FarmCardDatabaseBodyHeader({
           }
         />
       </Row>
-
       {/* table head column: Pending Reward */}
-      <div className=" font-medium self-center text-[#ABC4FF] text-sm">Pending Reward</div>
-
+      <div className=" font-medium self-center text-primary text-sm">Pending Reward</div>
       {/* table head column: Total APR */}
       <Row
-        className=" font-medium items-center text-[#ABC4FF] text-sm cursor-pointer gap-1  clickable clickable-filter-effect no-clicable-transform-effect"
+        className=" font-medium items-center text-primary text-sm cursor-pointer gap-1  clickable clickable-filter-effect no-clicable-transform-effect"
         onClick={() => {
           const key = timeBasis === '24H' ? 'totalApr24h' : timeBasis === '7D' ? 'totalApr7d' : 'totalApr30d'
           setConfig({
@@ -513,10 +514,9 @@ function FarmCardDatabaseBodyHeader({
           }
         />
       </Row>
-
       {/* table head column: TVL */}
       <Row
-        className=" font-medium text-[#ABC4FF] text-sm items-center cursor-pointer  clickable clickable-filter-effect no-clicable-transform-effect"
+        className=" font-medium text-primary text-sm items-center cursor-pointer  clickable clickable-filter-effect no-clicable-transform-effect"
         onClick={() =>
           setConfig({
             key: 'tvl',
@@ -616,7 +616,7 @@ function FarmCard() {
 
   return (
     <>
-      <FarmCardDatabaseWidgets sortControls={sortControls} />
+      <FarmCardDatabaseHeaders sortControls={sortControls} />
       {!isMobile && <FarmCardDatabaseBodyHeader sortControls={sortControls} />}
       <FarmCardDatabaseBody isLoading={isLoading} infos={sortControls.sortedData} />
     </>
@@ -635,7 +635,7 @@ function FarmCardDatabaseBody({
   return (
     <>
       {infos.length ? (
-        <List className="gap-3 text-[#ABC4FF] flex-1 -mx-2 px-2" /* let scrollbar have some space */>
+        <List className="gap-3 text-primary flex-1 -mx-2 px-2" /* let scrollbar have some space */>
           {infos.map((info: FarmPoolJsonInfo | HydratedFarmInfo) => (
             <List.Item key={toPubString(info.id)}>
               <Collapse
@@ -749,33 +749,30 @@ function FarmRewardBadge({
 
 function FarmCardDatabaseBodyCollapseItemFace({
   open,
-  className,
   info,
   isFavourite,
   onUnFavorite,
-  onStartFavorite
+  onStartFavorite,
+  ...restProps
 }: {
   open: boolean
-  className?: string
   info: HydratedFarmInfo | FarmPoolJsonInfo
   isFavourite?: boolean
   onUnFavorite?: (farmId: string) => void
   onStartFavorite?: (farmId: string) => void
-}) {
+} & DivProps) {
   const isMobile = useAppSettings((s) => s.isMobile)
   const timeBasis = useFarms((s) => s.timeBasis)
 
   const pcCotent = (
-    <Row
-      type="grid-x"
-      className={twMerge(
-        `py-5 mobile:py-4 mobile:px-5 ${
-          info.local ? 'border-2 border-[#DA2EEF]' : ''
-        } bg-[#141041] items-stretch gap-2 grid-cols-[auto,1.5fr,1.2fr,1fr,1fr,auto] mobile:grid-cols-[1fr,1fr,1fr,auto] rounded-t-3xl mobile:rounded-t-lg ${
+    <Div
+      className_={twMerge(
+        `grid grid-flow-col gap-2 grid-cols-[auto,1.5fr,1.2fr,1fr,1fr,auto] mobile:grid-cols-[1fr,1fr,1fr,auto] py-5 mobile:py-4 mobile:px-5 items-stretch rounded-t-3xl mobile:rounded-t-lg ${
           open ? '' : 'rounded-b-3xl mobile:rounded-b-lg'
-        } transition-all`,
-        className
+        } transition-all`
       )}
+      icss_={{ background: 'var(--card-bg)' }}
+      {...restProps}
     >
       <div className="w-12 self-center ml-6 mr-2">
         {isFavourite ? (
@@ -912,7 +909,7 @@ function FarmCardDatabaseBodyCollapseItemFace({
       <Grid className="w-9 h-9 mr-8 place-items-center self-center">
         <Icon size="sm" className="justify-self-end mr-1.5" heroIconName={`${open ? 'chevron-up' : 'chevron-down'}`} />
       </Grid>
-    </Row>
+    </Div>
   )
 
   const mobileContent = (
@@ -1411,7 +1408,7 @@ function FarmStakeLpDialog() {
             <div className="text-xl font-semibold text-white">
               {stakeDialogMode === 'withdraw' ? 'Unstake LP' : 'Stake LP'}
             </div>
-            <Icon className="text-[#ABC4FF] cursor-pointer" heroIconName="x" onClick={close} />
+            <Icon className="text-primary cursor-pointer" heroIconName="x" onClick={close} />
           </Row>
           {/* input-container-box */}
           <CoinInputBox
@@ -1566,13 +1563,13 @@ function FarmCardTooltipPanelAddressItem({
         <Icon
           size="sm"
           heroIconName="clipboard-copy"
-          className="clickable text-[#abc4ff]"
+          className="clickable text-primary"
           onClick={() => {
             copyToClipboard(address)
           }}
         />
         <Link href={`https://solscan.io/${type}/${address}`}>
-          <Icon size="sm" heroIconName="external-link" className="clickable text-[#abc4ff]" />
+          <Icon size="sm" heroIconName="external-link" className="clickable text-primary" />
         </Link>
       </Row>
     </Row>

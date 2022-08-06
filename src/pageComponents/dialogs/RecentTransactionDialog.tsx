@@ -67,7 +67,7 @@ function PanelContent({ historyItems, onClickX }: { historyItems: TxHistoryInfo[
     >
       <Row className="justify-between items-center p-8">
         <div className="text-xl font-semibold text-white">Recent transactions</div>
-        <Icon className="text-[#ABC4FF] cursor-pointer" heroIconName="x" onClick={onClickX} />
+        <Icon className="text-primary cursor-pointer" heroIconName="x" onClick={onClickX} />
       </Row>
 
       <Row
@@ -91,7 +91,7 @@ function PanelContent({ historyItems, onClickX }: { historyItems: TxHistoryInfo[
                 className="gap-[3.5vw] grid-cols-[1fr,1fr,1fr] py-4 px-3 clickable clickable-filter-effect items-center"
               >
                 {/* table head column: Transaction type */}
-                <Row className="font-medium text-[#ABC4FF] text-xs gap-2">
+                <Row className="font-medium text-primary text-xs gap-2">
                   <Icon
                     size="sm"
                     heroIconName={(iconSettings[txInfo.status] as any).heroIconName}
@@ -101,9 +101,9 @@ function PanelContent({ historyItems, onClickX }: { historyItems: TxHistoryInfo[
                   <div>{txInfo.title ?? ''}</div>
                 </Row>
                 {/* table head column: Details */}
-                <div className="font-medium text-[#ABC4FF] text-xs">{txInfo.description}</div>
+                <div className="font-medium text-primary text-xs">{txInfo.description}</div>
                 {/* table head column: Date and time */}
-                <div className="font-medium text-[#ABC4FF] text-xs">{toUTC(txInfo.time)}</div>
+                <div className="font-medium text-primary text-xs">{toUTC(txInfo.time)}</div>
               </Row>
             </Link>
           ))
@@ -116,7 +116,7 @@ function PanelContent({ historyItems, onClickX }: { historyItems: TxHistoryInfo[
 
       <Row className="border-t-1.5 border-[rgba(171,196,255,0.2)]">
         <Link
-          className="py-4 rounded-none flex-grow font-medium text-[#ABC4FF] text-xs flex justify-center gap-1 items-center"
+          className="py-4 rounded-none flex-grow font-medium text-primary text-xs flex justify-center gap-1 items-center"
           href={owner ? `https://solscan.io/account/${toPubString(owner)}` : ''}
         >
           View all transactions

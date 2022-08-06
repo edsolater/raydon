@@ -47,7 +47,7 @@ function NavButtons({ className }: { className?: string }) {
     <Row className={twMerge('items-center justify-between', className)}>
       <Button
         type="text"
-        className="text-sm text-[#ABC4FF] opacity-50 px-0"
+        className="text-sm text-primary opacity-50 px-0"
         prefix={<Icon heroIconName="chevron-left" size="sm" />}
         onClick={() => routeBack()}
       >
@@ -125,12 +125,12 @@ export default function FarmEditPage() {
         </Row>
 
         <div className="mb-8">
-          <div className="mb-3 text-[#abc4ff] text-sm font-medium justify-self-start">Pool</div>
+          <div className="mb-3 text-primary text-sm font-medium justify-self-start">Pool</div>
           <PoolInfoSummary />
         </div>
 
         <div className="mb-4">
-          <div className="mb-3 text-[#abc4ff] text-sm font-medium justify-self-start">Farm rewards</div>
+          <div className="mb-3 text-primary text-sm font-medium justify-self-start">Farm rewards</div>
           <EditableRewardSummary
             canUserEdit
             onClickIncreaseReward={({ reward }) => {
@@ -156,8 +156,8 @@ export default function FarmEditPage() {
             })
           }}
         >
-          <Icon className="text-[#abc4ff]" heroIconName="plus-circle" size="sm" />
-          <div className="ml-1.5 text-[#abc4ff] font-medium mobile:text-sm">Add another reward token</div>
+          <Icon className="text-primary" heroIconName="plus-circle" size="sm" />
+          <div className="ml-1.5 text-primary font-medium mobile:text-sm">Add another reward token</div>
           <div className="ml-1.5 text-[#abc4ff80] font-medium mobile:text-sm">({5 - allRewards.length} more)</div>
         </Row>
 
@@ -261,7 +261,7 @@ export default function FarmEditPage() {
             <Icon iconSrc="/icons/create-farm-info-circle.svg" iconClassName="w-7 h-7" />
           </div>
 
-          <div className="font-medium text-base text-[#abc4ff] mb-3">How to add more rewards?</div>
+          <div className="font-medium text-base text-primary mb-3">How to add more rewards?</div>
 
           <div>
             <div className="font-medium text-sm text-[#ABC4FF80] mb-4">

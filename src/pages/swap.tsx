@@ -594,7 +594,7 @@ function SwapPriceAcceptChip() {
     <FadeIn>
       {bothHaveAmount && !hasAcceptedPriceChange && (
         <Row className="mt-5 bg-[#141041] rounded-xl py-2 px-6 mobile:px-4 items-center justify-between">
-          <Row className="text-sm font-medium text-[#ABC4FF] items-center ">
+          <Row className="text-sm font-medium text-primary items-center ">
             Price updated
             <Tooltip placement="bottom-right">
               <Icon size="sm" heroIconName="question-mark-circle" className="ml-2 cursor-help" />
@@ -657,7 +657,7 @@ function SwapCardPriceIndicator({ className }: { className?: string }) {
     <Col>
       <FadeIn>
         {executionPrice && (
-          <Row className={twMerge('font-medium text-sm text-[#ABC4FF]', className)}>
+          <Row className={twMerge('font-medium text-sm text-primary', className)}>
             <div className="whitespace-nowrap">
               {1} {innerPriceLeftCoin?.symbol ?? '--'} ≈{' '}
               {toString(innerReversed ? div(1, executionPrice) : executionPrice, {
@@ -853,7 +853,7 @@ function SwapCardItem({
 }) {
   return (
     <Row className={twMerge('w-full justify-between', className)}>
-      <Row className="items-center text-xs font-medium text-[#ABC4FF]" style={{ color: fieldNameTextColor }}>
+      <Row className="items-center text-xs font-medium text-primary" style={{ color: fieldNameTextColor }}>
         <div className="mr-1">{fieldName}</div>
         {tooltipContent && (
           <Tooltip className={className} placement="bottom-right">
@@ -1041,14 +1041,14 @@ function KLineChartItem({
           <Row className="items-center mobile:justify-self-center w-16 mobile:w-8 flex-shrink-0">
             <Col className="gap-1 grow  mobile:items-center">
               <CoinAvatar token={coin} size={isMobile ? 'sm' : 'smi'} />
-              <div className="font-medium text-sm text-[#abc4ff]">{coin?.symbol ?? '--'}</div>
+              <div className="font-medium text-sm text-primary">{coin?.symbol ?? '--'}</div>
             </Col>
             {/* <div className="ml-6 self-stretch border-l-1.5 border-[rgba(171,196,255,0.5)]"></div> */}
           </Row>
 
           <Col className="items-end mobile:items-center mobile:justify-self-center mobile:ml-0 grow">
             <div className="text-xs font-medium text-[rgba(171,196,255,0.5)]">Price</div>
-            <div className="text-sm font-medium text-[#abc4ff] whitespace-nowrap">
+            <div className="text-sm font-medium text-primary whitespace-nowrap">
               {'$' +
                 formatNumber(endPrice?.toFixed(lt(endPrice, 0.1) ? coin?.decimals ?? 4 : 2), {
                   fractionLength: 'auto'
@@ -1060,7 +1060,7 @@ function KLineChartItem({
             <div className="text-xs font-medium text-[rgba(171,196,255,0.5)]">24H%</div>
             <div
               className={`text-sm font-medium ${
-                isPositive ? 'text-[#39D0D8]' : isNegative ? 'text-[#DA2EEF]' : 'text-[#abc4ff]'
+                isPositive ? 'text-[#39D0D8]' : isNegative ? 'text-[#DA2EEF]' : 'text-primary'
               }`}
             >
               {toPercentString(floatPercent, { alwaysSigned: true })}

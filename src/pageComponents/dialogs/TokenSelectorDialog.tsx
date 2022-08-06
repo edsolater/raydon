@@ -208,13 +208,13 @@ function TokenSelectorDialogContent({
         <div className="px-8 mobile:px-6 pt-6 pb-5">
           <Row className="justify-between items-center mb-6">
             <Icon
-              className="text-[#ABC4FF] cursor-pointer clickable clickable-mask-offset-2"
+              className="text-primary cursor-pointer clickable clickable-mask-offset-2"
               heroIconName="chevron-left"
               onClick={off}
             />
             <div className="text-xl font-semibold text-white">Token List Settings</div>
             <Icon
-              className="text-[#ABC4FF] cursor-pointer clickable clickable-mask-offset-2"
+              className="text-primary cursor-pointer clickable clickable-mask-offset-2"
               heroIconName="x"
               onClick={closeAndClean}
             />
@@ -235,7 +235,7 @@ function TokenSelectorDialogContent({
             <Row className="justify-between items-center mb-6">
               <div className="text-xl font-semibold text-white">Select a token</div>
               <Icon
-                className="text-[#ABC4FF] cursor-pointer clickable clickable-mask-offset-2"
+                className="text-primary cursor-pointer clickable clickable-mask-offset-2"
                 heroIconName="x"
                 onClick={closeAndClean}
               />
@@ -249,7 +249,7 @@ function TokenSelectorDialogContent({
                 setSelectedTokenIdx(0)
               }}
               className="py-3 px-4 rounded-xl bg-[#141041]"
-              inputClassName="placeholder-[rgba(196,214,255,0.5)] text-sm text-[#ABC4FF]"
+              inputClassName="placeholder-[rgba(196,214,255,0.5)] text-sm text-primary"
               labelText="input for searching coins"
               suffix={<Icon heroIconName="search" size="sm" className="text-[#C4D6FF]" />}
             />
@@ -272,7 +272,7 @@ function TokenSelectorDialogContent({
                     }}
                   >
                     <CoinAvatar size={isMobile ? 'xs' : 'sm'} token={token} />
-                    <div className="text-base mobile:text-sm font-normal text-[#ABC4FF]">{token?.symbol ?? '--'}</div>
+                    <div className="text-base mobile:text-sm font-normal text-primary">{token?.symbol ?? '--'}</div>
                   </Row>
                 )
               })}
@@ -331,7 +331,7 @@ function TokenSelectorDialogContent({
             ) : null}
           </Col>
 
-          <Button type="text" className="w-full py-4 rounded-none font-bold text-xs text-[#ABC4FF]" onClick={on}>
+          <Button type="text" className="w-full py-4 rounded-none font-bold text-xs text-primary" onClick={on}>
             View Token List
           </Button>
         </>
@@ -353,7 +353,7 @@ function TokenSelectorDialogTokenItem({ token, onClick }: { token: SplToken; onC
       <Row>
         <CoinAvatar token={token} className="mr-2" />
         <Col className="mr-2">
-          <div className="text-base  max-w-[7em] overflow-hidden text-ellipsis  font-normal text-[#ABC4FF]">
+          <div className="text-base  max-w-[7em] overflow-hidden text-ellipsis  font-normal text-primary">
             {token.symbol}
           </div>
           <div className="text-xs  max-w-[12em] overflow-hidden text-ellipsis whitespace-nowrap  font-medium text-[rgba(171,196,255,.5)]">
@@ -383,7 +383,7 @@ function TokenSelectorDialogTokenItem({ token, onClick }: { token: SplToken; onC
           </div>
         ) : null}
       </Row>
-      <div className="text-sm text-[#ABC4FF] justify-self-end">{getBalance(token)?.toExact?.()}</div>
+      <div className="text-sm text-primary justify-self-end">{getBalance(token)?.toExact?.()}</div>
     </Row>
   )
 }
@@ -411,7 +411,7 @@ function TokenSelectorDialogTokenListItem({ tokenListName }: { tokenListName: Su
       {tokenList?.icon && <Image className="rounded-full h-8 w-8 overflow-hidden" src={tokenList.icon} />}
 
       <Col>
-        <div className="text-base font-normal text-[#ABC4FF]">{tokenListName}</div>
+        <div className="text-base font-normal text-primary">{tokenListName}</div>
         {tokenList && (
           <div className="text-sm font-medium text-[rgba(171,196,255,.5)]">{tokenList.mints?.size ?? '--'} tokens</div>
         )}

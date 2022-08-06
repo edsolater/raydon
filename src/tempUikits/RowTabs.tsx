@@ -49,7 +49,7 @@ export default function RowTabs<T extends string = string>({
       itemClassName={(checked) =>
         twMerge(
           `grid min-w-[96px] mobile:min-w-[72px] h-9 mobile:h-7 rounded-full place-items-center text-sm mobile:text-xs font-medium  whitespace-nowrap ${
-            checked ? 'text-white' : 'text-[#ABC4FF]'
+            checked ? 'text-white' : 'text-primary'
           }`,
           shrinkToValue(restProps.itemClassName, [checked])
         )

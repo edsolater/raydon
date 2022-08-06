@@ -303,7 +303,7 @@ export default function CoinInputBox({
                   {token?.symbol ?? '--'}
                 </div>
                 {showTokenSelectIcon && !disabledTokenSelect && (
-                  <Icon size="xs" heroIconName="chevron-down" className="text-[#ABC4FF]" />
+                  <Icon size="xs" heroIconName="chevron-down" className="text-primary" />
                 )}
               </Row>
               {/* divider */}

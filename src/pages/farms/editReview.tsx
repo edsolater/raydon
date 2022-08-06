@@ -78,18 +78,18 @@ export default function EditReviewPage() {
         </div>
 
         <div className="mb-8">
-          <div className="mb-3 text-[#abc4ff] text-sm font-medium justify-self-start">Pool</div>
+          <div className="mb-3 text-primary text-sm font-medium justify-self-start">Pool</div>
           <PoolInfoSummary />
         </div>
 
         <div className="mb-6">
-          <div className="mb-3 text-[#abc4ff] text-sm font-medium justify-self-start">Existing farm rewards</div>
+          <div className="mb-3 text-primary text-sm font-medium justify-self-start">Existing farm rewards</div>
           <EditableRewardSummary canUserEdit={false} />
         </div>
 
         {newRewards.length > 0 && (
           <div className="mb-6">
-            <div className="mb-3 text-[#abc4ff] text-sm font-medium justify-self-start">New farm rewards</div>
+            <div className="mb-3 text-primary text-sm font-medium justify-self-start">New farm rewards</div>
             <NewAddedRewardSummary canUserEdit={false} />
           </div>
         )}

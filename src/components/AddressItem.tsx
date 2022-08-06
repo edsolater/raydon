@@ -74,14 +74,14 @@ export function AddressItem({
             {canCopy ? (
               <Icon
                 size="sm"
-                className={twMerge('clickable text-[#ABC4FF]', iconClassName)}
+                className={twMerge('clickable text-primary', iconClassName)}
                 heroIconName="clipboard-copy"
                 onClick={({ ev }) => handleClickCopy(ev)}
               />
             ) : null}
             {canExternalLink ? (
               <Link href={`https://solscan.io/${addressType}/${publicKey}`}>
-                <Icon size="sm" heroIconName="external-link" className="clickable text-[#abc4ff]" />
+                <Icon size="sm" heroIconName="external-link" className="clickable text-primary" />
               </Link>
             ) : null}
           </Row>

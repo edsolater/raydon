@@ -73,7 +73,7 @@ export default function WalletWidget() {
           onClick={() => {
             if (!publicKey) useAppSettings.setState({ isWalletSelectorShown: true })
           }}
-          forceColor="var(--secondary-text)"
+          forceColor="var(--text-secondary)"
           icss={{ width: 24, height: 24 }}
         />
       ) : (

@@ -45,7 +45,7 @@ function NavButtons({ className }: { className?: string }) {
     <Row className={twMerge('items-center justify-between', className)}>
       <Button
         type="text"
-        className="text-sm text-[#ABC4FF] opacity-50 px-0"
+        className="text-sm text-primary opacity-50 px-0"
         prefix={<Icon heroIconName="chevron-left" size="sm" />}
         onClick={() => routeBack()}
       >
@@ -53,7 +53,7 @@ function NavButtons({ className }: { className?: string }) {
       </Button>
 
       {/* <Link
-        className={`rounded-none font-medium text-sm text-[#ABC4FF] opacity-50 flex gap-1 items-center ${
+        className={`rounded-none font-medium text-sm text-primary opacity-50 flex gap-1 items-center ${
           idoInfo?.projectDetailLink ? 'opacity-50' : 'opacity-0'
         } transition`}
         href={idoInfo?.projectDetailLink}
@@ -208,8 +208,8 @@ export default function CreateFarmPage() {
                     routeTo('/liquidity/create')
                   }}
                 >
-                  <Icon heroIconName="plus-circle" className="text-[#abc4ff]" size="sm" />
-                  <span className="text-[#abc4ff] font-medium text-sm mobile:text-xs">Create Pool</span>
+                  <Icon heroIconName="plus-circle" className="text-primary" size="sm" />
+                  <span className="text-primary font-medium text-sm mobile:text-xs">Create Pool</span>
                 </Row>
               </Row>
             }
@@ -224,7 +224,7 @@ export default function CreateFarmPage() {
               <>
                 <div className="font-medium text-lg mobile:text-base text-white leading-8 mb-1">Farming Reward</div>
                 <Row className="text-sm mobile:text-xs">
-                  <div className="text-[#abc4ff] mr-2">Cluster time: </div>
+                  <div className="text-primary mr-2">Cluster time: </div>
                   <TimeClock className="text-[#abc4ff80]" offset={chainTimeOffset} />
                 </Row>
                 <div className="font-medium text-sm mobile:text-xs leading-snug text-[#abc4ff80]">
@@ -247,8 +247,8 @@ export default function CreateFarmPage() {
               }}
             >
               <Row className="items-center">
-                <Icon className="text-[#abc4ff]" heroIconName="plus-circle" size="sm" />
-                <div className="ml-1.5 text-[#abc4ff] font-medium mobile:text-sm">Add another reward token</div>
+                <Icon className="text-primary" heroIconName="plus-circle" size="sm" />
+                <div className="ml-1.5 text-primary font-medium mobile:text-sm">Add another reward token</div>
                 <div className="ml-1.5 text-[#abc4ff80] font-medium mobile:text-sm">({5 - rewards.length} more)</div>
               </Row>
             </Button>

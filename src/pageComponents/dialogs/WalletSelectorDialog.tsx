@@ -125,7 +125,7 @@ function PanelContent({
     >
       <Row className="items-center justify-between px-8 py-8">
         <div className="text-xl font-semibold text-white">Connect your wallet to Raydium</div>
-        <Icon className="text-[#ABC4FF] cursor-pointer" heroIconName="x" onClick={close} />
+        <Icon className="text-primary cursor-pointer" heroIconName="x" onClick={close} />
       </Row>
 
       <Grid
@@ -157,7 +157,7 @@ function PanelContent({
       </div>
 
       <Row
-        className="m-4 text-[#abc4ff] justify-center items-center clickable"
+        className="m-4 text-primary justify-center items-center clickable"
         onClick={() => setIsAllWalletShown((b) => !b)}
       >
         <div className="font-bold">Show uninstalled wallets</div>
@@ -166,7 +166,7 @@ function PanelContent({
 
       <div className="py-4 text-center font-medium text-sm border-t-1.5 border-[rgba(171,196,255,0.2)]">
         New here?{' '}
-        <Link href="https://raydium.gitbook.io/raydium/" className="text-[#abc4ff]">
+        <Link href="https://raydium.gitbook.io/raydium/" className="text-primary">
           Get started on Raydium!
         </Link>
       </div>

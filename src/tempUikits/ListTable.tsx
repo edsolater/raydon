@@ -115,7 +115,7 @@ export default function ListTable<T>({
     return type === 'list-table' ? (
       <Grid
         className={twMerge(
-          'text-[#abc4ff] text-xs font-medium py-4 px-5 -mx-5 items-center',
+          'text-primary text-xs font-medium py-4 px-5 -mx-5 items-center',
           shrinkToValue(rowClassName, [{ index: idx, item: data }])
         )}
         style={gridTemplateStyle}
@@ -189,7 +189,7 @@ export default function ListTable<T>({
               <div className="grow text-xs font-semibold text-[#abc4ff80]">{label}</div>
 
               {/* item */}
-              <div key={label} className="text-[#abc4ff] text-xs font-medium">
+              <div key={label} className="text-primary text-xs font-medium">
                 {itemNode}
               </div>
             </Grid>
