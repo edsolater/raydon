@@ -21,6 +21,7 @@
 
   --card-bg: hsl(224, 3%, 13%);
   --card-bg-light: hsl(224, 3%, 19%);
+  --card-bg-super-light: transparent;
 
   --style-color-fuchsia: #da2eef;
   --style-color-blue: #2b6aff;

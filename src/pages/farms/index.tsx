@@ -78,21 +78,49 @@ export default function FarmPage() {
         renderSlot2: <FarmTabBlock />
       }}
     >
-      <FarmHeader />
       <FarmCard />
     </PageLayout>
   )
 }
 
 function FarmTitle() {
-  return <div className="text-2xl font-semibold justify-self-start text-white">Farms</div>
+  const currentTab = useFarms((s) => s.currentTab)
+  const farmCardTitleInfo =
+    currentTab === 'Ecosystem'
+      ? {
+          title: 'Ecosystem Farms',
+          description: 'Stake and earn Solana Ecosystem token rewards',
+          tooltip:
+            'Ecosystem Farms allow any project or user to create a farm in a decentralized manner to incentivize liquidity providers. Rewards are locked for the duration on the farm. However, creator liquidity is not locked.'
+        }
+      : currentTab === 'Fusion'
+      ? { title: 'Fusion Farms', description: 'Stake LP tokens and earn project token rewards' }
+      : currentTab === 'Staked'
+      ? { title: 'Your Staked Farms', description: 'You are currently staked in these farms' }
+      : { title: 'Raydium Farms', description: 'Stake LP tokens and earn token rewards' }
+  return (
+    <div>
+      <Row className="items-center">
+        <Div className="font-medium text-white text-lg" icss={{ letterSpacing: 1 }}>
+          {farmCardTitleInfo.title}
+        </Div>
+        {farmCardTitleInfo.tooltip && (
+          <Tooltip placement="bottom">
+            <Icon className="ml-1 text-secondary" size="sm" heroIconName="question-mark-circle" />
+            <Tooltip.Panel className="max-w-[300px]">{farmCardTitleInfo.tooltip}</Tooltip.Panel>
+          </Tooltip>
+        )}
+      </Row>
+      <div className="font-medium text-[rgba(196,214,255,.5)] text-sm ">{farmCardTitleInfo.description}</div>
+    </div>
+  )
 }
 
-function AdditionalFarmRouteTools() {
+function FarmAdditionalRouteTools() {
   return <FarmCreateFarmEntryBlock />
 }
 
-function FarmHeader() {
+function FarmCardControllers() {
   return (
     <Col>
       <Grid className="grid-cols-3 justify-between items-center pb-8 pt-0">
@@ -124,7 +152,7 @@ function ToolsButton({ className }: { className?: string }) {
                 <FarmStakedOnlyBlock />
                 <FarmRefreshCircleBlock />
                 <FarmTimeBasisSelectorBox />
-                {/* <FarmCreateFarmEntryBlock /> */} {/* TODO temp hide create farm entry in mobile */}
+                <FarmCreateFarmEntryBlock />
               </Grid>
             </Card>
           </div>
@@ -335,7 +363,7 @@ function FarmRefreshCircleBlock({ className }: { className?: string }) {
   )
 }
 
-function FarmCardDatabaseHeaders({
+function FarmDatabaseControllers({
   sortControls: { setConfig, clearSortConfig },
   ...restProps
 }: {
@@ -366,69 +394,20 @@ function FarmCardDatabaseHeaders({
   )
   const haveSelfCreatedFarm = tabedDataSource.some((i) => isMintEqual(i.creator, owner))
 
-  const farmCardTitleInfo =
-    currentTab === 'Ecosystem'
-      ? {
-          title: 'Ecosystem Farms',
-          description: 'Stake and earn Solana Ecosystem token rewards',
-          tooltip:
-            'Ecosystem Farms allow any project or user to create a farm in a decentralized manner to incentivize liquidity providers. Rewards are locked for the duration on the farm. However, creator liquidity is not locked.'
-        }
-      : currentTab === 'Fusion'
-      ? { title: 'Fusion Farms', description: 'Stake LP tokens and earn project token rewards' }
-      : currentTab === 'Staked'
-      ? { title: 'Your Staked Farms', description: 'You are currently staked in these farms' }
-      : { title: 'Raydium Farms', description: 'Stake LP tokens and earn token rewards' }
-
-  const innerFarmDatabaseWidgets = isMobile ? (
-    <div>
-      <Row className="mb-4">
-        <Grid className="grow gap-3 grid-cols-auto-fit">
-          <FarmSearchBlock />
-          <FarmTableSorterBlock
-            onChange={(newSortKey) => {
-              newSortKey
-                ? setConfig({
-                    key: newSortKey,
-                    sortCompare:
-                      newSortKey === 'favorite'
-                        ? (i) => favouriteIds?.includes(toPubString(i.id))
-                        : (i) => i[newSortKey]
-                  })
-                : clearSortConfig()
-            }}
-          />
-        </Grid>
-        <ToolsButton className="self-center" />
-      </Row>
-    </div>
-  ) : (
-    <Row className="justify-between gap-16 items-center mb-4">
-      <div>
-        <Row className="items-center">
-          <div className="font-medium text-white text-lg">{farmCardTitleInfo.title}</div>
-          {farmCardTitleInfo.tooltip && (
-            <Tooltip>
-              <Icon className="ml-1" size="sm" heroIconName="question-mark-circle" />
-              <Tooltip.Panel className="max-w-[300px]">{farmCardTitleInfo.tooltip}</Tooltip.Panel>
-            </Tooltip>
-          )}
-        </Row>
-        <div className="font-medium text-[rgba(196,214,255,.5)] text-base ">{farmCardTitleInfo.description}</div>
-      </div>
-      <Row className="items-stretch gap-6">
+  return (
+    <Div {...restProps}>
+      <Row className="justify-end gap-6 mb-4">
         {haveSelfCreatedFarm && <FarmSlefCreatedOnlyBlock />}
         <FarmStakedOnlyBlock />
         <FarmTimeBasisSelectorBox />
         <FarmSearchBlock />
+        <FarmRefreshCircleBlock />
       </Row>
-    </Row>
+    </Div>
   )
-
-  return <Div {...restProps}>{innerFarmDatabaseWidgets}</Div>
 }
 
-function FarmCardDatabaseBodyHeader({
+function FarmCardDatabaseHead({
   sortControls: { setConfig, sortConfig },
   ...restProps
 }: {
@@ -542,7 +521,6 @@ function FarmCardDatabaseBodyHeader({
           }
         />
       </Row>
-      <FarmRefreshCircleBlock className="pr-8 self-center" />
     </Div>
   )
 }
@@ -621,8 +599,8 @@ function FarmCard() {
 
   return (
     <>
-      <FarmCardDatabaseHeaders sortControls={sortControls} />
-      {!isMobile && <FarmCardDatabaseBodyHeader sortControls={sortControls} />}
+      <FarmDatabaseControllers sortControls={sortControls} />
+      <FarmCardDatabaseHead sortControls={sortControls} />
       <FarmCardDatabaseBody isLoading={isLoading} infos={sortControls.sortedData} />
     </>
   )
@@ -772,11 +750,16 @@ function FarmCardDatabaseBodyCollapseItemFace({
   const pcCotent = (
     <Div
       className_={twMerge(
-        `grid grid-flow-col gap-2 grid-cols-[auto,1.5fr,1.2fr,1fr,1fr,auto] mobile:grid-cols-[1fr,1fr,1fr,auto] py-5 mobile:py-4 mobile:px-5 items-stretch rounded-t-3xl mobile:rounded-t-lg ${
-          open ? '' : 'rounded-b-3xl mobile:rounded-b-lg'
+        `grid grid-flow-col gap-2 grid-cols-[auto,1.5fr,1.2fr,1fr,1fr,auto] mobile:grid-cols-[1fr,1fr,1fr,auto] py-2 mobile:py-1 mobile:px-5 items-stretch rounded-t-xl mobile:rounded-t-lg ${
+          open ? '' : 'rounded-b-xl mobile:rounded-b-lg'
         } transition-all`
       )}
-      icss_={{ background: 'var(--card-bg)' }}
+      icss_={{
+        background: 'var(--card-bg-super-light)',
+        ':hover': {
+          background: 'var(--card-bg)'
+        }
+      }}
       {...restProps}
     >
       <div className="w-12 self-center ml-6 mr-2">
@@ -910,10 +893,6 @@ function FarmCardDatabaseBodyCollapseItemFace({
             : info.stakedLpAmount && `${formatNumber(toString(info.stakedLpAmount, { decimalLength: 0 }))} LP`
         }
       />
-
-      <Grid className="w-9 h-9 mr-8 place-items-center self-center">
-        <Icon size="sm" className="justify-self-end mr-1.5" heroIconName={`${open ? 'chevron-up' : 'chevron-down'}`} />
-      </Grid>
     </Div>
   )
 
