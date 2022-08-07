@@ -64,6 +64,7 @@ import { autoSuffixNumberish } from '@/functions/format/autoSuffixNumberish'
 import { AddressItem } from '@/components/AddressItem'
 import { isMobile } from '@/functions/dom/getPlatformInfo'
 import { Div, DivProps } from '@edsolater/uikit'
+import ListFast from '@/tempUikits/ListFast'
 
 export default function FarmPage() {
   useFarmUrlParser()
@@ -618,39 +619,42 @@ function FarmCardDatabaseBody({
   return (
     <>
       {infos.length ? (
-        <List className="gap-3 text-primary flex-1 -mx-2 px-2" /* let scrollbar have some space */>
-          {infos.map((info: FarmPoolJsonInfo | HydratedFarmInfo) => (
-            <List.Item key={toPubString(info.id)}>
-              <Collapse
-                open={expandedItemIds.has(toPubString(info.id))}
-                onToggle={() => {
-                  useFarms.setState((s) => ({
-                    expandedItemIds: toggleSetItem(s.expandedItemIds, toPubString(info.id))
-                  }))
-                }}
-              >
-                <Collapse.Face>
-                  {(open) => (
-                    <FarmCardDatabaseBodyCollapseItemFace
-                      open={open}
-                      info={info}
-                      isFavourite={favouriteIds?.includes(toPubString(info.id))}
-                      onUnFavorite={(farmId) => {
-                        setFavouriteIds((ids) => removeItem(ids ?? [], farmId))
-                      }}
-                      onStartFavorite={(farmId) => {
-                        setFavouriteIds((ids) => addItem(ids ?? [], farmId))
-                      }}
-                    />
-                  )}
-                </Collapse.Face>
-                <Collapse.Body>
-                  {isLoading ? null : <FarmCardDatabaseBodyCollapseItemContent farmInfo={info as HydratedFarmInfo} />}
-                </Collapse.Body>
-              </Collapse>
-            </List.Item>
-          ))}
-        </List>
+        <ListFast
+          className="gap-3 text-primary flex-1 -mx-2 px-2"
+          /* let scrollbar have some space */
+          // TODO: sourceData should can have group
+          sourceData={infos}
+          getKey={(i) => toPubString(i.id)}
+          renderItem={(info) => (
+            <Collapse
+              open={expandedItemIds.has(toPubString(info.id))}
+              onToggle={() => {
+                useFarms.setState((s) => ({
+                  expandedItemIds: toggleSetItem(s.expandedItemIds, toPubString(info.id))
+                }))
+              }}
+            >
+              <Collapse.Face>
+                {(open) => (
+                  <FarmCardDatabaseBodyCollapseItemFace
+                    open={open}
+                    info={info}
+                    isFavourite={favouriteIds?.includes(toPubString(info.id))}
+                    onUnFavorite={(farmId) => {
+                      setFavouriteIds((ids) => removeItem(ids ?? [], farmId))
+                    }}
+                    onStartFavorite={(farmId) => {
+                      setFavouriteIds((ids) => addItem(ids ?? [], farmId))
+                    }}
+                  />
+                )}
+              </Collapse.Face>
+              <Collapse.Body>
+                {isLoading ? null : <FarmCardDatabaseBodyCollapseItemContent farmInfo={info as HydratedFarmInfo} />}
+              </Collapse.Body>
+            </Collapse>
+          )}
+        />
       ) : (
         <Row className="text-center justify-center text-2xl p-12 opacity-50 text-[rgb(171,196,255)]">
           {isLoading ? <LoadingCircle /> : '(No results found)'}

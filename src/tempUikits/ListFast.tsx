@@ -4,36 +4,7 @@ import mergeRef from '@/functions/react/mergeRef'
 import { useRecordedEffect } from '@/hooks/useRecordedEffect'
 
 import Col from '../tempUikits/Col'
-
-function useInfiniteScrollDirector(
-  ref: RefObject<HTMLElement | null | undefined>,
-  options?: {
-    onReachBottom?: () => void
-    reachBottomMargin?: number
-  }
-) {
-  const isReachedBottom = useRef(false)
-  const onScroll = useCallback(() => {
-    if (!ref.current) return
-    const { scrollHeight, scrollTop, clientHeight } = ref.current
-    const isNearlyReachBottom = scrollTop + clientHeight + (options?.reachBottomMargin ?? 0) >= scrollHeight
-
-    if (isNearlyReachBottom && !isReachedBottom.current) {
-      options?.onReachBottom?.()
-      isReachedBottom.current = true
-    }
-
-    if (!isNearlyReachBottom && isReachedBottom.current) {
-      isReachedBottom.current = false
-    }
-  }, [ref, options])
-
-  useEffect(() => {
-    onScroll()
-    ref.current?.addEventListener('scroll', onScroll, { passive: true })
-    return () => ref.current?.removeEventListener('scroll', onScroll)
-  }, [ref, onScroll])
-}
+import { useScrollDegreeDetector } from '@/hooks/useScrollDegreeDetector'
 
 /** future version of `<List>` (use: css content-visibility) */
 export default function ListFast<T>({
@@ -69,7 +40,7 @@ export default function ListFast<T>({
 
   const listRef = useRef<HTMLDivElement>(null)
 
-  useInfiniteScrollDirector(listRef, {
+  useScrollDegreeDetector(listRef, {
     onReachBottom: () => {
       setRenderItemLength((n) => (n >= allListItems.length ? allListItems.length : n + increaseRenderCount))
     },

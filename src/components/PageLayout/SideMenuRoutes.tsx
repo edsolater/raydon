@@ -26,6 +26,7 @@ export function SideMenuRoutes({ onClickRoute, ...restProps }: { onClickRoute?()
     </Div>
   )
 }
+
 function SideMenuRoutesLinkItem({
   children,
   href,
@@ -37,7 +38,7 @@ function SideMenuRoutesLinkItem({
   icon?: string
   isCurrentRoutePath?: boolean
 } & DivProps) {
-  const isInnerLink = href?.startsWith('/')
+  const isInnerLink = href?.startsWith('/') // next /page route rule
   const isExternalLink = !isInnerLink
   const isMobile = useAppSettings((s) => s.isMobile)
   return (
