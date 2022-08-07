@@ -1,9 +1,9 @@
-import { Image } from '@edsolater/uikit'
+import { DivProps, Image } from '@edsolater/uikit'
 import Link from '@/tempUikits/Link'
 
-export function RootLogo() {
+export function RootLogo({ ...restProps }: DivProps) {
   return (
-    <Link href="/">
+    <Link {...restProps} href="/">
       <Image className="cursor-pointer" src="/logo/logo-with-text.svg" />
     </Link>
   )
