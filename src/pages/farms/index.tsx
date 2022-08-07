@@ -420,7 +420,7 @@ function FarmCardDatabaseHead({
       {...restProps}
       className_="grid grid-flow-col mb-3 h-12  sticky -top-6 backdrop-filter z-10 mr-scrollbar rounded-xl mobile:rounded-lg gap-2 grid-cols-[auto,1.5fr,1.2fr,1fr,1fr,auto]"
       icss_={{
-        background: 'var(--card-bg-light)'
+        background: 'inherit'
       }}
     >
       <Row

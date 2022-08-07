@@ -11,6 +11,7 @@ import Link from '../../tempUikits/Link'
 import Icon, { AppHeroIconName } from '../Icon'
 import PageLayoutPopoverDrawer from '../PageLayoutPopoverDrawer'
 import { CommunityPopover } from './CommunityWidget'
+import { RootLogo } from './RootLogo'
 import { RpcConnectionFace, RpcConnectionPanelPopover } from './RpcConnectionWidget'
 import { SlippageTolerancePopover } from './SlippageTolerancePopover'
 import { VersionInfoBlock } from './VersionInfoBlock'
@@ -23,6 +24,7 @@ import { VersionInfoBlock } from './VersionInfoBlock'
  * - {@link SlippageTolerancePopover `<SlippageTolerancePopover>`}
  */
 export function SideMenu({
+  // routes: {name:string, icon}
   onClickCloseBtn,
   onRoute,
   ...divProps
@@ -42,7 +44,7 @@ export function SideMenu({
   return (
     <Div
       {...divProps}
-      className_="grid grid-rows-[2fr,1fr,auto] h-full w-56 mobile:w-48 mobile:pt-4 mobile:pb-2"
+      className_="grid grid-rows-[auto,2fr,1fr,auto] h-full w-56 mobile:w-48 mobile:pt-4 mobile:pb-2"
       domRef_={sideMenuRef}
       style_={{
         background: isMobile
@@ -51,6 +53,7 @@ export function SideMenu({
         boxShadow: isMobile ? '8px 0px 48px rgba(171, 196, 255, 0.12)' : undefined
       }}
     >
+      <RootLogo />
       <MenuRouters className="shrink mr-2 mb-2 mobile:ml-2 overflow-y-auto" onRoute={onRoute} />
       <MenuSubOptions className="overflow-scroll no-native-scrollbar" />
       <VersionInfoBlock />

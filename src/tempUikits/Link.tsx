@@ -1,55 +1,42 @@
-import _Link from 'next/link'
-import { ReactNode } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { PageRouteName, routeTo } from '@/application/routeTools'
+import { Div, DivProps } from '@edsolater/uikit'
 
-export default function Link({
-  className,
-  children,
-  href,
-  noTextStyle,
-  openInNewTab,
-  onClick
-}: {
+type LinkProps = {
   href?: string
   noTextStyle?: boolean
   /** it's a hint. avoid it just use auto detect */
   openInNewTab?: boolean
-  className?: string
-  children?: ReactNode
-  onClick?(): void
-}) {
-  if (!href) return <span className={className}>{children}</span>
+} & DivProps
 
+export default function Link({ href, noTextStyle, openInNewTab, ...restProps }: LinkProps) {
+  if (!href) return <Div {...restProps} />
   const _isInnerLink = openInNewTab ? false : href.startsWith('/')
   return _isInnerLink ? (
-    <span
-      tabIndex={0}
-      className={twMerge(
-        `Link clickable ${noTextStyle ? '' : 'text-link-color hover:underline underline-offset-1'}`,
-        className
-      )}
-      onClick={() => {
-        onClick?.()
+    <Div
+      {...restProps}
+      as="span"
+      htmlProps_={{
+        tabIndex: 0
+      }}
+      className_={twMerge(`Link clickable ${noTextStyle ? '' : 'text-link-color hover:underline underline-offset-1'}`)}
+      onClick_={() => {
         routeTo(href as PageRouteName)
       }}
-    >
-      {children}
-    </span>
+    />
   ) : (
-    <a
-      tabIndex={0}
-      rel="nofollow noopener noreferrer"
-      target="_blank"
-      className={twMerge(
-        `Link clickable ${noTextStyle ? '' : 'text-link-color hover:underline underline-offset-1'}`,
-        className
-      )}
-      href={href}
-      onClick={onClick}
-    >
-      {children}
-    </a>
+    // @ts-expect-error no check
+    <Div<'a'>
+      {...restProps}
+      as="a"
+      htmlProps_={{
+        tabIndex: 0,
+        rel: 'nofollow noopener noreferrer',
+        target: '_blank',
+        href
+      }}
+      className_={twMerge(`Link clickable ${noTextStyle ? '' : 'text-link-color hover:underline underline-offset-1'}`)}
+    />
   )
 }

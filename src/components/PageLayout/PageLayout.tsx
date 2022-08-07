@@ -51,7 +51,7 @@ export default function PageLayout(props: {
           "c" 1fr / 1fr`
           : `
           "d d d" auto
-          "a a a" auto
+          "b a a" auto
           "b c c" 1fr
           "b c c" 1fr / auto 1fr 1fr`,
         overflow: 'hidden', // establish a BFC
@@ -68,17 +68,12 @@ export default function PageLayout(props: {
         {...props.propsForTopNavbar}
         onOpenMenu={() => useAppSettings.setState({ isSideBarMenuShown: true })}
         barTitle={props.mobileBarTitle}
-        renderSlot1={
-          <>
-            <RootLogo />
-            {props.propsForTopNavbar?.renderSlot1}
-          </>
-        }
+        renderSlot1={props.propsForTopNavbar?.renderSlot1}
         renderSlot3={
           <>
+            {props.propsForTopNavbar?.renderSlot3}
             <MessageBoardWidget />
             <WalletWidget />
-            {props.propsForTopNavbar?.renderSlot3}
           </>
         }
       />
