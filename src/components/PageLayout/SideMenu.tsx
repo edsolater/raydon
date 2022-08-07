@@ -47,7 +47,7 @@ export function SideMenu({
       }}
     >
       <RootLogo className="mx-auto mt-6" />
-      <SideMenuRoutes className="shrink mr-2 mb-2 mobile:ml-2 overflow-y-auto" onRoute={onRoute} />
+      <SideMenuRoutes className="shrink mr-2 mb-2 mobile:ml-2 overflow-y-auto" onClickRoute={onRoute} />
       <SideMenuSubOptions className="overflow-scroll no-native-scrollbar" />
       <VersionInfoBlock />
     </Div>
