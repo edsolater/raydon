@@ -617,6 +617,7 @@ function FarmCardDatabaseBody({
               </Collapse.Body>
             </Collapse>
           )}
+          getGroupTitle={(i) => i.category}
         />
       ) : (
         <Row className="text-center justify-center text-2xl p-12 opacity-50 text-[rgb(171,196,255)]">
