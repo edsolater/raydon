@@ -18,35 +18,17 @@ import { routeTo } from '@/application/routeTools'
 import useToken from '@/application/token/useToken'
 import { RAYMint } from '@/application/token/wellknownToken.config'
 import useWallet from '@/application/wallet/useWallet'
-import AutoBox from '@/tempUikits/AutoBox'
-import { Badge } from '@/tempUikits/Badge'
-import Button, { ButtonHandle } from '@/tempUikits/Button'
-import Card from '@/tempUikits/Card'
+import { AddressItem } from '@/components/AddressItem'
 import CoinAvatar from '@/components/CoinAvatar'
 import CoinAvatarPair from '@/components/CoinAvatarPair'
-import CoinInputBox, { CoinInputBoxHandle } from '@/tempUikits/CoinInputBox'
-import Col from '@/tempUikits/Col'
-import Collapse from '@/tempUikits/Collapse'
-import CyberpunkStyleCard from '@/tempUikits/CyberpunkStyleCard'
-import Grid from '@/tempUikits/Grid'
 import Icon from '@/components/Icon'
-import Input from '@/tempUikits/Input'
-import Link from '@/tempUikits/Link'
-import List from '@/tempUikits/List'
 import LoadingCircle from '@/components/LoadingCircle'
 import PageLayout from '@/components/PageLayout/PageLayout'
-import Popover from '@/tempUikits/Popover'
 import RefreshCircle from '@/components/RefreshCircle'
-import ResponsiveDialogDrawer from '@/tempUikits/ResponsiveDialogDrawer'
-import Row from '@/tempUikits/Row'
-import RowTabs from '@/tempUikits/RowTabs'
-import Select from '@/tempUikits/Select'
-import Switcher from '@/tempUikits/Switcher'
-import Tabs from '@/tempUikits/Tabs'
-import Tooltip, { TooltipHandle } from '@/tempUikits/Tooltip'
 import { addItem, removeItem, shakeFalsyItem } from '@/functions/arrayMethods'
 import { toUTC } from '@/functions/date/dateFormat'
 import copyToClipboard from '@/functions/dom/copyToClipboard'
+import { autoSuffixNumberish } from '@/functions/format/autoSuffixNumberish'
 import formatNumber from '@/functions/format/formatNumber'
 import toPubString from '@/functions/format/toMintString'
 import toPercentString from '@/functions/format/toPercentString'
@@ -60,11 +42,25 @@ import { toString } from '@/functions/numberish/toString'
 import { searchItems } from '@/functions/searchItems'
 import { toggleSetItem } from '@/functions/setMethods'
 import useSort, { UseSortControls } from '@/hooks/useSort'
-import { autoSuffixNumberish } from '@/functions/format/autoSuffixNumberish'
-import { AddressItem } from '@/components/AddressItem'
-import { isMobile } from '@/functions/dom/getPlatformInfo'
-import { Div, DivProps } from '@edsolater/uikit'
+import AutoBox from '@/tempUikits/AutoBox'
+import { Badge } from '@/tempUikits/Badge'
+import Button, { ButtonHandle } from '@/tempUikits/Button'
+import Card from '@/tempUikits/Card'
+import CoinInputBox, { CoinInputBoxHandle } from '@/tempUikits/CoinInputBox'
+import Col from '@/tempUikits/Col'
+import Collapse from '@/tempUikits/Collapse'
+import Grid from '@/tempUikits/Grid'
+import Input from '@/tempUikits/Input'
+import Link from '@/tempUikits/Link'
 import ListFast from '@/tempUikits/ListFast'
+import Popover from '@/tempUikits/Popover'
+import ResponsiveDialogDrawer from '@/tempUikits/ResponsiveDialogDrawer'
+import Row from '@/tempUikits/Row'
+import RowTabs from '@/tempUikits/RowTabs'
+import Select from '@/tempUikits/Select'
+import Switcher from '@/tempUikits/Switcher'
+import Tooltip, { TooltipHandle } from '@/tempUikits/Tooltip'
+import { Div, DivProps } from '@edsolater/uikit'
 
 export default function FarmPage() {
   useFarmUrlParser()
@@ -75,8 +71,8 @@ export default function FarmPage() {
       contentButtonPaddingShorter
       metaTitle="Farms - Raydium"
       propsForTopNavbar={{
-        renderSlot1: <FarmTitle />,
-        renderSlot2: <FarmTabBlock />
+        renderSlot1: <FarmTitle />
+        // renderSlot2: <FarmTabBlock />
       }}
     >
       <FarmCard />
@@ -370,30 +366,15 @@ function FarmDatabaseControllers({
 }: {
   sortControls: UseSortControls<(FarmPoolJsonInfo | HydratedFarmInfo)[]>
 } & DivProps) {
-  const [favouriteIds] = useFarmFavoriteIds()
   const owner = useWallet((s) => s.owner)
-  const currentTab = useFarms((s) => s.currentTab)
   const jsonInfos = useFarms((s) => s.jsonInfos)
   const hydratedInfos = useFarms((s) => s.hydratedInfos)
+
   const dataSource = (
     (hydratedInfos.length ? hydratedInfos : jsonInfos) as (FarmPoolJsonInfo | HydratedFarmInfo)[]
   ).filter((i) => !isMintEqual(i.lpMint, RAYMint))
-  const tabedDataSource = useMemo(
-    () =>
-      (dataSource as (FarmPoolJsonInfo | HydratedFarmInfo)[]).filter((i) =>
-        currentTab === 'Fusion'
-          ? i.category === 'fusion' && (isHydratedFarmInfo(i) ? !i.isClosedPool : true)
-          : currentTab === 'Staked'
-          ? isHydratedFarmInfo(i)
-            ? isMeaningfulNumber(i.ledger?.deposited)
-            : false
-          : currentTab === 'Ecosystem'
-          ? i.category === 'ecosystem'
-          : i.category === 'raydium' && (isHydratedFarmInfo(i) ? !i.isClosedPool : true)
-      ),
-    [currentTab, dataSource]
-  )
-  const haveSelfCreatedFarm = tabedDataSource.some((i) => isMintEqual(i.creator, owner))
+
+  const haveSelfCreatedFarm = dataSource.some((i) => isMintEqual(i.creator, owner))
 
   return (
     <Div {...restProps}>
@@ -530,42 +511,24 @@ function FarmCardDatabaseHead({
 function FarmCard() {
   const jsonInfos = useFarms((s) => s.jsonInfos)
   const hydratedInfos = useFarms((s) => s.hydratedInfos)
-  const currentTab = useFarms((s) => s.currentTab)
   const onlySelfFarms = useFarms((s) => s.onlySelfFarms)
   const onlySelfCreatedFarms = useFarms((s) => s.onlySelfCreatedFarms)
   const searchText = useFarms((s) => s.searchText)
   const [favouriteIds] = useFarmFavoriteIds()
-  const isMobile = useAppSettings((s) => s.isMobile)
   const owner = useWallet((s) => s.owner)
   const isLoading = useFarms((s) => s.isLoading)
   const dataSource = (
     (hydratedInfos.length ? hydratedInfos : jsonInfos) as (FarmPoolJsonInfo | HydratedFarmInfo)[]
   ).filter((i) => !isMintEqual(i.lpMint, RAYMint))
 
-  const tabedDataSource = useMemo(
-    () =>
-      (dataSource as (FarmPoolJsonInfo | HydratedFarmInfo)[]).filter((i) =>
-        currentTab === 'Fusion'
-          ? i.category === 'fusion' && (isHydratedFarmInfo(i) ? !i.isClosedPool : true)
-          : currentTab === 'Staked'
-          ? isHydratedFarmInfo(i)
-            ? isMeaningfulNumber(i.ledger?.deposited)
-            : false
-          : currentTab === 'Ecosystem'
-          ? i.category === 'ecosystem'
-          : i.category === 'raydium' && (isHydratedFarmInfo(i) ? !i.isClosedPool : true)
-      ),
-    [currentTab, dataSource]
-  )
-
   const applyFiltersDataSource = useMemo(
     () =>
-      tabedDataSource
+      dataSource
         .filter((i) =>
           onlySelfFarms && isHydratedFarmInfo(i) ? i.ledger && isMeaningfulNumber(i.ledger.deposited) : true
         ) // Switch
         .filter((i) => (i.version === 6 && onlySelfCreatedFarms && owner ? isMintEqual(i.creator, owner) : true)), // Switch
-    [onlySelfFarms, searchText, onlySelfCreatedFarms, tabedDataSource, owner]
+    [onlySelfFarms, searchText, onlySelfCreatedFarms, dataSource, owner]
   )
 
   const applySearchedDataSource = useMemo(
@@ -602,28 +565,28 @@ function FarmCard() {
     <>
       <FarmDatabaseControllers sortControls={sortControls} />
       <FarmCardDatabaseHead sortControls={sortControls} />
-      <FarmCardDatabaseBody isLoading={isLoading} infos={sortControls.sortedData} />
+      <FarmCardDatabaseBody isLoading={isLoading} data={sortControls.sortedData} />
     </>
   )
 }
 
 function FarmCardDatabaseBody({
   isLoading,
-  infos
+  data
 }: {
   isLoading: boolean
-  infos: (FarmPoolJsonInfo | HydratedFarmInfo)[]
+  data: (FarmPoolJsonInfo | HydratedFarmInfo)[]
 }) {
   const expandedItemIds = useFarms((s) => s.expandedItemIds)
   const [favouriteIds, setFavouriteIds] = useFarmFavoriteIds()
   return (
     <>
-      {infos.length ? (
+      {data.length ? (
         <ListFast
           className="gap-3 text-primary flex-1 -mx-2 px-2"
           /* let scrollbar have some space */
           // TODO: sourceData should can have group
-          sourceData={infos}
+          sourceData={data}
           getKey={(i) => toPubString(i.id)}
           renderItem={(info) => (
             <Collapse
