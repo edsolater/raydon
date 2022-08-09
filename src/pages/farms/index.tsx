@@ -588,6 +588,8 @@ function FarmCardDatabaseBody({
           // TODO: sourceData should can have group
           sourceData={data}
           getKey={(i) => toPubString(i.id)}
+          getGroupTitle={(i) => i.category}
+          renderGroupTitle={(category) => <Div icss={{ paddingBlock: 4, background: 'var(--app-bg)' }}>{category}</Div>}
           renderItem={(info) => (
             <Collapse
               open={expandedItemIds.has(toPubString(info.id))}
@@ -617,7 +619,6 @@ function FarmCardDatabaseBody({
               </Collapse.Body>
             </Collapse>
           )}
-          getGroupTitle={(i) => i.category}
         />
       ) : (
         <Row className="text-center justify-center text-2xl p-12 opacity-50 text-[rgb(171,196,255)]">
