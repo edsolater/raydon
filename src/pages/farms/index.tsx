@@ -60,7 +60,7 @@ import RowTabs from '@/tempUikits/RowTabs'
 import Select from '@/tempUikits/Select'
 import Switcher from '@/tempUikits/Switcher'
 import Tooltip, { TooltipHandle } from '@/tempUikits/Tooltip'
-import { Div, DivProps } from '@edsolater/uikit'
+import { cssCol, Div, DivProps } from '@edsolater/uikit'
 
 export default function FarmPage() {
   useFarmUrlParser()
@@ -508,7 +508,7 @@ function FarmCardDatabaseHead({
 }
 
 // TODO: FarmCardData to be context
-function FarmCard() {
+function FarmCard(divProps: DivProps) {
   const jsonInfos = useFarms((s) => s.jsonInfos)
   const hydratedInfos = useFarms((s) => s.hydratedInfos)
   const onlySelfFarms = useFarms((s) => s.onlySelfFarms)
@@ -562,28 +562,34 @@ function FarmCard() {
   })
 
   return (
-    <>
+    <Div {...divProps} icss_={[cssCol(), { height: '100%', overflowY: 'auto' }]}>
       <FarmDatabaseControllers sortControls={sortControls} />
       <FarmCardDatabaseHead sortControls={sortControls} />
-      <FarmCardDatabaseBody isLoading={isLoading} data={sortControls.sortedData} />
-    </>
+      <FarmCardDatabaseBody
+        className={'eeee'}
+        icss={{ flex: 1, overflowY: 'auto', overflowX: 'hidden' }}
+        isLoading={isLoading}
+        data={sortControls.sortedData}
+      />
+    </Div>
   )
 }
 
 function FarmCardDatabaseBody({
   isLoading,
-  data
+  data,
+  ...divProps
 }: {
   isLoading: boolean
   data: (FarmPoolJsonInfo | HydratedFarmInfo)[]
-}) {
+} & DivProps) {
   const expandedItemIds = useFarms((s) => s.expandedItemIds)
   const [favouriteIds, setFavouriteIds] = useFarmFavoriteIds()
   return (
-    <>
+    <Div {...divProps}>
       {data.length ? (
         <ListFast
-          className="gap-3 text-primary flex-1 -mx-2 px-2"
+          className="h-full  gap-3 text-primary flex-1"
           /* let scrollbar have some space */
           // TODO: sourceData should can have group
           sourceData={data}
@@ -626,7 +632,7 @@ function FarmCardDatabaseBody({
         </Row>
       )}
       <FarmStakeLpDialog />
-    </>
+    </Div>
   )
 }
 
