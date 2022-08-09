@@ -1,4 +1,4 @@
-import { Fragment, ReactNode, useMemo, useRef, useState } from 'react'
+import { Fragment, ReactNode, RefObject, useEffect, useMemo, useRef, useState } from 'react'
 
 import { useRecordedEffect } from '@/hooks/useRecordedEffect'
 
@@ -6,12 +6,17 @@ import { isObject } from '@/functions/judgers/dateType'
 import { useScrollDegreeDetector } from '@/hooks/useScrollDegreeDetector'
 import { groupBy, map, shakeNil } from '@edsolater/fnkit'
 import { Div, DivProps } from '@edsolater/uikit'
+import { useForceUpdate } from '@edsolater/hookit'
 
-export type ListProps<T> = {
+type InfiniteScrollOptions = {
   increaseRenderCount?: number
   initRenderCount?: number
   reachBottomMargin?: number
   renderAllAtOnce?: boolean
+}
+
+export type ListProps<T> = {
+  infiniteScrollOptions?: InfiniteScrollOptions
 
   sourceData: T[]
   getKey?: (item: T, index: number) => string | number
@@ -26,10 +31,7 @@ const ungroupName = '$ungroup_array_list'
 
 /** future version of `<List>` (use: css content-visibility) */
 export default function ListFast<T>({
-  increaseRenderCount = 30,
-  initRenderCount = 30,
-  reachBottomMargin = 50,
-  renderAllAtOnce,
+  infiniteScrollOptions,
   sourceData,
   renderItem,
   getKey = (item, idx) => (isObject(item) ? Reflect.get(item as unknown as object, 'id') ?? idx : idx),
@@ -52,33 +54,15 @@ export default function ListFast<T>({
     () => shakeNil(groupBy(unsortedAllListItems, (listItem) => listItem.groupName)),
     [unsortedAllListItems]
   )
-  const allListItems = Object.values(groupedAllListItems).flat()
 
-  // actually showed itemLength
-  const [renderItemLength, setRenderItemLength] = useState(renderAllAtOnce ? allListItems.length : initRenderCount)
+  const allListItems = Object.values(groupedAllListItems).flat()
+  const { listRef, renderItemLength } = useInfiniteScrollItemCount({
+    ...infiniteScrollOptions,
+    allItems: allListItems.map((i) => i.item),
+    getKey
+  })
   const turncatedListItems = allListItems.slice(0, renderItemLength)
   const turncatedGroupedListItems = shakeNil(groupBy(turncatedListItems, (listItem) => listItem.groupName))
-
-  const listRef = useRef<HTMLDivElement>(null)
-
-  useScrollDegreeDetector(listRef, {
-    onReachBottom: () => {
-      setRenderItemLength((n) => (n >= allListItems.length ? allListItems.length : n + increaseRenderCount))
-    },
-    reachBottomMargin: reachBottomMargin
-  })
-
-  // reset if Item's length has changed
-  useRecordedEffect(
-    ([prevAllItems]) => {
-      const prevAllItemKeys = new Set(prevAllItems?.map((i) => i.item).map(getKey))
-      const currAllItemKeys = allListItems.map((i) => i.item).map(getKey)
-      if (prevAllItems && !renderAllAtOnce && currAllItemKeys.some((key) => !prevAllItemKeys.has(key))) {
-        setRenderItemLength(initRenderCount)
-      }
-    },
-    [allListItems, renderAllAtOnce] as const
-  )
 
   return (
     <Div {...restProps} domRef_={listRef} className_={`List overflow-y-scroll`} style_={{ contentVisibility: 'auto' }}>
@@ -102,4 +86,44 @@ export default function ListFast<T>({
           ))}
     </Div>
   )
+}
+
+function useInfiniteScrollItemCount<T>({
+  allItems,
+  getKey,
+  increaseRenderCount = 30,
+  initRenderCount = 30,
+  reachBottomMargin = 50,
+  renderAllAtOnce
+}: InfiniteScrollOptions & { allItems: T[]; getKey: (item: T, index: number) => string | number }): {
+  renderItemLength: number
+  listRef: RefObject<HTMLElement>
+  /** if change, re-calc renderItemLength */
+  recalcListItem: () => void
+} {
+  const [, forceUpdate] = useForceUpdate()
+
+  // actually showed itemLength
+  const [renderItemLength, setRenderItemLength] = useState(renderAllAtOnce ? allItems.length : initRenderCount)
+  const listRef = useRef<HTMLElement>(null)
+  useScrollDegreeDetector(listRef, {
+    onReachBottom: () => {
+      setRenderItemLength((n) => (n >= allItems.length ? allItems.length : n + increaseRenderCount))
+    },
+    reachBottomMargin
+  })
+
+  // reset if Item's length has changed
+  useRecordedEffect(
+    ([prevAllItems]) => {
+      const prevAllItemKeys = new Set(prevAllItems?.map(getKey))
+      const currAllItemKeys = allItems.map(getKey)
+      if (prevAllItems && !renderAllAtOnce && currAllItemKeys.some((key) => !prevAllItemKeys.has(key))) {
+        setRenderItemLength(initRenderCount)
+      }
+    },
+    [allItems, renderAllAtOnce] as const
+  )
+
+  return { renderItemLength, listRef, recalcListItem: forceUpdate }
 }
