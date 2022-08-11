@@ -54,7 +54,7 @@ export default function Dialog({
   return (
     <Transition as={Fragment} show={innerOpen} beforeLeave={onCloseImmediately} afterLeave={onClose}>
       <_Dialog className="fixed inset-0 z-model overflow-y-auto" onClose={closeDialog}>
-        <div className="Dialog w-screen h-screen fixed">
+        <div className="Dialog w-screen h-screen fixed" onClick={(ev) => ev.stopPropagation()}>
           <Transition.Child
             as={Fragment}
             enter={`ease-out ${transitionSpeed === 'fast' ? 'duration-150' : 'duration-300'}`}
