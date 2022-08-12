@@ -3,6 +3,7 @@ import create from 'zustand'
 import { FarmPoolJsonInfo, HydratedFarmInfo, SdkParsedFarmInfo } from './type'
 import useToken from '../token/useToken'
 import useLocalStorageItem from '@/hooks/useLocalStorage'
+import { HexAddress } from '@/types/constants'
 
 export type FarmStore = {
   /** detect if hydratedInfo is ready */
@@ -10,6 +11,9 @@ export type FarmStore = {
   jsonInfos: FarmPoolJsonInfo[] // TODO: switch to Object key value pair, for faster extracting
   sdkParsedInfos: SdkParsedFarmInfo[] // TODO: switch to Object key value pair, for faster extracting
   hydratedInfos: HydratedFarmInfo[] // TODO: switch to Object key value pair, for faster extracting
+  /** if exist, show detail panel */
+  detailedId?: HexAddress /* FarmIds */[]
+
   /**
    * front-end customized farm id list
    * expanded collapse items

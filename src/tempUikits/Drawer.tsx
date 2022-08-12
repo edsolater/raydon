@@ -34,14 +34,7 @@ const placementClasses = {
 export interface DrawerProps {
   className?: string
   style?: React.CSSProperties
-  children?: MayFunction<
-    ReactNode,
-    [
-      {
-        close(): void
-      }
-    ]
-  >
+  children?: MayFunction<ReactNode, [{ close(): void }]>
   open: boolean
   placement?: 'from-left' | 'from-bottom' | 'from-top' | 'from-right'
   transitionSpeed?: 'fast' | 'normal'

@@ -60,11 +60,14 @@ import RowTabs from '@/tempUikits/RowTabs'
 import Select from '@/tempUikits/Select'
 import Switcher from '@/tempUikits/Switcher'
 import Tooltip, { TooltipHandle } from '@/tempUikits/Tooltip'
-import { cssCol, Div, DivProps } from '@edsolater/uikit'
+import { cssCol, cssRow, Div, DivProps } from '@edsolater/uikit'
+import FadeIn from '@/tempUikits/FadeIn'
+import listToMap from '@/functions/format/listToMap'
 
 export default function FarmPage() {
   useFarmUrlParser()
   useFarmResetSelfCreatedByOwner()
+  const detailId = useFarms((s) => s.detailedId)
   return (
     <PageLayout
       mobileBarTitle="Farms"
@@ -72,10 +75,14 @@ export default function FarmPage() {
       metaTitle="Farms - Raydium"
       propsForTopNavbar={{
         renderSlot1: <FarmTitle />
-        // renderSlot2: <FarmTabBlock />
       }}
     >
-      <FarmCard />
+      <Div icss={cssRow()}>
+        <FarmCard />
+        <FadeIn show={detailId && detailId.length > 0} heightOrWidth="width">
+          <FarmDetailPanel />
+        </FadeIn>
+      </Div>
     </PageLayout>
   )
 }
@@ -597,33 +604,45 @@ function FarmCardDatabaseBody({
           getGroupTitle={(i) => i.category}
           renderGroupTitle={(category) => <Div icss={{ paddingBlock: 4, background: 'var(--app-bg)' }}>{category}</Div>}
           renderItem={(info) => (
-            <Collapse
-              open={expandedItemIds.has(toPubString(info.id))}
-              onToggle={() => {
-                useFarms.setState((s) => ({
-                  expandedItemIds: toggleSetItem(s.expandedItemIds, toPubString(info.id))
-                }))
+            <FarmCardDatabaseBodyCollapseItemFace
+              info={info}
+              isFavourite={favouriteIds?.includes(toPubString(info.id))}
+              onUnFavorite={(farmId) => {
+                setFavouriteIds((ids) => removeItem(ids ?? [], farmId))
               }}
-            >
-              <Collapse.Face>
-                {(open) => (
-                  <FarmCardDatabaseBodyCollapseItemFace
-                    open={open}
-                    info={info}
-                    isFavourite={favouriteIds?.includes(toPubString(info.id))}
-                    onUnFavorite={(farmId) => {
-                      setFavouriteIds((ids) => removeItem(ids ?? [], farmId))
-                    }}
-                    onStartFavorite={(farmId) => {
-                      setFavouriteIds((ids) => addItem(ids ?? [], farmId))
-                    }}
-                  />
-                )}
-              </Collapse.Face>
-              <Collapse.Body>
-                {isLoading ? null : <FarmCardDatabaseBodyCollapseItemContent farmInfo={info as HydratedFarmInfo} />}
-              </Collapse.Body>
-            </Collapse>
+              onStartFavorite={(farmId) => {
+                setFavouriteIds((ids) => addItem(ids ?? [], farmId))
+              }}
+              onClickItemFace={(farmId) => {
+                useFarms.setState((s) => ({ detailedId: addItem(s.detailedId ?? [], farmId) }))
+              }}
+            />
+            // <Collapse
+            //   open={expandedItemIds.has(toPubString(info.id))}
+            //   onToggle={() => {
+            //     useFarms.setState((s) => ({
+            //       expandedItemIds: toggleSetItem(s.expandedItemIds, toPubString(info.id))
+            //     }))
+            //   }}
+            // >
+            //   <Collapse.Face>
+            //     {(open) => (
+            //       <FarmCardDatabaseBodyCollapseItemFace
+            //         info={info}
+            //         isFavourite={favouriteIds?.includes(toPubString(info.id))}
+            //         onUnFavorite={(farmId) => {
+            //           setFavouriteIds((ids) => removeItem(ids ?? [], farmId))
+            //         }}
+            //         onStartFavorite={(farmId) => {
+            //           setFavouriteIds((ids) => addItem(ids ?? [], farmId))
+            //         }}
+            //       />
+            //     )}
+            //   </Collapse.Face>
+            //   <Collapse.Body>
+            //     {isLoading ? null : <FarmCardDatabaseBodyCollapseItemContent farmInfo={info as HydratedFarmInfo} />}
+            //   </Collapse.Body>
+            // </Collapse>
           )}
         />
       ) : (
@@ -633,6 +652,27 @@ function FarmCardDatabaseBody({
       )}
       <FarmStakeLpDialog />
     </Div>
+  )
+}
+function FarmDetailPanel(divProps: DivProps) {
+  const hydratedInfos = useFarms((s) => s.hydratedInfos)
+  const farmIds = useFarms((s) => s.detailedId) ?? []
+  /** for calculate detailInfos */
+  const tempHydratedInfoMap = listToMap(hydratedInfos, (i) => toPubString(i.id))
+  const detailInfos = farmIds.map((farmId) => tempHydratedInfoMap[farmId])
+  const currentInfo = detailInfos[0]
+  return (
+    <Card {...divProps}>
+      <Icon
+        heroIconName="x"
+        onClick={() => {
+          useFarms.setState((s) => ({
+            detailedId: removeItem(s.detailedId ?? [], toPubString(currentInfo.id))
+          }))
+        }}
+      />
+      <FarmCardDatabaseBodyCollapseItemContent farmInfo={currentInfo /* temp */} />
+    </Card>
   )
 }
 
@@ -706,16 +746,16 @@ function FarmRewardBadge({
 }
 
 function FarmCardDatabaseBodyCollapseItemFace({
-  open,
   info,
   isFavourite,
+  onClickItemFace,
   onUnFavorite,
   onStartFavorite,
-  ...restProps
+  ...divProps
 }: {
-  open: boolean
   info: HydratedFarmInfo | FarmPoolJsonInfo
   isFavourite?: boolean
+  onClickItemFace?: (farmId: string) => void
   onUnFavorite?: (farmId: string) => void
   onStartFavorite?: (farmId: string) => void
 } & DivProps) {
@@ -725,9 +765,7 @@ function FarmCardDatabaseBodyCollapseItemFace({
   const pcCotent = (
     <Div
       className_={twMerge(
-        `grid grid-flow-col gap-2 grid-cols-[auto,1.5fr,1.2fr,1fr,1fr,auto] mobile:grid-cols-[1fr,1fr,1fr,auto] py-2 mobile:py-1 mobile:px-5 items-stretch rounded-t-xl mobile:rounded-t-lg ${
-          open ? '' : 'rounded-b-xl mobile:rounded-b-lg'
-        } transition-all`
+        `grid grid-flow-col gap-2 grid-cols-[auto,1.5fr,1.2fr,1fr,1fr,auto] mobile:grid-cols-[1fr,1fr,1fr,auto] py-2 mobile:py-1 mobile:px-5 items-stretch rounded-t-xl mobile:rounded-t-lg transition-all`
       )}
       icss_={{
         background: 'var(--card-bg-super-light)',
@@ -735,7 +773,8 @@ function FarmCardDatabaseBodyCollapseItemFace({
           background: 'var(--card-bg)'
         }
       }}
-      {...restProps}
+      onClick_={() => onClickItemFace?.(toPubString(info.id))}
+      {...divProps}
     >
       <div className="w-12 self-center ml-6 mr-2">
         {isFavourite ? (
@@ -872,13 +911,11 @@ function FarmCardDatabaseBodyCollapseItemFace({
   )
 
   const mobileContent = (
-    <Collapse open={open}>
+    <Collapse open>
       <Collapse.Face>
         <Row
           type="grid-x"
-          className={`py-4 px-5 mobile:p-2 items-stretch gap-2 grid-cols-[auto,1.1fr,1fr,1fr,auto] bg-[#141041] mobile:rounded-t-lg ${
-            open ? '' : 'rounded-b-3xl mobile:rounded-b-lg'
-          }`}
+          className={`py-4 px-5 mobile:p-2 items-stretch gap-2 grid-cols-[auto,1.1fr,1fr,1fr,auto] bg-[#141041] mobile:rounded-t-lg`}
         >
           <div className="w-8 self-center ">
             {isFavourite ? (
@@ -948,7 +985,7 @@ function FarmCardDatabaseBodyCollapseItemFace({
           />
 
           <Grid className="w-6 h-6 place-items-center self-center">
-            <Icon size="sm" heroIconName={`${open ? 'chevron-up' : 'chevron-down'}`} />
+            <Icon size="sm" heroIconName="chevron-down" />
           </Grid>
         </Row>
       </Collapse.Face>
