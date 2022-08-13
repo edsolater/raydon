@@ -111,7 +111,7 @@ export default function PageLayout(props: {
           overflowY: 'scroll'
         }}
       >
-        <VersionTooOldDialog />
+        {/* <VersionTooOldDialog /> */}
         {props.children}
       </main>
     </div>

@@ -11,8 +11,10 @@ export type FarmStore = {
   jsonInfos: FarmPoolJsonInfo[] // TODO: switch to Object key value pair, for faster extracting
   sdkParsedInfos: SdkParsedFarmInfo[] // TODO: switch to Object key value pair, for faster extracting
   hydratedInfos: HydratedFarmInfo[] // TODO: switch to Object key value pair, for faster extracting
+
   /** if exist, show detail panel */
   detailedId?: HexAddress /* FarmIds */[]
+  readonly isDetailPanelShown: boolean
 
   /**
    * front-end customized farm id list
@@ -36,12 +38,17 @@ export type FarmStore = {
   stakeDialogInfo: undefined | HydratedFarmInfo
 }
 
-const useFarms = create<FarmStore>((set) => ({
+const useFarms = create<FarmStore>((set, get) => ({
   isLoading: true,
   jsonInfos: [],
   sdkParsedInfos: [],
   hydratedInfos: [],
 
+  get isDetailPanelShown() {
+    //FIXME: not reactive
+    const detailIdCount = get().detailedId?.length
+    return Boolean(detailIdCount && detailIdCount > 0)
+  },
   expandedItemIds: new Set(),
   haveUpcomingFarms: false,
 

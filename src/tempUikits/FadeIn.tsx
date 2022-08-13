@@ -18,13 +18,17 @@ export default function FadeInStable({
   ignoreEnterTransition,
   ignoreLeaveTransition,
   show,
-  children
+  children,
+  onAfterEnter,
+  onAfterLeave
 }: {
   heightOrWidth?: 'height' | 'width'
   ignoreEnterTransition?: boolean
   ignoreLeaveTransition?: boolean
   show?: any
   children?: ReactNode // if immediately, inner content maybe be still not render ready
+  onAfterEnter?: () => void
+  onAfterLeave?: () => void
 }) {
   // const [nodeExist, { off: destory }] = useToggle(true)
   const contentRef = useRef<HTMLDivElement>(null)
@@ -86,6 +90,7 @@ export default function FadeInStable({
         contentRef.current?.style.removeProperty('height')
         contentRef.current?.style.removeProperty('width')
         inTransitionDuration.current = false
+        onAfterEnter?.()
       }}
       beforeLeave={() => {
         if (ignoreLeaveTransition) return
@@ -120,6 +125,7 @@ export default function FadeInStable({
         contentRef.current?.style.setProperty('opacity', '0')
         innerChildren.current = null // clean from internal storage
         inTransitionDuration.current = false
+        onAfterLeave?.()
       }}
     >
       {/* outer div can't set ref for it's being used by headless-ui <Transition/> */}
@@ -146,6 +152,8 @@ type FadeInProps = {
   children?: ReactNode // if immediately, inner content maybe be still not render ready
   /** when set this, `<FadeIn>` will not have additional <Div> . (direct `<FadeIn>`'s child must be `<Div>`-like) */
   wrapperDivBoxProps?: DivProps
+  onAfterEnter?: () => void
+  onAfterLeave?: () => void
 } & TransitionProps
 
 const baseTransitionStyle = { overflow: 'hidden' } as CSSStyle
@@ -161,7 +169,9 @@ export function FadeIn({
   transitionPresets = [opacityInOut({ min: 0.3 })],
   ignoreEnterTransition,
   ignoreLeaveTransition,
-  wrapperDivBoxProps
+  wrapperDivBoxProps,
+  onAfterEnter,
+  onAfterLeave
 }: FadeInProps) {
   const init = useInitFlag()
 
@@ -203,6 +213,7 @@ export function FadeIn({
           contentRef.current?.style.removeProperty('opacity')
         }
         contentRef.current?.style.removeProperty(heightOrWidth)
+        onAfterEnter?.()
       }}
       onBeforeLeave={({ contentDivRef: contentRef, from }) => {
         if (ignoreLeaveTransition) return
@@ -220,11 +231,8 @@ export function FadeIn({
         contentRef.current?.style.removeProperty(heightOrWidth)
         contentRef.current?.style.setProperty('position', 'absolute')
         contentRef.current?.style.setProperty('opacity', '0')
-
-        // change ref's value to rerender rerender may use wrong value of innerStyle
         innerStyle.current = [baseTransitionStyle, { position: 'absolute', opacity: '0' }] as DivProps['style']
-        // clear cache for friendlier js GC
-        // innerChildren.current = null
+        onAfterLeave?.()
       }}
     >
       {/* Fade in 's css:width setting may crashed by react rerender without `<Div>`  */}

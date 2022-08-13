@@ -60,14 +60,14 @@ import RowTabs from '@/tempUikits/RowTabs'
 import Select from '@/tempUikits/Select'
 import Switcher from '@/tempUikits/Switcher'
 import Tooltip, { TooltipHandle } from '@/tempUikits/Tooltip'
-import { cssCol, cssRow, Div, DivProps } from '@edsolater/uikit'
+import { cssCol, cssRow, Div, DivProps, CSSColorString, cssGrid } from '@edsolater/uikit'
 import FadeIn from '@/tempUikits/FadeIn'
 import listToMap from '@/functions/format/listToMap'
 
 export default function FarmPage() {
   useFarmUrlParser()
   useFarmResetSelfCreatedByOwner()
-  const detailId = useFarms((s) => s.detailedId)
+
   return (
     <PageLayout
       mobileBarTitle="Farms"
@@ -77,11 +77,9 @@ export default function FarmPage() {
         renderSlot1: <FarmTitle />
       }}
     >
-      <Div icss={cssRow()}>
+      <Div icss={cssGrid({ gridTemplateColumns: '1fr auto' })}>
         <FarmCard />
-        <FadeIn show={detailId && detailId.length > 0} heightOrWidth="width">
-          <FarmDetailPanel />
-        </FadeIn>
+        <FarmDetailPanel />
       </Div>
     </PageLayout>
   )
@@ -654,25 +652,47 @@ function FarmCardDatabaseBody({
     </Div>
   )
 }
+
+/**
+ * manage component (with useFarms)
+ */
 function FarmDetailPanel(divProps: DivProps) {
   const hydratedInfos = useFarms((s) => s.hydratedInfos)
   const farmIds = useFarms((s) => s.detailedId) ?? []
   /** for calculate detailInfos */
   const tempHydratedInfoMap = listToMap(hydratedInfos, (i) => toPubString(i.id))
   const detailInfos = farmIds.map((farmId) => tempHydratedInfoMap[farmId])
-  const currentInfo = detailInfos[0]
+  const currentInfo = detailInfos.at(0)
+
+  /** for FadeIn */
+  const [panelShown, setPanelShown] = useState(Boolean(detailInfos.length))
+  useEffect(() => {
+    setPanelShown(Boolean(detailInfos.length))
+  }, [detailInfos.length])
   return (
-    <Card {...divProps}>
-      <Icon
-        heroIconName="x"
-        onClick={() => {
+    <FadeIn
+      {...divProps}
+      show={panelShown}
+      heightOrWidth="width"
+      onAfterLeave={() => {
+        if (currentInfo) {
           useFarms.setState((s) => ({
             detailedId: removeItem(s.detailedId ?? [], toPubString(currentInfo.id))
           }))
-        }}
-      />
-      <FarmCardDatabaseBodyCollapseItemContent farmInfo={currentInfo /* temp */} />
-    </Card>
+        }
+      }}
+    >
+      <Card>
+        <Icon
+          heroIconName="x"
+          size="lg"
+          onClick={() => {
+            setPanelShown(false)
+          }}
+        />
+        {currentInfo && <FarmDetailPanelItemContent farmInfo={currentInfo /* temp */} />}
+      </Card>
+    </FadeIn>
   )
 }
 
@@ -1015,7 +1035,7 @@ function FarmCardDatabaseBodyCollapseItemFace({
   return isMobile ? mobileContent : pcCotent
 }
 
-function FarmCardDatabaseBodyCollapseItemContent({ farmInfo }: { farmInfo: HydratedFarmInfo }) {
+function FarmDetailPanelItemContent({ farmInfo, ...divProps }: { farmInfo: HydratedFarmInfo } & DivProps) {
   const lpPrices = usePools((s) => s.lpPrices)
   const prices = useToken((s) => s.tokenPrices)
   const isMobile = useAppSettings((s) => s.isMobile)
@@ -1028,9 +1048,10 @@ function FarmCardDatabaseBodyCollapseItemContent({ farmInfo }: { farmInfo: Hydra
   const logSuccess = useNotification((s) => s.logSuccess)
   const isApprovePanelShown = useAppSettings((s) => s.isApprovePanelShown)
   return (
-    <div
-      className="rounded-b-3xl mobile:rounded-b-lg overflow-hidden"
-      style={{
+    <Div
+      {...divProps}
+      className_="rounded-b-3xl mobile:rounded-b-lg overflow-hidden"
+      style_={{
         background: 'linear-gradient(126.6deg, rgba(171, 196, 255, 0.12), rgb(171 196 255 / 4%) 100%)'
       }}
     >
@@ -1346,7 +1367,7 @@ function FarmCardDatabaseBodyCollapseItemContent({ farmInfo }: { farmInfo: Hydra
           </Button>
         </Row>
       )}
-    </div>
+    </Div>
   )
 }
 
