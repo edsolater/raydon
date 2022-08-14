@@ -150,8 +150,6 @@ type FadeInProps = {
   ignoreEnterTransition?: boolean
   ignoreLeaveTransition?: boolean
   children?: ReactNode // if immediately, inner content maybe be still not render ready
-  /** when set this, `<FadeIn>` will not have additional <Div> . (direct `<FadeIn>`'s child must be `<Div>`-like) */
-  wrapperDivBoxProps?: DivProps
   onAfterEnter?: () => void
   onAfterLeave?: () => void
 } & TransitionProps
@@ -169,7 +167,6 @@ export function FadeIn({
   transitionPresets = [opacityInOut({ min: 0.3 })],
   ignoreEnterTransition,
   ignoreLeaveTransition,
-  wrapperDivBoxProps,
   onAfterEnter,
   onAfterLeave
 }: FadeInProps) {
@@ -200,10 +197,12 @@ export function FadeIn({
         if (from === 'during-process') {
           contentRef.current?.style.setProperty(heightOrWidth, `${contentCachedTrueHeightOrWidth.current}px`)
         } else {
+          contentRef.current?.style.setProperty('transition-property', 'none') // if element self has width(224px for example), it will have no effect to set width 0 then set with 224px
           contentCachedTrueHeightOrWidth.current =
             contentRef.current?.[heightOrWidth === 'height' ? 'clientHeight' : 'clientWidth']
           contentRef.current?.style.setProperty(heightOrWidth, '0')
-          contentRef.current?.clientHeight
+          contentRef.current?.clientHeight // force GPU to reflow this frame
+          contentRef.current?.style.removeProperty('transition-property')
           contentRef.current?.style.setProperty(heightOrWidth, `${contentCachedTrueHeightOrWidth.current}px`)
         }
       }}
@@ -235,8 +234,7 @@ export function FadeIn({
         onAfterLeave?.()
       }}
     >
-      {/* Fade in 's css:width setting may crashed by react rerender without `<Div>`  */}
-      <Div {...wrapperDivBoxProps}>{innerChildren.current}</Div>
+      {innerChildren.current}
     </Transition>
   )
 }

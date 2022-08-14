@@ -9,13 +9,6 @@ import { SideMenuRoutes } from './SideMenuRoutes'
 import { SideMenuSubOptions } from './SideMenuSubOptions'
 import { VersionInfoBlock } from './VersionInfoBlock'
 
-/**
- * depend component:
- * - {@link RpcConnectionFace `<RpcConnectionFace>`}
- * - {@link RpcConnectionPanelPopover `<RpcConnectionPanelPopover>`}
- * - {@link CommunityPopover `<CommunityPopover>`}
- * - {@link SlippageTolerancePopover `<SlippageTolerancePopover>`}
- */
 export function SideMenu({
   // routes: {name:string, icon}
   onClickCloseBtn,
