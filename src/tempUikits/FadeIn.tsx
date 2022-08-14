@@ -156,12 +156,12 @@ type FadeInProps = {
 
 const baseTransitionStyle = { overflow: 'hidden' } as CSSStyle
 
+/** trans width/height from zero to auto */
 export function FadeIn({
   children,
   heightOrWidth = 'height',
   show = Boolean(children),
   appear,
-
   duration = 300,
   transitionTimeFuncing = cssTransitionTimeFnOutQuadratic,
   transitionPresets = [opacityInOut({ min: 0.3 })],
@@ -170,7 +170,7 @@ export function FadeIn({
   onAfterEnter,
   onAfterLeave
 }: FadeInProps) {
-  const init = useInitFlag()
+  const init = useInitFlagDetector()
 
   const contentCachedTrueHeightOrWidth = useRef<number>()
   const innerChildren = useRef<ReactNode>(children)
@@ -239,7 +239,7 @@ export function FadeIn({
   )
 }
 
-function useInitFlag() {
+function useInitFlagDetector() {
   const inInit = useRef(true)
   useEffect(() => () => {
     inInit.current = false
