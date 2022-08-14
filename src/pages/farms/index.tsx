@@ -77,13 +77,16 @@ export default function FarmPage() {
         renderSlot1: <FarmTitle />
       }}
     >
-      <Div icss={cssGrid({ gridTemplateColumns: '1fr auto' })}>
+      <FarmContentWrapper>
         <FarmCard />
         <FarmDetailPanel />
-      </Div>
+      </FarmContentWrapper>
     </PageLayout>
   )
 }
+const FarmContentWrapper = (divProps: DivProps) => (
+  <Div {...divProps} icss_={[cssGrid({ gridTemplateColumns: '1fr auto' }), { height: '100%' }]}></Div>
+)
 
 function FarmTitle() {
   const currentTab = useFarms((s) => s.currentTab)
@@ -615,32 +618,6 @@ function FarmCardDatabaseBody({
                 useFarms.setState((s) => ({ detailedId: addItem(s.detailedId ?? [], farmId) }))
               }}
             />
-            // <Collapse
-            //   open={expandedItemIds.has(toPubString(info.id))}
-            //   onToggle={() => {
-            //     useFarms.setState((s) => ({
-            //       expandedItemIds: toggleSetItem(s.expandedItemIds, toPubString(info.id))
-            //     }))
-            //   }}
-            // >
-            //   <Collapse.Face>
-            //     {(open) => (
-            //       <FarmCardDatabaseBodyCollapseItemFace
-            //         info={info}
-            //         isFavourite={favouriteIds?.includes(toPubString(info.id))}
-            //         onUnFavorite={(farmId) => {
-            //           setFavouriteIds((ids) => removeItem(ids ?? [], farmId))
-            //         }}
-            //         onStartFavorite={(farmId) => {
-            //           setFavouriteIds((ids) => addItem(ids ?? [], farmId))
-            //         }}
-            //       />
-            //     )}
-            //   </Collapse.Face>
-            //   <Collapse.Body>
-            //     {isLoading ? null : <FarmCardDatabaseBodyCollapseItemContent farmInfo={info as HydratedFarmInfo} />}
-            //   </Collapse.Body>
-            // </Collapse>
           )}
         />
       ) : (
@@ -682,7 +659,7 @@ function FarmDetailPanel(divProps: DivProps) {
         }
       }}
     >
-      <Card>
+      <Card icss={{ padding: 16 }}>
         <Icon
           heroIconName="x"
           size="lg"
@@ -1035,321 +1012,304 @@ function FarmCardDatabaseBodyCollapseItemFace({
   return isMobile ? mobileContent : pcCotent
 }
 
+function FarmItemStakeLpButtons({ farmInfo, ...divProps }: { farmInfo: HydratedFarmInfo } & DivProps) {
+  const isMobile = useAppSettings((s) => s.isMobile)
+  const balances = useWallet((s) => s.balances)
+  const hasLp = isMeaningfulNumber(balances[toPubString(farmInfo.lpMint)])
+  const connected = useWallet((s) => s.connected)
+  return (
+    <Div {...divProps} icss_={cssRow({ gap: 12 })}>
+      {farmInfo.userHasStaked ? (
+        <>
+          <Button
+            className="frosted-glass-teal mobile:px-6 mobile:py-2 mobile:text-xs"
+            disabled={(farmInfo.isClosedPool && !farmInfo.isUpcomingPool) || !hasLp}
+            validators={[
+              {
+                should: !farmInfo.isClosedPool
+              },
+              {
+                should: connected,
+                forceActive: true,
+                fallbackProps: {
+                  children: 'Connect Wallet',
+                  onClick: () =>
+                    useAppSettings.setState({
+                      isWalletSelectorShown: true
+                    })
+                }
+              },
+              {
+                should: hasLp,
+                forceActive: true,
+                fallbackProps: {
+                  children: 'Add Liquidity',
+                  onClick: () =>
+                    routeTo('/liquidity/add', {
+                      queryProps: {
+                        coin1: farmInfo.base,
+                        coin2: farmInfo.quote
+                      }
+                    })
+                }
+              }
+            ]}
+            onClick={() => {
+              if (connected) {
+                useFarms.setState({
+                  isStakeDialogOpen: true,
+                  stakeDialogMode: 'deposit',
+                  stakeDialogInfo: farmInfo
+                })
+              } else {
+                useAppSettings.setState({
+                  isWalletSelectorShown: true
+                })
+              }
+            }}
+          >
+            Stake
+          </Button>
+          <Tooltip>
+            <Icon
+              size={isMobile ? 'sm' : 'smi'}
+              heroIconName="minus"
+              className="grid place-items-center w-10 h-10 mobile:w-8 mobile:h-8 ring-inset ring-1 mobile:ring-1 ring-[rgba(171,196,255,.5)] rounded-xl mobile:rounded-lg text-[rgba(171,196,255,.5)] clickable clickable-filter-effect"
+              onClick={() => {
+                if (connected) {
+                  useFarms.setState({
+                    isStakeDialogOpen: true,
+                    stakeDialogMode: 'withdraw',
+                    stakeDialogInfo: farmInfo
+                  })
+                } else {
+                  useAppSettings.setState({
+                    isWalletSelectorShown: true
+                  })
+                }
+              }}
+            />
+            <Tooltip.Panel>Unstake LP</Tooltip.Panel>
+          </Tooltip>
+        </>
+      ) : (
+        <Button
+          className="frosted-glass-teal mobile:py-2 mobile:text-xs"
+          validators={[
+            {
+              should: !farmInfo.isClosedPool
+            },
+            {
+              should: connected,
+              forceActive: true,
+              fallbackProps: {
+                children: 'Connect Wallet',
+                onClick: () =>
+                  useAppSettings.setState({
+                    isWalletSelectorShown: true
+                  })
+              }
+            },
+            {
+              should: hasLp,
+              forceActive: true,
+              fallbackProps: {
+                children: 'Add Liquidity',
+                onClick: () =>
+                  routeTo('/liquidity/add', {
+                    queryProps: {
+                      coin1: farmInfo.base,
+                      coin2: farmInfo.quote
+                    }
+                  })
+              }
+            }
+          ]}
+          onClick={() => {
+            useFarms.setState({
+              isStakeDialogOpen: true,
+              stakeDialogMode: 'deposit',
+              stakeDialogInfo: farmInfo
+            })
+          }}
+        >
+          Start Farming
+        </Button>
+      )}
+    </Div>
+  )
+}
+
+function FarmItemHavestButton({ farmInfo, ...divProps }: { farmInfo: HydratedFarmInfo } & DivProps<'button'>) {
+  const isApprovePanelShown = useAppSettings((s) => s.isApprovePanelShown)
+  const connected = useWallet((s) => s.connected)
+  const hasPendingReward = farmInfo.rewards.some(({ userPendingReward }) => isMeaningfulNumber(userPendingReward))
+  return (
+    <Button // disable={Number(info.pendingReward?.numerator) <= 0}
+      {...divProps}
+      className="frosted-glass-teal rounded-xl mobile:w-full mobile:py-2 mobile:text-xs whitespace-nowrap"
+      isLoading={isApprovePanelShown}
+      onClick={() => {
+        txFarmHarvest(farmInfo, {
+          isStaking: false,
+          rewardAmounts: farmInfo.rewards
+            .map(({ userPendingReward }) => userPendingReward)
+            .filter(isMeaningfulNumber) as TokenAmount[]
+        })
+      }}
+      validators={[
+        {
+          should: connected,
+          forceActive: true,
+          fallbackProps: {
+            onClick: () =>
+              useAppSettings.setState({
+                isWalletSelectorShown: true
+              }),
+            children: 'Connect Wallet'
+          }
+        },
+        { should: hasPendingReward }
+      ]}
+    >
+      Harvest
+    </Button>
+  )
+}
+
 function FarmDetailPanelItemContent({ farmInfo, ...divProps }: { farmInfo: HydratedFarmInfo } & DivProps) {
   const lpPrices = usePools((s) => s.lpPrices)
   const prices = useToken((s) => s.tokenPrices)
   const isMobile = useAppSettings((s) => s.isMobile)
   const lightBoardClass = 'bg-[rgba(20,16,65,.2)]'
-  const connected = useWallet((s) => s.connected)
   const owner = useWallet((s) => s.owner)
-  const balances = useWallet((s) => s.balances)
-  const hasLp = isMeaningfulNumber(balances[toPubString(farmInfo.lpMint)])
-  const hasPendingReward = farmInfo.rewards.some(({ userPendingReward }) => isMeaningfulNumber(userPendingReward))
   const logSuccess = useNotification((s) => s.logSuccess)
-  const isApprovePanelShown = useAppSettings((s) => s.isApprovePanelShown)
   return (
-    <Div
-      {...divProps}
-      className_="rounded-b-3xl mobile:rounded-b-lg overflow-hidden"
-      style_={{
-        background: 'linear-gradient(126.6deg, rgba(171, 196, 255, 0.12), rgb(171 196 255 / 4%) 100%)'
-      }}
-    >
-      <AutoBox is={isMobile ? 'Col' : 'Row'} className={`mobile:gap-3`}>
-        <AutoBox
-          is={isMobile ? 'Col' : 'Grid'}
-          className="grid-cols-[1fr,1.5fr] gap-8 mobile:gap-3 flex-grow px-8 py-5 mobile:px-4 mobile:py-3"
-        >
-          <Row className="p-6 mobile:py-3 mobile:px-4 flex-grow ring-inset ring-1 mobile:ring-1 ring-[rgba(171,196,255,.5)] rounded-3xl mobile:rounded-xl items-center gap-3">
-            <div className="flex-grow">
-              <div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-2xs mb-1">Deposited</div>
-              <div className="text-white font-medium text-base mobile:text-xs">
-                {lpPrices[String(farmInfo.lpMint)] && farmInfo.userStakedLpAmount
-                  ? toUsdVolume(toTotalPrice(farmInfo.userStakedLpAmount, lpPrices[String(farmInfo.lpMint)]))
-                  : '--'}
-              </div>
-              {farmInfo.userStakedLpAmount && (
-                <div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-xs">
-                  {formatNumber(toString(farmInfo.userStakedLpAmount), {
-                    fractionLength: farmInfo.userStakedLpAmount?.token.decimals
-                  })}{' '}
-                  LP
-                </div>
-              )}
+    <Div {...divProps} icss_={cssCol({ gap: 36 * 4 })}>
+      <Row className="items-center gap-3">
+        <div className="flex-grow">
+          <div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-2xs mb-1">Deposited</div>
+          <div className="text-white font-medium text-base mobile:text-xs">
+            {lpPrices[String(farmInfo.lpMint)] && farmInfo.userStakedLpAmount
+              ? toUsdVolume(toTotalPrice(farmInfo.userStakedLpAmount, lpPrices[String(farmInfo.lpMint)]))
+              : '--'}
+          </div>
+          {farmInfo.userStakedLpAmount && (
+            <div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-xs">
+              {formatNumber(toString(farmInfo.userStakedLpAmount), {
+                fractionLength: farmInfo.userStakedLpAmount?.token.decimals
+              })}{' '}
+              LP
             </div>
-            <Row className="gap-3">
-              {farmInfo.userHasStaked ? (
-                <>
-                  <Button
-                    className="frosted-glass-teal mobile:px-6 mobile:py-2 mobile:text-xs"
-                    disabled={(farmInfo.isClosedPool && !farmInfo.isUpcomingPool) || !hasLp}
-                    validators={[
-                      { should: !farmInfo.isClosedPool },
-                      {
-                        should: connected,
-                        forceActive: true,
-                        fallbackProps: {
-                          children: 'Connect Wallet',
-                          onClick: () => useAppSettings.setState({ isWalletSelectorShown: true })
-                        }
-                      },
-                      {
-                        should: hasLp,
-                        forceActive: true,
-                        fallbackProps: {
-                          children: 'Add Liquidity',
-                          onClick: () =>
-                            routeTo('/liquidity/add', { queryProps: { coin1: farmInfo.base, coin2: farmInfo.quote } })
-                        }
-                      }
-                    ]}
-                    onClick={() => {
-                      if (connected) {
-                        useFarms.setState({
-                          isStakeDialogOpen: true,
-                          stakeDialogMode: 'deposit',
-                          stakeDialogInfo: farmInfo
-                        })
-                      } else {
-                        useAppSettings.setState({ isWalletSelectorShown: true })
-                      }
-                    }}
-                  >
-                    Stake
-                  </Button>
-                  <Tooltip>
-                    <Icon
-                      size={isMobile ? 'sm' : 'smi'}
-                      heroIconName="minus"
-                      className="grid place-items-center w-10 h-10 mobile:w-8 mobile:h-8 ring-inset ring-1 mobile:ring-1 ring-[rgba(171,196,255,.5)] rounded-xl mobile:rounded-lg text-[rgba(171,196,255,.5)] clickable clickable-filter-effect"
-                      onClick={() => {
-                        if (connected) {
-                          useFarms.setState({
-                            isStakeDialogOpen: true,
-                            stakeDialogMode: 'withdraw',
-                            stakeDialogInfo: farmInfo
-                          })
-                        } else {
-                          useAppSettings.setState({ isWalletSelectorShown: true })
-                        }
-                      }}
-                    />
-                    <Tooltip.Panel>Unstake LP</Tooltip.Panel>
-                  </Tooltip>
-                </>
-              ) : (
-                <Button
-                  className="frosted-glass-teal mobile:py-2 mobile:text-xs"
-                  validators={[
-                    { should: !farmInfo.isClosedPool },
-                    {
-                      should: connected,
-                      forceActive: true,
-                      fallbackProps: {
-                        children: 'Connect Wallet',
-                        onClick: () => useAppSettings.setState({ isWalletSelectorShown: true })
-                      }
-                    },
-                    {
-                      should: hasLp,
-                      forceActive: true,
-                      fallbackProps: {
-                        children: 'Add Liquidity',
-                        onClick: () =>
-                          routeTo('/liquidity/add', { queryProps: { coin1: farmInfo.base, coin2: farmInfo.quote } })
-                      }
-                    }
-                  ]}
-                  onClick={() => {
-                    useFarms.setState({
-                      isStakeDialogOpen: true,
-                      stakeDialogMode: 'deposit',
-                      stakeDialogInfo: farmInfo
-                    })
-                  }}
-                >
-                  Start Farming
-                </Button>
-              )}
-            </Row>
-          </Row>
-
-          <AutoBox
-            is={isMobile ? 'Col' : 'Row'}
-            className="p-6 mobile:py-3 mobile:px-4 flex-grow ring-inset ring-1 mobile:ring-1 ring-[rgba(171,196,255,.5)] rounded-3xl mobile:rounded-xl items-center gap-3"
-          >
-            {farmInfo.version === 6 ? (
-              <div className="flex-grow w-full">
-                <div
-                  className={`text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-2xs ${
-                    farmInfo.rewards.length > 2 ? 'mb-5' : 'mb-1'
-                  }`}
-                >
-                  Pending rewards
-                </div>
-                <Grid
-                  className={`gap-board 
-                   ${farmInfo.rewards.length > 1 ? 'grid-cols-2' : 'grid-cols-1'}`}
-                  style={{
-                    clipPath: 'inset(17px)', // 1px for gap-board
-                    margin: '-17px'
-                  }}
-                >
-                  {farmInfo.rewards.map((reward, idx) => (
-                    <div key={idx} className="p-4">
-                      <div className={`text-white font-medium text-base mobile:text-xs`}>
-                        {reward.userPendingReward ? toString(reward.userPendingReward) : 0} {reward.token?.symbol}
-                      </div>
-                      <div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-xs">
-                        {prices?.[String(reward.token?.mint)] && reward?.userPendingReward
-                          ? toUsdVolume(toTotalPrice(reward.userPendingReward, prices[String(reward.token?.mint)]))
-                          : null}
-                      </div>
-                    </div>
-                  ))}
-                </Grid>
-              </div>
-            ) : (
-              <Row className="flex-grow divide-x-1.5 w-full">
-                {farmInfo.rewards?.map(
-                  (reward, idx) =>
-                    reward.userHavedReward && (
-                      <div
-                        key={idx}
-                        className={`px-4 ${idx === 0 ? 'pl-0' : ''} ${
-                          idx === farmInfo.rewards.length - 1 ? 'pr-0' : ''
-                        } border-[rgba(171,196,255,.5)]`}
-                      >
-                        <div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-2xs mb-1">
-                          Pending rewards
-                        </div>
-                        <div className={`text-white font-medium text-base mobile:text-xs`}>
-                          {reward.userPendingReward ? toString(reward.userPendingReward) : 0} {reward.token?.symbol}
-                        </div>
-                        <div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-xs">
-                          {prices?.[String(reward.token?.mint)] && reward?.userPendingReward
-                            ? toUsdVolume(toTotalPrice(reward.userPendingReward, prices[String(reward.token?.mint)]))
-                            : null}
-                        </div>
-                      </div>
-                    )
-                )}
-              </Row>
-            )}
-            <Button
-              // disable={Number(info.pendingReward?.numerator) <= 0}
-              className="frosted-glass-teal rounded-xl mobile:w-full mobile:py-2 mobile:text-xs whitespace-nowrap"
-              isLoading={isApprovePanelShown}
-              onClick={() => {
-                txFarmHarvest(farmInfo, {
-                  isStaking: false,
-                  rewardAmounts: farmInfo.rewards
-                    .map(({ userPendingReward }) => userPendingReward)
-                    .filter(isMeaningfulNumber) as TokenAmount[]
-                })
-              }}
-              validators={[
-                {
-                  should: connected,
-                  forceActive: true,
-                  fallbackProps: {
-                    onClick: () => useAppSettings.setState({ isWalletSelectorShown: true }),
-                    children: 'Connect Wallet'
-                  }
-                },
-                { should: hasPendingReward }
-              ]}
-            >
-              Harvest
-            </Button>
-          </AutoBox>
-        </AutoBox>
-
-        <Row
-          className={`px-8 py-2 gap-3 items-center self-center justify-center ${
-            isMobile ? lightBoardClass : ''
-          } mobile:w-full`}
-        >
-          {isMobile ? (
-            <Row className="gap-5">
-              <Icon
-                size="sm"
-                heroIconName="link"
-                className="grid place-items-center w-10 h-10 mobile:w-8 mobile:h-8 ring-inset ring-1 mobile:ring-1 ring-[rgba(171,196,255,.5)] rounded-xl mobile:rounded-lg text-[rgba(171,196,255,.5)] clickable clickable-filter-effect"
-                onClick={() => {
-                  copyToClipboard(
-                    new URL(
-                      `farms/?tab=${useFarms.getState().currentTab}&farmid=${toPubString(farmInfo.id)}`,
-                      window.location.origin
-                    ).toString()
-                  ).then(() => {
-                    logSuccess('Copy Farm Link', <div>Farm ID: {toPubString(farmInfo.id)}</div>)
-                  })
-                }}
-              />
-              <Icon
-                size="sm"
-                heroIconName="plus"
-                className="grid place-items-center w-10 h-10 mobile:w-8 mobile:h-8 ring-inset ring-1 mobile:ring-1 ring-[rgba(171,196,255,.5)] rounded-xl mobile:rounded-lg text-[rgba(171,196,255,.5)] clickable clickable-filter-effect"
-                onClick={() => {
-                  routeTo('/liquidity/add', { queryProps: { ammId: farmInfo.ammId } })
-                }}
-              />
-              <Icon
-                size="sm"
-                iconSrc="/icons/msic-swap-h.svg"
-                className="grid place-items-center w-10 h-10 mobile:w-8 mobile:h-8 ring-inset ring-1 mobile:ring-1 ring-[rgba(171,196,255,.5)] rounded-xl mobile:rounded-lg text-[rgba(171,196,255,.5)] clickable clickable-filter-effect"
-                onClick={() => {
-                  routeTo('/swap', { queryProps: { coin1: farmInfo.base, coin2: farmInfo.quote } })
-                }}
-              />
-            </Row>
-          ) : (
-            <>
-              <Tooltip>
-                <Icon
-                  size="smi"
-                  heroIconName="link"
-                  className="grid place-items-center w-10 h-10 mobile:w-8 mobile:h-8 ring-inset ring-1 mobile:ring-1 ring-[rgba(171,196,255,.5)] rounded-xl mobile:rounded-lg text-[rgba(171,196,255,.5)] clickable clickable-filter-effect"
-                  onClick={() => {
-                    copyToClipboard(
-                      new URL(
-                        `farms/?tab=${useFarms.getState().currentTab}&farmid=${toPubString(farmInfo.id)}`,
-                        window.location.origin
-                      ).toString()
-                    ).then(() => {
-                      logSuccess('Copy Farm Link', <div>Farm ID: {toPubString(farmInfo.id)}</div>)
-                    })
-                  }}
-                />
-                <Tooltip.Panel>Copy Farm Link</Tooltip.Panel>
-              </Tooltip>
-              <Tooltip>
-                <Icon
-                  size="smi"
-                  heroIconName="plus"
-                  className="grid place-items-center w-10 h-10 mobile:w-8 mobile:h-8 ring-inset ring-1 mobile:ring-1 ring-[rgba(171,196,255,.5)] rounded-xl mobile:rounded-lg text-[rgba(171,196,255,.5)] clickable clickable-filter-effect"
-                  onClick={() => {
-                    routeTo('/liquidity/add', { queryProps: { ammId: farmInfo.ammId } })
-                  }}
-                />
-                <Tooltip.Panel>Add Liquidity</Tooltip.Panel>
-              </Tooltip>
-              <Tooltip>
-                <Icon
-                  size="smi"
-                  iconSrc="/icons/msic-swap-h.svg"
-                  className="grid place-items-center w-10 h-10 mobile:w-8 mobile:h-8 ring-inset ring-1 mobile:ring-1 ring-[rgba(171,196,255,.5)] rounded-xl mobile:rounded-lg text-[rgba(171,196,255,.5)] clickable clickable-filter-effect"
-                  onClick={() => {
-                    routeTo('/swap', { queryProps: { coin1: farmInfo.base, coin2: farmInfo.quote } })
-                  }}
-                />
-                <Tooltip.Panel>Swap</Tooltip.Panel>
-              </Tooltip>
-            </>
           )}
-        </Row>
-      </AutoBox>
+        </div>
+        <FarmItemStakeLpButtons farmInfo={farmInfo} />
+      </Row>
+
+      <Row className="flex-grow items-center gap-3">
+        {farmInfo.version === 6 ? (
+          <div className="flex-grow w-full">
+            <div
+              className={`text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-2xs ${
+                farmInfo.rewards.length > 2 ? 'mb-5' : 'mb-1'
+              }`}
+            >
+              Pending rewards
+            </div>
+            <Grid
+              className={`gap-board 
+                   ${farmInfo.rewards.length > 1 ? 'grid-cols-2' : 'grid-cols-1'}`}
+              style={{
+                clipPath: 'inset(17px)', // 1px for gap-board
+                margin: '-17px'
+              }}
+            >
+              {farmInfo.rewards.map((reward, idx) => (
+                <div key={idx} className="p-4">
+                  <div className={`text-white font-medium text-base mobile:text-xs`}>
+                    {reward.userPendingReward ? toString(reward.userPendingReward) : 0} {reward.token?.symbol}
+                  </div>
+                  <div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-xs">
+                    {prices?.[String(reward.token?.mint)] && reward?.userPendingReward
+                      ? toUsdVolume(toTotalPrice(reward.userPendingReward, prices[String(reward.token?.mint)]))
+                      : null}
+                  </div>
+                </div>
+              ))}
+            </Grid>
+          </div>
+        ) : (
+          <Row className="flex-grow divide-x-1.5 w-full">
+            {farmInfo.rewards?.map(
+              (reward, idx) =>
+                reward.userHavedReward && (
+                  <div
+                    key={idx}
+                    className={`px-4 ${idx === 0 ? 'pl-0' : ''} ${
+                      idx === farmInfo.rewards.length - 1 ? 'pr-0' : ''
+                    } border-[rgba(171,196,255,.5)]`}
+                  >
+                    <div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-2xs mb-1">
+                      Pending rewards
+                    </div>
+                    <div className={`text-white font-medium text-base mobile:text-xs`}>
+                      {reward.userPendingReward ? toString(reward.userPendingReward) : 0} {reward.token?.symbol}
+                    </div>
+                    <div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-xs">
+                      {prices?.[String(reward.token?.mint)] && reward?.userPendingReward
+                        ? toUsdVolume(toTotalPrice(reward.userPendingReward, prices[String(reward.token?.mint)]))
+                        : null}
+                    </div>
+                  </div>
+                )
+            )}
+          </Row>
+        )}
+        <FarmItemHavestButton farmInfo={farmInfo} />
+      </Row>
+
+      <Row className={`gap-3 items-center self-center justify-center`}>
+        <Tooltip>
+          <Icon
+            size="smi"
+            heroIconName="link"
+            className="grid place-items-center w-10 h-10 mobile:w-8 mobile:h-8 ring-inset ring-1 mobile:ring-1 ring-[rgba(171,196,255,.5)] rounded-xl mobile:rounded-lg text-[rgba(171,196,255,.5)] clickable clickable-filter-effect"
+            onClick={() => {
+              copyToClipboard(
+                new URL(
+                  `farms/?tab=${useFarms.getState().currentTab}&farmid=${toPubString(farmInfo.id)}`,
+                  window.location.origin
+                ).toString()
+              ).then(() => {
+                logSuccess('Copy Farm Link', <div>Farm ID: {toPubString(farmInfo.id)}</div>)
+              })
+            }}
+          />
+          <Tooltip.Panel>Copy Farm Link</Tooltip.Panel>
+        </Tooltip>
+        <Tooltip>
+          <Icon
+            size="smi"
+            heroIconName="plus"
+            className="grid place-items-center w-10 h-10 mobile:w-8 mobile:h-8 ring-inset ring-1 mobile:ring-1 ring-[rgba(171,196,255,.5)] rounded-xl mobile:rounded-lg text-[rgba(171,196,255,.5)] clickable clickable-filter-effect"
+            onClick={() => {
+              routeTo('/liquidity/add', { queryProps: { ammId: farmInfo.ammId } })
+            }}
+          />
+          <Tooltip.Panel>Add Liquidity</Tooltip.Panel>
+        </Tooltip>
+        <Tooltip>
+          <Icon
+            size="smi"
+            iconSrc="/icons/msic-swap-h.svg"
+            className="grid place-items-center w-10 h-10 mobile:w-8 mobile:h-8 ring-inset ring-1 mobile:ring-1 ring-[rgba(171,196,255,.5)] rounded-xl mobile:rounded-lg text-[rgba(171,196,255,.5)] clickable clickable-filter-effect"
+            onClick={() => {
+              routeTo('/swap', { queryProps: { coin1: farmInfo.base, coin2: farmInfo.quote } })
+            }}
+          />
+          <Tooltip.Panel>Swap</Tooltip.Panel>
+        </Tooltip>
+      </Row>
 
       {/* farm edit button  */}
       {isMintEqual(farmInfo.creator, owner) && (
