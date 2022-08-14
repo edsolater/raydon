@@ -6,14 +6,11 @@ import Drawer from '../../tempUikits/Drawer'
 import { RPCPerformanceBanner } from './RPCPerformanceBanner'
 import { SideMenu } from './SideMenu'
 import { TopNavbar, TopNavbarProps } from './TopNavbar'
-import { VersionTooOldDialog } from './VersionTooOldDialog'
 
 import Col from '@/tempUikits/Col'
 import { FadeIn } from '@/tempUikits/FadeIn'
-import { Div } from '@edsolater/uikit'
 import MessageBoardWidget from '../navWidgets/MessageBoardWidget'
 import WalletWidget from '../navWidgets/WalletWidget'
-import { RootLogo } from './RootLogo'
 
 export default function PageLayout(props: {
   /** only mobile  */

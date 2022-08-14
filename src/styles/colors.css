@@ -13,7 +13,10 @@
   --text-main: hsl(222, 100%, 65%);
   --text-sub: #abc4ff80;
 
+  --icon-main: #ffffff9e;
   --icon-link: hsl(224, 100%, 86%);
+
+  --button-main: var(--formkit-text-color);
 
   --bg-link-active: hsl(224, 100%, 90%, 0.1);
 
@@ -46,13 +49,13 @@
 
   --formkit-label-text-active: white;
   --formkit-label-text-normal: #ffffffa6;
-  --formkit-thumb-text-normal: #ffffff;
+  --formkit-thumb-text-normal: #ffffffcc;
   --formkit-thumb-text-disabled: #ffffffb8;
   --formkit-bg-active: #7e9db5b0;
   --formkit-bg-normal: #d8d8d80f;
-  --formkit-thumb-color: #0993ecd9; /* button primary color、max、select coin */
-  --formkit-thumb-color-disable: #6a739796; /* button primary */
-  --formkit-thumb-color-transparent: hsla(204, 93%, 48%, 0.1);
+  --formkit-thumb-main: #3168ffab; /* button primary color、max、select coin */
+  --formkit-thumb-disable: #6a739796; /* button primary */
+  --formkit-thumb-transparent: hsla(204, 93%, 48%, 0.1);
 
   --app-line-color: rgba(255, 255, 255, 0.1);
   --link-color: #5ac4be;

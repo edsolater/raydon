@@ -52,9 +52,9 @@ const config = {
         'formkit-bg-active': 'var(--formkit-bg-active)',
         'formkit-bg-normal': 'var(--formkit-bg-normal)',
         // heavier than formkit bg
-        'formkit-thumb': 'var(--formkit-thumb-color)',
-        'formkit-thumb-disable': 'var(--formkit-thumb-color-disable)',
-        'formkit-thumb-transparent': 'var(--formkit-thumb-color-transparent)',
+        'formkit-thumb': 'var(--formkit-thumb-main)',
+        'formkit-thumb-disable': 'var(--formkit-thumb-disable)',
+        'formkit-thumb-transparent': 'var(--formkit-thumb-transparent)',
 
         // 👇 component color
         'pop-over-bg-high': 'var(--pop-over-bg-high)',

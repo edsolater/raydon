@@ -11,6 +11,7 @@ import { ThreeSlotItem } from '../../tempUikits/ThreeSlotItem'
 import { AddressItem } from '../AddressItem'
 import Icon from '../Icon'
 import PageLayoutPopoverDrawer from '../PageLayoutPopoverDrawer'
+import { appColors } from '@/styles/colors'
 
 /** this should be used in ./Navbar.tsx */
 export default function WalletWidget() {
@@ -78,22 +79,22 @@ export default function WalletWidget() {
         />
       ) : (
         <Button
-          className="frosted-glass frosted-glass-teal"
+          className=""
           onClick={() => {
             if (!publicKey) useAppSettings.setState({ isWalletSelectorShown: true })
           }}
         >
           {connected ? (
             <Row className="items-center gap-3 my-0.5">
-              <Icon size="sm" iconSrc="/icons/msic-wallet-connected.svg" />
+              <Icon size="sm" iconSrc="/icons/coin-wallet.svg" />
               <div className="text-sm font-medium text-white">
                 {String(publicKey).slice(0, 5)}...{String(publicKey).slice(-5)}
               </div>
             </Row>
           ) : (
             <Row className="items-center gap-3 my-0.5">
-              <Icon size="sm" iconSrc="/icons/msic-wallet.svg" />
-              <div className="text-sm font-medium text-[#39D0D8]">Connect Wallet</div>
+              <Icon forceColor={appColors.iconMain} iconSrc="/icons/coin-wallet.svg" />
+              <div className="text-sm font-medium">Connect Wallet</div>
             </Row>
           )}
         </Button>
