@@ -13,7 +13,7 @@
   --text-main: hsl(222, 100%, 65%);
   --text-sub: #abc4ff80;
 
-  --icon-main: #ffffff9e;
+  --icon-main: hwb(224 82% 0% / 0.851);
   --icon-link: hsl(224, 100%, 86%);
 
   --button-main: var(--formkit-text-color);

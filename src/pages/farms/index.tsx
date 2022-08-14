@@ -30,6 +30,7 @@ import { toUTC } from '@/functions/date/dateFormat'
 import copyToClipboard from '@/functions/dom/copyToClipboard'
 import { autoSuffixNumberish } from '@/functions/format/autoSuffixNumberish'
 import formatNumber from '@/functions/format/formatNumber'
+import listToMap from '@/functions/format/listToMap'
 import toPubString from '@/functions/format/toMintString'
 import toPercentString from '@/functions/format/toPercentString'
 import { toTokenAmount } from '@/functions/format/toTokenAmount'
@@ -40,7 +41,6 @@ import { isTokenAmount } from '@/functions/judgers/dateType'
 import { gt, gte, isMeaningfulNumber } from '@/functions/numberish/compare'
 import { toString } from '@/functions/numberish/toString'
 import { searchItems } from '@/functions/searchItems'
-import { toggleSetItem } from '@/functions/setMethods'
 import useSort, { UseSortControls } from '@/hooks/useSort'
 import AutoBox from '@/tempUikits/AutoBox'
 import { Badge } from '@/tempUikits/Badge'
@@ -49,6 +49,7 @@ import Card from '@/tempUikits/Card'
 import CoinInputBox, { CoinInputBoxHandle } from '@/tempUikits/CoinInputBox'
 import Col from '@/tempUikits/Col'
 import Collapse from '@/tempUikits/Collapse'
+import FadeInStable, { FadeIn } from '@/tempUikits/FadeIn'
 import Grid from '@/tempUikits/Grid'
 import Input from '@/tempUikits/Input'
 import Link from '@/tempUikits/Link'
@@ -60,9 +61,8 @@ import RowTabs from '@/tempUikits/RowTabs'
 import Select from '@/tempUikits/Select'
 import Switcher from '@/tempUikits/Switcher'
 import Tooltip, { TooltipHandle } from '@/tempUikits/Tooltip'
-import { cssCol, cssRow, Div, DivProps, CSSColorString, cssGrid } from '@edsolater/uikit'
-import FadeIn from '@/tempUikits/FadeIn'
-import listToMap from '@/functions/format/listToMap'
+import { cssCol, cssGrid, cssRow, Div, DivProps } from '@edsolater/uikit'
+import { appColors } from '@/styles/colors'
 
 export default function FarmPage() {
   useFarmUrlParser()
@@ -78,8 +78,8 @@ export default function FarmPage() {
       }}
     >
       <FarmContentWrapper>
-        <FarmCard />
-        <FarmDetailPanel />
+        <FarmTableList icss={{ padding: 8 }} />
+        <FarmDetailPanel icss={{ padding: 8 }} />
       </FarmContentWrapper>
     </PageLayout>
   )
@@ -516,7 +516,7 @@ function FarmCardDatabaseHead({
 }
 
 // TODO: FarmCardData to be context
-function FarmCard(divProps: DivProps) {
+function FarmTableList(divProps: DivProps) {
   const jsonInfos = useFarms((s) => s.jsonInfos)
   const hydratedInfos = useFarms((s) => s.hydratedInfos)
   const onlySelfFarms = useFarms((s) => s.onlySelfFarms)
@@ -659,16 +659,17 @@ function FarmDetailPanel(divProps: DivProps) {
         }
       }}
     >
-      <Card icss={{ padding: 16 }}>
+      <Div icss={{ padding: 16 }}>
         <Icon
-          heroIconName="x"
-          size="lg"
+          iconSrc="/icons/double-right.svg"
+          forceColor={appColors.iconMain}
           onClick={() => {
             setPanelShown(false)
           }}
+          icss={{ marginBottom: 32 }}
         />
         {currentInfo && <FarmDetailPanelItemContent farmInfo={currentInfo /* temp */} />}
-      </Card>
+      </Div>
     </FadeIn>
   )
 }
@@ -1185,7 +1186,7 @@ function FarmDetailPanelItemContent({ farmInfo, ...divProps }: { farmInfo: Hydra
   const owner = useWallet((s) => s.owner)
   const logSuccess = useNotification((s) => s.logSuccess)
   return (
-    <Div {...divProps} icss_={cssCol({ gap: 36 * 4 })}>
+    <Div {...divProps} className="ier-3" icss_={cssCol({ gap: 12 * 4 })}>
       <Row className="items-center gap-3">
         <div className="flex-grow">
           <div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-2xs mb-1">Deposited</div>
