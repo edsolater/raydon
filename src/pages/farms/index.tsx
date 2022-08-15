@@ -61,7 +61,7 @@ import RowTabs from '@/tempUikits/RowTabs'
 import Select from '@/tempUikits/Select'
 import Switcher from '@/tempUikits/Switcher'
 import Tooltip, { TooltipHandle } from '@/tempUikits/Tooltip'
-import { cssCol, cssGrid, cssRow, Div, DivProps } from '@edsolater/uikit'
+import { cssCol, cssGrid, cssRow, Div, DivProps, SplitView } from '@edsolater/uikit'
 import { appColors } from '@/styles/colors'
 
 export default function FarmPage() {
@@ -84,8 +84,10 @@ export default function FarmPage() {
     </PageLayout>
   )
 }
-const FarmContentWrapper = (divProps: DivProps) => (
-  <Div {...divProps} icss_={[cssGrid({ gridTemplateColumns: '1fr auto' }), { height: '100%' }]}></Div>
+const FarmContentWrapper = ({ children, ...divProps }: DivProps) => (
+  <Div {...divProps} icss_={[cssGrid({ gridTemplateColumns: '1fr auto' }), { height: '100%' }]}>
+    <SplitView>{children}</SplitView>
+  </Div>
 )
 
 function FarmTitle() {
@@ -649,6 +651,7 @@ function FarmDetailPanel(divProps: DivProps) {
   return (
     <FadeIn
       {...divProps}
+      hasWrapper
       show={panelShown}
       heightOrWidth="width"
       onAfterLeave={() => {

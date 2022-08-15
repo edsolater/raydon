@@ -142,6 +142,8 @@ export default function FadeInStable({
 
 type FadeInProps = {
   heightOrWidth?: 'height' | 'width'
+  propsOfWrapper?: DivProps
+  hasWrapper?: boolean
   show?: boolean
   duration?: number
   transitionTimeFuncing?: string
@@ -160,6 +162,8 @@ const baseTransitionStyle = { overflow: 'hidden' } as CSSStyle
 export function FadeIn({
   children,
   heightOrWidth = 'height',
+  propsOfWrapper,
+  hasWrapper = Boolean(propsOfWrapper),
   show = Boolean(children),
   appear,
   duration = 300,
@@ -235,7 +239,7 @@ export function FadeIn({
         onAfterLeave?.()
       }}
     >
-      {innerChildren.current}
+      {hasWrapper ? <Div {...propsOfWrapper}>{innerChildren.current}</Div> : innerChildren.current}
     </Transition>
   )
 }

@@ -30,7 +30,7 @@
     "@edsolater/fnkit": "^0.1.7",
     "@edsolater/hookit": "^0.1.6",
     "@edsolater/jfetch": "^0.1.2",
-    "@edsolater/uikit": "^0.1.9",
+    "@edsolater/uikit": "^0.1.10",
     "@edsolater/xstore": "^0.1.8",
     "@headlessui/react": "^1.6.6",
     "@heroicons/react": "^1.0.6",
