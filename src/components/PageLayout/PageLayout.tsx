@@ -11,6 +11,7 @@ import Col from '@/tempUikits/Col'
 import { FadeIn } from '@/tempUikits/FadeIn'
 import MessageBoardWidget from '../navWidgets/MessageBoardWidget'
 import WalletWidget from '../navWidgets/WalletWidget'
+import { appColors } from '@/styles/colors'
 
 export default function PageLayout(props: {
   /** only mobile  */
@@ -52,7 +53,8 @@ export default function PageLayout(props: {
           "b c c" 1fr
           "b c c" 1fr / auto 1fr 1fr`,
         overflow: 'hidden', // establish a BFC
-        willChange: 'opacity'
+        willChange: 'opacity',
+        background: appColors.appBg
       }}
       className={`w-full mobile:w-full h-full mobile:h-full`}
     >

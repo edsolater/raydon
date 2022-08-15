@@ -659,7 +659,7 @@ function FarmDetailPanel(divProps: DivProps) {
         }
       }}
     >
-      <Div icss={{ padding: 16 }}>
+      <Div icss={{ padding: 16, backdropFilter: 'brightness(1.5)' }}>
         <Icon
           iconSrc="/icons/double-right.svg"
           forceColor={appColors.iconMain}
