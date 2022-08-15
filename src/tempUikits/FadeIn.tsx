@@ -200,6 +200,7 @@ export function FadeIn({
           contentRef.current?.style.setProperty('transition-property', 'none') // if element self has width(224px for example), it will have no effect to set width 0 then set with 224px
           contentCachedTrueHeightOrWidth.current =
             contentRef.current?.[heightOrWidth === 'height' ? 'clientHeight' : 'clientWidth']
+          // TODO: should also transition margin-inline and padding-inline
           contentRef.current?.style.setProperty(heightOrWidth, '0')
           contentRef.current?.clientHeight // force GPU to reflow this frame
           contentRef.current?.style.removeProperty('transition-property')
