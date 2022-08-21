@@ -607,7 +607,7 @@ function FarmCardDatabaseBody({
           getGroupTitle={(i) => i.category}
           renderGroupTitle={(category) => <Div icss={{ paddingBlock: 4, background: 'var(--app-bg)' }}>{category}</Div>}
           renderItem={(info) => (
-            <FarmCardDatabaseBodyCollapseItemFace
+            <FarmCardItemFace
               info={info}
               isFavourite={favouriteIds?.includes(toPubString(info.id))}
               onUnFavorite={(farmId) => {
@@ -735,7 +735,7 @@ function FarmRewardBadge({
   )
 }
 
-function FarmCardDatabaseBodyCollapseItemFace({
+function FarmCardItemFace({
   info,
   isFavourite,
   onClickItemFace,

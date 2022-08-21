@@ -19,9 +19,9 @@ export type ListProps<T> = {
   infiniteScrollOptions?: InfiniteScrollOptions
 
   sourceData: T[]
-  getKey?: (item: T, index: number) => string | number
+  getKey?: (item: T, idx: number) => string | number
 
-  renderItem: (item: T, index: number) => ReactNode
+  renderItem: (item: T, idx: number) => ReactNode
 
   getGroupTitle?: (item: T) => string /* groupName */
   renderGroupTitle?: (groupName: string, groupedItems: T[]) => ReactNode
@@ -34,7 +34,7 @@ export default function ListFast<T>({
   infiniteScrollOptions,
   sourceData,
   renderItem,
-  getKey = (item, idx) => (isObject(item) ? Reflect.get(item as unknown as object, 'id') ?? idx : idx),
+  getKey = (item) => (isObject(item) ? Reflect.get(item as unknown as object, 'id') ?? undefined : undefined),
 
   renderGroupTitle = (groupName) => groupName,
   getGroupTitle,
@@ -61,7 +61,7 @@ export default function ListFast<T>({
     allItems: allListItems.map((i) => i.item),
     getKey
   })
-  const turncatedListItems = allListItems.slice(0, renderItemLength)
+  const turncatedListItems = allListItems.slice(0, renderItemLength) // FIXME: DOM don't cache sliced items. so sort will render slow
   const turncatedGroupedListItems = shakeNil(groupBy(turncatedListItems, (listItem) => listItem.groupName))
 
   // list item cache (for improve performance)
