@@ -113,7 +113,7 @@ export default function useSort<D extends Record<string, any>[]>(
     if (!sortConfigs.length) configs = defaultConfigs
     if (sortConfigs[0].mode === 'none') configs = defaultConfigs
     const [{ mode, sortCompare }] = configs // temp only respect first sortConfigs in queue
-    return [...sourceDataList].sort((a, b) => {
+    const sortedData = [...sourceDataList].sort((a, b) => {
       const pickFunctions = [sortCompare].flat()
       if (!pickFunctions.length) return 0
 
@@ -134,6 +134,7 @@ export default function useSort<D extends Record<string, any>[]>(
       )
       return (mode === 'decrease' ? -1 : 1) * compareFactor(a, b)
     })
+    return sortedData
   }, [sortConfigs, sourceDataList])
 
   return { sortedData, sortConfigs, sortConfig, setConfig, clearSortConfig }

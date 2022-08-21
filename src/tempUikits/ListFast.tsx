@@ -64,6 +64,19 @@ export default function ListFast<T>({
   const turncatedListItems = allListItems.slice(0, renderItemLength)
   const turncatedGroupedListItems = shakeNil(groupBy(turncatedListItems, (listItem) => listItem.groupName))
 
+  // list item cache (for improve performance)
+  const renderCache = useRef(new Map<string | number, { item: T; node: ReactNode }>())
+  const getRenderNode = (item: T, idx: number) => {
+    const key = getKey(item, idx)
+    if (renderCache.current.has(key) && renderCache.current.get(key)?.item === item) {
+      return renderCache.current.get(key)!.node
+    } else {
+      const node = renderItem(item, idx)
+      renderCache.current.set(key, { item, node })
+      return node
+    }
+  }
+
   return (
     <Div {...restProps} domRef_={listRef} className_={`List overflow-y-scroll`} style_={{ contentVisibility: 'auto' }}>
       {isGrouped
@@ -77,12 +90,12 @@ export default function ListFast<T>({
                 )}
               </Div>
               {groupItems.map(({ item }, idx) => (
-                <Fragment key={getKey(item, idx)}>{renderItem(item, idx)}</Fragment>
+                <Fragment key={getKey(item, idx)}>{getRenderNode(item, idx)}</Fragment>
               ))}
             </Div>
           ))
         : turncatedListItems.map(({ item }, idx) => (
-            <Fragment key={getKey(item, idx)}>{renderItem(item, idx)}</Fragment>
+            <Fragment key={getKey(item, idx)}>{getRenderNode(item, idx)}</Fragment>
           ))}
     </Div>
   )

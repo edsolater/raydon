@@ -577,7 +577,6 @@ function FarmTableList(divProps: DivProps) {
       <FarmDatabaseControllers sortControls={sortControls} />
       <FarmCardDatabaseHead sortControls={sortControls} />
       <FarmCardDatabaseBody
-        className={'eeee'}
         icss={{ flex: 1, overflowY: 'auto', overflowX: 'hidden' }}
         isLoading={isLoading}
         data={sortControls.sortedData}
@@ -753,7 +752,7 @@ function FarmCardDatabaseBodyCollapseItemFace({
   const isMobile = useAppSettings((s) => s.isMobile)
   const timeBasis = useFarms((s) => s.timeBasis)
 
-  const pcCotent = (
+  return (
     <Div
       className_={twMerge(
         `grid grid-flow-col gap-2 grid-cols-[auto,1.5fr,1.2fr,1fr,1fr,auto] mobile:grid-cols-[1fr,1fr,1fr,auto] py-2 mobile:py-1 mobile:px-5 items-stretch rounded-t-xl mobile:rounded-t-lg transition-all`
@@ -900,110 +899,6 @@ function FarmCardDatabaseBodyCollapseItemFace({
       />
     </Div>
   )
-
-  const mobileContent = (
-    <Collapse open>
-      <Collapse.Face>
-        <Row
-          type="grid-x"
-          className={`py-4 px-5 mobile:p-2 items-stretch gap-2 grid-cols-[auto,1.1fr,1fr,1fr,auto] bg-[#141041] mobile:rounded-t-lg`}
-        >
-          <div className="w-8 self-center ">
-            {isFavourite ? (
-              <Icon
-                className="clickable m-auto self-center"
-                iconSrc="/icons/misc-star-filled.svg"
-                onClick={({ ev }) => {
-                  ev.stopPropagation()
-                  onUnFavorite?.(toPubString(info.id))
-                }}
-                size="sm"
-              />
-            ) : (
-              <Icon
-                className="clickable opacity-30 hover:opacity-80 transition clickable-mask-offset-2 m-auto self-center"
-                iconSrc="/icons/misc-star-empty.svg"
-                onClick={({ ev }) => {
-                  ev.stopPropagation()
-                  onStartFavorite?.(toPubString(info.id))
-                }}
-                size="sm"
-              />
-            )}
-          </div>
-          <CoinAvatarInfoItem info={info} className="self-center" />
-
-          <TextInfoItem
-            name="TVL"
-            value={
-              isJsonFarmInfo(info)
-                ? '--'
-                : info.tvl
-                ? `≈${toUsdVolume(info.tvl, { autoSuffix: true, decimalPlace: 1 })}`
-                : '--'
-            }
-            subValue={
-              isJsonFarmInfo(info)
-                ? '--'
-                : info.stakedLpAmount && `${autoSuffixNumberish(info.stakedLpAmount, { decimalPlace: 1 })} LP`
-            }
-          />
-
-          <TextInfoItem
-            name={`APR(${timeBasis})`}
-            value={
-              isJsonFarmInfo(info) ? (
-                '--'
-              ) : (
-                <Tooltip placement="right">
-                  {info.totalApr7d ? toPercentString(info.totalApr7d) : '--'}
-                  <Tooltip.Panel>
-                    {info.raydiumFeeApr7d && (
-                      <div className="whitespace-nowrap">Fees {toPercentString(info.raydiumFeeApr7d)}</div>
-                    )}
-                    {info.rewards.map(
-                      ({ apr, token, userHavedReward }, idx) =>
-                        userHavedReward && (
-                          <div key={idx} className="whitespace-nowrap">
-                            {token?.symbol} {toPercentString(apr)}
-                          </div>
-                        )
-                    )}
-                  </Tooltip.Panel>
-                </Tooltip>
-              )
-            }
-          />
-
-          <Grid className="w-6 h-6 place-items-center self-center">
-            <Icon size="sm" heroIconName="chevron-down" />
-          </Grid>
-        </Row>
-      </Collapse.Face>
-
-      <Collapse.Body>
-        {/* <Row type="grid-x" className="py-4 px-5 relative items-center gap-2 grid-cols-[1fr,1fr,1fr,auto]  bg-[#141041]">
-          <div className="absolute top-0 left-5 right-5 border-[rgba(171,196,255,.2)] border-t-1.5"></div>
-          <TextInfoItem
-            name="Volume(7d)"
-            value={isHydratedPoolItemInfo(info) ? toUsdVolume(info.volume7d, { autoSuffix: true }) : undefined}
-          />
-          <TextInfoItem
-            name="Volume(24h)"
-            value={isHydratedPoolItemInfo(info) ? toUsdVolume(info.volume24h, { autoSuffix: true }) : undefined}
-          />
-          <TextInfoItem
-            name="Fees(7d)"
-            value={isHydratedPoolItemInfo(info) ? toUsdVolume(info.fee7d, { autoSuffix: true }) : undefined}
-          />
-
-          <Grid className="w-6 h-6 place-items-center"></Grid>
-        </Row> */}
-      </Collapse.Body>
-    </Collapse>
-  )
-
-  return isMobile ? mobileContent : pcCotent
 }
 
 function FarmItemStakeLpButtons({ farmInfo, ...divProps }: { farmInfo: HydratedFarmInfo } & DivProps) {
