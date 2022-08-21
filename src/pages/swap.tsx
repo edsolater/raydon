@@ -346,7 +346,7 @@ function SwapCard() {
         />
       </div>
       {/* info panel */}
-      <FadeInStable show={hasSwapDetermined}>
+      <FadeInStable show={Boolean(hasSwapDetermined)}>
         <SwapCardInfo className="mt-5" />
       </FadeInStable>
       {/* alert user if price has accidently change  */}
