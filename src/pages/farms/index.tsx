@@ -190,7 +190,7 @@ function FarmSearchBlock({ className }: { className?: string }) {
     <Input
       value={storeSearchText}
       className={twMerge(
-        'px-2 py-2 mobile:py-1 gap-2 ring-inset ring-1 ring-[rgba(196,214,255,0.5)] rounded-xl mobile:rounded-lg min-w-[6em]',
+        'px-2 py-2 mobile:py-1 gap-2 ring-inset ring-1 ring-[rgba(196,214,255,0.5)] rounded-lg mobile:rounded-lg min-w-[6em]',
         className
       )}
       inputClassName="font-medium text-sm mobile:text-xs text-[rgba(196,214,255,0.5)] placeholder-[rgba(196,214,255,0.5)]"
@@ -387,7 +387,7 @@ function FarmDatabaseControllers({
 
   return (
     <Div {...restProps}>
-      <Row className="justify-end gap-6 mb-4">
+      <Row className="justify-end gap-4 mb-4">
         {haveSelfCreatedFarm && <FarmSlefCreatedOnlyBlock />}
         <FarmStakedOnlyBlock />
         <FarmTimeBasisSelectorBox />
