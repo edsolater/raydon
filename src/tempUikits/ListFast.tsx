@@ -1,20 +1,20 @@
-import { Fragment, ReactNode, RefObject, useEffect, useMemo, useRef, useState } from 'react'
+import { Fragment, ReactNode, RefObject, useMemo, useRef, useState } from 'react'
 
 import { useRecordedEffect } from '@/hooks/useRecordedEffect'
 
 import { isObject } from '@/functions/judgers/dateType'
+import { useEvent } from '@/hooks/useEvent'
 import { useScrollDegreeDetector } from '@/hooks/useScrollDegreeDetector'
 import { groupBy, map, shakeNil } from '@edsolater/fnkit'
-import { AddProps, Div, DivProps } from '@edsolater/uikit'
 import { useForceUpdate } from '@edsolater/hookit'
-import { useEvent } from '@/hooks/useEvent'
+import { Div, DivProps } from '@edsolater/uikit'
 
 type InfiniteScrollOptions = {
   increaseRenderCount?: number
   initRenderCount?: number
   reachBottomMargin?: number
   renderAllAtOnce?: boolean
-  // will render in idle Callback
+  // will render all item in idle Callback as quick as possiable
   renderAllQuickly?: boolean
 }
 
@@ -81,7 +81,6 @@ export default function ListFast<T>({
     }
   }
 
-  const itemsRef = useRef(new Set<HTMLElement>())
   return (
     <Div {...restProps} domRef_={listRef} className_={`List overflow-y-scroll`} style_={{ contentVisibility: 'auto' }}>
       {isGrouped

@@ -28,7 +28,6 @@ import RefreshCircle from '@/components/RefreshCircle'
 import { addItem, removeItem, shakeFalsyItem } from '@/functions/arrayMethods'
 import { toUTC } from '@/functions/date/dateFormat'
 import copyToClipboard from '@/functions/dom/copyToClipboard'
-import { autoSuffixNumberish } from '@/functions/format/autoSuffixNumberish'
 import formatNumber from '@/functions/format/formatNumber'
 import listToMap from '@/functions/format/listToMap'
 import toPubString from '@/functions/format/toMintString'
@@ -49,7 +48,6 @@ import Button, { ButtonHandle } from '@/tempUikits/Button'
 import Card from '@/tempUikits/Card'
 import CoinInputBox, { CoinInputBoxHandle } from '@/tempUikits/CoinInputBox'
 import Col from '@/tempUikits/Col'
-import Collapse from '@/tempUikits/Collapse'
 import Grid from '@/tempUikits/Grid'
 import Input from '@/tempUikits/Input'
 import Link from '@/tempUikits/Link'
@@ -649,7 +647,14 @@ function FarmDetailPanel(divProps: DivProps) {
   return (
     <Div
       {...divProps}
-      icss={{ padding: 16, backdropFilter: 'brightness(1.5)', contentVisibility: currentInfo ? undefined : 'hidden' }}
+      icss={{
+        padding: 16,
+        height: '100%',
+        backdropFilter: 'brightness(1.5)',
+        minWidth: 'min-content', // CSS: overflow is strange , so contain
+        contain: 'content',
+        contentVisibility: currentInfo ? undefined : 'hidden'
+      }}
       tag_={currentInfo ? undefined : Div.tag.noRender}
     >
       <Icon
@@ -914,7 +919,7 @@ function FarmItemStakeLpButtons({ farmInfo, ...divProps }: { farmInfo: HydratedF
       {farmInfo.userHasStaked ? (
         <>
           <Button
-            className="frosted-glass-teal mobile:px-6 mobile:py-2 mobile:text-xs"
+            className="mobile:px-6 mobile:py-2 mobile:text-xs"
             disabled={(farmInfo.isClosedPool && !farmInfo.isUpcomingPool) || !hasLp}
             validators={[
               {
@@ -986,7 +991,7 @@ function FarmItemStakeLpButtons({ farmInfo, ...divProps }: { farmInfo: HydratedF
         </>
       ) : (
         <Button
-          className="frosted-glass-teal mobile:py-2 mobile:text-xs"
+          className="mobile:py-2 mobile:text-xs"
           validators={[
             {
               should: !farmInfo.isClosedPool
@@ -1039,7 +1044,7 @@ function FarmItemHavestButton({ farmInfo, ...divProps }: { farmInfo: HydratedFar
   return (
     <Button // disable={Number(info.pendingReward?.numerator) <= 0}
       {...divProps}
-      className="frosted-glass-teal rounded-xl mobile:w-full mobile:py-2 mobile:text-xs whitespace-nowrap"
+      className="rounded-xl mobile:w-full mobile:py-2 mobile:text-xs whitespace-nowrap"
       isLoading={isApprovePanelShown}
       onClick={() => {
         txFarmHarvest(farmInfo, {
@@ -1077,7 +1082,7 @@ function FarmDetailPanelItemContent({ farmInfo, ...divProps }: { farmInfo: Hydra
   const owner = useWallet((s) => s.owner)
   const logSuccess = useNotification((s) => s.logSuccess)
   return (
-    <Div {...divProps} className="ier-3" icss_={cssCol({ gap: 12 * 4 })}>
+    <Div {...divProps} icss_={cssCol({ gap: 12 * 4 })}>
       <Row className="items-center gap-3">
         <div className="flex-grow">
           <div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-2xs mb-1">Deposited</div>
@@ -1372,7 +1377,6 @@ function CoinAvatarInfoItem({ info, className }: { info: HydratedFarmInfo | Farm
     )
   }
   const { base, quote, name } = info
-  console.log('23: ', 23)
   return (
     <AutoBox
       is={isMobile ? 'Col' : 'Row'}
