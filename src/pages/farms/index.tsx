@@ -42,6 +42,7 @@ import { gt, gte, isMeaningfulNumber } from '@/functions/numberish/compare'
 import { toString } from '@/functions/numberish/toString'
 import { searchItems } from '@/functions/searchItems'
 import useSort, { UseSortControls } from '@/hooks/useSort'
+import { appColors } from '@/styles/colors'
 import AutoBox from '@/tempUikits/AutoBox'
 import { Badge } from '@/tempUikits/Badge'
 import Button, { ButtonHandle } from '@/tempUikits/Button'
@@ -49,7 +50,6 @@ import Card from '@/tempUikits/Card'
 import CoinInputBox, { CoinInputBoxHandle } from '@/tempUikits/CoinInputBox'
 import Col from '@/tempUikits/Col'
 import Collapse from '@/tempUikits/Collapse'
-import FadeInStable, { FadeIn } from '@/tempUikits/FadeIn'
 import Grid from '@/tempUikits/Grid'
 import Input from '@/tempUikits/Input'
 import Link from '@/tempUikits/Link'
@@ -61,12 +61,18 @@ import RowTabs from '@/tempUikits/RowTabs'
 import Select from '@/tempUikits/Select'
 import Switcher from '@/tempUikits/Switcher'
 import Tooltip, { TooltipHandle } from '@/tempUikits/Tooltip'
-import { cssCol, cssGrid, cssRow, Div, DivProps, SplitView } from '@edsolater/uikit'
-import { appColors } from '@/styles/colors'
+import { cssCol, cssRow, Div, DivProps, SplitView } from '@edsolater/uikit'
 
 export default function FarmPage() {
   useFarmUrlParser()
   useFarmResetSelfCreatedByOwner()
+
+  const hydratedInfos = useFarms((s) => s.hydratedInfos)
+  const farmIds = useFarms((s) => s.detailedId) ?? []
+  /** for calculate detailInfos */
+  const tempHydratedInfoMap = listToMap(hydratedInfos, (i) => toPubString(i.id))
+  const detailInfos = farmIds.map((farmId) => tempHydratedInfoMap[farmId])
+  const currentInfo = detailInfos.at(0)
 
   return (
     <PageLayout
@@ -77,18 +83,13 @@ export default function FarmPage() {
         renderSlot1: <FarmTitle />
       }}
     >
-      <FarmContentWrapper>
-        <FarmTableList icss={{ padding: 8 }} />
-        <FarmDetailPanel icss={{ padding: 8 }} />
-      </FarmContentWrapper>
+      <SplitView>
+        <FarmTableList icss={{ padding: 8 }} tag={SplitView.tag.flexiable} />
+        {currentInfo && <FarmDetailPanel icss={{ padding: 8 }} />}
+      </SplitView>
     </PageLayout>
   )
 }
-const FarmContentWrapper = ({ children, ...divProps }: DivProps) => (
-  <Div {...divProps} icss_={[cssGrid({ gridTemplateColumns: '1fr auto' }), { height: '100%' }]}>
-    <SplitView>{children}</SplitView>
-  </Div>
-)
 
 function FarmTitle() {
   const currentTab = useFarms((s) => s.currentTab)
@@ -643,37 +644,26 @@ function FarmDetailPanel(divProps: DivProps) {
   const detailInfos = farmIds.map((farmId) => tempHydratedInfoMap[farmId])
   const currentInfo = detailInfos.at(0)
 
-  /** for FadeIn */
-  const [panelShown, setPanelShown] = useState(Boolean(detailInfos.length))
-  useEffect(() => {
-    setPanelShown(Boolean(detailInfos.length))
-  }, [detailInfos.length])
   return (
-    <FadeIn
+    <Div
       {...divProps}
-      hasWrapper
-      show={panelShown}
-      heightOrWidth="width"
-      onAfterLeave={() => {
-        if (currentInfo) {
-          useFarms.setState((s) => ({
-            detailedId: removeItem(s.detailedId ?? [], toPubString(currentInfo.id))
-          }))
-        }
-      }}
+      icss={{ padding: 16, backdropFilter: 'brightness(1.5)', contentVisibility: currentInfo ? undefined : 'hidden' }}
+      tag_={currentInfo ? undefined : Div.tag.noRender}
     >
-      <Div icss={{ padding: 16, backdropFilter: 'brightness(1.5)' }}>
-        <Icon
-          iconSrc="/icons/double-right.svg"
-          forceColor={appColors.iconMain}
-          onClick={() => {
-            setPanelShown(false)
-          }}
-          icss={{ marginBottom: 32 }}
-        />
-        {currentInfo && <FarmDetailPanelItemContent farmInfo={currentInfo /* temp */} />}
-      </Div>
-    </FadeIn>
+      <Icon
+        iconSrc="/icons/double-right.svg"
+        forceColor={appColors.iconMain}
+        onClick={() => {
+          if (currentInfo) {
+            useFarms.setState((s) => ({
+              detailedId: removeItem(s.detailedId ?? [], toPubString(currentInfo.id))
+            }))
+          }
+        }}
+        icss={{ marginBottom: 32 }}
+      />
+      {currentInfo && <FarmDetailPanelItemContent farmInfo={currentInfo /* temp */} />}
+    </Div>
   )
 }
 
