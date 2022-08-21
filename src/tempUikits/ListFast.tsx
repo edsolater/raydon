@@ -5,14 +5,17 @@ import { useRecordedEffect } from '@/hooks/useRecordedEffect'
 import { isObject } from '@/functions/judgers/dateType'
 import { useScrollDegreeDetector } from '@/hooks/useScrollDegreeDetector'
 import { groupBy, map, shakeNil } from '@edsolater/fnkit'
-import { Div, DivProps } from '@edsolater/uikit'
+import { AddProps, Div, DivProps } from '@edsolater/uikit'
 import { useForceUpdate } from '@edsolater/hookit'
+import { useEvent } from '@/hooks/useEvent'
 
 type InfiniteScrollOptions = {
   increaseRenderCount?: number
   initRenderCount?: number
   reachBottomMargin?: number
   renderAllAtOnce?: boolean
+  // will render in idle Callback
+  renderAllQuickly?: boolean
 }
 
 export type ListProps<T> = {
@@ -56,6 +59,7 @@ export default function ListFast<T>({
   )
 
   const allListItems = Object.values(groupedAllListItems).flat()
+
   const { listRef, renderItemLength } = useInfiniteScrollItemCount({
     ...infiniteScrollOptions,
     allItems: allListItems.map((i) => i.item),
@@ -77,6 +81,7 @@ export default function ListFast<T>({
     }
   }
 
+  const itemsRef = useRef(new Set<HTMLElement>())
   return (
     <Div {...restProps} domRef_={listRef} className_={`List overflow-y-scroll`} style_={{ contentVisibility: 'auto' }}>
       {isGrouped
@@ -104,10 +109,11 @@ export default function ListFast<T>({
 function useInfiniteScrollItemCount<T>({
   allItems,
   getKey,
-  increaseRenderCount = 30,
   initRenderCount = 30,
+  increaseRenderCount = Math.floor(initRenderCount / 3),
   reachBottomMargin = 50,
-  renderAllAtOnce
+  renderAllAtOnce,
+  renderAllQuickly
 }: InfiniteScrollOptions & { allItems: T[]; getKey: (item: T, index: number) => string | number }): {
   renderItemLength: number
   listRef: RefObject<HTMLElement>
@@ -119,6 +125,7 @@ function useInfiniteScrollItemCount<T>({
   // actually showed itemLength
   const [renderItemLength, setRenderItemLength] = useState(renderAllAtOnce ? allItems.length : initRenderCount)
   const listRef = useRef<HTMLElement>(null)
+
   useScrollDegreeDetector(listRef, {
     onReachBottom: () => {
       setRenderItemLength((n) => (n >= allItems.length ? allItems.length : n + increaseRenderCount))
@@ -131,12 +138,38 @@ function useInfiniteScrollItemCount<T>({
     ([prevAllItems]) => {
       const prevAllItemKeys = new Set(prevAllItems?.map(getKey))
       const currAllItemKeys = allItems.map(getKey)
-      if (prevAllItems && !renderAllAtOnce && currAllItemKeys.some((key) => !prevAllItemKeys.has(key))) {
+      const itemListHasChanged = currAllItemKeys.some((key) => !prevAllItemKeys.has(key))
+      if (prevAllItems && !renderAllAtOnce && itemListHasChanged) {
         setRenderItemLength(initRenderCount)
       }
     },
     [allItems, renderAllAtOnce] as const
   )
+
+  //#region -------------------  hugry load render Count -------------------
+  const load = useEvent(() => {
+    window.requestIdleCallback(() => {
+      setTimeout(() => {
+        setRenderItemLength((n) => Math.min(n + increaseRenderCount, allItems.length))
+        if (increaseRenderCount < allItems.length) {
+          load()
+        }
+      })
+    })
+  })
+
+  useRecordedEffect(
+    ([prevAllItems]) => {
+      const prevAllItemKeys = new Set(prevAllItems?.map(getKey))
+      const currAllItemKeys = allItems.map(getKey)
+      const itemListHasChanged = currAllItemKeys.some((key) => !prevAllItemKeys.has(key))
+      if (renderAllQuickly && !renderAllAtOnce && itemListHasChanged) {
+        window.setTimeout(load, 1000)
+      }
+    },
+    [allItems, renderAllAtOnce, renderAllQuickly] as const
+  )
+  //#endregion
 
   return { renderItemLength, listRef, recalcListItem: forceUpdate }
 }

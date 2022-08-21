@@ -154,31 +154,30 @@ function TokenSelectorDialogContent({
     () => (
       <ListFast
         className="flex-grow flex flex-col px-4 mobile:px-2 mx-2 gap-2 overflow-auto my-2"
+        icss={{ contentVisibility: 'auto' }}
         sourceData={searchedTokens}
-        getKey={(token, idx) => (isQuantumSOL(token) ? token.symbol : toPubString(token?.mint)) ?? idx}
+        getKey={(token) => (isQuantumSOL(token) ? token.symbol : toPubString(token?.mint)) ?? 'unkey'}
         renderItem={(token, idx) => (
-          <div>
-            <Row
-              className={`${
-                selectedTokenIdx === idx
-                  ? 'clickable no-clicable-transform-effect clickable-mask-offset-2 before:bg-[rgba(0,0,0,0.2)]'
-                  : ''
-              }`}
-              onHoverChange={({ is: hoverStatus }) => {
-                if (hoverStatus === 'start') {
-                  setSelectedTokenIdx(idx)
-                }
+          <Row
+            className={`${
+              selectedTokenIdx === idx
+                ? 'clickable no-clicable-transform-effect clickable-mask-offset-2 before:bg-[rgba(0,0,0,0.2)]'
+                : ''
+            }`}
+            onHoverChange={({ is: hoverStatus }) => {
+              if (hoverStatus === 'start') {
+                setSelectedTokenIdx(idx)
+              }
+            }}
+          >
+            <TokenSelectorDialogTokenItem
+              onClick={() => {
+                closeAndClean()
+                onSelectCoin?.(token)
               }}
-            >
-              <TokenSelectorDialogTokenItem
-                onClick={() => {
-                  closeAndClean()
-                  onSelectCoin?.(token)
-                }}
-                token={token}
-              />
-            </Row>
-          </div>
+              token={token}
+            />
+          </Row>
         )}
       />
     ),

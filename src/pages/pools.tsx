@@ -44,6 +44,8 @@ import { searchItems } from '@/functions/searchItems'
 import useSort from '@/hooks/useSort'
 import { capitalize } from '@/functions/changeCase'
 import { isMintEqual } from '@/functions/judgers/areEqual'
+import ListFast from '@/tempUikits/ListFast'
+import { info } from 'console'
 
 /**
  * store:
@@ -533,32 +535,36 @@ function PoolCardDatabaseBody({ sortedData }: { sortedData: HydratedPairItemInfo
   const loading = usePools((s) => s.loading)
   const [favouriteIds, setFavouriteIds] = usePoolFavoriteIds()
   return sortedData.length ? (
-    <List className="gap-3 mobile:gap-2 text-primary flex-1 -mx-2 px-2" /* let scrollbar have some space */>
-      {sortedData.map((info) => (
-        <List.Item key={info.lpMint}>
-          <Collapse>
-            <Collapse.Face>
-              {(open) => (
-                <PoolCardDatabaseBodyCollapseItemFace
-                  open={open}
-                  info={info}
-                  isFavourite={favouriteIds?.includes(info.ammId)}
-                  onUnFavorite={(ammId) => {
-                    setFavouriteIds((ids) => removeItem(ids ?? [], ammId))
-                  }}
-                  onStartFavorite={(ammId) => {
-                    setFavouriteIds((ids) => addItem(ids ?? [], ammId))
-                  }}
-                />
-              )}
-            </Collapse.Face>
-            <Collapse.Body>
-              <PoolCardDatabaseBodyCollapseItemContent poolInfo={info} />
-            </Collapse.Body>
-          </Collapse>
-        </List.Item>
-      ))}
-    </List>
+    <ListFast
+      infiniteScrollOptions={{
+        renderAllQuickly: true
+      }}
+      className="gap-3 mobile:gap-2 text-primary flex-1 -mx-2 px-2" /* let scrollbar have some space */
+      sourceData={sortedData}
+      getKey={(info) => toPubString(info.lpMint)}
+      renderItem={(info) => (
+        <Collapse>
+          <Collapse.Face>
+            {(open) => (
+              <PoolCardDatabaseBodyCollapseItemFace
+                open={open}
+                info={info}
+                isFavourite={favouriteIds?.includes(info.ammId)}
+                onUnFavorite={(ammId) => {
+                  setFavouriteIds((ids) => removeItem(ids ?? [], ammId))
+                }}
+                onStartFavorite={(ammId) => {
+                  setFavouriteIds((ids) => addItem(ids ?? [], ammId))
+                }}
+              />
+            )}
+          </Collapse.Face>
+          <Collapse.Body>
+            <PoolCardDatabaseBodyCollapseItemContent poolInfo={info} />
+          </Collapse.Body>
+        </Collapse>
+      )}
+    />
   ) : (
     <div className="text-center text-2xl p-12 opacity-50 text-[rgb(171,196,255)]">
       {loading ? <LoadingCircle /> : '(No results found)'}

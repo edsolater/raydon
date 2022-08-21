@@ -599,7 +599,10 @@ function FarmCardDatabaseBody({
     <Div {...divProps}>
       {data.length ? (
         <ListFast
-          className="h-full  gap-3 text-primary flex-1"
+          infiniteScrollOptions={{
+            renderAllQuickly: true
+          }}
+          className="h-full gap-3 text-primary flex-1"
           /* let scrollbar have some space */
           // TODO: sourceData should can have group
           sourceData={data}
@@ -1369,6 +1372,7 @@ function CoinAvatarInfoItem({ info, className }: { info: HydratedFarmInfo | Farm
     )
   }
   const { base, quote, name } = info
+  console.log('23: ', 23)
   return (
     <AutoBox
       is={isMobile ? 'Col' : 'Row'}
