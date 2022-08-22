@@ -315,7 +315,8 @@ export default function CoinInputBox({
               {!hideMaxButton && (
                 <Button
                   disabled={disabledInput}
-                  className="py-0.5 px-1.5 rounded text-[rgba(171,196,255,.5)] font-bold bg-[#1B1659] bg-opacity-80 text-xs mobile:text-2xs transition"
+                  theme={{ mainColor: '#3e4147a3', mainTextColor: 'rgba(171,196,255,.5)' }}
+                  size="xs"
                   onClick={() => {
                     fillAmountWithBalance(1)
                   }}
@@ -326,7 +327,8 @@ export default function CoinInputBox({
               {haveHalfButton && (
                 <Button
                   disabled={disabledInput}
-                  className="py-0.5 px-1.5 rounded text-[rgba(171,196,255,.5)] font-bold bg-[#1B1659] bg-opacity-80 text-xs mobile:text-2xs transition"
+                  theme={{ mainColor: '#3e4147a3', mainTextColor: 'rgba(171,196,255,.5)' }}
+                  size="xs"
                   onClick={() => {
                     fillAmountWithBalance(0.5)
                   }}

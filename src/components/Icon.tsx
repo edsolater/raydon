@@ -1,11 +1,10 @@
-import { Fragment, RefObject, useRef } from 'react'
+import { Fragment, useRef } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-import mergeRef from '@/functions/react/mergeRef'
-import { useClick, UseClickOptions } from '@/hooks/useClick'
 import { useHover, UseHoverOptions } from '@/hooks/useHover'
 import {
   AdjustmentsIcon,
+  ArrowCircleRightIcon,
   BellIcon,
   CheckCircleIcon,
   CheckIcon,
@@ -15,12 +14,17 @@ import {
   ChevronUpIcon,
   ClipboardCopyIcon,
   DesktopComputerIcon,
+  DotsHorizontalIcon,
+  DotsVerticalIcon,
   ExclamationCircleIcon,
   ExclamationIcon,
   ExternalLinkIcon,
   InformationCircleIcon,
+  LinkIcon,
   MenuIcon,
   MinusIcon,
+  PencilIcon,
+  PlusCircleIcon,
   PlusIcon,
   QuestionMarkCircleIcon,
   RefreshIcon,
@@ -28,19 +32,13 @@ import {
   StarIcon,
   SwitchHorizontalIcon,
   SwitchVerticalIcon,
-  XIcon,
   TrashIcon,
-  DotsHorizontalIcon,
   XCircleIcon,
-  PlusCircleIcon,
-  PencilIcon,
-  LinkIcon,
-  DotsVerticalIcon
+  XIcon
 } from '@heroicons/react/outline'
-import { ArrowCircleRightIcon } from '@heroicons/react/outline'
 
-import { getFileNameOfURI } from '../functions/dom/getFileNameOfURI'
 import { Div, DivProps, Image } from '@edsolater/uikit'
+import { getFileNameOfURI } from '../functions/dom/getFileNameOfURI'
 
 export type AppHeroIconName =
   | 'menu'
