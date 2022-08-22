@@ -1,95 +1,30 @@
-import React, { ReactNode, RefObject, useImperativeHandle, useRef } from 'react'
-
-import { twMerge } from 'tailwind-merge'
-
-import { isArray } from '@/functions/judgers/dateType'
-import { shrinkToValue } from '@/functions/shrinkToValue'
-import { BooleanLike, MayFunction } from '@/types/constants'
-import { MayArray } from '@/types/generics'
-import Row from './Row'
+import { Button as _Button, ButtonHandle as _ButtonHandle, ButtonProps as _ButtonProps } from '@edsolater/uikit'
 import LoadingCircleSmall from './LoadingCircleSmall'
-import { Div, DivProps } from '@/../../uikit/dist'
 
-export interface ButtonHandle {
-  click?: () => void
-  focus?: () => void
-}
-export interface ButtonProps extends DivProps<'button'> {
-  size?: 'xs' | 'md' | 'sm' | 'lg'
-  // used in "connect wallet" button, it's order is over props: disabled
-  forceActive?: boolean
-  /** a short cut for validator */
-  disabled?: boolean
-  /** default is solid */
+export interface ButtonHandle extends _ButtonHandle {}
+export interface ButtonProps extends Omit<_ButtonProps, 'variant'> {
   type?: 'solid' | 'outline' | 'text'
   /** unused tailwind style class string will be tree-shaked  */
   isLoading?: boolean
-  /** must all condition passed */
-  validators?: MayArray<{
-    /** must return true to pass this validator */
-    should: MayFunction<BooleanLike>
-    // used in "connect wallet" button, it's order is over props: disabled
-    forceActive?: boolean
-    /**  items are button's setting which will apply when corresponding validator has failed */
-    fallbackProps?: Omit<ButtonProps, 'validators' | 'disabled'>
-  }>
-  /** normally, it's an icon  */
-  prefix?: ReactNode
-  /** normally, it's an icon  */
-  suffix?: ReactNode
-  componentRef?: RefObject<any>
 }
 
 /** has loaded **twMerge** */
-export default function Button({ validators, ...restButtonProps }: ButtonProps) {
-  const failedValidator = (isArray(validators) ? validators.length > 0 : validators)
-    ? [validators!].flat().find(({ should }) => !shrinkToValue(should))
-    : undefined
-  const mergedProps = {
-    ...restButtonProps,
-    ...failedValidator?.fallbackProps
-  }
-  const { type = 'solid', size, children, componentRef, suffix, prefix, isLoading, onClick, ...divProps } = mergedProps
-
-  const haveFallbackClick = Boolean(failedValidator?.fallbackProps?.onClick)
-  const isActive = !isLoading && (failedValidator?.forceActive || (!failedValidator && !mergedProps.disabled))
-
-  const ref = useRef<HTMLButtonElement>(null)
-  useImperativeHandle(componentRef, () => ({
-    click: () => {
-      ref.current?.click()
-    },
-    focus: () => {
-      ref.current?.focus()
-    }
-  }))
+export default function Button({ type, isLoading, ...restButtonProps }: ButtonProps) {
   return (
-    <Div<'button'>
-      as="button"
-      {...divProps}
-      domRef_={ref}
-      onClick_={[
-        ({ ev }) => {
-          if (!isActive) ev.stopPropagation()
-        },
-        isActive || haveFallbackClick ? onClick : undefined
-      ]}
-      className_={twMerge(
-        'Button select-none',
-        type === 'text'
-          ? textButtonTailwind({ size, disable: !isActive, haveFallbackClick })
-          : type === 'outline'
-          ? outlineButtonTailwind({ size, disable: !isActive, haveFallbackClick })
-          : solidButtonTailwind({ size, disable: !isActive, haveFallbackClick })
-      )}
-    >
-      <Row className="justify-center items-center gap-2">
-        {isLoading && <LoadingCircleSmall className="w-4 h-4" />}
-        {prefix}
-        {children}
-        {suffix}
-      </Row>
-    </Div>
+    <_Button
+      {...restButtonProps}
+      variant={type}
+      suffix={
+        isLoading ? (
+          <>
+            <LoadingCircleSmall className="w-4 h-4" />
+            {restButtonProps.suffix}
+          </>
+        ) : (
+          restButtonProps.suffix
+        )
+      }
+    />
   )
 }
 

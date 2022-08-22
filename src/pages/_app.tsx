@@ -84,7 +84,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <ClientInitialization />
         {pathname !== '/' && <ApplicationsInitializations />}
 
-        <div className="app">
+        <div id="app">
           <NextNProgress color="#34ade5" showOnShallow={false} />
 
           {/* Page Components */}
