@@ -1,54 +1,54 @@
 import React, { ReactNode, useEffect, useMemo, useState } from 'react'
 
+import { cssCol, cssRow, Div } from '@/../../uikit/dist'
+import useAppSettings from '@/application/appSettings/useAppSettings'
+import useConnection from '@/application/connection/useConnection'
+import txIdoClaim from '@/application/ido/txIdoClaim'
+import txIdoPurchase from '@/application/ido/txIdoPurchase'
 import { HydratedIdoInfo, TicketInfo } from '@/application/ido/type'
+import useAutoFetchIdoInfos from '@/application/ido/useAutoFetchIdoInfos'
 import useIdo from '@/application/ido/useIdo'
+import { routeTo } from '@/application/routeTools'
+import useStaking from '@/application/staking/useStaking'
 import useWallet from '@/application/wallet/useWallet'
 import AlertText from '@/components/AlertText'
-import Button from '@/tempUikits/Button'
 import CoinAvatar from '@/components/CoinAvatar'
-import IdoCountDownClock from '@/components/IdoCountDownClock'
+import CoinInputBox from '@/components/CoinInputBox'
+import { StakingPageStakeLpDialog } from '@/components/dialogs/StakingPageStakeLpDialog'
 import Icon, { socialIconSrcMap } from '@/components/Icon'
-import Link from '@/tempUikits/Link'
+import IdoCountDownClock from '@/components/IdoCountDownClock'
+import LoadingCircle from '@/components/LoadingCircle'
+import { Markdown } from '@/components/Markdown'
 import PageLayout from '@/components/PageLayout/PageLayout'
-import Row from '@/tempUikits/Row'
+import RefreshCircle from '@/components/RefreshCircle'
+import { shakeFalsyItem } from '@/functions/arrayMethods'
 import { toUTC } from '@/functions/date/dateFormat'
 import { isDateBefore } from '@/functions/date/judges'
 import formatNumber from '@/functions/format/formatNumber'
-import { toTokenAmount } from '@/functions/format/toTokenAmount'
-import useAppSettings from '@/application/appSettings/useAppSettings'
-import { toString } from '@/functions/numberish/toString'
-import { eq, gt, gte, isMeaningfulNumber, lte } from '@/functions/numberish/compare'
-import txIdoPurchase from '@/application/ido/txIdoPurchase'
-import { Numberish } from '@/types/constants'
-import toBN from '@/functions/numberish/toBN'
-import { mul } from '@/functions/numberish/operations'
-import { useRouter } from 'next/router'
-import { FadeIn } from '@/tempUikits/FadeIn'
-import Card from '@/tempUikits/Card'
-import { twMerge } from 'tailwind-merge'
-import Col from '@/tempUikits/Col'
-import Grid from '@/tempUikits/Grid'
-import CyberpunkStyleCard from '@/tempUikits/CyberpunkStyleCard'
-import { Badge } from '@/tempUikits/Badge'
-import RowTabs from '@/tempUikits/RowTabs'
-import { shakeFalsyItem } from '@/functions/arrayMethods'
-import { Markdown } from '@/components/Markdown'
-import CoinInputBox from '@/components/CoinInputBox'
-import toPercentString from '@/functions/format/toPercentString'
-import useStaking from '@/application/staking/useStaking'
-import { StakingPageStakeLpDialog } from '@/components/dialogs/StakingPageStakeLpDialog'
-import txIdoClaim from '@/application/ido/txIdoClaim'
 import toPercentNumber from '@/functions/format/toPercentNumber'
-import Progress from '@/tempUikits/Progress'
-import { routeTo } from '@/application/routeTools'
-import RefreshCircle from '@/components/RefreshCircle'
-import { useForceUpdate } from '@/hooks/useForceUpdate'
-import AutoBox from '@/tempUikits/AutoBox'
-import Tooltip from '@/tempUikits/Tooltip'
-import LoadingCircle from '@/components/LoadingCircle'
-import useConnection from '@/application/connection/useConnection'
+import toPercentString from '@/functions/format/toPercentString'
+import { toTokenAmount } from '@/functions/format/toTokenAmount'
+import { eq, gt, gte, isMeaningfulNumber, lte } from '@/functions/numberish/compare'
+import { mul } from '@/functions/numberish/operations'
+import toBN from '@/functions/numberish/toBN'
+import { toString } from '@/functions/numberish/toString'
 import { recursivelyDo } from '@/functions/recursivelyDo'
-import useAutoFetchIdoInfos from '@/application/ido/useAutoFetchIdoInfos'
+import { useForceUpdate } from '@/hooks/useForceUpdate'
+import { Badge } from '@/tempUikits/Badge'
+import Button from '@/tempUikits/Button'
+import Card from '@/tempUikits/Card'
+import Col from '@/tempUikits/Col'
+import CyberpunkStyleCard from '@/tempUikits/CyberpunkStyleCard'
+import { FadeIn } from '@/tempUikits/FadeIn'
+import Grid from '@/tempUikits/Grid'
+import Link from '@/tempUikits/Link'
+import Progress from '@/tempUikits/Progress'
+import Row from '@/tempUikits/Row'
+import RowTabs from '@/tempUikits/RowTabs'
+import Tooltip from '@/tempUikits/Tooltip'
+import { Numberish } from '@/types/constants'
+import { useRouter } from 'next/router'
+import { twMerge } from 'tailwind-merge'
 
 // paser url to patch idoid
 function useUrlParser() {
@@ -554,8 +554,8 @@ function LotteryStateInfoPanel({ className }: { className?: string }) {
             }
           />
           {idoInfo.isUpcoming && (
-            <AutoBox
-              is={isMobile ? 'Col' : 'Row'}
+            <Div
+              icss_={isMobile ? cssCol() : cssRow()}
               className="items-center mobile:items-stretch justify-between gap-4 p-3 px-4"
             >
               <IdoInfoItem
@@ -620,7 +620,7 @@ function LotteryStateInfoPanel({ className }: { className?: string }) {
                   APR: {toPercentString(stakingHydratedInfo?.totalApr7d)}
                 </div>
               </Col>
-            </AutoBox>
+            </Div>
           )}
           {idoInfo.isUpcoming && (
             <IdoInfoItem
@@ -722,7 +722,7 @@ function LotteryProjectInfoPanel({ className }: { className?: string }) {
     <>
       <Markdown className="py-6">{idoInfo.projectDetails ?? ''}</Markdown>
       <Row className="justify-between mobile:gap-board">
-        <AutoBox is={isMobile ? 'Col' : 'Row'} className="gap-6 mobile:gap-3">
+        <Div icss_={isMobile ? cssCol() : cssRow()} className="gap-6 mobile:gap-3">
           {Object.entries(idoInfo.projectDocs ?? {}).map(([docName, linkAddress]) => (
             <Link
               key={docName}
@@ -732,7 +732,7 @@ function LotteryProjectInfoPanel({ className }: { className?: string }) {
               {docName}
             </Link>
           ))}
-        </AutoBox>
+        </Div>
         <Row className="gap-6 mobile:gap-3">
           {Object.entries(idoInfo.projectSocials ?? {}).map(([socialName, link]) => (
             <Link key={socialName} href={link} className="flex items-center">

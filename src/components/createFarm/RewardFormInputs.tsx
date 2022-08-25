@@ -1,39 +1,34 @@
+import { cssCol, cssRow, Div } from '@/../../uikit/dist'
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import useConnection from '@/application/connection/useConnection'
 import { getRewardSignature, hasRewardBeenEdited } from '@/application/createFarm/parseRewardInfo'
 import { UIRewardInfo } from '@/application/createFarm/type'
 import useCreateFarms from '@/application/createFarm/useCreateFarm'
 import {
-  MIN_DURATION_SECOND,
   MAX_DURATION_SECOND,
-  MAX_OFFSET_AFTER_NOW_SECOND
+  MAX_OFFSET_AFTER_NOW_SECOND,
+  MIN_DURATION_SECOND
 } from '@/application/farms/handleFarmInfo'
 import { isQuantumSOLVersionSOL, QuantumSOLVersionSOL, QuantumSOLVersionWSOL } from '@/application/token/quantumSOL'
 import { SplToken } from '@/application/token/type'
 import useWallet from '@/application/wallet/useWallet'
-import AutoBox from '@/tempUikits/AutoBox'
 import CoinInputBoxWithTokenSelector from '@/components/CoinInputBoxWithTokenSelector'
-import DateInput from '@/tempUikits/Datepicker/DateInput'
-import FadeInStable from '@/tempUikits/FadeIn'
-import Grid from '@/tempUikits/Grid'
 import InputBox from '@/components/InputBox'
-import Row from '@/tempUikits/Row'
 import { shakeUndifindedItem } from '@/functions/arrayMethods'
 import { getTime, offsetDateTime } from '@/functions/date/dateFormat'
 import { isDateAfter, isDateBefore } from '@/functions/date/judges'
 import { parseDurationAbsolute } from '@/functions/date/parseDuration'
-import toPubString from '@/functions/format/toMintString'
-import { toTokenAmount } from '@/functions/format/toTokenAmount'
 import { isExist } from '@/functions/judgers/nil'
 import { gte, isMeaningfulNumber } from '@/functions/numberish/compare'
 import { div, mul } from '@/functions/numberish/operations'
 import { toString } from '@/functions/numberish/toString'
 import { shrinkToValue } from '@/functions/shrinkToValue'
 import { useRecordedEffect } from '@/hooks/useRecordedEffect'
+import DateInput from '@/tempUikits/Datepicker/DateInput'
+import Grid from '@/tempUikits/Grid'
 import { MayFunction, Numberish } from '@/types/constants'
-import { TokenAccount, TokenAmount } from '@raydium-io/raydium-sdk'
 import produce from 'immer'
-import { RefObject, startTransition, useEffect, useImperativeHandle, useRef, useState } from 'react'
+import { RefObject, useEffect, useImperativeHandle, useState } from 'react'
 
 /**
  * if super preferential is not provide(undefined|null) it is normal useState
@@ -261,7 +256,7 @@ export function RewardFormCardInputs({
         onTryToSwitchSOLWSOL={handleSwitchSOLWSOLRewardToken}
       />
       <div>
-        <AutoBox is={isMobile ? 'Col' : 'Row'} className="gap-4">
+        <Div icss_={isMobile ? cssCol() : cssRow()} className="gap-4">
           <InputBox
             className="grow-2 rounded-md text-sm font-medium text-white px-4"
             inputClassName="placeholder:text-[#abc4ff50]"
@@ -424,7 +419,7 @@ export function RewardFormCardInputs({
               }
             }}
           />
-        </AutoBox>
+        </Div>
         {needShowAlert && (
           <div>
             {durationTime! > maxDurationSeconds * 1e3 ? (

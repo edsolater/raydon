@@ -1,12 +1,12 @@
-import React, { ReactNode, useRef } from 'react'
+import { ReactNode, useRef } from 'react'
 
 import { twMerge } from 'tailwind-merge'
 
+import { Div } from '@/../../uikit/dist'
+import toPercentString from '@/functions/format/toPercentString'
 import { shrinkToValue } from '@/functions/shrinkToValue'
 import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect '
-import AutoBox from './AutoBox'
 import Row from './Row'
-import toPercentString from '@/functions/format/toPercentString'
 
 /**
  * same as html <progress>
@@ -87,7 +87,7 @@ export default function Progress({
       </div>
     </Row>
   ) : (
-    <AutoBox is="div" domRef={progressRef} className={twMerge(`Progress relative ${className ?? ''}`)}>
+    <Div domRef={progressRef} className={twMerge(`Progress relative ${className ?? ''}`)}>
       <div
         className={twMerge(
           `Progress-whole-slot bg-gray-50 bg-opacity-20 rounded-full overflow-hidden w-full h-2 ${slotClassName ?? ''}`
@@ -112,6 +112,6 @@ export default function Progress({
       >
         {shrinkToValue(labelFormat, [value])}
       </div>
-    </AutoBox>
+    </Div>
   )
 }

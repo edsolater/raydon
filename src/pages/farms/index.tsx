@@ -42,7 +42,6 @@ import { toString } from '@/functions/numberish/toString'
 import { searchItems } from '@/functions/searchItems'
 import useSort, { UseSortControls } from '@/hooks/useSort'
 import { appColors } from '@/styles/colors'
-import AutoBox from '@/tempUikits/AutoBox'
 import { Badge } from '@/tempUikits/Badge'
 import Button, { ButtonHandle } from '@/tempUikits/Button'
 import Card from '@/tempUikits/Card'
@@ -1356,8 +1355,8 @@ function CoinAvatarInfoItem({ info, className }: { info: HydratedFarmInfo | Farm
     const lpToken = getLpToken(info.lpMint) // TODO: may be token can cache?
     const name = lpToken ? `${lpToken.base.symbol ?? '--'} - ${lpToken.quote.symbol ?? '--'}` : '--' // TODO: rule of get farm name should be a issolate function
     return (
-      <AutoBox
-        is={isMobile ? 'Col' : 'Row'}
+      <Div
+        icss_={isMobile ? cssCol() : cssRow()}
         className={twMerge('flex-wrap items-center mobile:items-start', className)}
       >
         <CoinAvatarPair
@@ -1373,13 +1372,13 @@ function CoinAvatarInfoItem({ info, className }: { info: HydratedFarmInfo | Farm
             }-${getToken(info.quoteMint)?.symbol ?? 'unknown'}`}</div>
           )}
         </div>
-      </AutoBox>
+      </Div>
     )
   }
   const { base, quote, name } = info
   return (
-    <AutoBox
-      is={isMobile ? 'Col' : 'Row'}
+    <Div
+      icss_={isMobile ? cssCol() : cssRow()}
       className={twMerge('flex-wrap items-center mobile:items-start gap-x-2 gap-y-1', className)}
     >
       <CoinAvatarPair className="justify-self-center mr-2" size={isMobile ? 'sm' : 'md'} token1={base} token2={quote} />
@@ -1389,7 +1388,7 @@ function CoinAvatarInfoItem({ info, className }: { info: HydratedFarmInfo | Farm
       {info.isDualFusionPool && info.version !== 6 && <Badge cssColor="#DA2EEF">Dual Yield</Badge>}
       {info.isNewPool && <Badge cssColor="#00d1ff">New</Badge>}
       {info.isUpcomingPool && <Badge cssColor="#5dadee">Upcoming</Badge>}
-    </AutoBox>
+    </Div>
   )
 }
 

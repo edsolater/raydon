@@ -12,40 +12,38 @@ import { routeTo } from '@/application/routeTools'
 import { LpToken } from '@/application/token/type'
 import useToken from '@/application/token/useToken'
 import useWallet from '@/application/wallet/useWallet'
-import AutoBox from '@/tempUikits/AutoBox'
-import { Badge } from '@/tempUikits/Badge'
-import Button from '@/tempUikits/Button'
-import Card from '@/tempUikits/Card'
 import CoinAvatarPair from '@/components/CoinAvatarPair'
-import Collapse from '@/tempUikits/Collapse'
-import CyberpunkStyleCard from '@/tempUikits/CyberpunkStyleCard'
-import Grid from '@/tempUikits/Grid'
 import Icon from '@/components/Icon'
-import Input from '@/tempUikits/Input'
-import List from '@/tempUikits/List'
 import LoadingCircle from '@/components/LoadingCircle'
 import PageLayout from '@/components/PageLayout/PageLayout'
-import Popover from '@/tempUikits/Popover'
 import RefreshCircle from '@/components/RefreshCircle'
-import Row from '@/tempUikits/Row'
-import Select from '@/tempUikits/Select'
-import Switcher from '@/tempUikits/Switcher'
-import Tooltip from '@/tempUikits/Tooltip'
-import { addItem, removeItem, shakeFalsyItem } from '@/functions/arrayMethods'
+import { addItem, removeItem } from '@/functions/arrayMethods'
+import { capitalize } from '@/functions/changeCase'
 import formatNumber from '@/functions/format/formatNumber'
 import toPubString from '@/functions/format/toMintString'
 import toPercentString from '@/functions/format/toPercentString'
 import toTotalPrice from '@/functions/format/toTotalPrice'
 import toUsdVolume from '@/functions/format/toUsdVolume'
+import { isMintEqual } from '@/functions/judgers/areEqual'
 import { gt, isMeaningfulNumber, lt } from '@/functions/numberish/compare'
 import { toString } from '@/functions/numberish/toString'
 import { objectFilter, objectShakeFalsy } from '@/functions/objectMethods'
 import { searchItems } from '@/functions/searchItems'
 import useSort from '@/hooks/useSort'
-import { capitalize } from '@/functions/changeCase'
-import { isMintEqual } from '@/functions/judgers/areEqual'
+import { Badge } from '@/tempUikits/Badge'
+import Button from '@/tempUikits/Button'
+import Card from '@/tempUikits/Card'
+import Collapse from '@/tempUikits/Collapse'
+import CyberpunkStyleCard from '@/tempUikits/CyberpunkStyleCard'
+import Grid from '@/tempUikits/Grid'
+import Input from '@/tempUikits/Input'
 import ListFast from '@/tempUikits/ListFast'
-import { info } from 'console'
+import Popover from '@/tempUikits/Popover'
+import Row from '@/tempUikits/Row'
+import Select from '@/tempUikits/Select'
+import Switcher from '@/tempUikits/Switcher'
+import Tooltip from '@/tempUikits/Tooltip'
+import { cssCol, cssRow, Div } from '@edsolater/uikit'
 
 /**
  * store:
@@ -789,15 +787,15 @@ function PoolCardDatabaseBodyCollapseItemContent({ poolInfo: info }: { poolInfo:
   )
 
   return (
-    <AutoBox
-      is={isMobile ? 'Col' : 'Row'}
+    <Div
+      icss_={isMobile ? cssCol() : cssRow()}
       className={`justify-between rounded-b-3xl mobile:rounded-b-lg`}
       style={{
         background: 'linear-gradient(126.6deg, rgba(171, 196, 255, 0.12), rgb(171 196 255 / 4%) 100%)'
       }}
     >
-      <AutoBox
-        is={isMobile ? 'Grid' : 'Row'}
+      <Div
+        icss={isMobile ? cssCol() : cssRow()}
         className={`py-5 px-8 mobile:py-3 mobile:px-4 gap-[4vw] mobile:gap-3 mobile:grid-cols-3-auto flex-grow justify-between mobile:m-0`}
       >
         <Row>
@@ -830,7 +828,7 @@ function PoolCardDatabaseBodyCollapseItemContent({ poolInfo: info }: { poolInfo:
             </div>
           </div>
         </Row>
-      </AutoBox>
+      </Div>
 
       <Row
         className={`px-8 py-2 gap-3 items-center self-center justify-center ${
@@ -950,7 +948,7 @@ function PoolCardDatabaseBodyCollapseItemContent({ poolInfo: info }: { poolInfo:
           </>
         )}
       </Row>
-    </AutoBox>
+    </Div>
   )
 }
 
@@ -959,8 +957,8 @@ function CoinAvatarInfoItem({ info, className }: { info: HydratedPairItemInfo | 
   const lowLiquidityAlertText = `This pool has relatively low liquidity. Always check the quoted price and that the pool has sufficient liquidity before trading.`
 
   return (
-    <AutoBox
-      is={isMobile ? 'Col' : 'Row'}
+    <Div
+      icss_={isMobile ? cssCol() : cssRow()}
       className={twMerge('clickable flex-wrap items-center mobile:items-start', className)}
       // onClick={() => {
       //   if (!isMobile) push(`/liquidity/?ammId=${ammId}`)
@@ -984,7 +982,7 @@ function CoinAvatarInfoItem({ info, className }: { info: HydratedPairItemInfo | 
           </Tooltip>
         )}
       </Row>
-    </AutoBox>
+    </Div>
   )
 }
 

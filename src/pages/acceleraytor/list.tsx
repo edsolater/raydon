@@ -1,44 +1,44 @@
-import React, { ReactNode, useEffect, useMemo, useRef, useState } from 'react'
+import { ReactNode, useEffect, useMemo, useRef, useState } from 'react'
 
+import { cssCol, cssRow, Div } from '@/../../uikit/dist'
 import useAppSettings from '@/application/appSettings/useAppSettings'
+import useConnection from '@/application/connection/useConnection'
+import txIdoClaim from '@/application/ido/txIdoClaim'
 import { HydratedIdoInfo } from '@/application/ido/type'
+import useAutoFetchIdoInfos from '@/application/ido/useAutoFetchIdoInfos'
 import useIdo from '@/application/ido/useIdo'
+import { routeTo } from '@/application/routeTools'
+import useStaking from '@/application/staking/useStaking'
 import useWallet from '@/application/wallet/useWallet'
-import Button from '@/tempUikits/Button'
 import CoinAvatar from '@/components/CoinAvatar'
-import Col from '@/tempUikits/Col'
-import Collapse from '@/tempUikits/Collapse'
-import IdoCountDownClock from '@/components/IdoCountDownClock'
 import Icon from '@/components/Icon'
-import Link from '@/tempUikits/Link'
+import IdoCountDownClock from '@/components/IdoCountDownClock'
+import LoadingCircle from '@/components/LoadingCircle'
 import PageLayout from '@/components/PageLayout/PageLayout'
-import Row from '@/tempUikits/Row'
-import RowTabs from '@/tempUikits/RowTabs'
 import { toUTC } from '@/functions/date/dateFormat'
+import { TimeStamp } from '@/functions/date/interface'
 import { isDateAfter, isDateBefore } from '@/functions/date/judges'
+import formatNumber from '@/functions/format/formatNumber'
+import toPubString from '@/functions/format/toMintString'
+import toPercentNumber from '@/functions/format/toPercentNumber'
+import toPercentString from '@/functions/format/toPercentString'
 import { eq, gt, isMeaningfulNumber } from '@/functions/numberish/compare'
 import { toString } from '@/functions/numberish/toString'
-import txIdoClaim from '@/application/ido/txIdoClaim'
-import Image from '@/tempUikits/Image'
+import { searchItems } from '@/functions/searchItems'
+import { useForceUpdate } from '@/hooks/useForceUpdate'
+import Button from '@/tempUikits/Button'
+import Col from '@/tempUikits/Col'
+import Collapse from '@/tempUikits/Collapse'
 import CyberpunkStyleCard from '@/tempUikits/CyberpunkStyleCard'
-import formatNumber from '@/functions/format/formatNumber'
-import { routeTo } from '@/application/routeTools'
 import { FadeIn } from '@/tempUikits/FadeIn'
 import Grid from '@/tempUikits/Grid'
-import AutoBox from '@/tempUikits/AutoBox'
-import { useForceUpdate } from '@/hooks/useForceUpdate'
-import useStaking from '@/application/staking/useStaking'
-import toPercentString from '@/functions/format/toPercentString'
-import LoadingCircle from '@/components/LoadingCircle'
-import { twMerge } from 'tailwind-merge'
-import Progress from '@/tempUikits/Progress'
-import toPercentNumber from '@/functions/format/toPercentNumber'
+import Image from '@/tempUikits/Image'
 import Input from '@/tempUikits/Input'
-import useConnection from '@/application/connection/useConnection'
-import { TimeStamp } from '@/functions/date/interface'
-import { searchItems } from '@/functions/searchItems'
-import toPubString from '@/functions/format/toMintString'
-import useAutoFetchIdoInfos from '@/application/ido/useAutoFetchIdoInfos'
+import Link from '@/tempUikits/Link'
+import Progress from '@/tempUikits/Progress'
+import Row from '@/tempUikits/Row'
+import RowTabs from '@/tempUikits/RowTabs'
+import { twMerge } from 'tailwind-merge'
 
 export default function AcceleRaytor() {
   useAutoFetchIdoInfos()
@@ -211,7 +211,7 @@ function AcceleRaytorCollapseItemFace({ open, info }: { open: boolean; info: Hyd
         open ? '' : 'rounded-b-3xl mobile:rounded-b-lg'
       }`}
     >
-      <AutoBox is={isMobile ? 'Col' : 'Row'} className={`flex-wrap items-stretch gap-5`}>
+      <Div icss_={isMobile ? cssCol() : cssRow()} className={`flex-wrap items-stretch gap-5`}>
         <Row className="items-center gap-4 mobile:w-full">
           <Row
             className="items-center min-w-[160px] mobile:min-w-[120px] gap-4 mobile:gap-3 mobile:w-auto clickable"
@@ -245,7 +245,7 @@ function AcceleRaytorCollapseItemFace({ open, info }: { open: boolean; info: Hyd
             <FaceButtonGroupClaim idoInfo={info} />
           )}
         </Row>
-      </AutoBox>
+      </Div>
       {isDateAfter(getChainDate(), info.endTime) && (
         <Icon
           iconSrc="/icons/acceleraytor-list-collapse-open.svg"
@@ -259,7 +259,7 @@ function AcceleRaytorCollapseItemFace({ open, info }: { open: boolean; info: Hyd
 function FaceButtonGroupUpcoming({ info }: { info: HydratedIdoInfo }) {
   const isMobile = useAppSettings((s) => s.isMobile)
   return (
-    <AutoBox is={isMobile ? 'Col' : 'Row'} className="items-center mobile:w-full">
+    <Div icss_={isMobile ? cssCol() : cssRow()} className="items-center mobile:w-full">
       <Button
         size={isMobile ? 'xs' : 'md'}
         className="frosted-glass-skygray mobile:mb-3 mobile:self-stretch"
@@ -273,7 +273,7 @@ function FaceButtonGroupUpcoming({ info }: { info: HydratedIdoInfo }) {
           Read Full Detail
         </Link>
       )}
-    </AutoBox>
+    </Div>
   )
 }
 function FaceButtonGroupJoin({ info }: { info: HydratedIdoInfo }) {
@@ -639,8 +639,8 @@ function IdoItemCardContentButtonGroup({ className, info }: { className?: string
       </Col>
     ) : null
   ) : (
-    <AutoBox
-      is={isMobile ? 'Col' : 'Row'}
+    <Div
+      icss_={isMobile ? cssCol() : cssRow()}
       className={twMerge(
         `${
           isMobile ? '' : 'flex-row-reverse'
@@ -659,7 +659,7 @@ function IdoItemCardContentButtonGroup({ className, info }: { className?: string
       <Link href={info.projectDetailLink} className="mx-4 text-[#ABC4FF80] font-bold mobile:text-xs">
         Full Details
       </Link>
-    </AutoBox>
+    </Div>
   )
 }
 

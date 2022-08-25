@@ -1,10 +1,11 @@
-import React, { ReactNode, useMemo } from 'react'
 import { useRouter } from 'next/router'
+import { ReactNode, useMemo } from 'react'
 
 import { Fraction, TokenAmount, ZERO } from '@raydium-io/raydium-sdk'
 
 import { twMerge } from 'tailwind-merge'
 
+import { cssCol, cssRow, Div } from '@/../../uikit/dist'
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import txFarmHarvest from '@/application/farms/txFarmHarvest'
 import { HydratedFarmInfo } from '@/application/farms/type'
@@ -12,17 +13,11 @@ import useFarms from '@/application/farms/useFarms'
 import useStaking from '@/application/staking/useStaking'
 import useToken from '@/application/token/useToken'
 import useWallet from '@/application/wallet/useWallet'
-import AutoBox from '@/tempUikits/AutoBox'
-import Button from '@/tempUikits/Button'
 import CoinAvatar from '@/components/CoinAvatar'
-import Col from '@/tempUikits/Col'
-import Collapse from '@/tempUikits/Collapse'
-import CyberpunkStyleCard from '@/tempUikits/CyberpunkStyleCard'
-import Grid from '@/tempUikits/Grid'
 import Icon from '@/components/Icon'
+import LoadingCircle from '@/components/LoadingCircle'
 import PageLayout from '@/components/PageLayout/PageLayout'
 import RefreshCircle from '@/components/RefreshCircle'
-import Row from '@/tempUikits/Row'
 import formatNumber from '@/functions/format/formatNumber'
 import toPercentString from '@/functions/format/toPercentString'
 import { toTokenAmount } from '@/functions/format/toTokenAmount'
@@ -31,7 +26,12 @@ import toUsdVolume from '@/functions/format/toUsdVolume'
 import { gt, isMeaningfulNumber } from '@/functions/numberish/compare'
 import { add } from '@/functions/numberish/operations'
 import { toString } from '@/functions/numberish/toString'
-import LoadingCircle from '@/components/LoadingCircle'
+import Button from '@/tempUikits/Button'
+import Col from '@/tempUikits/Col'
+import Collapse from '@/tempUikits/Collapse'
+import CyberpunkStyleCard from '@/tempUikits/CyberpunkStyleCard'
+import Grid from '@/tempUikits/Grid'
+import Row from '@/tempUikits/Row'
 import { StakingPageStakeLpDialog } from '../components/dialogs/StakingPageStakeLpDialog'
 
 export default function StakingPage() {
@@ -217,8 +217,8 @@ function StakingCardCollapseItemContent({ hydratedInfo }: { hydratedInfo: Hydrat
   )
   const isApprovePanelShown = useAppSettings((s) => s.isApprovePanelShown)
   return (
-    <AutoBox
-      is={isMobile ? 'Col' : 'Row'}
+    <Div
+      icss_={isMobile ? cssCol() : cssRow()}
       className={`gap-8 mobile:gap-3 flex-grow px-8 py-5 mobile:px-4 mobile:py-3 bg-gradient-to-br from-[rgba(171,196,255,0.12)] to-[rgba(171,196,255,0.06)]  rounded-b-3xl mobile:rounded-b-lg`}
     >
       <Row className="p-6 mobile:py-3 mobile:px-4 flex-grow ring-inset ring-1.5 mobile:ring-1 ring-[rgba(171,196,255,.5)] rounded-3xl mobile:rounded-xl items-center gap-3">
@@ -290,8 +290,8 @@ function StakingCardCollapseItemContent({ hydratedInfo }: { hydratedInfo: Hydrat
         </Row>
       </Row>
 
-      <AutoBox
-        is={isMobile ? 'Col' : 'Row'}
+      <Div
+        icss_={isMobile ? cssCol() : cssRow()}
         className={twMerge(
           'p-6 mobile:py-3 mobile:px-4 flex-grow ring-inset ring-1.5 mobile:ring-1 ring-[rgba(171,196,255,.5)] rounded-3xl mobile:rounded-xl items-center gap-3'
         )}
@@ -347,8 +347,8 @@ function StakingCardCollapseItemContent({ hydratedInfo }: { hydratedInfo: Hydrat
         >
           Harvest
         </Button>
-      </AutoBox>
-    </AutoBox>
+      </Div>
+    </Div>
   )
 }
 
@@ -356,8 +356,8 @@ function CoinAvatarInfoItem({ info }: { info: HydratedFarmInfo }) {
   const { base, name } = info
   const isMobile = useAppSettings((s) => s.isMobile)
   return (
-    <AutoBox
-      is={isMobile ? 'Col' : 'Row'}
+    <Div
+      icss_={isMobile ? cssCol() : cssRow()}
       className="clickable flex-wrap items-center mobile:items-start"
       // onClick={() => {
       //   push(`/liquidity/?coin1=${base?.mint}&coin2=${quote?.mint}`)
@@ -365,7 +365,7 @@ function CoinAvatarInfoItem({ info }: { info: HydratedFarmInfo }) {
     >
       <CoinAvatar size={isMobile ? 'sm' : 'md'} token={base} className="justify-self-center mr-2" />
       <div className="mobile:text-xs font-medium mobile:mt-px mr-1.5">{name}</div>
-    </AutoBox>
+    </Div>
   )
 }
 
