@@ -1,4 +1,4 @@
-import CoinInputBox, { CoinInputBoxProps } from '../tempUikits/CoinInputBox'
+import CoinInputBox, { CoinInputBoxProps } from './CoinInputBox'
 import TokenSelectorDialog, { TokenSelectorProps } from '../pageComponents/dialogs/TokenSelectorDialog'
 import useToggle from '@/hooks/useToggle'
 
