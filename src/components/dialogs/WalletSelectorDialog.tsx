@@ -1,20 +1,19 @@
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 
 import { WalletAdapter, WalletReadyState } from '@solana/wallet-adapter-base'
 
+import { cssCol, Div } from '@/../../uikit/dist'
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import useWallet from '@/application/wallet/useWallet'
-import Card from '@/tempUikits/Card'
 import Icon from '@/components/Icon'
+import Card from '@/tempUikits/Card'
 import Row from '@/tempUikits/Row'
-
-import Grid from '../../tempUikits/Grid'
-import Link from '../../tempUikits/Link'
-import ResponsiveDialogDrawer from '../../tempUikits/ResponsiveDialogDrawer'
-import Input from '../../tempUikits/Input'
-import Col from '../../tempUikits/Col'
 import Button from '../../tempUikits/Button'
 import FadeInStable from '../../tempUikits/FadeIn'
+import Grid from '../../tempUikits/Grid'
+import Input from '../../tempUikits/Input'
+import Link from '../../tempUikits/Link'
+import ResponsiveDialogDrawer from '../../tempUikits/ResponsiveDialogDrawer'
 
 function WalletSelectorPanelItem({
   wallet,
@@ -58,7 +57,10 @@ function SimulateWallet({ onClick }: { onClick?(): void }) {
   const { select } = useWallet()
   const valueRef = useRef('')
   return (
-    <Col className="p-6 mobile:py-3 mobile:px-4 flex-grow ring-inset ring-1.5 mobile:ring-1 ring-[rgba(171,196,255,.5)] rounded-3xl mobile:rounded-xl items-center gap-3 m-8 mt-2 mb-4">
+    <Div
+      icss={cssCol()}
+      className="p-6 mobile:py-3 mobile:px-4 flex-grow ring-inset ring-1.5 mobile:ring-1 ring-[rgba(171,196,255,.5)] rounded-3xl mobile:rounded-xl items-center gap-3 m-8 mt-2 mb-4"
+    >
       <div className="mobile:text-sm text-base font-bold text-white">Simulate Wallet Address</div>
       <Input
         className="w-full"
@@ -83,7 +85,7 @@ function SimulateWallet({ onClick }: { onClick?(): void }) {
       >
         Fake it 🤘
       </Button>
-    </Col>
+    </Div>
   )
 }
 

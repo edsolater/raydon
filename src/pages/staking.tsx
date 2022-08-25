@@ -27,7 +27,7 @@ import { gt, isMeaningfulNumber } from '@/functions/numberish/compare'
 import { add } from '@/functions/numberish/operations'
 import { toString } from '@/functions/numberish/toString'
 import Button from '@/tempUikits/Button'
-import Col from '@/tempUikits/Col'
+
 import Collapse from '@/tempUikits/Collapse'
 import CyberpunkStyleCard from '@/tempUikits/CyberpunkStyleCard'
 import Grid from '@/tempUikits/Grid'
@@ -381,12 +381,12 @@ function TextInfoItem({
   className?: string
 }) {
   return (
-    <Col className={twMerge('w-max', className)}>
+    <Div icss={cssCol()} className={twMerge('w-max', className)}>
       <div className="mb-1 text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-2xs">{name}</div>
-      <Col className="flex-grow justify-center">
+      <Div icss={cssCol()} className="flex-grow justify-center">
         <div className="text-base mobile:text-xs">{value || '--'}</div>
         {subValue && <div className="text-sm mobile:text-2xs text-[rgba(171,196,255,0.5)]">{subValue}</div>}
-      </Col>
-    </Col>
+      </Div>
+    </Div>
   )
 }

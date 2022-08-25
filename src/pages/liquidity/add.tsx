@@ -26,7 +26,7 @@ import Button, { ButtonHandle } from '@/tempUikits/Button'
 import Card from '@/tempUikits/Card'
 import CoinAvatarPair from '@/components/CoinAvatarPair'
 import CoinInputBox, { CoinInputBoxHandle } from '@/components/CoinInputBox'
-import Col from '@/tempUikits/Col'
+
 import Collapse from '@/tempUikits/Collapse'
 import CyberpunkStyleCard from '@/tempUikits/CyberpunkStyleCard'
 import { SearchAmmDialog } from '@/components/dialogs/SearchAmmDialog'
@@ -62,6 +62,7 @@ import { SplToken } from '@/application/token/type'
 import { capitalize } from '@/functions/changeCase'
 import { objectShakeFalsy } from '@/functions/objectMethods'
 import { AddressItem } from '@/components/AddressItem'
+import { Div, cssCol } from '@/../../uikit/dist'
 
 const { ContextProvider: LiquidityUIContextProvider, useStore: useLiquidityContextStore } = createContextStore({
   hasAcceptedPriceChange: false,
@@ -571,13 +572,14 @@ function LiquidityCardInfo({ className }: { className?: string }) {
   const isStable = useMemo(() => Boolean(currentHydratedInfo?.version === 5), [currentHydratedInfo])
 
   return (
-    <Col
+    <Div
+      icss={cssCol()}
       className={twMerge(
         'py-4 px-6 flex-grow ring-inset ring-1.5 ring-[rgba(171,196,255,.5)] rounded-xl items-center',
         className
       )}
     >
-      <Col className="w-full">
+      <Div icss={cssCol()} className="w-full">
         <LiquidityCardItem
           fieldName={`Base`}
           fieldValue={focusSide === 'coin1' ? coin1?.symbol ?? 'unknown' : coin2?.symbol ?? 'unknown'}
@@ -629,7 +631,7 @@ function LiquidityCardInfo({ className }: { className?: string }) {
         />
         <Collapse openDirection="upwards" className="w-full">
           <Collapse.Body>
-            <Col>
+            <Div icss={cssCol()}>
               <LiquidityCardItem fieldName="Addresses" tooltipContent={<LiquidityCardTooltipPanelAddress />} />
               <LiquidityCardItem
                 fieldName="Slippage Tolerance"
@@ -649,7 +651,7 @@ function LiquidityCardInfo({ className }: { className?: string }) {
                   </Row>
                 }
               />
-            </Col>
+            </Div>
           </Collapse.Body>
           <Collapse.Face>
             {(open) => (
@@ -660,8 +662,8 @@ function LiquidityCardInfo({ className }: { className?: string }) {
             )}
           </Collapse.Face>
         </Collapse>
-      </Col>
-    </Col>
+      </Div>
+    </Div>
   )
 }
 function LiquidityCardItem({
@@ -701,7 +703,7 @@ function LiquidityCardTooltipPanelAddress() {
   return (
     <div className="w-60">
       <div className="text-sm font-semibold mb-2">Addresses</div>
-      <Col className="gap-2">
+      <Div icss={cssCol()} className="gap-2">
         {coin1 && (
           <LiquidityCardTooltipPanelAddressItem
             label={coin1.symbol ?? '--'}
@@ -719,7 +721,7 @@ function LiquidityCardTooltipPanelAddress() {
         {Boolean(lpMint) && <LiquidityCardTooltipPanelAddressItem label="LP" type="token" address={lpMint!} />}
         {Boolean(id) && <LiquidityCardTooltipPanelAddressItem label="Amm ID" address={id!} />}
         {Boolean(marketId) && <LiquidityCardTooltipPanelAddressItem label="Market ID" address={marketId!} />}
-      </Col>
+      </Div>
     </div>
   )
 }
@@ -810,7 +812,7 @@ function UserLiquidityExhibition() {
                     </Collapse.Face>
                     <Collapse.Body>
                       <div className="pb-4 px-6 mobile:px-4">
-                        <Col className="border-t-1.5 border-[rgba(171,196,255,.5)] py-5 gap-3 ">
+                        <Div icss={cssCol()} className="border-t-1.5 border-[rgba(171,196,255,.5)] py-5 gap-3 ">
                           <Row className="justify-between">
                             <div className="text-xs mobile:text-2xs font-medium text-primary">Pooled (Base)</div>
                             <div className="text-xs mobile:text-2xs font-medium text-white">
@@ -840,7 +842,7 @@ function UserLiquidityExhibition() {
                               {computeSharePercentValue(info.sharePercent)}
                             </div>
                           </Row>
-                        </Col>
+                        </Div>
                         <Row className="gap-4 mb-1">
                           <Button
                             className="text-base mobile:text-sm font-medium frosted-glass frosted-glass-teal rounded-xl flex-grow"

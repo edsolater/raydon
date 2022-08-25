@@ -5,7 +5,7 @@ import { usePools } from '@/application/pools/usePools'
 import useToken from '@/application/token/useToken'
 import { AddressItem } from '@/components/AddressItem'
 import CoinAvatarPair from '@/components/CoinAvatarPair'
-import Col from '@/tempUikits/Col'
+
 import Icon from '@/components/Icon'
 import ListTable from '@/tempUikits/ListTable'
 import Row from '@/tempUikits/Row'
@@ -13,6 +13,7 @@ import Tooltip from '@/tempUikits/Tooltip'
 import toPubString from '@/functions/format/toMintString'
 import toPercentString from '@/functions/format/toPercentString'
 import toUsdVolume from '@/functions/format/toUsdVolume'
+import { Div, cssCol } from '@/../../uikit/dist'
 
 export function PoolInfoSummary() {
   const poolId = useCreateFarms((s) => s.poolId)
@@ -80,17 +81,17 @@ export function PoolInfoSummary() {
         }
         if (label === 'TVL') {
           return (
-            <Col className="justify-center h-full">
+            <Div icss={cssCol()} className="justify-center h-full">
               {item.pool?.liquidity ? toUsdVolume(item.pool.liquidity, { decimalPlace: 0 }) : '--'}
-            </Col>
+            </Div>
           )
         }
 
         if (label === 'APR') {
           return (
-            <Col className="justify-center h-full">
+            <Div icss={cssCol()} className="justify-center h-full">
               {item.pool.apr30d ? toPercentString(item.pool.apr30d, { alreadyPercented: true }) : '--'}
-            </Col>
+            </Div>
           )
         }
       }}

@@ -23,13 +23,14 @@ import toPubString from '@/functions/format/toMintString'
 import { isMintEqual, isStringInsensitivelyEqual } from '@/functions/judgers/areEqual'
 import useAsyncValue from '@/hooks/useAsyncValue'
 import useToggle from '@/hooks/useToggle'
-import Col from '@/tempUikits/Col'
+
 import Input from '@/tempUikits/Input'
 import List from '@/tempUikits/List'
 import ListFast from '@/tempUikits/ListFast'
 import Row from '@/tempUikits/Row'
 import { PublicKeyish } from '@raydium-io/raydium-sdk'
 import { useCallback, useDeferredValue, useMemo, useRef, useState } from 'react'
+import { Div, cssCol } from '@/../../uikit/dist'
 
 export type TokenSelectorProps = {
   open: boolean
@@ -280,7 +281,7 @@ function TokenSelectorDialogContent({
 
           <div className="mobile:mx-6 border-t-1.5 border-[rgba(171,196,255,0.2)]"></div>
 
-          <Col className="flex-1 overflow-hidden border-b-1.5 py-3 border-[rgba(171,196,255,0.2)]">
+          <Div icss={cssCol()} className="flex-1 overflow-hidden border-b-1.5 py-3 border-[rgba(171,196,255,0.2)]">
             <Row className="px-8 mobile:px-6 justify-between">
               <div className="text-xs font-medium text-[rgba(171,196,255,.5)]">Token</div>
               <Row className="text-xs font-medium text-[rgba(171,196,255,.5)] items-center gap-1">Balance</Row>
@@ -288,7 +289,7 @@ function TokenSelectorDialogContent({
             {haveSearchResult ? (
               cachedTokenList
             ) : onlineTokenMintInfo ? (
-              <Col className="p-8  gap-4">
+              <Div icss={cssCol()} className="p-8  gap-4">
                 <InputBox
                   label="input a name for this token"
                   onUserInput={(text) => {
@@ -326,9 +327,9 @@ function TokenSelectorDialogContent({
                 >
                   Add User Token
                 </Button>
-              </Col>
+              </Div>
             ) : null}
-          </Col>
+          </Div>
 
           <Button type="text" className="w-full py-4 rounded-none font-bold text-xs text-primary" onClick={on}>
             View Token List
@@ -351,14 +352,14 @@ function TokenSelectorDialogTokenItem({ token, onClick }: { token: SplToken; onC
     <Row onClick={onClick} className="group w-full gap-4 justify-between items-center p-2 ">
       <Row>
         <CoinAvatar token={token} className="mr-2" />
-        <Col className="mr-2">
+        <Div icss={cssCol()} className="mr-2">
           <div className="text-base  max-w-[7em] overflow-hidden text-ellipsis  font-normal text-primary">
             {token.symbol}
           </div>
           <div className="text-xs  max-w-[12em] overflow-hidden text-ellipsis whitespace-nowrap  font-medium text-[rgba(171,196,255,.5)]">
             {token.name}
           </div>
-        </Col>
+        </Div>
         {canFlaggedTokenMints.has(toPubString(token.mint)) ? (
           <div
             onClick={(ev) => {
@@ -409,12 +410,12 @@ function TokenSelectorDialogTokenListItem({ tokenListName }: { tokenListName: Su
     <Row className="my-4 items-center">
       {tokenList?.icon && <Image className="rounded-full h-8 w-8 overflow-hidden" src={tokenList.icon} />}
 
-      <Col>
+      <Div icss={cssCol()}>
         <div className="text-base font-normal text-primary">{tokenListName}</div>
         {tokenList && (
           <div className="text-sm font-medium text-[rgba(171,196,255,.5)]">{tokenList.mints?.size ?? '--'} tokens</div>
         )}
-      </Col>
+      </Div>
 
       <Switcher disable={disableUserConfig} className="ml-auto" defaultChecked={isOn} onToggle={toggleTokenListName} />
     </Row>

@@ -14,7 +14,7 @@ import useWallet from '@/application/wallet/useWallet'
 import Button from '@/tempUikits/Button'
 import Card from '@/tempUikits/Card'
 import CoinInputBox from '@/components/CoinInputBox'
-import Col from '@/tempUikits/Col'
+
 import Collapse from '@/tempUikits/Collapse'
 import DateInput from '@/tempUikits/Datepicker/DateInput'
 import Icon from '@/components/Icon'
@@ -29,6 +29,7 @@ import { div } from '@/functions/numberish/operations'
 import useToggle from '@/hooks/useToggle'
 import { createSplToken } from '@/application/token/useTokenListsLoader'
 import { toString } from '@/functions/numberish/toString'
+import { Div, cssCol } from '@/../../uikit/dist'
 
 /**
  * @see https://uiwjs.github.io/#/components/date-input
@@ -110,12 +111,15 @@ function PanelContent({ close }: { close(): void }) {
     <>
       {/* text */}
       {/* info panel */}
-      <Col className="my-12 mobile:my-6 py-4 px-6 flex-grow ring-inset ring-1.5 ring-[rgba(171,196,255,.5)] rounded-xl items-center gap-3 mobile:gap-1">
+      <Div
+        icss={cssCol()}
+        className="my-12 mobile:my-6 py-4 px-6 flex-grow ring-inset ring-1.5 ring-[rgba(171,196,255,.5)] rounded-xl items-center gap-3 mobile:gap-1"
+      >
         <AddressItem fieldName="Serum Market ID:" fieldValue={marketId ?? '--'} />
         <AddressItem fieldName="Base Token Mint Address:" fieldValue={baseMint ?? '--'} autoShowTokenSymbol />
         <AddressItem fieldName="Quote Token Mint Address:" fieldValue={quoteMint ?? '--'} autoShowTokenSymbol />
         <AddressItem fieldName="AMM ID:" fieldValue={ammId ?? '--'} />
-      </Col>
+      </Div>
 
       {baseAmount && quoteAmount && isMeaningfulNumber(baseAmount) && isMeaningfulNumber(quoteAmount) && (
         <Row className="mx-auto my-2 items-center gap-2">
@@ -182,7 +186,10 @@ function PanelContent({ close }: { close(): void }) {
     <>
       {/* text */}
       {/* info panel */}
-      <Col className="my-12 mobile:my-6 py-4 px-6 flex-grow ring-inset ring-1.5 ring-[rgba(171,196,255,.5)] rounded-xl items-center gap-3 mobile:gap-1">
+      <Div
+        icss={cssCol()}
+        className="my-12 mobile:my-6 py-4 px-6 flex-grow ring-inset ring-1.5 ring-[rgba(171,196,255,.5)] rounded-xl items-center gap-3 mobile:gap-1"
+      >
         <AddressItem fieldName="Serum Market ID:" fieldValue={marketId ?? '--'} />
         <AddressItem fieldName="AMM ID:" fieldValue={ammId ?? '--'} />
         <AddressItem fieldName="Base Mint:" fieldValue={baseMint ?? '--'} autoShowTokenSymbol />
@@ -193,11 +200,14 @@ function PanelContent({ close }: { close(): void }) {
         <InfoItem fieldName="Base Token Starting Price:" fieldValue={baseTokenStartingPrice} />
         <InfoItem fieldName="Base Token Initial Liquidity:" fieldValue={baseTokenInitialLiquidity} />
       <InfoItem fieldName="Quote Token Initial Liquidity:" fieldValue={quoteTokenInitialLiquidity} /> */}
-      </Col>
+      </Div>
 
       <div className="font-medium text-center">Pool has been successfully created!</div>
 
-      <Col className="my-6 mobile:my-6 py-4 px-6 flex-grow ring-inset ring-1.5 ring-[rgba(171,196,255,.5)] rounded-xl items-center gap-3 mobile:gap-1">
+      <Div
+        icss={cssCol()}
+        className="my-6 mobile:my-6 py-4 px-6 flex-grow ring-inset ring-1.5 ring-[rgba(171,196,255,.5)] rounded-xl items-center gap-3 mobile:gap-1"
+      >
         <InfoItem
           fieldName="AMM ID:"
           fieldValue={
@@ -216,7 +226,7 @@ function PanelContent({ close }: { close(): void }) {
             </Row>
           }
         />
-      </Col>
+      </Div>
     </>
   )
 
@@ -340,7 +350,7 @@ function UserCreatedPoolsExhibitionPanel() {
     <div className="self-center w-[min(456px,90vw)] mt-12">
       <div className="pb-8 text-xl mobile:text-base font-semibold justify-self-start text-white">Your Created Pool</div>
       <Card className="p-4 bg-cyberpunk-card-bg" size="lg">
-        <Col className={`gap-6 mobile:gap-5`}>
+        <Div icss={cssCol()} className={`gap-6 mobile:gap-5`}>
           {userExhibitionHistory.map((info, idx) => (
             <Collapse
               key={idx}
@@ -359,13 +369,13 @@ function UserCreatedPoolsExhibitionPanel() {
                 )}
               </Collapse.Face>
               <Collapse.Body>
-                <Col className="border-t-1.5 border-[rgba(171,196,255,.5)] mt-4 py-5 gap-3">
+                <Div icss={cssCol()} className="border-t-1.5 border-[rgba(171,196,255,.5)] mt-4 py-5 gap-3">
                   <AddressItem fieldName="Amm Id: " fieldValue={info.ammId} />
                   <AddressItem fieldName="Market Id: " fieldValue={info.marketId} />
                   <AddressItem fieldName="Base Mint: " fieldValue={info.baseMint} autoShowTokenSymbol />
                   <AddressItem fieldName="Quote Mint: " fieldValue={info.quoteMint} autoShowTokenSymbol />
                   <InfoItem fieldName="Created On: " fieldValue={info.timestamp} />
-                </Col>
+                </Div>
                 <Row className="gap-4 mb-1">
                   <Button
                     className="text-base font-medium frosted-glass frosted-glass-teal rounded-xl flex-grow"
@@ -379,7 +389,7 @@ function UserCreatedPoolsExhibitionPanel() {
               </Collapse.Body>
             </Collapse>
           ))}
-        </Col>
+        </Div>
       </Card>
     </div>
   )

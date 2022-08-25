@@ -1,8 +1,6 @@
-import { ReactNode } from 'react'
-
+import { cssCol, Div } from '@/../../uikit/dist'
 import { shrinkToValue } from '@/functions/shrinkToValue'
-
-import Col from '../tempUikits/Col'
+import { ReactNode } from 'react'
 import Row from '../tempUikits/Row'
 
 /** must set either totalSteps or stepInfos */
@@ -27,7 +25,7 @@ export default function SetpIndicator<T extends { /** start from 1  */ stepNumbe
       {stepInfos.map((info, index, arrs) => (
         <Row key={index}>
           {/* bubble */}
-          <Col className="items-center">
+          <Div icss={cssCol()} className="items-center">
             {shrinkToValue(renderStepNumber, [info]) || (
               <div
                 className={`grid place-items-center h-8 w-8 mobile:h-6 mobile:w-6 text-sm font-medium bg-[#141041] rounded-full ${
@@ -44,7 +42,7 @@ export default function SetpIndicator<T extends { /** start from 1  */ stepNumbe
               (index !== arrs.length - 1 && (
                 <div className="my-2 min-h-[16px] mobile:h-2 border-r-1.5 border-[rgba(171,196,255,.5)] flex-1"></div>
               ))}
-          </Col>
+          </Div>
           <div className="ml-2">
             {shrinkToValue(renderStepContent, [info]) || (
               <div

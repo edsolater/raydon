@@ -1,13 +1,10 @@
-import React, { ReactNode, RefObject, useRef } from 'react'
-
-import { twMerge } from 'tailwind-merge'
-
-import { shrinkToValue } from '@/functions/shrinkToValue'
-
-import Col from '../tempUikits/Col'
-import Input, { InputProps } from '../tempUikits/Input'
+import { cssCol, Div } from '@/../../uikit/dist'
 import mergeRef from '@/functions/react/mergeRef'
+import { shrinkToValue } from '@/functions/shrinkToValue'
+import { ReactNode, RefObject, useRef } from 'react'
+import { twMerge } from 'tailwind-merge'
 import DecimalInput, { DecimalInputProps } from '../tempUikits/DecimalInput'
+import Input, { InputProps } from '../tempUikits/Input'
 
 export type InputBoxProps = {
   className?: string
@@ -47,7 +44,8 @@ export default function InputBox({
     inputRef.current?.click?.()
   }
   return (
-    <Col
+    <Div
+      icss={cssCol()}
       onClick={focusInput}
       className={twMerge(
         `bg-[#141041] rounded-xl py-3 px-6 cursor-text ${
@@ -81,6 +79,6 @@ export default function InputBox({
             componentRef={mergeRef(inputRef, inputProps?.componentRef)}
           />
         ))}
-    </Col>
+    </Div>
   )
 }

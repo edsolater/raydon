@@ -1,13 +1,11 @@
-import React, { ReactNode, useEffect, useMemo, useState } from 'react'
-
+import { cssCol, Div } from '@/../../uikit/dist'
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import useNotification from '@/application/notification/useNotification'
-
-import Col from '../tempUikits/Col'
-import ConfirmDialog, { ConfirmDialogInfo } from './dialogs/ConfirmDialog'
+import { ReactNode, useEffect, useMemo, useState } from 'react'
 import Link from '../tempUikits/Link'
-import NotificationItem, { NotificationItemInfo } from './NotificationItem'
+import ConfirmDialog, { ConfirmDialogInfo } from './dialogs/ConfirmDialog'
 import WelcomeBetaDialog from './dialogs/WelcomeBetaDialog'
+import NotificationItem, { NotificationItemInfo } from './NotificationItem'
 
 //#region ------------------- core definition -------------------
 type PopInfo =
@@ -88,7 +86,8 @@ export default function NotificationSystemStack() {
 
   return (
     <>
-      <Col
+      <Div
+        icss={cssCol()}
         className="items-end mobile:items-stretch pointer-events-none"
         style={{
           position: 'fixed',
@@ -102,7 +101,7 @@ export default function NotificationSystemStack() {
         {notificationItemInfos.map((info, idx) => (
           <NotificationItem key={idx} {...info} />
         ))}
-      </Col>
+      </Div>
       {confirmDialogInfos.map((info, idx) => (
         <ConfirmDialog key={idx} {...info} />
       ))}

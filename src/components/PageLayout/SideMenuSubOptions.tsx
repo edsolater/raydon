@@ -1,6 +1,6 @@
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import { LinkAddress } from '@/types/constants'
-import { Col, Row } from '@edsolater/uikit'
+import { Col, cssCol, Div, Row } from '@edsolater/uikit'
 import { ReactNode } from 'react'
 import Link from '../../tempUikits/Link'
 import Icon, { AppHeroIconName } from '../Icon'
@@ -11,7 +11,7 @@ import { SlippageTolerancePopover } from './SlippageTolerancePopover'
 
 export function SideMenuSubOptions({ className }: { className: string }) {
   return (
-    <Col className={className}>
+    <Div icss={cssCol()} className={className}>
       <div className="mx-8 border-b border-[rgba(57,208,216,0.16)] my-2 mobile:my-1"></div>
       <div className="flex-1 overflow-auto no-native-scrollbar mt-2">
         <PageLayoutPopoverDrawer renderPopoverContent={({ close }) => <RpcConnectionPanelPopover close={close} />}>
@@ -38,7 +38,7 @@ export function SideMenuSubOptions({ className }: { className: string }) {
           Feedback
         </OptionItem>
       </div>
-    </Col>
+    </Div>
   )
 }
 function OptionItem({

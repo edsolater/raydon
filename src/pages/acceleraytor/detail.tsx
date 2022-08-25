@@ -37,7 +37,7 @@ import { useForceUpdate } from '@/hooks/useForceUpdate'
 import { Badge } from '@/tempUikits/Badge'
 import Button from '@/tempUikits/Button'
 import Card from '@/tempUikits/Card'
-import Col from '@/tempUikits/Col'
+
 import CyberpunkStyleCard from '@/tempUikits/CyberpunkStyleCard'
 import { FadeIn } from '@/tempUikits/FadeIn'
 import Grid from '@/tempUikits/Grid'
@@ -215,7 +215,7 @@ function WinningTicketPanel({ className }: { className?: string }) {
         >
           {idoInfo.isClosed && (
             <Row className="flex-wrap gap-7 justify-between p-8 mobile:p-5">
-              <Col className="gap-1">
+              <Div icss={cssCol()} className="gap-1">
                 {idoInfo.winningTicketsTailNumber ? (
                   <div className="mobile:text-sm font-semibold text-base text-white">
                     {['1', '2'].includes(String(idoInfo.winningTicketsTailNumber?.isWinning)) ? (
@@ -246,11 +246,11 @@ function WinningTicketPanel({ className }: { className?: string }) {
                     }[String(idoInfo.winningTicketsTailNumber?.isWinning)] // TODO: to hydrated info
                   }
                 </div>
-              </Col>
+              </Div>
               <FadeIn>
                 {idoInfo.ledger && idoInfo?.depositedTickets?.length && (
                   <Row className="gap-8 mobile:gap-6 mobile:w-full mobile:grid mobile:grid-cols-2">
-                    <Col className="items-center">
+                    <Div icss={cssCol()} className="items-center">
                       <Button
                         size={isMobile ? 'sm' : 'md'}
                         className="frosted-glass-teal mobile:w-full"
@@ -303,9 +303,9 @@ function WinningTicketPanel({ className }: { className?: string }) {
                           </div>
                         )}
                       </FadeIn>
-                    </Col>
+                    </Div>
 
-                    <Col className="items-center">
+                    <Div icss={cssCol()} className="items-center">
                       <Button
                         size={isMobile ? 'sm' : 'md'}
                         className="frosted-glass-teal mobile:w-full"
@@ -345,7 +345,7 @@ function WinningTicketPanel({ className }: { className?: string }) {
                           </div>
                         )}
                       </FadeIn>
-                    </Col>
+                    </Div>
                   </Row>
                 )}
               </FadeIn>
@@ -354,7 +354,7 @@ function WinningTicketPanel({ className }: { className?: string }) {
 
           <FadeIn>
             {isMeaningfulNumber(idoInfo.depositedTickets?.length) && (
-              <Col className="bg-[#141041] py-5 px-6">
+              <Div icss={cssCol()} className="bg-[#141041] py-5 px-6">
                 {!idoInfo.isClosed && (
                   <div className="text-xl mobile:text-sm font-semibold  text-white">
                     You have deposited successfully
@@ -372,7 +372,7 @@ function WinningTicketPanel({ className }: { className?: string }) {
                     <TicketItem idoInfo={idoInfo} key={ticket.no} ticket={ticket} className="px-5 py-3" />
                   ))}
                 </Grid>
-              </Col>
+              </Div>
             )}
           </FadeIn>
         </Card>
@@ -590,7 +590,7 @@ function LotteryStateInfoPanel({ className }: { className?: string }) {
                   </Row>
                 }
               />
-              <Col>
+              <Div icss={cssCol()}>
                 <Button
                   className="frosted-glass-skygray"
                   size="xs"
@@ -619,7 +619,7 @@ function LotteryStateInfoPanel({ className }: { className?: string }) {
                 <div className="text-xs text-center text-primary mt-1">
                   APR: {toPercentString(stakingHydratedInfo?.totalApr7d)}
                 </div>
-              </Col>
+              </Div>
             </Div>
           )}
           {idoInfo.isUpcoming && (
@@ -758,17 +758,17 @@ function LotteryProjectInfoPanel({ className }: { className?: string }) {
             size="lg"
             className="shrink-0 flex flex-col py-5 px-4 gap-3 bg-[#1B1659] grow w-[206px] cyberpunk-bg-acceleraytor-prject-step-1"
           >
-            <Col className="items-center gap-3">
+            <Div icss={cssCol()} className="items-center gap-3">
               <StepBadge n={1} />
               <div className="text-sm text-center text-primary font-semibold">Stake RAY</div>
-            </Col>
+            </Div>
 
-            <Col className="grow gap-3">
+            <Div icss={cssCol()} className="grow gap-3">
               <div className="text-xs text-center text-primary opacity-50">
                 Stake and Earn RAY to participate in pools. The more and longer you stake the more lottery tickets
                 you'll be eligible to join with.
               </div>
-              <Col className="items-center">
+              <Div icss={cssCol()} className="items-center">
                 <Button
                   className="frosted-glass-skygray"
                   size="xs"
@@ -794,8 +794,8 @@ function LotteryProjectInfoPanel({ className }: { className?: string }) {
                 <div className="text-xs text-center text-primary opacity-50 mt-1">
                   APR: {toPercentString(stakingHydratedInfo?.totalApr7d)}
                 </div>
-              </Col>
-            </Col>
+              </Div>
+            </Div>
           </Card>
 
           {/* step 2 */}
@@ -803,12 +803,12 @@ function LotteryProjectInfoPanel({ className }: { className?: string }) {
             size="lg"
             className="shrink-0 flex flex-col py-5 px-4 gap-3 bg-[#1B1659] grow w-[206px] cyberpunk-bg-acceleraytor-prject-step-2"
           >
-            <Col className="items-center gap-3">
+            <Div icss={cssCol()} className="items-center gap-3">
               <StepBadge n={2} />
               <div className="text-sm text-center text-primary font-semibold">Deposit {idoInfo.quote?.symbol}</div>
-            </Col>
+            </Div>
 
-            <Col className="grow gap-3">
+            <Div icss={cssCol()} className="grow gap-3">
               <div className="text-xs text-center text-primary opacity-50 space-y-3">
                 <p>
                   When the pool opens, deposit {idoInfo.quote?.symbol} for each ticket in order for it to be counted in
@@ -819,7 +819,7 @@ function LotteryProjectInfoPanel({ className }: { className?: string }) {
                   deposit.
                 </p>
               </div>
-            </Col>
+            </Div>
           </Card>
 
           {/* step 3 */}
@@ -827,12 +827,12 @@ function LotteryProjectInfoPanel({ className }: { className?: string }) {
             size="lg"
             className="shrink-0 flex flex-col py-5 px-4 gap-3 bg-[#1B1659] grow w-[206px] cyberpunk-bg-acceleraytor-prject-step-3"
           >
-            <Col className="items-center gap-3">
+            <Div icss={cssCol()} className="items-center gap-3">
               <StepBadge n={3} />
               <div className="text-sm text-center text-primary font-semibold">Claim tokens</div>
-            </Col>
+            </Div>
 
-            <Col className="grow gap-3">
+            <Div icss={cssCol()} className="grow gap-3">
               <div className="text-xs text-center text-primary opacity-50 space-y-3">
                 <p>
                   If you have winning tickets you can claim your token allocation. You can then stake these tokens to
@@ -840,7 +840,7 @@ function LotteryProjectInfoPanel({ className }: { className?: string }) {
                 </p>
                 <p>For the non-winning tickets you can withdraw your {idoInfo.quote?.symbol}.</p>
               </div>
-            </Col>
+            </Div>
           </Card>
         </Row>
       </Row>

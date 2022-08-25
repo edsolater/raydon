@@ -3,7 +3,7 @@ import Icon from '@/components/Icon'
 import Row from '@/tempUikits/Row'
 import { UIRewardInfo } from '@/application/createFarm/type'
 import CoinAvatar from '@/components/CoinAvatar'
-import Col from '@/tempUikits/Col'
+
 import Grid from '@/tempUikits/Grid'
 import ListTable from '@/tempUikits/ListTable'
 import { getTime, toUTC } from '@/functions/date/dateFormat'
@@ -24,6 +24,7 @@ import { TimeStamp } from '@/functions/date/interface'
 import { Numberish } from '@/types/constants'
 import Tooltip from '@/tempUikits/Tooltip'
 import Button from '@/tempUikits/Button'
+import { Div, cssCol } from '@/../../uikit/dist'
 
 export function EditableRewardSummary({
   canUserEdit,
@@ -48,7 +49,7 @@ export function EditableRewardSummary({
       reward.isRewardEnded && reward.originData && isMeaningfulNumber(toString(reward.originData.claimableRewards))
   )
   return (
-    <Col>
+    <Div icss={cssCol()}>
       <ListTable
         list={editableRewards}
         getItemKey={(r) => getRewardSignature(r)}
@@ -76,7 +77,7 @@ export function EditableRewardSummary({
           const hasBeenEdited = hasRewardBeenEdited(reward)
           if (label === 'Reward Token') {
             return reward.token ? (
-              <Col className="h-full justify-center">
+              <Div icss={cssCol()} className="h-full justify-center">
                 <Row className="gap-1 items-center">
                   <CoinAvatar token={reward.token} size="sm" />
                   <div>{reward.token?.symbol ?? 'UNKNOWN'}</div>
@@ -86,7 +87,7 @@ export function EditableRewardSummary({
                   {reward.isRewardBeforeStart && <Badge cssColor="#abc4ff">Upcoming</Badge>}
                   {reward.isRewarding && <Badge cssColor="#39d0d8">Ongoing</Badge>}
                 </Row>
-              </Col>
+              </Div>
             ) : (
               '--'
             )
@@ -97,14 +98,14 @@ export function EditableRewardSummary({
             return (
               <Grid className={`gap-4 ${hasBeenEdited ? 'grid-rows-2' : ''} h-full`}>
                 {reward.originData?.amount ? (
-                  <Col className="grow break-all justify-center">
+                  <Div icss={cssCol()} className="grow break-all justify-center">
                     {formatNumber(reward.originData.amount, { fractionLength: reward.token?.decimals ?? 6 })}
-                  </Col>
+                  </Div>
                 ) : undefined}
                 {hasBeenEdited ? (
-                  <Col className="grow break-all justify-center text-[#39d0d8]">
+                  <Div icss={cssCol()} className="grow break-all justify-center text-[#39d0d8]">
                     {formatNumber(reward.amount, { fractionLength: reward.token?.decimals ?? 6 })}
-                  </Col>
+                  </Div>
                 ) : undefined}
               </Grid>
             )
@@ -121,14 +122,14 @@ export function EditableRewardSummary({
             return (
               <Grid className={`gap-4 ${hasBeenEdited ? 'grid-rows-2' : ''} h-full`}>
                 {reward.originData?.startTime && reward.originData.endTime ? (
-                  <Col className="grow break-all justify-center">
+                  <Div icss={cssCol()} className="grow break-all justify-center">
                     {getDurationText(reward.originData.startTime, reward.originData.endTime)}
-                  </Col>
+                  </Div>
                 ) : undefined}
                 {hasBeenEdited && reward.startTime && reward.endTime ? (
-                  <Col className="grow break-all justify-center text-[#39d0d8]">
+                  <Div icss={cssCol()} className="grow break-all justify-center text-[#39d0d8]">
                     {getDurationText(reward.startTime, reward.endTime)}
-                  </Col>
+                  </Div>
                 ) : undefined}
               </Grid>
             )
@@ -140,16 +141,16 @@ export function EditableRewardSummary({
             return (
               <Grid className={`gap-4 ${hasBeenEdited ? 'grid-rows-2' : ''} h-full`}>
                 {reward.originData?.startTime && reward.originData.endTime ? (
-                  <Col className="grow justify-center">
+                  <Div icss={cssCol()} className="grow justify-center">
                     <div>{toUTC(reward.originData.startTime)}</div>
                     <div>{toUTC(reward.originData.endTime)}</div>
-                  </Col>
+                  </Div>
                 ) : undefined}
                 {hasBeenEdited ? (
-                  <Col className="grow justify-center text-[#39d0d8]">
+                  <Div icss={cssCol()} className="grow justify-center text-[#39d0d8]">
                     <div>{toUTC(reward.startTime)}</div>
                     <div>{toUTC(reward.endTime)}</div>
-                  </Col>
+                  </Div>
                 ) : undefined}
               </Grid>
             )
@@ -177,20 +178,20 @@ export function EditableRewardSummary({
             return (
               <Grid className={`gap-4 ${showEditedEstimated ? 'grid-rows-2' : ''} h-full`}>
                 {originEstimatedValue && (
-                  <Col className="grow justify-center text-xs">
+                  <Div icss={cssCol()} className="grow justify-center text-xs">
                     <div>
                       {toString(originEstimatedValue)} {reward.originData?.token?.symbol}/day
                     </div>
                     {reward.originData?.apr && <div>{toPercentString(reward.originData.apr)} APR</div>}
-                  </Col>
+                  </Div>
                 )}
                 {showEditedEstimated && (
-                  <Col className="grow justify-center text-xs text-[#39d0d8]">
+                  <Div icss={cssCol()} className="grow justify-center text-xs text-[#39d0d8]">
                     <div>
                       {toString(editedEstimatedValue)} {reward?.token?.symbol}/day
                     </div>
                     {reward?.apr && <div>{toPercentString(reward.apr)} APR</div>}
-                  </Col>
+                  </Div>
                 )}
               </Grid>
             )
@@ -207,7 +208,8 @@ export function EditableRewardSummary({
               {canUserEdit && isRewardEditable && (
                 <div className="bg-[#abc4ff1a] rounded-md p-2 mb-4 empty:hidden">
                   {reward.originData?.isRwardingBeforeEnd72h && !isRewardEdited && (
-                    <Col
+                    <Div
+                      icss={cssCol()}
                       className="items-center clickable"
                       onClick={() => {
                         onClickIncreaseReward?.({ reward })
@@ -218,7 +220,7 @@ export function EditableRewardSummary({
                         <div className="text-xs text-primary font-medium">Add more rewards</div>
                       </Row>
                       <div className="text-xs text-[#abc4ff80] font-medium">(no rate changed allowed)</div>
-                    </Col>
+                    </Div>
                   )}
 
                   {reward.originData?.isRewardEnded && (
@@ -267,7 +269,7 @@ export function EditableRewardSummary({
                         }
                       >
                         <Icon iconSrc="/icons/create-farm-roll-back.svg" size="xs" className="text-[#abc4ff80]" />
-                        <Col>
+                        <Div icss={cssCol()}>
                           <Row className="text-xs text-primary font-medium">
                             <div>Claim unemmitted rewards</div>
                             <Tooltip>
@@ -285,7 +287,7 @@ export function EditableRewardSummary({
                             {toString(reward.originData.claimableRewards)}{' '}
                             {reward.originData.claimableRewards?.token.symbol ?? 'UNKNOWN'}
                           </div>
-                        </Col>
+                        </Div>
                       </Row>
                     </Grid>
                   )}
@@ -345,6 +347,6 @@ export function EditableRewardSummary({
           Claim all unemmitted rewards
         </Button>
       )}
-    </Col>
+    </Div>
   )
 }

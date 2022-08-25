@@ -1,20 +1,20 @@
+import { cssCol, Div } from '@/../../uikit/dist'
 import useAppSettings from '@/application/appSettings/useAppSettings'
-import { getRewardSignature, hasRewardBeenEdited } from '@/application/createFarm/parseRewardInfo'
+import { getRewardSignature } from '@/application/createFarm/parseRewardInfo'
 import { UIRewardInfo } from '@/application/createFarm/type'
 import useCreateFarms from '@/application/createFarm/useCreateFarm'
-import { Badge } from '@/tempUikits/Badge'
 import CoinAvatar from '@/components/CoinAvatar'
-import Col from '@/tempUikits/Col'
-import Grid from '@/tempUikits/Grid'
 import Icon from '@/components/Icon'
-import ListTable from '@/tempUikits/ListTable'
-import Row from '@/tempUikits/Row'
 import { getTime, toUTC } from '@/functions/date/dateFormat'
 import { TimeStamp } from '@/functions/date/interface'
 import parseDuration, { getDuration, parseDurationAbsolute } from '@/functions/date/parseDuration'
 import formatNumber from '@/functions/format/formatNumber'
 import { div } from '@/functions/numberish/operations'
 import { toString } from '@/functions/numberish/toString'
+import { Badge } from '@/tempUikits/Badge'
+import Grid from '@/tempUikits/Grid'
+import ListTable from '@/tempUikits/ListTable'
+import Row from '@/tempUikits/Row'
 import { Numberish } from '@/types/constants'
 
 /**
@@ -79,7 +79,7 @@ export function NewAddedRewardSummary({
       renderRowItem={({ item: reward, label }) => {
         if (label === 'Reward Token') {
           return reward.token ? (
-            <Col className="h-full justify-center gap-1">
+            <Div icss={cssCol()} className="h-full justify-center gap-1">
               <Row className="gap-1 items-center">
                 <CoinAvatar token={reward.token} size="sm" />
                 <div>{reward.token?.symbol ?? 'UNKNOWN'}</div>
@@ -91,7 +91,7 @@ export function NewAddedRewardSummary({
                   {reward.isRewarding && <Badge cssColor={'#39d0d8'}>Ongoing</Badge>}
                 </Row>
               )}
-            </Col>
+            </Div>
           ) : (
             '--'
           )
@@ -102,9 +102,9 @@ export function NewAddedRewardSummary({
           return (
             <Grid className={`gap-4 h-full`}>
               {reward?.amount ? (
-                <Col className="grow break-all justify-center">
+                <Div icss={cssCol()} className="grow break-all justify-center">
                   {formatNumber(reward.amount, { fractionLength: reward.token?.decimals ?? 6 })}
-                </Col>
+                </Div>
               ) : undefined}
             </Grid>
           )
@@ -121,7 +121,9 @@ export function NewAddedRewardSummary({
           return (
             <Grid className={`gap-4 h-full`}>
               {reward?.startTime && reward.endTime ? (
-                <Col className="grow break-all justify-center">{getDurationText(reward.startTime, reward.endTime)}</Col>
+                <Div icss={cssCol()} className="grow break-all justify-center">
+                  {getDurationText(reward.startTime, reward.endTime)}
+                </Div>
               ) : undefined}
             </Grid>
           )
@@ -133,10 +135,10 @@ export function NewAddedRewardSummary({
           return (
             <Grid className={`gap-4 h-full`}>
               {reward?.startTime && reward.endTime ? (
-                <Col className="grow justify-center">
+                <Div icss={cssCol()} className="grow justify-center">
                   <div>{toUTC(reward.startTime)}</div>
                   <div>{toUTC(reward.endTime)}</div>
-                </Col>
+                </Div>
               ) : undefined}
             </Grid>
           )
@@ -159,11 +161,11 @@ export function NewAddedRewardSummary({
           return (
             <Grid className={`gap-4 h-full`}>
               {originEstimatedValue && (
-                <Col className="grow justify-center text-xs">
+                <Div icss={cssCol()} className="grow justify-center text-xs">
                   <div>
                     {toString(originEstimatedValue)} {reward?.token?.symbol}/day
                   </div>
-                </Col>
+                </Div>
               )}
             </Grid>
           )

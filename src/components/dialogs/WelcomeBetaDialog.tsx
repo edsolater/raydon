@@ -1,14 +1,10 @@
-import React, * as react from 'react'
-
-import { twMerge } from 'tailwind-merge'
-
+import { cssCol, Div } from '@/../../uikit/dist'
 import useToggle from '@/hooks/useToggle'
-
+import * as react from 'react'
+import { twMerge } from 'tailwind-merge'
 import Button from '../../tempUikits/Button'
 import Card from '../../tempUikits/Card'
-import Col from '../../tempUikits/Col'
 import Dialog from '../../tempUikits/Dialog'
-import Icon, { AppHeroIconName } from '../Icon'
 
 export default function WelcomeBetaDialog(props: { content: react.ReactNode; onConfirm?: () => void }) {
   const [isOpen, { off: _close }] = useToggle(true)
@@ -32,17 +28,17 @@ export default function WelcomeBetaDialog(props: { content: react.ReactNode; onC
         )}
         size="lg"
       >
-        <Col className="items-center">
+        <Div icss={cssCol()} className="items-center">
           {props.content}
 
           <div className="self-stretch">
-            <Col>
+            <Div icss={cssCol()}>
               <Button className={`frosted-glass-teal`} onClick={confirm}>
                 OK
               </Button>
-            </Col>
+            </Div>
           </div>
-        </Col>
+        </Div>
       </Card>
     </Dialog>
   )

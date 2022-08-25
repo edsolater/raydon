@@ -46,7 +46,7 @@ import Button, { ButtonHandle } from '@/tempUikits/Button'
 import Card from '@/tempUikits/Card'
 import { Checkbox } from '@/tempUikits/Checkbox'
 import CoinInputBox, { CoinInputBoxHandle } from '@/components/CoinInputBox'
-import Col from '@/tempUikits/Col'
+
 import Collapse from '@/tempUikits/Collapse'
 import CyberpunkStyleCard from '@/tempUikits/CyberpunkStyleCard'
 import FadeInStable, { FadeIn } from '@/tempUikits/FadeIn'
@@ -62,6 +62,7 @@ import { AddressItem } from '@/components/AddressItem'
 import { isMintEqual } from '@/functions/judgers/areEqual'
 import { Badge } from '@/tempUikits/Badge'
 import { useSwapTwoElements } from '../hooks/useSwapTwoElements'
+import { Div, cssCol } from '@/../../uikit/dist'
 
 function SwapEffect() {
   useSwapInitCoinFiller()
@@ -654,7 +655,7 @@ function SwapCardPriceIndicator({ className }: { className?: string }) {
   const innerPriceLeftCoin = innerReversed ? downCoin : upCoin
   const innerPriceRightCoin = innerReversed ? upCoin : downCoin
   return (
-    <Col>
+    <Div icss={cssCol()}>
       <FadeIn>
         {executionPrice && (
           <Row className={twMerge('font-medium text-sm text-primary', className)}>
@@ -683,7 +684,7 @@ function SwapCardPriceIndicator({ className }: { className?: string }) {
           </div>
         ) : null}
       </FadeIn>
-    </Col>
+    </Div>
   )
 }
 
@@ -728,7 +729,8 @@ function SwapCardInfo({ className }: { className?: string }) {
 
   const isStable = useMemo(() => Boolean(routes?.some((route) => route.keys.version === 5)), [routes])
   return (
-    <Col
+    <Div
+      icss={cssCol()}
       className={twMerge(
         `py-4 px-6 flex-grow border-1.5  ${
           isDangerousPrice
@@ -775,7 +777,7 @@ function SwapCardInfo({ className }: { className?: string }) {
 
       <Collapse openDirection="upwards" className="w-full">
         <Collapse.Body>
-          <Col className="gap-3 pb-3">
+          <Div icss={cssCol()} className="gap-3 pb-3">
             <SwapCardItem fieldName="Addresses" tooltipContent={<SwapCardTooltipPanelAddress />} />
             <SwapCardItem
               fieldName="Slippage Tolerance"
@@ -805,7 +807,7 @@ function SwapCardInfo({ className }: { className?: string }) {
               } `}
               fieldValue={
                 fee ? (
-                  <Col>
+                  <Div icss={cssCol()}>
                     {fee.map((CurrencyAmount) => {
                       const tokenAmount = toUITokenAmount(CurrencyAmount)
                       return (
@@ -814,14 +816,14 @@ function SwapCardInfo({ className }: { className?: string }) {
                         </div>
                       )
                     })}
-                  </Col>
+                  </Div>
                 ) : (
                   '--'
                 )
               }
               // tooltipContent="The difference between the market price and estimated price due to trade size"
             />
-          </Col>
+          </Div>
         </Collapse.Body>
         <Collapse.Face>
           {(open) => (
@@ -832,7 +834,7 @@ function SwapCardInfo({ className }: { className?: string }) {
           )}
         </Collapse.Face>
       </Collapse>
-    </Col>
+    </Div>
   )
 }
 
@@ -878,7 +880,7 @@ function SwapCardTooltipPanelAddress() {
   return (
     <div className="w-60">
       <div className="text-sm font-semibold mb-2">Addresses</div>
-      <Col className="gap-2">
+      <Div icss={cssCol()} className="gap-2">
         <SwapCardTooltipPanelAddressItem
           label={coin1?.symbol ?? '--'}
           type="token"
@@ -917,7 +919,7 @@ function SwapCardTooltipPanelAddress() {
             ))}
           </>
         ) : null}
-      </Col>
+      </Div>
     </div>
   )
 }
@@ -1039,14 +1041,14 @@ function KLineChartItem({
       {canShowKline && (
         <div className="flex mobile:grid mobile:grid-cols-3 mobile:gap-2 p-4 mobile:py-4 w-[min(456px,100%)] self-center items-center">
           <Row className="items-center mobile:justify-self-center w-16 mobile:w-8 flex-shrink-0">
-            <Col className="gap-1 grow  mobile:items-center">
+            <Div icss={cssCol()} className="gap-1 grow  mobile:items-center">
               <CoinAvatar token={coin} size={isMobile ? 'sm' : 'smi'} />
               <div className="font-medium text-sm text-primary">{coin?.symbol ?? '--'}</div>
-            </Col>
+            </Div>
             {/* <div className="ml-6 self-stretch border-l-1.5 border-[rgba(171,196,255,0.5)]"></div> */}
           </Row>
 
-          <Col className="items-end mobile:items-center mobile:justify-self-center mobile:ml-0 grow">
+          <Div icss={cssCol()} className="items-end mobile:items-center mobile:justify-self-center mobile:ml-0 grow">
             <div className="text-xs font-medium text-[rgba(171,196,255,0.5)]">Price</div>
             <div className="text-sm font-medium text-primary whitespace-nowrap">
               {'$' +
@@ -1054,9 +1056,12 @@ function KLineChartItem({
                   fractionLength: 'auto'
                 }) ?? '--'}
             </div>
-          </Col>
+          </Div>
 
-          <Col className="items-start mobile:items-center mobile:justify-self-center ml-8  mobile:ml-0 w-8">
+          <Div
+            icss={cssCol()}
+            className="items-start mobile:items-center mobile:justify-self-center ml-8  mobile:ml-0 w-8"
+          >
             <div className="text-xs font-medium text-[rgba(171,196,255,0.5)]">24H%</div>
             <div
               className={`text-sm font-medium ${
@@ -1065,7 +1070,7 @@ function KLineChartItem({
             >
               {toPercentString(floatPercent, { alwaysSigned: true })}
             </div>
-          </Col>
+          </Div>
           <KLineChartItemThumbnail
             className="ml-10 w-36 mobile:w-full h-12 mobile:col-span-full  mobile:m-0 mobile:mt-4 flex-shrink-0"
             isPositive={isPositive}
@@ -1169,11 +1174,11 @@ function KLineChartItemThumbnail({
 //               }}
 //             >
 //               <Row className="gap-4 items-center">
-//                 <Col className="gap-1">
+//                 <Div icss={cssCol()} className="gap-1">
 //                   <div className="text-xs mobile:text-2xs font-medium text-[rgba(171,196,255,0.5)]">
 //                     Click the button if you want to unwrap all WSOL
 //                   </div>
-//                 </Col>
+//                 </Div>
 
 //                 <Button
 //                   className="flex items-center frosted-glass-teal opacity-80"

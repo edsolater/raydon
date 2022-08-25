@@ -1,11 +1,11 @@
+import { cssCol, Div } from '@/../../uikit/dist'
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import { isString } from '@/functions/judgers/dateType'
 import useLocalStorageItem from '@/hooks/useLocalStorage'
 import React, { ReactNode, useEffect, useMemo, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
-import Col from './Col'
-import Collapse from './Collapse'
 import Icon from '../components/Icon'
+import Collapse from './Collapse'
 import Row from './Row'
 
 /**
@@ -93,7 +93,7 @@ export default function Select<T extends string>({
         </Collapse.Face>
         <Collapse.Body>
           {(open, controller) => (
-            <Col className="border-t-1.5 border-[rgba(171,196,255,.1)] px-3 py-1">
+            <Div icss={cssCol()} className="border-t-1.5 border-[rgba(171,196,255,.1)] px-3 py-1">
               {candidateValues.map((candidate) => {
                 const { label, value } =
                   typeof candidate === 'string' ? { label: candidate, value: candidate } : candidate
@@ -116,7 +116,7 @@ export default function Select<T extends string>({
                   </Row>
                 )
               })}
-            </Col>
+            </Div>
           )}
         </Collapse.Body>
       </Collapse>

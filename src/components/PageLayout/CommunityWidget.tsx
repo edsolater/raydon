@@ -1,11 +1,10 @@
-import React from 'react'
+import { cssCol, Div } from '@/../../uikit/dist'
 import linkTo from '@/functions/dom/linkTo'
 import { LinkAddress } from '@/types/constants'
-import Col from '../../tempUikits/Col'
-import Icon from '../Icon'
 import Link from '../../tempUikits/Link'
-import PageLayoutPopoverDrawer from '../PageLayoutPopoverDrawer'
 import Row from '../../tempUikits/Row'
+import Icon from '../Icon'
+import PageLayoutPopoverDrawer from '../PageLayoutPopoverDrawer'
 
 export function CommunityPopover() {
   function Item({
@@ -43,7 +42,7 @@ export function CommunityPopover() {
         <Item href="https://discord.gg/raydium" iconSrc="/icons/media-discord.svg" text="Discord" />
         <PageLayoutPopoverDrawer
           renderPopoverContent={({ close }) => (
-            <Col className="divide-y-1.5 max-h-[60vh] overflow-auto divide-[rgba(171,196,255,0.2)]">
+            <Div icss={cssCol()} className="divide-y-1.5 max-h-[60vh] overflow-auto divide-[rgba(171,196,255,0.2)]">
               <Item
                 href="https://t.me/raydiumprotocol"
                 iconSrc="/icons/media-telegram.svg"
@@ -98,7 +97,7 @@ export function CommunityPopover() {
                 text="Telegram (TH)"
                 onClick={close}
               />
-            </Col>
+            </Div>
           )}
         >
           <Row className="flex items-center justify-between">

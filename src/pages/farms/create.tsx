@@ -7,7 +7,7 @@ import { routeBack, routeTo } from '@/application/routeTools'
 import useWallet from '@/application/wallet/useWallet'
 import Button from '@/tempUikits/Button'
 import Card from '@/tempUikits/Card'
-import Col from '@/tempUikits/Col'
+
 import CyberpunkStyleCard from '@/tempUikits/CyberpunkStyleCard'
 import FadeInStable from '@/tempUikits/FadeIn'
 import Grid from '@/tempUikits/Grid'
@@ -27,6 +27,7 @@ import { twMerge } from 'tailwind-merge'
 import { NewRewardIndicatorAndForm } from '../../components/createFarm/NewRewardIndicatorAndForm'
 import { PoolIdInputBlock, PoolIdInputBlockHandle } from '../../components/createFarm/PoolIdInputBlock'
 import { useChainDate } from '../../hooks/useChainDate'
+import { Div, cssCol } from '@/../../uikit/dist'
 
 // unless ido have move this component, it can't be renamed or move to /components
 function StepBadge(props: { n: number }) {
@@ -126,20 +127,20 @@ function FormStep({
         <StepBadge n={stepNumber} />
         <div className="grow">{title}</div>
       </Row>
-      <Col className="grow">
+      <Div icss={cssCol()} className="grow">
         <Grid className="mb-10">{children}</Grid>
-      </Col>
+      </Div>
     </Grid>
   ) : (
     <Grid className="grid-cols-[auto,1fr] gap-4">
-      <Col className="items-center">
+      <Div icss={cssCol()} className="items-center">
         <StepBadge n={stepNumber} />
         <div className={`grow my-4 border-r-1.5 ${haveNavline ? 'border-[#abc4ff1a]' : 'border-transparent'} `} />
-      </Col>
-      <Col className="grow">
+      </Div>
+      <Div icss={cssCol()} className="grow">
         <div className="ml-3 mb-5">{title}</div>
         <Grid className="mb-16">{children}</Grid>
-      </Col>
+      </Div>
     </Grid>
   )
 }
@@ -255,7 +256,7 @@ export default function CreateFarmPage() {
           </FormStep>
         </div>
 
-        <Col className="items-center ml-12 mobile:ml-0">
+        <Div icss={cssCol()} className="items-center ml-12 mobile:ml-0">
           <div className="font-medium text-sm mobile:text-xs text-justify leading-snug text-[#abc4ff80] mb-8">
             <span className="text-[#DA2EEF]">Please note: </span>Rewards allocated to farms are final and unused rewards
             cannot be claimed. However, you can add additional rewards to the farm. 300 RAY is collected as an Ecosystem
@@ -376,7 +377,7 @@ export default function CreateFarmPage() {
           >
             Review Farm
           </Button>
-        </Col>
+        </Div>
       </div>
     </PageLayout>
   )

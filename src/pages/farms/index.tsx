@@ -46,7 +46,7 @@ import { Badge } from '@/tempUikits/Badge'
 import Button, { ButtonHandle } from '@/tempUikits/Button'
 import Card from '@/tempUikits/Card'
 import CoinInputBox, { CoinInputBoxHandle } from '@/components/CoinInputBox'
-import Col from '@/tempUikits/Col'
+
 import Grid from '@/tempUikits/Grid'
 import Input from '@/tempUikits/Input'
 import Link from '@/tempUikits/Link'
@@ -127,13 +127,13 @@ function FarmAdditionalRouteTools() {
 
 function FarmCardControllers() {
   return (
-    <Col>
+    <Div icss={cssCol()}>
       <Grid className="grid-cols-3 justify-between items-center pb-8 pt-0">
         {/* <FarmTitle></FarmTitle> */}
         {/* <FarmTabBlock /> */}
         {/* <AdditionalFarmRouteTools></AdditionalFarmRouteTools> */}
       </Grid>
-    </Col>
+    </Div>
   )
 }
 
@@ -1405,13 +1405,13 @@ function TextInfoItem({
 }) {
   const isMobile = useAppSettings((s) => s.isMobile)
   return (
-    <Col className={className}>
+    <Div icss={cssCol()} className={className}>
       {isMobile && <div className=" mb-1 text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-2xs">{name}</div>}
-      <Col className="flex-grow justify-center">
+      <Div icss={cssCol()} className="flex-grow justify-center">
         <div className="text-base mobile:text-xs">{value || '--'}</div>
         {subValue && <div className="text-sm mobile:text-2xs text-[rgba(171,196,255,0.5)]">{subValue}</div>}
-      </Col>
-    </Col>
+      </Div>
+    </Div>
   )
 }
 

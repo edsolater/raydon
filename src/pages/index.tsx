@@ -1,3 +1,4 @@
+import { Div, cssCol } from '@/../../uikit/dist'
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import { useHomeInfo } from '@/application/homeInfo'
 import Icon from '@/components/Icon'
@@ -6,7 +7,7 @@ import useDocumentMetaTitle from '@/hooks/useDocumentMetaTitle'
 import { useDocumentScrollActionDetector } from '@/hooks/useScrollActionDetector'
 import Button from '@/tempUikits/Button'
 import Card from '@/tempUikits/Card'
-import Col from '@/tempUikits/Col'
+
 import Grid from '@/tempUikits/Grid'
 import Image from '@/tempUikits/Image'
 import Link from '@/tempUikits/Link'
@@ -372,7 +373,7 @@ function HomePageFooter() {
               style={{ background: 'radial-gradient(39.84% 47.5% at 96.82% 58.33%, #39d0d8 0%, #2b6aff 100%)' }}
             />
           </div>
-          <Col className="gap-6">
+          <Div icss={cssCol()} className="gap-6">
             <Link
               className="text-[#c4d6ff] hover:text-white tablet:text-center"
               href="https://raydium.gitbook.io/raydium/"
@@ -394,7 +395,7 @@ function HomePageFooter() {
             <Link openInNewTab className="text-[#c4d6ff] hover:text-white tablet:text-center" href="/docs/disclaimer">
               Disclaimer
             </Link>
-          </Col>
+          </Div>
         </div>
 
         <div>
@@ -405,7 +406,7 @@ function HomePageFooter() {
               style={{ background: 'radial-gradient(39.84% 47.5% at 96.82% 58.33%, #39d0d8 0%, #2b6aff 100%)' }}
             />
           </div>
-          <Col className="gap-6">
+          <Div icss={cssCol()} className="gap-6">
             <Link
               className="text-[#c4d6ff] hover:text-white tablet:text-center"
               href="https://forms.gle/Fjq4MiRA2qWbPyt29"
@@ -430,7 +431,7 @@ function HomePageFooter() {
             >
               Permissionless Pool
             </Link>
-          </Col>
+          </Div>
         </div>
 
         <div>
@@ -441,7 +442,7 @@ function HomePageFooter() {
               style={{ background: 'radial-gradient(39.84% 47.5% at 96.82% 58.33%, #39d0d8 0%, #2b6aff 100%)' }}
             />
           </div>
-          <Col className="gap-6">
+          <Div icss={cssCol()} className="gap-6">
             <Link
               className="text-[#c4d6ff] hover:text-white tablet:text-center"
               href="https://raydium.gitbook.io/raydium/trading-on-serum/spl-wallets"
@@ -454,7 +455,7 @@ function HomePageFooter() {
             >
               FAQ
             </Link>
-          </Col>
+          </Div>
         </div>
 
         <div className="tablet:col-span-full tablet:justify-self-center">
@@ -508,7 +509,7 @@ function HomePageFooter() {
                   <Icon size="sm" heroIconName="chevron-down" />
                 </Row>
                 <Tooltip.Panel>
-                  <Col className="divide-y-1.5">
+                  <Div icss={cssCol()} className="divide-y-1.5">
                     <Link
                       className="border-[rgba(196,214,255,0.1)] text-[#c4d6ff] hover:text-white p-2 whitespace-nowrap text-sm"
                       href="https://t.me/raydiumprotocol"
@@ -563,7 +564,7 @@ function HomePageFooter() {
                     >
                       Telegram (TH)
                     </Link>
-                  </Col>
+                  </Div>
                 </Tooltip.Panel>
               </Tooltip>
             </Row>

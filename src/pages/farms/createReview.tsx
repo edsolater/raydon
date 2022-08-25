@@ -8,7 +8,7 @@ import { RAYMint } from '@/application/token/wellknownToken.config'
 import useWallet from '@/application/wallet/useWallet'
 import { AddressItem } from '@/components/AddressItem'
 import Button from '@/tempUikits/Button'
-import Col from '@/tempUikits/Col'
+
 import PageLayout from '@/components/PageLayout/PageLayout'
 import Row from '@/tempUikits/Row'
 import toPubString from '@/functions/format/toMintString'
@@ -22,6 +22,7 @@ import { PoolInfoSummary } from '@/components/createFarm/PoolInfoSummery'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { setInterval } from '../../functions/timeout'
+import { Div, cssCol } from '@/../../uikit/dist'
 
 function useAvailableCheck() {
   useEffect(() => {
@@ -78,14 +79,14 @@ export default function CreateFarmReviewPage() {
     </Button>
   )
   const estimatedIndicator = (
-    <Col className="mt-4 text-sm font-medium items-center">
+    <Div icss={cssCol()} className="mt-4 text-sm font-medium items-center">
       <div>
         <span className="text-[#abc4ff80]">Fee:</span> <span className="text-primary">300 RAY</span>
       </div>
       <div>
         <span className="text-[#abc4ff80]">Est. transaction fee:</span> <span className="text-primary">0.002 SOL</span>
       </div>
-    </Col>
+    </Div>
   )
   const editButton = (
     <Button className="frosted-glass-skygray mobile:w-full" size={isMobile ? 'sm' : 'lg'} onClick={routeBack}>
@@ -132,7 +133,7 @@ export default function CreateFarmReviewPage() {
         )}
 
         {created ? (
-          <Col>
+          <Div icss={cssCol()}>
             <Row className="w-full gap-2 justify-center my-8">
               <Row className="items-center text-sm mobile:text-xs font-medium text-primary mobile:text-2xs">
                 <div className="mr-1">Your Farm ID: </div>
@@ -156,21 +157,21 @@ export default function CreateFarmReviewPage() {
             >
               Back to Farms
             </Button>
-          </Col>
+          </Div>
         ) : isMobile ? (
-          <Col className="gap-5 items-center">
+          <Div icss={cssCol()} className="gap-5 items-center">
             {estimatedIndicator}
-            <Col className="items-center gap-3 w-full">
+            <Div icss={cssCol()} className="items-center gap-3 w-full">
               {createFarmButton}
               {editButton}
-            </Col>
-          </Col>
+            </Div>
+          </Div>
         ) : (
           <Row className="gap-5 justify-center items-start">
-            <Col className="items-center">
+            <Div icss={cssCol()} className="items-center">
               {createFarmButton}
               {estimatedIndicator}
-            </Col>
+            </Div>
             {editButton}
           </Row>
         )}

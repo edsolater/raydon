@@ -1,12 +1,10 @@
-import React, { ComponentProps, CSSProperties, ReactNode, RefObject, useMemo, useRef, useState } from 'react'
-
+import { cssCol, Div } from '@/../../uikit/dist'
 import addPropsToReactElement from '@/functions/react/addPropsToReactElement'
 import mergeRef from '@/functions/react/mergeRef'
 import { pickReactChildren } from '@/functions/react/pickChild'
 import { useRecordedEffect } from '@/hooks/useRecordedEffect'
-
-import Col from './Col'
 import { useScrollDegreeDetector } from '@/hooks/useScrollDegreeDetector'
+import { ComponentProps, CSSProperties, ReactNode, RefObject, useMemo, useRef, useState } from 'react'
 
 export default function List({
   increaseRenderCount = 30,
@@ -68,13 +66,14 @@ export default function List({
   )
 
   return (
-    <Col
+    <Div
+      icss={cssCol()}
       domRef={mergeRef(domRef, listRef)}
       className={`List overflow-y-scroll ${className ?? ''}`}
       style={{ ...style, contentVisibility: 'auto' }}
     >
       {allListItems.slice(0, renderItemLength)}
-    </Col>
+    </Div>
   )
 }
 

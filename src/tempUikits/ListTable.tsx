@@ -2,17 +2,16 @@
  * depends on <List>
  */
 
+import { cssCol, Div } from '@/../../uikit/dist'
 import { isNumber, isObject } from '@/functions/judgers/dateType'
 import { shrinkToValue } from '@/functions/shrinkToValue'
 import { MayArray, MayFunction } from '@/types/constants'
 import { SKeyof } from '@/types/generics'
-import { ReactNode, Fragment, useRef, CSSProperties } from 'react'
-import Card from './Card'
-import Col from './Col'
-import useListDataManager from '../hooks/useListDataManager'
-import Grid from './Grid'
+import { CSSProperties, Fragment, ReactNode, useRef } from 'react'
 import { twMerge } from 'tailwind-merge'
-import { toHumanReadable } from '@/functions/format/toHumanReadable'
+import useListDataManager from '../hooks/useListDataManager'
+import Card from './Card'
+import Grid from './Grid'
 import Row from './Row'
 
 interface ListTableHeader<D> {
@@ -227,7 +226,7 @@ export default function ListTable<T>({
       </Grid>
 
       {/* Body */}
-      <Col className={twMerge('px-5 divide-y divide-[#abc4ff1a]', rowsWrapperClassName)}>
+      <Div icss={cssCol()} className={twMerge('px-5 divide-y divide-[#abc4ff1a]', rowsWrapperClassName)}>
         {wrapped.map(({ data, destorySelf, changeSelf }, idx) => {
           const contentNode = renderListTableRowContent({ data, destorySelf, changeSelf }, idx)
           const userSettedWholeEntry = renderRowEntry?.({
@@ -256,7 +255,7 @@ export default function ListTable<T>({
             </div>
           )
         })}
-      </Col>
+      </Div>
     </Card>
   ) : (
     <Grid className={twMerge(className, rowsWrapperClassName)}>

@@ -27,7 +27,7 @@ import { toString } from '@/functions/numberish/toString'
 import { searchItems } from '@/functions/searchItems'
 import { useForceUpdate } from '@/hooks/useForceUpdate'
 import Button from '@/tempUikits/Button'
-import Col from '@/tempUikits/Col'
+
 import Collapse from '@/tempUikits/Collapse'
 import CyberpunkStyleCard from '@/tempUikits/CyberpunkStyleCard'
 import { FadeIn } from '@/tempUikits/FadeIn'
@@ -53,14 +53,17 @@ export default function AcceleRaytor() {
 
 function AcceleRaytorHeaderCyberpunk() {
   return (
-    <Col className="items-center gap-20 mb-11">
-      <Col className="items-center cyberpunk-bg-light-acceleraytor mobile:scale-75 mobile:translate-y-4">
+    <Div icss={cssCol()} className="items-center gap-20 mb-11">
+      <Div
+        icss={cssCol()}
+        className="items-center cyberpunk-bg-light-acceleraytor mobile:scale-75 mobile:translate-y-4"
+      >
         <Image src="/logo/accecleraytor-text-logo.svg" />
         <div className="text-[20px] mt-2 font-medium text-[#ABC4FF80] whitespace-nowrap">
           A launchpad for new Solana projects
         </div>
-      </Col>
-    </Col>
+      </Div>
+    </Div>
   )
 }
 
@@ -107,7 +110,7 @@ function IdoList() {
           <div className="text-2xl mobile:text-base mobile:px-4 mb-6 mobile:mb-4 font-semibold text-white w-[min(890px,100%)] self-center">
             Open Pool{openPools.length > 1 ? 's' : ''}
           </div>
-          <Col className="gap-10 mobile:gap-8 w-[min(890px,100%)] mx-auto mobile:w-full">
+          <Div icss={cssCol()} className="gap-10 mobile:gap-8 w-[min(890px,100%)] mx-auto mobile:w-full">
             {openPools.map((info) => (
               <div key={info.id}>
                 <CyberpunkStyleCard>
@@ -120,7 +123,7 @@ function IdoList() {
                 </CyberpunkStyleCard>
               </div>
             ))}
-          </Col>
+          </Div>
         </>
       )}
       <RowTabs
@@ -145,7 +148,7 @@ function IdoList() {
         </Row>
       )}
 
-      <Col className="gap-12 mobile:gap-8 w-[min(890px,100%)] mx-auto mobile:w-full">
+      <Div icss={cssCol()} className="gap-12 mobile:gap-8 w-[min(890px,100%)] mx-auto mobile:w-full">
         {upcomingOrClosedPoolItems.length > 0 ? (
           upcomingOrClosedPoolItems.map((info) => (
             <div key={info.id}>
@@ -164,7 +167,7 @@ function IdoList() {
             ( {currentTab === 'Closed Pools' && searchText ? 'Searched Not Found' : 'Empty'} )
           </div>
         )}
-      </Col>
+      </Div>
     </>
   )
 }
@@ -315,7 +318,7 @@ function FaceButtonGroupClaim({ idoInfo }: { idoInfo: HydratedIdoInfo }) {
 
   return (
     <>
-      <Col className="items-center mobile:grow">
+      <Div icss={cssCol()} className="items-center mobile:grow">
         <Button
           size={isMobile ? 'xs' : 'md'}
           className="frosted-glass-teal mobile:self-stretch w-[160px] mobile:w-[100%] whitespace-normal"
@@ -370,8 +373,8 @@ function FaceButtonGroupClaim({ idoInfo }: { idoInfo: HydratedIdoInfo }) {
             </div>
           )}
         </FadeIn>
-      </Col>
-      <Col className="items-center mobile:grow">
+      </Div>
+      <Div icss={cssCol()} className="items-center mobile:grow">
         <Button
           size={isMobile ? 'xs' : 'md'}
           className="frosted-glass-teal mobile:self-stretch w-[160px] mobile:w-[100%] whitespace-normal"
@@ -412,7 +415,7 @@ function FaceButtonGroupClaim({ idoInfo }: { idoInfo: HydratedIdoInfo }) {
             </div>
           )}
         </FadeIn>
-      </Col>
+      </Div>
     </>
   )
 }
@@ -441,7 +444,7 @@ function AcceleRaytorCollapseItemContent({ info }: { info: HydratedIdoInfo }) {
             </div>
           )}
         </div>
-        <Col className="grow justify-between">
+        <Div icss={cssCol()} className="grow justify-between">
           <div className="grid grid-flow-row grid-cols-2 mobile:grid-cols-1 mobile:gap-board px-6 mobile:p-0">
             <IdoItem
               fieldName="Total Raise"
@@ -538,7 +541,7 @@ function AcceleRaytorCollapseItemContent({ info }: { info: HydratedIdoInfo }) {
               }
             />
           </div>
-        </Col>
+        </Div>
         <IdoItemCardContentButtonGroup className="w-full" info={info} />
       </Row>
     </div>
@@ -588,7 +591,8 @@ function IdoItemCardContentButtonGroup({ className, info }: { className?: string
   const getChainDate = useConnection((s) => s.getChainDate)
   return info.isUpcoming ? (
     isMobile && isDateBefore(getChainDate(), info.stakeTimeEnd) ? (
-      <Col
+      <Div
+        icss={cssCol()}
         className={twMerge(
           'justify-between bg-[#14104180] px-6 py-3 mr-4 mobile:pt-0 mobile:pb-2 mobile:px-4 mobile:-mx-4 mobile:-mb-4 rounded-xl mobile:rounded-none',
           className
@@ -608,7 +612,7 @@ function IdoItemCardContentButtonGroup({ className, info }: { className?: string
             </Row>
           }
         />
-        <Col>
+        <Div icss={cssCol()}>
           <Button
             className="frosted-glass-skygray"
             size="xs"
@@ -635,8 +639,8 @@ function IdoItemCardContentButtonGroup({ className, info }: { className?: string
           <div className="text-xs text-center text-[#ABC4FF80] my-1">
             APR: {toPercentString(stakingHydratedInfo?.totalApr7d)}
           </div>
-        </Col>
-      </Col>
+        </Div>
+      </Div>
     ) : null
   ) : (
     <Div

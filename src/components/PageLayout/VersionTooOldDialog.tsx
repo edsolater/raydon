@@ -1,9 +1,8 @@
-import React from 'react'
+import { cssCol, Div } from '@/../../uikit/dist'
+import { refreshWindow } from '@/application/appVersion/forceWindowRefresh'
+import { useAppVersion } from '@/application/appVersion/useAppVersion'
 import { twMerge } from 'tailwind-merge'
 import Button from '../../tempUikits/Button'
-import Col from '../../tempUikits/Col'
-import { useAppVersion } from '@/application/appVersion/useAppVersion'
-import { refreshWindow } from '@/application/appVersion/forceWindowRefresh'
 import Card from '../../tempUikits/Card'
 import Dialog from '../../tempUikits/Dialog'
 
@@ -21,21 +20,21 @@ export function VersionTooOldDialog() {
             boxShadow: '0px 8px 48px rgba(171, 196, 255, 0.12)'
           }}
         >
-          <Col className="items-center">
+          <Div icss={cssCol()} className="items-center">
             <div className="font-semibold text-xl text-[#D8CB39] mb-3 text-center">New version available</div>
             <div className="text-center mt-2  mb-6 text-primary">Refresh the page to update and use the app.</div>
 
             <div className="self-stretch">
-              <Col>
+              <Div icss={cssCol()}>
                 <Button className={`text-primary  frosted-glass-teal`} onClick={() => refreshWindow({ noCache: true })}>
                   Refresh
                 </Button>
                 <Button className="text-primary" type="text" onClick={close}>
                   Update later
                 </Button>
-              </Col>
+              </Div>
             </div>
-          </Col>
+          </Div>
         </Card>
       )}
     </Dialog>

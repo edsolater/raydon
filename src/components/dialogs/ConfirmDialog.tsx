@@ -1,12 +1,9 @@
-import React, { ReactNode, RefObject, useCallback, useRef } from 'react'
-
-import { twMerge } from 'tailwind-merge'
-
+import { cssCol, Div } from '@/../../uikit/dist'
 import useToggle from '@/hooks/useToggle'
-
+import { ReactNode, RefObject, useCallback, useRef } from 'react'
+import { twMerge } from 'tailwind-merge'
 import Button from '../../tempUikits/Button'
 import Card from '../../tempUikits/Card'
-import Col from '../../tempUikits/Col'
 import Dialog from '../../tempUikits/Dialog'
 import Icon, { AppHeroIconName } from '../Icon'
 
@@ -81,7 +78,7 @@ export default function ConfirmDialog(props: ConfirmDialogInfo & { domRef?: RefO
           )}
           size="lg"
         >
-          <Col className="items-center">
+          <Div icss={cssCol()} className="items-center">
             {props.type !== 'no-head-icon' && (
               <Icon
                 size="lg"
@@ -98,7 +95,7 @@ export default function ConfirmDialog(props: ConfirmDialogInfo & { domRef?: RefO
 
             <div className="self-stretch">
               {props.additionalContent}
-              <Col>
+              <Div icss={cssCol()}>
                 {!props.onlyConfirmButton && (
                   <Button className="text-primary frosted-glass-skygray" onClick={closeDialog}>
                     {props.cancelButtonText ?? 'Cancel'}
@@ -111,9 +108,9 @@ export default function ConfirmDialog(props: ConfirmDialogInfo & { domRef?: RefO
                 >
                   {props.confirmButtonText ?? 'OK'}
                 </Button>
-              </Col>
+              </Div>
             </div>
-          </Col>
+          </Div>
         </Card>
       )}
     </Dialog>

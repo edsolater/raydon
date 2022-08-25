@@ -1,19 +1,15 @@
-import React, { ReactNode } from 'react'
-
+import { cssCol, Div } from '@/../../uikit/dist'
+import useAppSettings from '@/application/appSettings/useAppSettings'
 import { MessageBoardItem } from '@/application/messageBoard/type'
 import useMessageBoard from '@/application/messageBoard/useMessageBoard'
 import { isExist } from '@/functions/judgers/nil'
-
 import Button from '../../tempUikits/Button'
 import Card from '../../tempUikits/Card'
-import Col from '../../tempUikits/Col'
-import Icon from '../Icon'
-import PageLayoutPopoverDrawer from '../PageLayoutPopoverDrawer'
 import ResponsiveDialogDrawer from '../../tempUikits/ResponsiveDialogDrawer'
 import Row from '../../tempUikits/Row'
-import linkTo from '@/functions/dom/linkTo'
-import useAppSettings from '@/application/appSettings/useAppSettings'
+import Icon from '../Icon'
 import { Markdown } from '../Markdown'
+import PageLayoutPopoverDrawer from '../PageLayoutPopoverDrawer'
 
 /**
  * pure appearance component
@@ -28,7 +24,8 @@ function MessageItem({
   onClick?: () => void
 }) {
   return (
-    <Col
+    <Div
+      icss={cssCol()}
       className="py-4 border-[rgba(171,196,255,0.2)] cursor-pointer clickable clickable-filter-effect"
       onClick={onClick}
     >
@@ -43,7 +40,7 @@ function MessageItem({
       <div className={`text-[rgb(171,196,255)] ${haveReaded ? 'opacity-40' : 'opacity-80'} text-xs`}>
         {item.summary}
       </div>
-    </Col>
+    </Div>
   )
 }
 

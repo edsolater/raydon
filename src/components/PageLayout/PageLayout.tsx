@@ -7,11 +7,11 @@ import { RPCPerformanceBanner } from './RPCPerformanceBanner'
 import { SideMenu } from './SideMenu'
 import { TopNavbar, TopNavbarProps } from './TopNavbar'
 
-import Col from '@/tempUikits/Col'
 import { FadeIn } from '@/tempUikits/FadeIn'
 import MessageBoardWidget from '../navWidgets/MessageBoardWidget'
 import WalletWidget from '../navWidgets/WalletWidget'
 import { appColors } from '@/styles/colors'
+import { Div, cssCol } from '@/../../uikit/dist'
 
 export default function PageLayout(props: {
   /** only mobile  */
@@ -87,11 +87,11 @@ export default function PageLayout(props: {
           {({ close }) => <SideMenu className="h-full" onClickCloseBtn={close} onRoute={close} />}
         </Drawer>
       ) : (
-        <Col className="flex-container grid-area-b">
+        <Div icss={cssCol()} className="flex-container grid-area-b">
           <FadeIn show={isSideBarMenuShown} heightOrWidth="width">
             <SideMenu />
           </FadeIn>
-        </Col>
+        </Div>
       )}
 
       {/* content */}
