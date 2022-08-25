@@ -8,7 +8,7 @@ import Button from '../../tempUikits/Button'
 import Card from '../../tempUikits/Card'
 import Col from '../../tempUikits/Col'
 import Dialog from '../../tempUikits/Dialog'
-import Icon, { AppHeroIconName } from '../../components/Icon'
+import Icon, { AppHeroIconName } from '../Icon'
 
 export default function WelcomeBetaDialog(props: { content: react.ReactNode; onConfirm?: () => void }) {
   const [isOpen, { off: _close }] = useToggle(true)

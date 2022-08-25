@@ -24,8 +24,8 @@ import { useForceUpdate } from '@/hooks/useForceUpdate'
 import produce from 'immer'
 import { ReactNode, useEffect, useMemo, useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
-import { NewRewardIndicatorAndForm } from '../../pageComponents/createFarm/NewRewardIndicatorAndForm'
-import { PoolIdInputBlock, PoolIdInputBlockHandle } from '../../pageComponents/createFarm/PoolIdInputBlock'
+import { NewRewardIndicatorAndForm } from '../../components/createFarm/NewRewardIndicatorAndForm'
+import { PoolIdInputBlock, PoolIdInputBlockHandle } from '../../components/createFarm/PoolIdInputBlock'
 import { useChainDate } from '../../hooks/useChainDate'
 
 // unless ido have move this component, it can't be renamed or move to /components
