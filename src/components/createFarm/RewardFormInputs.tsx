@@ -1,4 +1,4 @@
-import { cssCol, cssRow, Div } from '@/../../uikit/dist'
+import { cssCol, cssRow, Div } from '@edsolater/uikit'
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import useConnection from '@/application/connection/useConnection'
 import { getRewardSignature, hasRewardBeenEdited } from '@/application/createFarm/parseRewardInfo'

@@ -1,6 +1,6 @@
 import React, { ReactNode, useEffect, useMemo, useState } from 'react'
 
-import { cssCol, cssRow, Div } from '@/../../uikit/dist'
+import { cssCol, cssRow, Div } from '@edsolater/uikit'
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import useConnection from '@/application/connection/useConnection'
 import txIdoClaim from '@/application/ido/txIdoClaim'

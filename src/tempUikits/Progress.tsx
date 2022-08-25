@@ -2,7 +2,7 @@ import { ReactNode, useRef } from 'react'
 
 import { twMerge } from 'tailwind-merge'
 
-import { Div } from '@/../../uikit/dist'
+import { Div } from '@edsolater/uikit'
 import toPercentString from '@/functions/format/toPercentString'
 import { shrinkToValue } from '@/functions/shrinkToValue'
 import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect '

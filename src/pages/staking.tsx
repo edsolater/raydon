@@ -5,7 +5,7 @@ import { Fraction, TokenAmount, ZERO } from '@raydium-io/raydium-sdk'
 
 import { twMerge } from 'tailwind-merge'
 
-import { cssCol, cssRow, Div } from '@/../../uikit/dist'
+import { cssCol, cssRow, Div } from '@edsolater/uikit'
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import txFarmHarvest from '@/application/farms/txFarmHarvest'
 import { HydratedFarmInfo } from '@/application/farms/type'
