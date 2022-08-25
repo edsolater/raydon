@@ -1,6 +1,5 @@
 import useCreateFarms from '@/application/createFarm/useCreateFarm'
 import Icon from '@/components/Icon'
-import Row from '@/tempUikits/Row'
 import { UIRewardInfo } from '@/application/createFarm/type'
 import CoinAvatar from '@/components/CoinAvatar'
 
@@ -24,7 +23,7 @@ import { TimeStamp } from '@/functions/date/interface'
 import { Numberish } from '@/types/constants'
 import Tooltip from '@/tempUikits/Tooltip'
 import Button from '@/tempUikits/Button'
-import { Div, cssCol } from '@/../../uikit/dist'
+import { Div, cssCol, cssRow } from '@/../../uikit/dist'
 
 export function EditableRewardSummary({
   canUserEdit,
@@ -78,15 +77,15 @@ export function EditableRewardSummary({
           if (label === 'Reward Token') {
             return reward.token ? (
               <Div icss={cssCol()} className="h-full justify-center">
-                <Row className="gap-1 items-center">
+                <Div icss={cssRow()} className="gap-1 items-center">
                   <CoinAvatar token={reward.token} size="sm" />
                   <div>{reward.token?.symbol ?? 'UNKNOWN'}</div>
-                </Row>
-                <Row className="gap-1 flex-wrap mt-1">
+                </Div>
+                <Div icss={cssRow()} className="gap-1 flex-wrap mt-1">
                   {reward.isRewardEnded && <Badge cssColor="#da2Eef">Ended</Badge>}
                   {reward.isRewardBeforeStart && <Badge cssColor="#abc4ff">Upcoming</Badge>}
                   {reward.isRewarding && <Badge cssColor="#39d0d8">Ongoing</Badge>}
-                </Row>
+                </Div>
               </Div>
             ) : (
               '--'
@@ -215,10 +214,10 @@ export function EditableRewardSummary({
                         onClickIncreaseReward?.({ reward })
                       }}
                     >
-                      <Row className="items-center gap-1">
+                      <Div icss={cssRow()} className="items-center gap-1">
                         <Icon iconSrc="/icons/create-farm-plus.svg" size="xs" className="text-[#abc4ff80]" />
                         <div className="text-xs text-primary font-medium">Add more rewards</div>
-                      </Row>
+                      </Div>
                       <div className="text-xs text-[#abc4ff80] font-medium">(no rate changed allowed)</div>
                     </Div>
                   )}
@@ -230,7 +229,8 @@ export function EditableRewardSummary({
                       } gap-board min-h-[36px] empty:hidden`}
                     >
                       {!isRewardEdited && (
-                        <Row
+                        <Div
+                          icss={cssRow()}
                           className={`items-center justify-center gap-1 clickable ${
                             isRewardOwner ? '' : 'not-clickable'
                           }`}
@@ -238,10 +238,11 @@ export function EditableRewardSummary({
                         >
                           <Icon iconSrc="/icons/create-farm-plus.svg" size="xs" className="text-[#abc4ff80]" />
                           <div className="text-xs text-primary font-medium">Add more rewards</div>
-                        </Row>
+                        </Div>
                       )}
 
-                      <Row
+                      <Div
+                        icss={cssRow()}
                         className={`items-center justify-center gap-1 clickable ${
                           isRewardOwner && isMeaningfulNumber(toString(reward.originData.claimableRewards))
                             ? ''
@@ -270,7 +271,7 @@ export function EditableRewardSummary({
                       >
                         <Icon iconSrc="/icons/create-farm-roll-back.svg" size="xs" className="text-[#abc4ff80]" />
                         <Div icss={cssCol()}>
-                          <Row className="text-xs text-primary font-medium">
+                          <Div icss={cssRow()} className="text-xs text-primary font-medium">
                             <div>Claim unemmitted rewards</div>
                             <Tooltip>
                               <Icon className="ml-1" size="sm" heroIconName="question-mark-circle" />
@@ -282,13 +283,13 @@ export function EditableRewardSummary({
                                 </div>
                               </Tooltip.Panel>
                             </Tooltip>
-                          </Row>
+                          </Div>
                           <div className="text-xs text-[#abc4ff80] font-medium">
                             {toString(reward.originData.claimableRewards)}{' '}
                             {reward.originData.claimableRewards?.token.symbol ?? 'UNKNOWN'}
                           </div>
                         </Div>
-                      </Row>
+                      </Div>
                     </Grid>
                   )}
                 </div>

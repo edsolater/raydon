@@ -5,22 +5,22 @@ import { div, mul } from '@/functions/numberish/operations'
 import { toString } from '@/functions/numberish/toString'
 import Icon from '../Icon'
 import Input from '../../tempUikits/Input'
-import Row from '../../tempUikits/Row'
 import Tooltip from '../../tempUikits/Tooltip'
+import { Div, cssRow } from '@/../../uikit/dist'
 
 export function SlippageTolerancePopover() {
   const slippageTolerance = useAppSettings((s) => s.slippageTolerance)
   const slippageToleranceState = useAppSettings((s) => s.slippageToleranceState)
   return (
     <div className="py-5 px-6">
-      <Row className="items-center mb-3 mobile:mb-6 gap-2">
+      <Div icss={cssRow()} className="items-center mb-3 mobile:mb-6 gap-2">
         <div className="text-[rgba(171,196,255,0.5)] text-xs mobile:text-sm">SLIPPAGE TOLERANCE</div>
         <Tooltip placement="bottom-right">
           <Icon size="sm" heroIconName="question-mark-circle" className="cursor-help text-[rgba(171,196,255,0.5)]" />
           <Tooltip.Panel>The maximum difference between your estimated price and execution price</Tooltip.Panel>
         </Tooltip>
-      </Row>
-      <Row className="gap-3 justify-between">
+      </Div>
+      <Div icss={cssRow()} className="gap-3 justify-between">
         <div
           className={`py-1 px-3 bg-[#141041] rounded-full text-[#F1F1F2] font-medium text-sm ${
             eq(slippageTolerance, 0.001) ? 'ring-1 ring-inset ring-[#39D0D8]' : ''
@@ -58,7 +58,7 @@ export function SlippageTolerancePopover() {
               : ''
           }`}
         >
-          <Row>
+          <Div icss={cssRow()}>
             <Input
               className="w-[32px]"
               value={toString(mul(slippageTolerance, 100), { decimalLength: 'auto 2' })}
@@ -71,9 +71,9 @@ export function SlippageTolerancePopover() {
               pattern={/^\d*\.?\d*$/}
             />
             <div>%</div>
-          </Row>
+          </Div>
         </div>
-      </Row>
+      </Div>
       {(slippageToleranceState === 'invalid' || slippageToleranceState === 'too small') && (
         <div
           className={`mt-4 mobile:mt-6 ${

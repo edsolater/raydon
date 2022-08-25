@@ -51,7 +51,6 @@ import Collapse from '@/tempUikits/Collapse'
 import CyberpunkStyleCard from '@/tempUikits/CyberpunkStyleCard'
 import FadeInStable, { FadeIn } from '@/tempUikits/FadeIn'
 import Input from '@/tempUikits/Input'
-import Row from '@/tempUikits/Row'
 import RowTabs from '@/tempUikits/RowTabs'
 import Tooltip from '@/tempUikits/Tooltip'
 import { HexAddress, Numberish } from '@/types/constants'
@@ -62,7 +61,7 @@ import { AddressItem } from '@/components/AddressItem'
 import { isMintEqual } from '@/functions/judgers/areEqual'
 import { Badge } from '@/tempUikits/Badge'
 import { useSwapTwoElements } from '../hooks/useSwapTwoElements'
-import { Div, cssCol } from '@/../../uikit/dist'
+import { Div, cssCol, cssRow } from '@/../../uikit/dist'
 
 function SwapEffect() {
   useSwapInitCoinFiller()
@@ -173,7 +172,7 @@ function useUnofficialTokenConfirmState(): { hasConfirmed: boolean; popConfirm: 
 
 function SwapHead() {
   return (
-    <Row className="justify-center  mb-12 mobile:mb-2">
+    <Div icss={cssRow()} className="justify-center  mb-12 mobile:mb-2">
       <RowTabs
         currentValue={'Swap'}
         values={['Swap', 'Liquidity']}
@@ -184,7 +183,7 @@ function SwapHead() {
           }
         }}
       />
-    </Row>
+    </Div>
   )
 }
 
@@ -284,7 +283,8 @@ function SwapCard() {
 
         {/* swap button */}
         <div className="relative h-8">
-          <Row
+          <Div
+            icss={cssRow()}
             className={`absolute items-center transition-all ${
               executionPrice ? 'left-4' : 'left-1/2 -translate-x-1/2'
             }`}
@@ -306,7 +306,7 @@ function SwapCard() {
                 <SwapCardPriceIndicator />
               </div>
             )}
-          </Row>
+          </Div>
           <div className={`absolute right-0 ${isApprovePanelShown ? 'not-clickable' : 'clickable'}`}>
             <RefreshCircle
               run={!isApprovePanelShown}
@@ -594,8 +594,11 @@ function SwapPriceAcceptChip() {
   return (
     <FadeIn>
       {bothHaveAmount && !hasAcceptedPriceChange && (
-        <Row className="mt-5 bg-[#141041] rounded-xl py-2 px-6 mobile:px-4 items-center justify-between">
-          <Row className="text-sm font-medium text-primary items-center ">
+        <Div
+          icss={cssRow()}
+          className="mt-5 bg-[#141041] rounded-xl py-2 px-6 mobile:px-4 items-center justify-between"
+        >
+          <Div icss={cssRow()} className="text-sm font-medium text-primary items-center ">
             Price updated
             <Tooltip placement="bottom-right">
               <Icon size="sm" heroIconName="question-mark-circle" className="ml-2 cursor-help" />
@@ -603,12 +606,12 @@ function SwapPriceAcceptChip() {
                 <p className="w-80">Price has changed since your swap amount was entered.</p>
               </Tooltip.Panel>
             </Tooltip>
-          </Row>
+          </Div>
 
           <Button size="sm" className="frosted-glass-teal" onClick={() => setHasAcceptedPriceChange(true)}>
             Accept
           </Button>
-        </Row>
+        </Div>
       )}
     </FadeIn>
   )
@@ -620,7 +623,7 @@ function RemainSOLAlert() {
   return (
     <FadeIn>
       {solBalance && lt(solBalance, SOL_BASE_BALANCE) && gte(solBalance, 0) && (
-        <Row className="text-sm mt-4 text-[#D8CB39] items-center justify-center">
+        <Div icss={cssRow()} className="text-sm mt-4 text-[#D8CB39] items-center justify-center">
           SOL balance: {toString(solBalance)}{' '}
           <Tooltip placement="bottom-right">
             <Icon size="sm" heroIconName="question-mark-circle" className="ml-2 cursor-help" />
@@ -631,7 +634,7 @@ function RemainSOLAlert() {
               </p>
             </Tooltip.Panel>
           </Tooltip>
-        </Row>
+        </Div>
       )}
     </FadeIn>
   )
@@ -658,7 +661,7 @@ function SwapCardPriceIndicator({ className }: { className?: string }) {
     <Div icss={cssCol()}>
       <FadeIn>
         {executionPrice && (
-          <Row className={twMerge('font-medium text-sm text-primary', className)}>
+          <Div icss={cssRow()} className={twMerge('font-medium text-sm text-primary', className)}>
             <div className="whitespace-nowrap">
               {1} {innerPriceLeftCoin?.symbol ?? '--'} ≈{' '}
               {toString(innerReversed ? div(1, executionPrice) : executionPrice, {
@@ -670,7 +673,7 @@ function SwapCardPriceIndicator({ className }: { className?: string }) {
             <div className="ml-2 clickable" onClick={() => setInnerReversed((b) => !b)}>
               ⇋
             </div>
-          </Row>
+          </Div>
         )}
       </FadeIn>
       <FadeIn>
@@ -746,10 +749,10 @@ function SwapCardInfo({ className }: { className?: string }) {
         <SwapCardItem
           fieldName="Swapping Through"
           fieldValue={
-            <Row className="items-center gap-2">
+            <Div icss={cssRow()} className="items-center gap-2">
               {isStable && <Badge className="self-center">Stable</Badge>}
               <div>{swapThrough}</div>
-            </Row>
+            </Div>
           }
           tooltipContent="This venue gave the best price for your trade"
         />
@@ -783,7 +786,10 @@ function SwapCardInfo({ className }: { className?: string }) {
               fieldName="Slippage Tolerance"
               tooltipContent="The maximum difference between your estimated price and execution price"
               fieldValue={
-                <Row className="py-1 px-2 bg-[#141041] rounded-sm text-[#F1F1F2] font-medium text-xs -my-1">
+                <Div
+                  icss={cssRow()}
+                  className="py-1 px-2 bg-[#141041] rounded-sm text-[#F1F1F2] font-medium text-xs -my-1"
+                >
                   <Input
                     className="w-6"
                     disabled={isApprovePanelShown}
@@ -797,7 +803,7 @@ function SwapCardInfo({ className }: { className?: string }) {
                     pattern={/^\d*\.?\d*$/}
                   />
                   <div className="opacity-50 ml-1">%</div>
-                </Row>
+                </Div>
               }
             />
             <SwapCardItem
@@ -827,10 +833,13 @@ function SwapCardInfo({ className }: { className?: string }) {
         </Collapse.Body>
         <Collapse.Face>
           {(open) => (
-            <Row className="w-full items-center text-xs font-medium text-[rgba(171,196,255,0.5)] cursor-pointer select-none">
+            <Div
+              icss={cssRow()}
+              className="w-full items-center text-xs font-medium text-[rgba(171,196,255,0.5)] cursor-pointer select-none"
+            >
               <div>{open ? 'Show less' : 'More information'}</div>
               <Icon size="xs" heroIconName={open ? 'chevron-up' : 'chevron-down'} className="ml-1" />
-            </Row>
+            </Div>
           )}
         </Collapse.Face>
       </Collapse>
@@ -854,8 +863,12 @@ function SwapCardItem({
   fieldValueTextColor?: string // for price impact warning color
 }) {
   return (
-    <Row className={twMerge('w-full justify-between', className)}>
-      <Row className="items-center text-xs font-medium text-primary" style={{ color: fieldNameTextColor }}>
+    <Div icss={cssRow()} className={twMerge('w-full justify-between', className)}>
+      <Div
+        icss={cssRow()}
+        className="items-center text-xs font-medium text-primary"
+        style={{ color: fieldNameTextColor }}
+      >
         <div className="mr-1">{fieldName}</div>
         {tooltipContent && (
           <Tooltip className={className} placement="bottom-right">
@@ -865,11 +878,11 @@ function SwapCardItem({
             </Tooltip.Panel>
           </Tooltip>
         )}
-      </Row>
+      </Div>
       <div className="text-xs font-medium text-white text-right" style={{ color: fieldValueTextColor }}>
         {fieldValue}
       </div>
-    </Row>
+    </Div>
   )
 }
 
@@ -937,7 +950,7 @@ function SwapCardTooltipPanelAddressItem({
   type?: 'token' | 'account'
 }) {
   return (
-    <Row className={twMerge('grid gap-2 items-center grid-cols-[5em,1fr,auto,auto]', className)}>
+    <Div icss={cssRow()} className={twMerge('grid gap-2 items-center grid-cols-[5em,1fr,auto,auto]', className)}>
       <div className="text-xs font-normal text-white">{label}</div>
       <AddressItem
         showDigitCount={5}
@@ -948,7 +961,7 @@ function SwapCardTooltipPanelAddressItem({
       >
         {address}
       </AddressItem>
-    </Row>
+    </Div>
   )
 }
 
@@ -1040,13 +1053,13 @@ function KLineChartItem({
     <FadeIn>
       {canShowKline && (
         <div className="flex mobile:grid mobile:grid-cols-3 mobile:gap-2 p-4 mobile:py-4 w-[min(456px,100%)] self-center items-center">
-          <Row className="items-center mobile:justify-self-center w-16 mobile:w-8 flex-shrink-0">
+          <Div icss={cssRow()} className="items-center mobile:justify-self-center w-16 mobile:w-8 flex-shrink-0">
             <Div icss={cssCol()} className="gap-1 grow  mobile:items-center">
               <CoinAvatar token={coin} size={isMobile ? 'sm' : 'smi'} />
               <div className="font-medium text-sm text-primary">{coin?.symbol ?? '--'}</div>
             </Div>
             {/* <div className="ml-6 self-stretch border-l-1.5 border-[rgba(171,196,255,0.5)]"></div> */}
-          </Row>
+          </Div>
 
           <Div icss={cssCol()} className="items-end mobile:items-center mobile:justify-self-center mobile:ml-0 grow">
             <div className="text-xs font-medium text-[rgba(171,196,255,0.5)]">Price</div>
@@ -1173,7 +1186,7 @@ function KLineChartItemThumbnail({
 //                   'linear-gradient(140.14deg, rgba(0, 182, 191, 0.15) 0%, rgba(27, 22, 89, 0.1) 86.61%), linear-gradient(321.82deg, #18134D 0%, #1B1659 100%)'
 //               }}
 //             >
-//               <Row className="gap-4 items-center">
+//               <Div icss={cssRow()} className="gap-4 items-center">
 //                 <Div icss={cssCol()} className="gap-1">
 //                   <div className="text-xs mobile:text-2xs font-medium text-[rgba(171,196,255,0.5)]">
 //                     Click the button if you want to unwrap all WSOL
@@ -1188,7 +1201,7 @@ function KLineChartItemThumbnail({
 //                 >
 //                   Unwrap WSOL
 //                 </Button>
-//               </Row>
+//               </Div>
 //             </Card>
 //           </div>
 //         )}

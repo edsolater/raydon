@@ -1,4 +1,4 @@
-import { cssCol, Div } from '@/../../uikit/dist'
+import { cssCol, cssRow, Div } from '@/../../uikit/dist'
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import { getRewardSignature } from '@/application/createFarm/parseRewardInfo'
 import { UIRewardInfo } from '@/application/createFarm/type'
@@ -14,7 +14,6 @@ import { toString } from '@/functions/numberish/toString'
 import { Badge } from '@/tempUikits/Badge'
 import Grid from '@/tempUikits/Grid'
 import ListTable from '@/tempUikits/ListTable'
-import Row from '@/tempUikits/Row'
 import { Numberish } from '@/types/constants'
 
 /**
@@ -80,16 +79,16 @@ export function NewAddedRewardSummary({
         if (label === 'Reward Token') {
           return reward.token ? (
             <Div icss={cssCol()} className="h-full justify-center gap-1">
-              <Row className="gap-1 items-center">
+              <Div icss={cssRow()} className="gap-1 items-center">
                 <CoinAvatar token={reward.token} size="sm" />
                 <div>{reward.token?.symbol ?? 'UNKNOWN'}</div>
-              </Row>
+              </Div>
               {(reward.isRewardEnded || reward.isRewardBeforeStart || reward.isRewarding) && (
-                <Row className="gap-1 flex-wrap">
+                <Div icss={cssRow()} className="gap-1 flex-wrap">
                   {reward.isRewardEnded && <Badge cssColor="#da2Eef">Ended</Badge>}
                   {reward.isRewardBeforeStart && <Badge cssColor="#abc4ff">Upcoming</Badge>}
                   {reward.isRewarding && <Badge cssColor={'#39d0d8'}>Ongoing</Badge>}
-                </Row>
+                </Div>
               )}
             </Div>
           ) : (
@@ -174,7 +173,7 @@ export function NewAddedRewardSummary({
       renderControlButtons={
         canUserEdit
           ? ({ destorySelf, itemData: reward }) => (
-              <Row className="gap-2 mobile:gap-3">
+              <Div icss={cssRow()} className="gap-2 mobile:gap-3">
                 <Icon
                   size="smi"
                   heroIconName="pencil"
@@ -189,7 +188,7 @@ export function NewAddedRewardSummary({
                   className={`clickable text-primary ${rewards.length > 1 ? 'hover:text-[#DA2EEF]' : 'hidden'}`}
                   onClick={() => rewards.length > 1 && destorySelf()} // delete is wrong
                 />
-              </Row>
+              </Div>
             )
           : undefined
       }

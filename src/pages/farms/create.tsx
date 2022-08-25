@@ -14,7 +14,6 @@ import Grid from '@/tempUikits/Grid'
 import Icon from '@/components/Icon'
 import Link from '@/tempUikits/Link'
 import PageLayout from '@/components/PageLayout/PageLayout'
-import Row from '@/tempUikits/Row'
 import { offsetDateTime, toUTC } from '@/functions/date/dateFormat'
 import { isDateAfter } from '@/functions/date/judges'
 import { getDuration, parseDurationAbsolute } from '@/functions/date/parseDuration'
@@ -27,7 +26,7 @@ import { twMerge } from 'tailwind-merge'
 import { NewRewardIndicatorAndForm } from '../../components/createFarm/NewRewardIndicatorAndForm'
 import { PoolIdInputBlock, PoolIdInputBlockHandle } from '../../components/createFarm/PoolIdInputBlock'
 import { useChainDate } from '../../hooks/useChainDate'
-import { Div, cssCol } from '@/../../uikit/dist'
+import { Div, cssCol, cssRow } from '@/../../uikit/dist'
 
 // unless ido have move this component, it can't be renamed or move to /components
 function StepBadge(props: { n: number }) {
@@ -43,7 +42,7 @@ function StepBadge(props: { n: number }) {
 
 function NavButtons({ className }: { className?: string }) {
   return (
-    <Row className={twMerge('items-center justify-between', className)}>
+    <Div icss={cssRow()} className={twMerge('items-center justify-between', className)}>
       <Button
         type="text"
         className="text-sm text-primary opacity-50 px-0"
@@ -62,7 +61,7 @@ function NavButtons({ className }: { className?: string }) {
         <Icon size="sm" inline heroIconName="information-circle" />
         Read full details
       </Link> */}
-    </Row>
+    </Div>
   )
 }
 
@@ -72,7 +71,7 @@ function WarningBoard({ className }: { className: string }) {
   const detailedGuideHref = 'https://raydium.gitbook.io/raydium/exchange-trade-and-swap/creating-an-ecosystem-farm'
   return (
     <FadeInStable show={needWarning}>
-      <Row className={className}>
+      <Div icss={cssRow()} className={className}>
         {!isMoblie && (
           <Icon iconSrc="/icons/create-farm-exclamation-circle.svg" className="my-4" iconClassName="w-8 h-8" />
         )}
@@ -85,7 +84,7 @@ function WarningBoard({ className }: { className: string }) {
             Before attempting to create a new farm, we suggest going through the detailed guide.
           </div>
 
-          <Row className="gap-4">
+          <Div icss={cssRow()} className="gap-4">
             <Link href={detailedGuideHref}>
               <Button className="frosted-glass-teal px-8" size={isMoblie ? 'sm' : 'md'}>
                 Detailed Guide
@@ -102,9 +101,9 @@ function WarningBoard({ className }: { className: string }) {
             >
               Dismiss
             </Button>
-          </Row>
+          </Div>
         </Card>
-      </Row>
+      </Div>
     </FadeInStable>
   )
 }
@@ -123,10 +122,10 @@ function FormStep({
   const isMoblie = useAppSettings((s) => s.isMobile)
   return isMoblie ? (
     <Grid className="grid-cols-[1fr] gap-4">
-      <Row className="items-center gap-3">
+      <Div icss={cssRow()} className="items-center gap-3">
         <StepBadge n={stepNumber} />
         <div className="grow">{title}</div>
-      </Row>
+      </Div>
       <Div icss={cssCol()} className="grow">
         <Grid className="mb-10">{children}</Grid>
       </Div>
@@ -201,9 +200,10 @@ export default function CreateFarmPage() {
           <FormStep
             stepNumber={1}
             title={
-              <Row className="justify-between items-center">
+              <Div icss={cssRow()} className="justify-between items-center">
                 <div className="font-medium text-lg mobile:text-base text-white leading-8">Select Pool</div>
-                <Row
+                <Div
+                  icss={cssRow()}
                   className={`justify-self-end  mobile:justify-self-auto gap-1 flex-wrap items-center opacity-100 pointer-events-auto clickable transition`}
                   onClick={() => {
                     routeTo('/liquidity/create')
@@ -211,8 +211,8 @@ export default function CreateFarmPage() {
                 >
                   <Icon heroIconName="plus-circle" className="text-primary" size="sm" />
                   <span className="text-primary font-medium text-sm mobile:text-xs">Create Pool</span>
-                </Row>
-              </Row>
+                </Div>
+              </Div>
             }
             haveNavline
           >
@@ -224,10 +224,10 @@ export default function CreateFarmPage() {
             title={
               <>
                 <div className="font-medium text-lg mobile:text-base text-white leading-8 mb-1">Farming Reward</div>
-                <Row className="text-sm mobile:text-xs">
+                <Div icss={cssRow()} className="text-sm mobile:text-xs">
                   <div className="text-primary mr-2">Cluster time: </div>
                   <TimeClock className="text-[#abc4ff80]" offset={chainTimeOffset} />
-                </Row>
+                </Div>
                 <div className="font-medium text-sm mobile:text-xs leading-snug text-[#abc4ff80]">
                   This is Solana's current on-chain time, there could be a delay depending on Solana's network status
                 </div>
@@ -247,11 +247,11 @@ export default function CreateFarmPage() {
                 })
               }}
             >
-              <Row className="items-center">
+              <Div icss={cssRow()} className="items-center">
                 <Icon className="text-primary" heroIconName="plus-circle" size="sm" />
                 <div className="ml-1.5 text-primary font-medium mobile:text-sm">Add another reward token</div>
                 <div className="ml-1.5 text-[#abc4ff80] font-medium mobile:text-sm">({5 - rewards.length} more)</div>
-              </Row>
+              </Div>
             </Button>
           </FormStep>
         </div>

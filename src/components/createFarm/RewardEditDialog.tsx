@@ -4,7 +4,6 @@ import { MAX_DURATION, MIN_DURATION } from '@/application/farms/handleFarmInfo'
 import useWallet from '@/application/wallet/useWallet'
 import Button from '@/tempUikits/Button'
 import ResponsiveDialogDrawer from '@/tempUikits/ResponsiveDialogDrawer'
-import Row from '@/tempUikits/Row'
 import { isDateBefore } from '@/functions/date/judges'
 import { getDuration } from '@/functions/date/parseDuration'
 import { gte, isMeaningfulNumber, lte } from '@/functions/numberish/compare'
@@ -17,6 +16,7 @@ import { twMerge } from 'tailwind-merge'
 import Card from '../../tempUikits/Card'
 import Dialog from '../../tempUikits/Dialog'
 import { RewardCardInputsHandler, RewardFormCardInputs, RewardFormCardInputsParams } from './RewardFormInputs'
+import { Div, cssRow } from '@/../../uikit/dist'
 
 export default function RewardInputDialog({
   cardTitle,
@@ -96,7 +96,7 @@ export default function RewardInputDialog({
           )}
           {cachedInputs}
 
-          <Row className="mt-6 justify-between">
+          <Div icss={cssRow()} className="mt-6 justify-between">
             <Button
               className="frosted-glass-teal mobile:w-full"
               size={isMobile ? 'sm' : 'lg'}
@@ -166,7 +166,7 @@ export default function RewardInputDialog({
                 Cancel
               </Button>
             )}
-          </Row>
+          </Div>
         </Card>
       )}
     </ResponsiveDialogDrawer>

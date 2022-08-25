@@ -2,14 +2,18 @@ import { useClickableElementRef } from '@/hooks/useClickableElement'
 import useTranslation from '@/hooks/useTranslation'
 
 import Menu from '../Menu'
-import Row from '../../tempUikits/Row'
+import { Div, cssRow } from '@/../../uikit/dist'
 
 function Item({ name = '', className, onClick }: { name?: string; className?: string; onClick?: () => void }) {
   const clickRef = useClickableElementRef({ onClick })
   return (
-    <Row className={`justify-between bg-ground-color-light p-4 rounded ${className ?? ''}`} domRef={clickRef}>
+    <Div
+      icss={cssRow()}
+      className={`justify-between bg-ground-color-light p-4 rounded ${className ?? ''}`}
+      domRef={clickRef}
+    >
       <span>{name}</span>
-    </Row>
+    </Div>
   )
 }
 

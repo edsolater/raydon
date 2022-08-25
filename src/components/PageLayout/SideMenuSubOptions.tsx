@@ -1,6 +1,6 @@
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import { LinkAddress } from '@/types/constants'
-import { Col, cssCol, Div, Row } from '@edsolater/uikit'
+import { Col, cssCol, cssRow, Div, Row } from '@edsolater/uikit'
 import { ReactNode } from 'react'
 import Link from '../../tempUikits/Link'
 import Icon, { AppHeroIconName } from '../Icon'
@@ -63,7 +63,7 @@ function OptionItem({
       noTextStyle
       className="block py-3 mobile:py-1.5 px-8 pl-6 mobile:px-5 hover:bg-[rgba(57,208,216,0.1)] active:bg-[rgba(41,157,163,0.3)] cursor-pointer group"
     >
-      <Row className="items-center w-full mobile:justify-center" onClick={onClick}>
+      <Div icss={cssRow()} className="items-center w-full mobile:justify-center" onClick={onClick}>
         <Icon
           forceColor="var(--icon-link)"
           className="mr-3"
@@ -79,7 +79,7 @@ function OptionItem({
           {children}
         </span>
         {!noArrow && <Icon size={isMobile ? 'xs' : 'sm'} heroIconName="chevron-right" iconClassName="text-secondary" />}
-      </Row>
+      </Div>
     </Link>
   )
 }

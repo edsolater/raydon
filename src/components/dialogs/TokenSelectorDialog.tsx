@@ -27,10 +27,9 @@ import useToggle from '@/hooks/useToggle'
 import Input from '@/tempUikits/Input'
 import List from '@/tempUikits/List'
 import ListFast from '@/tempUikits/ListFast'
-import Row from '@/tempUikits/Row'
 import { PublicKeyish } from '@raydium-io/raydium-sdk'
 import { useCallback, useDeferredValue, useMemo, useRef, useState } from 'react'
-import { Div, cssCol } from '@/../../uikit/dist'
+import { Div, cssCol, cssRow } from '@/../../uikit/dist'
 
 export type TokenSelectorProps = {
   open: boolean
@@ -159,13 +158,14 @@ function TokenSelectorDialogContent({
         sourceData={searchedTokens}
         getKey={(token) => (isQuantumSOL(token) ? token.symbol : toPubString(token?.mint)) ?? 'unkey'}
         renderItem={(token, idx) => (
-          <Row
+          <Div
+            icss={cssRow()}
             className={`${
               selectedTokenIdx === idx
                 ? 'clickable no-clicable-transform-effect clickable-mask-offset-2 before:bg-[rgba(0,0,0,0.2)]'
                 : ''
             }`}
-            onHoverChange={({ is: hoverStatus }) => {
+            onHover={({ is: hoverStatus }) => {
               if (hoverStatus === 'start') {
                 setSelectedTokenIdx(idx)
               }
@@ -178,7 +178,7 @@ function TokenSelectorDialogContent({
               }}
               token={token}
             />
-          </Row>
+          </Div>
         )}
       />
     ),
@@ -206,7 +206,7 @@ function TokenSelectorDialogContent({
     >
       {currentTabIsTokenList ? (
         <div className="px-8 mobile:px-6 pt-6 pb-5">
-          <Row className="justify-between items-center mb-6">
+          <Div icss={cssRow()} className="justify-between items-center mb-6">
             <Icon
               className="text-primary cursor-pointer clickable clickable-mask-offset-2"
               heroIconName="chevron-left"
@@ -218,7 +218,7 @@ function TokenSelectorDialogContent({
               heroIconName="x"
               onClick={closeAndClean}
             />
-          </Row>
+          </Div>
           <List className="p-2 grid mt-2 overflow-auto max-h-[70vh]">
             {Object.entries(tokenListSettings)
               .map(([name]) => name as SupportedTokenListSettingName)
@@ -232,14 +232,14 @@ function TokenSelectorDialogContent({
       ) : (
         <>
           <div className="px-8 mobile:px-6 pt-6 pb-5">
-            <Row className="justify-between items-center mb-6">
+            <Div icss={cssRow()} className="justify-between items-center mb-6">
               <div className="text-xl font-semibold text-white">Select a token</div>
               <Icon
                 className="text-primary cursor-pointer clickable clickable-mask-offset-2"
                 heroIconName="x"
                 onClick={closeAndClean}
               />
-            </Row>
+            </Div>
 
             <Input
               value={searchText}
@@ -256,11 +256,12 @@ function TokenSelectorDialogContent({
 
             <div className="text-xs font-medium text-[rgba(171,196,255,.5)] my-3">Popular tokens</div>
 
-            <Row className="justify-between">
+            <Div icss={cssRow()} className="justify-between">
               {([RAYMint, QuantumSOLVersionSOL, USDTMint, USDCMint] as const).map((mintish, idx) => {
                 const token = isQuantumSOL(mintish) ? QuantumSOLVersionSOL : getToken(mintish)
                 return (
-                  <Row
+                  <Div
+                    icss={cssRow()}
                     key={toPubString(isQuantumSOL(mintish) ? mintish.mint : mintish)}
                     className={`gap-1 py-1 px-2 mobile:py-1.5 mobile:px-2.5 rounded ring-1 ring-inset ring-[rgba(171,196,255,.3)] items-center flex-wrap ${
                       token?.mint && isTokenDisabled(token) ? 'not-clickable' : 'clickable clickable-filter-effect'
@@ -273,19 +274,21 @@ function TokenSelectorDialogContent({
                   >
                     <CoinAvatar size={isMobile ? 'xs' : 'sm'} token={token} />
                     <div className="text-base mobile:text-sm font-normal text-primary">{token?.symbol ?? '--'}</div>
-                  </Row>
+                  </Div>
                 )
               })}
-            </Row>
+            </Div>
           </div>
 
           <div className="mobile:mx-6 border-t-1.5 border-[rgba(171,196,255,0.2)]"></div>
 
           <Div icss={cssCol()} className="flex-1 overflow-hidden border-b-1.5 py-3 border-[rgba(171,196,255,0.2)]">
-            <Row className="px-8 mobile:px-6 justify-between">
+            <Div icss={cssRow()} className="px-8 mobile:px-6 justify-between">
               <div className="text-xs font-medium text-[rgba(171,196,255,.5)]">Token</div>
-              <Row className="text-xs font-medium text-[rgba(171,196,255,.5)] items-center gap-1">Balance</Row>
-            </Row>
+              <Div icss={cssRow()} className="text-xs font-medium text-[rgba(171,196,255,.5)] items-center gap-1">
+                Balance
+              </Div>
+            </Div>
             {haveSearchResult ? (
               cachedTokenList
             ) : onlineTokenMintInfo ? (
@@ -349,8 +352,8 @@ function TokenSelectorDialogTokenItem({ token, onClick }: { token: SplToken; onC
   const deleteUserAddedToken = useToken((s) => s.deleteUserAddedToken)
   const getBalance = useWallet((s) => s.getBalance)
   return (
-    <Row onClick={onClick} className="group w-full gap-4 justify-between items-center p-2 ">
-      <Row>
+    <Div icss={cssRow()} onClick={onClick} className="group w-full gap-4 justify-between items-center p-2 ">
+      <Div icss={cssRow()}>
         <CoinAvatar token={token} className="mr-2" />
         <Div icss={cssCol()} className="mr-2">
           <div className="text-base  max-w-[7em] overflow-hidden text-ellipsis  font-normal text-primary">
@@ -382,9 +385,9 @@ function TokenSelectorDialogTokenItem({ token, onClick }: { token: SplToken; onC
             [Delete Token]
           </div>
         ) : null}
-      </Row>
+      </Div>
       <div className="text-sm text-primary justify-self-end">{getBalance(token)?.toExact?.()}</div>
-    </Row>
+    </Div>
   )
 }
 
@@ -407,7 +410,7 @@ function TokenSelectorDialogTokenListItem({ tokenListName }: { tokenListName: Su
   if (!tokenList.mints?.size) return null
   if (tokenList.cannotbBeSeen) return null
   return (
-    <Row className="my-4 items-center">
+    <Div icss={cssRow()} className="my-4 items-center">
       {tokenList?.icon && <Image className="rounded-full h-8 w-8 overflow-hidden" src={tokenList.icon} />}
 
       <Div icss={cssCol()}>
@@ -418,6 +421,6 @@ function TokenSelectorDialogTokenListItem({ tokenListName }: { tokenListName: Su
       </Div>
 
       <Switcher disable={disableUserConfig} className="ml-auto" defaultChecked={isOn} onToggle={toggleTokenListName} />
-    </Row>
+    </Div>
   )
 }

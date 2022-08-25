@@ -1,8 +1,7 @@
-import { cssCol, Div } from '@/../../uikit/dist'
+import { cssCol, cssRow, Div } from '@/../../uikit/dist'
 import linkTo from '@/functions/dom/linkTo'
 import { LinkAddress } from '@/types/constants'
 import Link from '../../tempUikits/Link'
-import Row from '../../tempUikits/Row'
 import Icon from '../Icon'
 import PageLayoutPopoverDrawer from '../PageLayoutPopoverDrawer'
 
@@ -19,7 +18,8 @@ export function CommunityPopover() {
     onClick?: (payload: { text: string; iconSrc: string; href?: LinkAddress }) => void
   }) {
     return (
-      <Row
+      <Div
+        icss={cssRow()}
         className="gap-3 py-4 pl-4 pr-12 cursor-pointer"
         onClick={() => {
           if (href) linkTo(href)
@@ -30,7 +30,7 @@ export function CommunityPopover() {
         <Link href={href} className="text-white">
           {text}
         </Link>
-      </Row>
+      </Div>
     )
   }
 
@@ -100,14 +100,14 @@ export function CommunityPopover() {
             </Div>
           )}
         >
-          <Row className="flex items-center justify-between">
+          <Div icss={cssRow()} className="flex items-center justify-between">
             <Item iconSrc="/icons/media-telegram.svg" text="Telegram" />
             <Icon
               heroIconName="chevron-right"
               size="sm"
               className="justify-self-end m-2 text-[rgba(171,196,255,0.5)]"
             />
-          </Row>
+          </Div>
         </PageLayoutPopoverDrawer>
 
         <Item href="https://raydium.medium.com/" iconSrc="/icons/media-medium.svg" text="Medium" />

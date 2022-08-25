@@ -29,11 +29,11 @@ import { PoolInfoSummary } from '@/components/createFarm/PoolInfoSummery'
 import RewardInputDialog from '@/components/createFarm/RewardEditDialog'
 import Button from '@/tempUikits/Button'
 import Card from '@/tempUikits/Card'
-import Row from '@/tempUikits/Row'
 import produce from 'immer'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
+import { Div, cssRow } from '@/../../uikit/dist'
 
 function useAvailableCheck() {
   useEffect(() => {
@@ -44,7 +44,7 @@ function useAvailableCheck() {
 
 function NavButtons({ className }: { className?: string }) {
   return (
-    <Row className={twMerge('items-center justify-between', className)}>
+    <Div icss={cssRow()} className={twMerge('items-center justify-between', className)}>
       <Button
         type="text"
         className="text-sm text-primary opacity-50 px-0"
@@ -53,7 +53,7 @@ function NavButtons({ className }: { className?: string }) {
       >
         Back to Farms
       </Button>
-    </Row>
+    </Div>
   )
 }
 
@@ -104,7 +104,7 @@ export default function FarmEditPage() {
     <PageLayout metaTitle="Farms - Raydium" contentYPaddingShorter>
       <NavButtons className="sticky top-0" />
       <div className="self-center w-[min(720px,90vw)]">
-        <Row className="mb-10 justify-self-start items-baseline gap-2">
+        <Div icss={cssRow()} className="mb-10 justify-self-start items-baseline gap-2">
           <div className="text-2xl mobile:text-lg font-semibold text-white">Edit Farm</div>
           {farmId && (
             <div className="text-sm mobile:text-xs font-semibold text-[#abc4ff80]">
@@ -122,7 +122,7 @@ export default function FarmEditPage() {
               </div>
             </div>
           )}
-        </Row>
+        </Div>
 
         <div className="mb-8">
           <div className="mb-3 text-primary text-sm font-medium justify-self-start">Pool</div>
@@ -143,7 +143,8 @@ export default function FarmEditPage() {
 
         {cachedInputs}
 
-        <Row
+        <Div
+          icss={cssRow()}
           className={`items-center my-2 mb-12 text-sm clickable ${
             canAddRewardInfo ? '' : 'not-clickable-with-disallowed'
           }`}
@@ -159,7 +160,7 @@ export default function FarmEditPage() {
           <Icon className="text-primary" heroIconName="plus-circle" size="sm" />
           <div className="ml-1.5 text-primary font-medium mobile:text-sm">Add another reward token</div>
           <div className="ml-1.5 text-[#abc4ff80] font-medium mobile:text-sm">({5 - allRewards.length} more)</div>
-        </Row>
+        </Div>
 
         <Button
           className="block frosted-glass-teal mx-auto mt-4 mb-12"

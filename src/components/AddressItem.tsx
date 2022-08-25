@@ -1,7 +1,7 @@
+import { Div, cssRow } from '@/../../uikit/dist'
 import copyToClipboard from '@/functions/dom/copyToClipboard'
 import toPubString from '@/functions/format/toMintString'
 import useToggle from '@/hooks/useToggle'
-import Row from '@/tempUikits/Row'
 import { ThreeSlotItem } from '@/tempUikits/ThreeSlotItem'
 import { AnyFn } from '@/types/constants'
 import { PublicKeyish } from '@raydium-io/raydium-sdk'
@@ -70,7 +70,7 @@ export function AddressItem({
       }
       suffix={
         canCopy || canExternalLink ? (
-          <Row className="gap-1 ml-3">
+          <Div icss={cssRow()} className="gap-1 ml-3">
             {canCopy ? (
               <Icon
                 size="sm"
@@ -84,7 +84,7 @@ export function AddressItem({
                 <Icon size="sm" heroIconName="external-link" className="clickable text-primary" />
               </Link>
             ) : null}
-          </Row>
+          </Div>
         ) : null
       }
     />

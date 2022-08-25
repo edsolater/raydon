@@ -6,13 +6,13 @@ import Button, { ButtonHandle } from '@/tempUikits/Button'
 import Card from '@/tempUikits/Card'
 import Dialog from '@/tempUikits/Dialog'
 import Icon from '@/components/Icon'
-import Row from '@/tempUikits/Row'
 import useToken from '@/application/token/useToken'
 import assert from '@/functions/assert'
 import { isValidPublicKey } from '@/functions/judgers/dateType'
 import { findTokenMintByAmmId, findTokenMintByMarketId } from '@/application/liquidity/miscToolFns'
 import useNotification from '@/application/notification/useNotification'
 import InputBox from '../InputBox'
+import { Div, cssRow } from '@/../../uikit/dist'
 
 export function SearchAmmDialog({
   open,
@@ -65,10 +65,10 @@ export function SearchAmmDialog({
           )}
           size="lg"
         >
-          <Row className="justify-between items-center mb-6">
+          <Div icss={cssRow()} className="justify-between items-center mb-6">
             <div className="text-xl font-semibold text-white">Pool Search</div>
             <Icon className="text-primary cursor-pointer" heroIconName="x" onClick={closeDialog} />
-          </Row>
+          </Div>
 
           <InputBox
             className="mb-6"
@@ -81,7 +81,7 @@ export function SearchAmmDialog({
             }}
           />
 
-          <Row className="flex-col gap-1">
+          <Div icss={cssRow()} className="flex-col gap-1">
             <Button
               className="frosted-glass frosted-glass-teal"
               componentRef={buttonComponentRef}
@@ -93,7 +93,7 @@ export function SearchAmmDialog({
             >
               Search
             </Button>
-          </Row>
+          </Div>
         </Card>
       )}
     </Dialog>

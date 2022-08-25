@@ -14,9 +14,9 @@ import listToMap from '@/functions/format/listToMap'
 import toUsdVolume from '@/functions/format/toUsdVolume'
 import { isValidPublicKey } from '@/functions/judgers/dateType'
 import { useClickOutside } from '@/hooks/useClickOutside'
-import Row from '@/tempUikits/Row'
 import { LiquidityPoolJsonInfo } from '@raydium-io/raydium-sdk'
 import { RefObject, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react'
+import { Div, cssRow } from '@/../../uikit/dist'
 
 export interface PoolIdInputBlockHandle {
   validate?: () => void
@@ -155,7 +155,7 @@ export function PoolIdInputBlock({
       />
 
       <FadeInStable show={!isInputing && !isInit}>
-        <Row className="items-center px-4 pt-2 gap-2">
+        <Div icss={cssRow()} className="items-center px-4 pt-2 gap-2">
           {selectedPool ? (
             <>
               <CoinAvatarPair
@@ -181,7 +181,7 @@ export function PoolIdInputBlock({
               </div>
             </>
           )}
-        </Row>
+        </Div>
       </FadeInStable>
     </Card>
   )

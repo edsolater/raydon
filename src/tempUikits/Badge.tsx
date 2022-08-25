@@ -1,8 +1,8 @@
+import { Div, cssRow } from '@/../../uikit/dist'
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import { useHover } from '@/hooks/useHover'
 import React, { ReactNode, useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
-import Row from './Row'
 
 export function Badge(props: {
   className?: string
@@ -20,7 +20,8 @@ export function Badge(props: {
   const isMobile = useAppSettings((s) => s.isMobile)
   const defaultSize = props.size ?? (isMobile ? 'sm' : 'md')
   return (
-    <Row
+    <Div
+      icss={cssRow()}
       className={twMerge(
         `relative group text-center items-center ${defaultSize === 'sm' ? 'px-1 text-2xs' : 'px-2 text-xs'} ${
           props.type === 'solid'
@@ -42,6 +43,6 @@ export function Badge(props: {
       <div className={props.hoverChildren ? 'group-hover:opacity-0 transition duration-300' : undefined}>
         {props.children}
       </div>
-    </Row>
+    </Div>
   )
 }

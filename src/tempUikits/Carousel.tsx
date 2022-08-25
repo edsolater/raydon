@@ -4,7 +4,7 @@ import { shrinkToValue } from '@/functions/shrinkToValue'
 import useDevice from '@/hooks/useDevice'
 
 import Icon from '../components/Icon'
-import Row from './Row'
+import { Div, cssRow } from '@/../../uikit/dist'
 
 export default function Carousel<T>({
   list,
@@ -140,7 +140,7 @@ export default function Carousel<T>({
         <Icon heroIconName="chevron-right" className="opacity-80 cursor-pointer" onClick={goNext} />
       )}
       {list.length !== 1 && (
-        <Row className="space-x-2 col-span-full">
+        <Div icss={cssRow()} className="space-x-2 col-span-full">
           {list.map((_info, idx) => (
             <div
               key={idx}
@@ -150,7 +150,7 @@ export default function Carousel<T>({
               onClick={() => goTo(idx)}
             />
           ))}
-        </Row>
+        </Div>
       )}
     </div>
   )

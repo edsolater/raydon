@@ -34,14 +34,13 @@ import Button from '../tempUikits/Button'
 import CoinAvatar from './CoinAvatar'
 import Icon from './Icon'
 import Input from '../tempUikits/Input'
-import Row from '../tempUikits/Row'
 import toPubString from '@/functions/format/toMintString'
 import { toString } from '@/functions/numberish/toString'
 import { Numberish } from '@/types/constants'
 import DecimalInput from '../tempUikits/DecimalInput'
 import { isMintEqual } from '@/functions/judgers/areEqual'
 import { useSignalState } from '@/hooks/useSignalState'
-import { Div, DivProps } from '@edsolater/uikit'
+import { cssRow, Div, DivProps } from '@edsolater/uikit'
 
 export interface CoinInputBoxHandle {
   focusInput?: () => void
@@ -246,15 +245,16 @@ export default function CoinInputBox({
         disabled && !noDisableStyle ? 'pointer-events-none-entirely cursor-default opacity-50' : ''
       }`}
     >
-      <Row
+      <Div
+        icss={cssRow()}
         className={`flex-col`}
-        htmlPorps={{
+        htmlProps={{
           tabIndex: 0
         }}
         onClick={focusInput}
       >
         {/* from & balance */}
-        <Row className="justify-between mb-2 mobile:mb-4">
+        <Div icss={cssRow()} className="justify-between mb-2 mobile:mb-4">
           <div className="text-xs mobile:text-2xs text-[rgba(171,196,255,.5)]">{topLeftLabel}</div>
           <div
             className={`text-xs mobile:text-2xs justify-self-end text-[rgba(171,196,255,.5)] ${
@@ -267,26 +267,27 @@ export default function CoinInputBox({
           >
             {topRightLabel ?? `Balance: ${toString(maxValue) || (connected ? '--' : '(Wallet not connected)')}`}
           </div>
-        </Row>
+        </Div>
 
         {/* input-container */}
-        <Row className="col-span-full items-center">
+        <Div icss={cssRow()} className="col-span-full items-center">
           {!hideTokenPart && (
             <>
-              <Row
+              <Div
+                icss={cssRow()}
                 className={`items-center gap-1.5 ${
                   (showTokenSelectIcon && !disabledTokenSelect) || canSwitchSOLWSOL
                     ? 'clickable clickable-mask-offset-2'
                     : ''
                 }`}
-                onClick={(ev) => {
+                onClick={({ ev }) => {
                   ev.stopPropagation()
                   ev.preventDefault()
                   if (canSwitchSOLWSOL) onTryToSwitchSOLWSOL?.()
                   if (disabledTokenSelect) return
                   onTryToTokenSelect?.()
                 }}
-                htmlPorps={{
+                htmlProps={{
                   title: canSwitchSOLWSOL
                     ? isQuantumSOLVersionSOL(token)
                       ? 'switch to WSOL'
@@ -305,13 +306,13 @@ export default function CoinInputBox({
                 {showTokenSelectIcon && !disabledTokenSelect && (
                   <Icon size="xs" heroIconName="chevron-down" className="text-primary" />
                 )}
-              </Row>
+              </Div>
               {/* divider */}
               <div className="my-1 mx-4 mobile:my-0 mobile:mx-2 border-r border-[rgba(171,196,255,0.5)] self-stretch" />
             </>
           )}
-          <Row className="justify-between flex-grow-2">
-            <Row className="gap-px items-center mr-2">
+          <Div icss={cssRow()} className="justify-between flex-grow-2">
+            <Div icss={cssRow()} className="gap-px items-center mr-2">
               {!hideMaxButton && (
                 <Button
                   disabled={disabledInput}
@@ -336,7 +337,7 @@ export default function CoinInputBox({
                   Half
                 </Button>
               )}
-            </Row>
+            </Div>
             <DecimalInput
               className="font-medium text-lg text-white flex-grow w-full"
               disabled={disabledInput}
@@ -357,8 +358,8 @@ export default function CoinInputBox({
                 isOutsideValueLocked.current = true
               }}
             />
-          </Row>
-        </Row>
+          </Div>
+        </Div>
 
         {/* price-predictor */}
         {!hidePricePredictor && (
@@ -370,7 +371,7 @@ export default function CoinInputBox({
             {totalPrice ? toUsdVolume(totalPrice) : '--'}
           </div>
         )}
-      </Row>
+      </Div>
     </Div>
   )
 }

@@ -1,4 +1,4 @@
-import { cssCol, Div } from '@/../../uikit/dist'
+import { cssCol, cssRow, Div } from '@/../../uikit/dist'
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import { isString } from '@/functions/judgers/dateType'
 import useLocalStorageItem from '@/hooks/useLocalStorage'
@@ -6,7 +6,6 @@ import React, { ReactNode, useEffect, useMemo, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import Icon from '../components/Icon'
 import Collapse from './Collapse'
-import Row from './Row'
 
 /**
  * styled component
@@ -55,7 +54,7 @@ export default function Select<T extends string>({
   const [isOpen, setIsOpen] = React.useState(false)
 
   const FaceCotent = ({ open = false }) => (
-    <Row className="items-center w-full">
+    <Div icss={cssRow()} className="items-center w-full">
       <div className="mobile:text-xs text-sm font-medium text-[rgba(196,214,255,.5)] mr-1 whitespace-nowrap">
         {prefix}
       </div>
@@ -67,7 +66,7 @@ export default function Select<T extends string>({
         className="justify-self-end mr-1.5 text-[rgba(196,214,255,.5)] ml-2"
         heroIconName={`${open ? 'chevron-up' : 'chevron-down'}`}
       />
-    </Row>
+    </Div>
   )
   return (
     <div className={twMerge('relative', className)}>
@@ -98,7 +97,8 @@ export default function Select<T extends string>({
                 const { label, value } =
                   typeof candidate === 'string' ? { label: candidate, value: candidate } : candidate
                 return (
-                  <Row
+                  <Div
+                    icss={cssRow()}
                     key={value}
                     className={`mobile:text-xs text-sm font-medium py-1.5 hover:text-[rgb(196,214,255)] text-[rgba(196,214,255,.5)] cursor-pointer ${
                       value === currentValue ? 'text-[rgba(196,214,255)]' : ''
@@ -113,7 +113,7 @@ export default function Select<T extends string>({
                   >
                     {label}
                     {value === currentValue && <Icon size="sm" heroIconName="check" className="ml-2" />}
-                  </Row>
+                  </Div>
                 )
               })}
             </Div>

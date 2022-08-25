@@ -1,4 +1,4 @@
-import { Div, cssCol } from '@/../../uikit/dist'
+import { Div, cssCol, cssRow } from '@/../../uikit/dist'
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import { useHomeInfo } from '@/application/homeInfo'
 import Icon from '@/components/Icon'
@@ -12,7 +12,6 @@ import Grid from '@/tempUikits/Grid'
 import Image from '@/tempUikits/Image'
 import Link from '@/tempUikits/Link'
 import NumberJelly from '@/tempUikits/NumberJelly'
-import Row from '@/tempUikits/Row'
 import Tooltip from '@/tempUikits/Tooltip'
 import { useRouter } from 'next/router'
 import { ReactNode } from 'react'
@@ -39,7 +38,7 @@ function HomePageNavbar() {
   const isMobile = useAppSettings((s) => s.isMobile)
   const { push } = useRouter()
   return (
-    <Row className="justify-between mobile:justify-center py-12 px-[min(160px,8vw)]">
+    <Div icss={cssRow()} className="justify-between mobile:justify-center py-12 px-[min(160px,8vw)]">
       <Image src="/logo/logo-with-text.svg" />
       {!isMobile && (
         <Button
@@ -51,7 +50,7 @@ function HomePageNavbar() {
           Launch app
         </Button>
       )}
-    </Row>
+    </Div>
   )
 }
 
@@ -81,17 +80,17 @@ function HomePageSection0() {
           Light-speed <b>swaps</b>. Next-level <b>liquidity</b>. {isMobile ? <br /> : ''} Friction-less <b>yield</b>.
         </div>
         {/* two button */}
-        <Row className="gap-8 mobile:gap-4 mb-16 mobile:mb-6 grid grid-cols-2-fr">
+        <Div icss={cssRow()} className="gap-8 mobile:gap-4 mb-16 mobile:mb-6 grid grid-cols-2-fr">
           <Button
             className="home-rainbow-button-bg text-white mobile:text-xs px-5 mobile:px-4"
             onClick={() => {
               push('/swap')
             }}
           >
-            <Row className="items-center gap-2">
+            <Div icss={cssRow()} className="items-center gap-2">
               <div>Launch app</div>
               <Icon heroIconName="chevron-right" size="xs" />
-            </Row>
+            </Div>
           </Button>
 
           <Button
@@ -100,18 +99,21 @@ function HomePageSection0() {
               linkTo('https://raydium.gitbook.io/raydium/')
             }}
           >
-            <Row className="items-center gap-2">
+            <Div icss={cssRow()} className="items-center gap-2">
               <div>Read docs</div>
               <Icon iconSrc="/icons/gitbook.svg" size="sm" />
-            </Row>
+            </Div>
           </Button>
-        </Row>
+        </Div>
         {/* two panels */}
-        <Row className="gap-6 mobile:gap-3 mb-9 grid grid-cols-2-fr">
+        <Div icss={cssRow()} className="gap-6 mobile:gap-3 mb-9 grid grid-cols-2-fr">
           <Card className="frosted-glass-smoke forsted-blur-sm rounded-3xl mobile:rounded-2xl p-6 mobile:py-3 mobile:px-6 mobile:min-w-[156px] min-w-[250px] tablet:min-w-[250px]">
             <div className="text-sm text-[#adc6ff] mb-1 mobile:text-[8px]">TOTAL VALUE LOCKED</div>
             {/* value */}
-            <Row className="justify-center text-xl mobile:text-xs font-normal text-white tracking-widest mobile:tracking-wider">
+            <Div
+              icss={cssRow()}
+              className="justify-center text-xl mobile:text-xs font-normal text-white tracking-widest mobile:tracking-wider"
+            >
               <div className="mr-1">$</div>
               {tvl && (
                 <NumberJelly
@@ -123,13 +125,16 @@ function HomePageSection0() {
                   initValue={tvl ? 0.999 * tvl : undefined}
                 />
               )}
-            </Row>
+            </Div>
           </Card>
 
           <Card className="frosted-glass-smoke forsted-blur-sm rounded-3xl mobile:rounded-2xl p-6 mobile:py-3 mobile:px-6 mobile:min-w-[156px] min-w-[250px] tablet:min-w-[250px]">
             <div className="text-sm text-[#adc6ff] mb-1 mobile:text-[8px]">TOTAL TRADING VOLUME</div>
             {/* value */}
-            <Row className="justify-center text-xl mobile:text-xs font-normal text-white tracking-widest mobile:tracking-wider">
+            <Div
+              icss={cssRow()}
+              className="justify-center text-xl mobile:text-xs font-normal text-white tracking-widest mobile:tracking-wider"
+            >
               <div className="mr-1">$</div>
               {totalvolume && (
                 <NumberJelly
@@ -141,9 +146,9 @@ function HomePageSection0() {
                   initValue={totalvolume ? 0.999 * totalvolume : undefined}
                 />
               )}
-            </Row>
+            </Div>
           </Card>
-        </Row>
+        </Div>
         <Image src="/logo/build-on-slogan.svg" className="transform mobile:scale-75" />
       </div>
     </section>
@@ -343,10 +348,13 @@ function HomePageSection3() {
           style={{ background: 'radial-gradient(39.84% 47.5% at 96.82% 58.33%, #39d0d8 0%, #2b6aff 100%)' }}
         />
       </div>
-      <Row className="w-full justify-around px-56 tablet:px-0 mobile:px-0 tablet:grid mobile:grid gap-16">
+      <Div
+        icss={cssRow()}
+        className="w-full justify-around px-56 tablet:px-0 mobile:px-0 tablet:grid mobile:grid gap-16"
+      >
         <Image src="/logo/solana-text-logo.svg" />
         <Image src="/logo/serum-text-logo.svg" />
-      </Row>
+      </Div>
     </section>
   )
 }
@@ -468,38 +476,38 @@ function HomePageFooter() {
           </div>
           <Grid className="flex flex-col tablet:flex-row gap-6 tablet:gap-10">
             <Link className="text-[#c4d6ff] hover:text-white" href="https://twitter.com/RaydiumProtocol">
-              <Row className="items-center gap-2">
+              <Div icss={cssRow()} className="items-center gap-2">
                 <Icon
                   className="frosted-glass-teal p-1.5 rounded-lg text"
                   iconClassName="w-5 h-5 tablet:w-6 tablet:h-6"
                   iconSrc="icons/media-twitter.svg"
                 />
                 <div className="tablet:hidden">Twitter</div>
-              </Row>
+              </Div>
             </Link>
             <Link className="text-[#c4d6ff] hover:text-white" href="https://raydium.medium.com/">
-              <Row className="items-center gap-2">
+              <Div icss={cssRow()} className="items-center gap-2">
                 <Icon
                   className="frosted-glass-teal p-1.5 rounded-lg text"
                   iconClassName="w-5 h-5 tablet:w-6 tablet:h-6"
                   iconSrc="icons/media-medium.svg"
                 />
                 <div className="tablet:hidden">Medium</div>
-              </Row>
+              </Div>
             </Link>
             <Link className="text-[#c4d6ff] hover:text-white" href="https://discord.gg/raydium">
-              <Row className="items-center gap-2">
+              <Div icss={cssRow()} className="items-center gap-2">
                 <Icon
                   className="frosted-glass-teal p-1.5 rounded-lg text"
                   iconClassName="w-5 h-5 tablet:w-6 tablet:h-6"
                   iconSrc="icons/media-discord.svg"
                 />
                 <div className="tablet:hidden">Discord</div>
-              </Row>
+              </Div>
             </Link>
-            <Row className="items-center gap-2">
+            <Div icss={cssRow()} className="items-center gap-2">
               <Tooltip triggerBy="click" placement={isTablet || isMobile ? 'left' : 'right'}>
-                <Row className="text-[#c4d6ff] hover:text-white items-center gap-1 cursor-pointer">
+                <Div icss={cssRow()} className="text-[#c4d6ff] hover:text-white items-center gap-1 cursor-pointer">
                   <Icon
                     className="frosted-glass-teal p-1.5 rounded-lg text"
                     iconClassName="w-5 h-5 tablet:w-6 tablet:h-6"
@@ -507,7 +515,7 @@ function HomePageFooter() {
                   />
                   <div className="tablet:hidden">Telegram</div>
                   <Icon size="sm" heroIconName="chevron-down" />
-                </Row>
+                </Div>
                 <Tooltip.Panel>
                   <Div icss={cssCol()} className="divide-y-1.5">
                     <Link
@@ -567,7 +575,7 @@ function HomePageFooter() {
                   </Div>
                 </Tooltip.Panel>
               </Tooltip>
-            </Row>
+            </Div>
           </Grid>
         </div>
       </Grid>

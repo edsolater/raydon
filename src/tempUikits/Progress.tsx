@@ -2,11 +2,10 @@ import { ReactNode, useRef } from 'react'
 
 import { twMerge } from 'tailwind-merge'
 
-import { Div } from '@edsolater/uikit'
+import { cssRow, Div } from '@edsolater/uikit'
 import toPercentString from '@/functions/format/toPercentString'
 import { shrinkToValue } from '@/functions/shrinkToValue'
 import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect '
-import Row from './Row'
 
 /**
  * same as html <progress>
@@ -60,7 +59,8 @@ export default function Progress({
   const clampedValue = Math.min(Number(value), 1)
   const themeColor = clampedValue < 1 / 3 ? '#ABC4FF' : clampedValue < 2 / 3 ? '#39D0D8' : '#DA2EEF'
   return borderThemeMode ? (
-    <Row
+    <Div
+      icss={cssRow()}
       className={twMerge(`Progress relative border-1.5 rounded-full overflow-hidden w-full h-6  ${className ?? ''}`)}
       style={{
         borderColor: themeColor
@@ -85,7 +85,7 @@ export default function Progress({
       >
         {shrinkToValue(labelFormat, [value])}
       </div>
-    </Row>
+    </Div>
   ) : (
     <Div domRef={progressRef} className={twMerge(`Progress relative ${className ?? ''}`)}>
       <div

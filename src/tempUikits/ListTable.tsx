@@ -2,7 +2,7 @@
  * depends on <List>
  */
 
-import { cssCol, Div } from '@/../../uikit/dist'
+import { cssCol, cssRow, Div } from '@/../../uikit/dist'
 import { isNumber, isObject } from '@/functions/judgers/dateType'
 import { shrinkToValue } from '@/functions/shrinkToValue'
 import { MayArray, MayFunction } from '@/types/constants'
@@ -12,7 +12,6 @@ import { twMerge } from 'tailwind-merge'
 import useListDataManager from '../hooks/useListDataManager'
 import Card from './Card'
 import Grid from './Grid'
-import Row from './Row'
 
 interface ListTableHeader<D> {
   label: string
@@ -290,11 +289,15 @@ export default function ListTable<T>({
             ) : (
               <>
                 <div className="relative">{contentNode}</div>
-                <Row>
+                <Div icss={cssRow()}>
                   {/* another btns */}
-                  {/* <Row className="grow justify-start py-3 px-5">{controlsNode}</Row> */}
-                  {controlsNode && <Row className="grow justify-end py-3 px-5">{controlsNode}</Row>}
-                </Row>
+                  {/* <Div icss={cssRow()} className="grow justify-start py-3 px-5">{controlsNode}</Div> */}
+                  {controlsNode && (
+                    <Div icss={cssRow()} className="grow justify-end py-3 px-5">
+                      {controlsNode}
+                    </Div>
+                  )}
+                </Div>
               </>
             )}
           </Card>

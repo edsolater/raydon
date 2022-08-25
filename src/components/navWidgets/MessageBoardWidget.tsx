@@ -1,4 +1,4 @@
-import { cssCol, Div } from '@/../../uikit/dist'
+import { cssCol, cssRow, Div } from '@/../../uikit/dist'
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import { MessageBoardItem } from '@/application/messageBoard/type'
 import useMessageBoard from '@/application/messageBoard/useMessageBoard'
@@ -6,7 +6,6 @@ import { isExist } from '@/functions/judgers/nil'
 import Button from '../../tempUikits/Button'
 import Card from '../../tempUikits/Card'
 import ResponsiveDialogDrawer from '../../tempUikits/ResponsiveDialogDrawer'
-import Row from '../../tempUikits/Row'
 import Icon from '../Icon'
 import { Markdown } from '../Markdown'
 import PageLayoutPopoverDrawer from '../PageLayoutPopoverDrawer'
@@ -29,14 +28,14 @@ function MessageItem({
       className="py-4 border-[rgba(171,196,255,0.2)] cursor-pointer clickable clickable-filter-effect"
       onClick={onClick}
     >
-      <Row className="gap-4 items-center">
+      <Div icss={cssRow()} className="gap-4 items-center">
         <div className={`text-primary ${haveReaded ? 'opacity-40' : 'opacity-80'} font-semibold`}>{item.title}</div>
         <Icon
           size="sm"
           className={`text-primary ${haveReaded ? 'opacity-40' : 'hidden'}`}
           heroIconName="check-circle"
         />
-      </Row>
+      </Div>
       <div className={`text-[rgb(171,196,255)] ${haveReaded ? 'opacity-40' : 'opacity-80'} text-xs`}>
         {item.summary}
       </div>
@@ -100,10 +99,10 @@ export default function MessageBoardWidget() {
             className="flex flex-col backdrop-filter backdrop-blur-xl p-8 mobile:py-4 w-[min(750px,100vw)] mobile:w-screen max-h-[min(850px,100vh)] mobile:h-screen border-1.5 border-[rgba(171,196,255,0.2)] bg-cyberpunk-card-bg shadow-cyberpunk-card"
             size="lg"
           >
-            <Row className="justify-between items-center mb-6">
+            <Div icss={cssRow()} className="justify-between items-center mb-6">
               <div className="text-3xl font-semibold text-white">{currentMessageBoardItem?.title}</div>
               <Icon className="text-primary cursor-pointer" heroIconName="x" onClick={close} />
-            </Row>
+            </Div>
             <div className="overflow-y-auto my-4">
               <Markdown className="my-6 whitespace-pre-line mobile:text-sm">
                 {currentMessageBoardItem?.details ?? ''}

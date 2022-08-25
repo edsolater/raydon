@@ -43,7 +43,6 @@ import { FadeIn } from '@/tempUikits/FadeIn'
 import Grid from '@/tempUikits/Grid'
 import Link from '@/tempUikits/Link'
 import Progress from '@/tempUikits/Progress'
-import Row from '@/tempUikits/Row'
 import RowTabs from '@/tempUikits/RowTabs'
 import Tooltip from '@/tempUikits/Tooltip'
 import { Numberish } from '@/types/constants'
@@ -67,7 +66,7 @@ function useUrlParser() {
 function NavButtons({ className }: { className?: string }) {
   const idoInfo = useIdo((s) => (s.currentIdoId ? s.idoHydratedInfos[s.currentIdoId] : undefined))
   return (
-    <Row className={twMerge('items-center justify-between', className)}>
+    <Div icss={cssRow()} className={twMerge('items-center justify-between', className)}>
       <Button
         type="text"
         className="text-sm text-primary opacity-50 px-0"
@@ -86,7 +85,7 @@ function NavButtons({ className }: { className?: string }) {
         <Icon size="sm" inline heroIconName="information-circle" />
         Read full details
       </Link>
-    </Row>
+    </Div>
   )
 }
 
@@ -156,17 +155,15 @@ export default function LotteryDetailPageLayout() {
 function TicketItem({
   idoInfo,
   ticket,
-  className,
-  style
+  className
 }: {
   idoInfo?: HydratedIdoInfo
   ticket?: TicketInfo
   className?: string
-  style?: React.CSSProperties
 }) {
   if (!ticket) return null
   return (
-    <Row className={twMerge('items-center gap-1', className)} style={style}>
+    <Div className={['items-center gap-1', className]} icss={cssRow()}>
       <div className={`text-xs font-semibold ${ticket.isWinning ? 'text-[#39D0D8]' : 'text-primary'} `}>
         {ticket.no}
       </div>
@@ -177,7 +174,7 @@ function TicketItem({
           heroIconName={ticket.isWinning ? 'check-circle' : 'x-circle'}
         />
       )}
-    </Row>
+    </Div>
   )
 }
 
@@ -214,7 +211,7 @@ function WinningTicketPanel({ className }: { className?: string }) {
           size="lg"
         >
           {idoInfo.isClosed && (
-            <Row className="flex-wrap gap-7 justify-between p-8 mobile:p-5">
+            <Div icss={cssRow()} className="flex-wrap gap-7 justify-between p-8 mobile:p-5">
               <Div icss={cssCol()} className="gap-1">
                 {idoInfo.winningTicketsTailNumber ? (
                   <div className="mobile:text-sm font-semibold text-base text-white">
@@ -249,7 +246,7 @@ function WinningTicketPanel({ className }: { className?: string }) {
               </Div>
               <FadeIn>
                 {idoInfo.ledger && idoInfo?.depositedTickets?.length && (
-                  <Row className="gap-8 mobile:gap-6 mobile:w-full mobile:grid mobile:grid-cols-2">
+                  <Div icss={cssRow()} className="gap-8 mobile:gap-6 mobile:w-full mobile:grid mobile:grid-cols-2">
                     <Div icss={cssCol()} className="items-center">
                       <Button
                         size={isMobile ? 'sm' : 'md'}
@@ -267,7 +264,7 @@ function WinningTicketPanel({ className }: { className?: string }) {
                             should: idoInfo.canWithdrawBase,
                             fallbackProps: {
                               children: (
-                                <Row>
+                                <Div icss={cssRow()}>
                                   Claim {idoInfo.base?.symbol ?? 'UNKNOWN'} in{' '}
                                   <IdoCountDownClock
                                     className="ml-1"
@@ -276,7 +273,7 @@ function WinningTicketPanel({ className }: { className?: string }) {
                                     endTime={Number(idoInfo.startWithdrawTime)}
                                     onEnd={forceUpdate}
                                   />
-                                </Row>
+                                </Div>
                               )
                             }
                           }
@@ -346,10 +343,10 @@ function WinningTicketPanel({ className }: { className?: string }) {
                         )}
                       </FadeIn>
                     </Div>
-                  </Row>
+                  </Div>
                 )}
               </FadeIn>
-            </Row>
+            </Div>
           )}
 
           <FadeIn>
@@ -453,41 +450,41 @@ function LotteryStateInfoPanel({ className }: { className?: string }) {
           <IdoInfoItem
             fieldName="Total Raise"
             fieldValue={
-              <Row className="items-baseline gap-1">
+              <Div icss={cssRow()} className="items-baseline gap-1">
                 <div className="text-white font-medium">{formatNumber(toString(idoInfo.totalRaise))}</div>
                 <div className="text-[#ABC4FF80] font-medium text-xs">
                   {idoInfo.totalRaise?.token.symbol ?? 'UNKNOWN'}
                 </div>
-              </Row>
+              </Div>
             }
           />
           <IdoInfoItem
             fieldName={`Allocation / Winning Ticket`}
             fieldValue={
-              <Row className="items-baseline gap-1">
+              <Div icss={cssRow()} className="items-baseline gap-1">
                 <div className="text-white font-medium">
                   {formatNumber(toString(idoInfo.ticketPrice), { fractionLength: 'auto' })}
                 </div>
                 <div className="text-[#ABC4FF80] font-medium text-xs">{idoInfo.quote?.symbol ?? 'UNKNOWN'}</div>
-              </Row>
+              </Div>
             }
           />
           <IdoInfoItem
             fieldName={`Per ${idoInfo.base?.symbol ?? 'UNKNOWN'}`}
             fieldValue={
-              <Row className="items-baseline gap-1">
+              <Div icss={cssRow()} className="items-baseline gap-1">
                 <div className="text-white font-medium">
                   {formatNumber(toString(idoInfo.coinPrice), { fractionLength: 'auto' })}
                 </div>
                 <div className="text-[#ABC4FF80] font-medium text-xs">{idoInfo.quote?.symbol ?? 'UNKNOWN'}</div>
-              </Row>
+              </Div>
             }
           />
           <div>
             <IdoInfoItem
               fieldName="Total tickets deposited"
               fieldValue={
-                <Row className="items-baseline gap-1">
+                <Div icss={cssRow()} className="items-baseline gap-1">
                   <div className="text-white font-medium">{formatNumber(idoInfo.depositedTicketCount)}</div>
                   <div className="text-[#ABC4FF80] font-medium text-xs"> / {formatNumber(idoInfo.maxWinLotteries)}</div>
                   <Tooltip placement="bottom" className="self-center">
@@ -501,7 +498,7 @@ function LotteryStateInfoPanel({ className }: { className?: string }) {
                       </div>
                     </Tooltip.Panel>
                   </Tooltip>
-                </Row>
+                </Div>
               }
             />
             <Progress
@@ -514,7 +511,7 @@ function LotteryStateInfoPanel({ className }: { className?: string }) {
           <IdoInfoItem
             fieldName="Pool open"
             fieldValue={
-              <Row className="items-baseline gap-1">
+              <Div icss={cssRow()} className="items-baseline gap-1">
                 {isDateBefore(getChainDate(), idoInfo.startTime) ? (
                   <>
                     <div className="text-[#ABC4FF80] font-medium text-xs">in</div>
@@ -528,13 +525,13 @@ function LotteryStateInfoPanel({ className }: { className?: string }) {
                     <div className="text-[#ABC4FF80] font-medium text-xs">{'UTC'}</div>
                   </>
                 )}
-              </Row>
+              </Div>
             }
           />
           <IdoInfoItem
             fieldName="Pool close"
             fieldValue={
-              <Row className="items-baseline gap-1">
+              <Div icss={cssRow()} className="items-baseline gap-1">
                 {isDateBefore(getChainDate(), idoInfo.endTime) ? (
                   <>
                     <div className="text-[#ABC4FF80] font-medium text-xs">in</div>
@@ -550,7 +547,7 @@ function LotteryStateInfoPanel({ className }: { className?: string }) {
                     <div className="text-[#ABC4FF80] font-medium text-xs">{'UTC'}</div>
                   </>
                 )}
-              </Row>
+              </Div>
             }
           />
           {idoInfo.isUpcoming && (
@@ -561,14 +558,14 @@ function LotteryStateInfoPanel({ className }: { className?: string }) {
               <IdoInfoItem
                 className="p-0"
                 fieldValue={
-                  <Row className="items-baseline gap-1">
+                  <Div icss={cssRow()} className="items-baseline gap-1">
                     <div className="text-white font-medium">
                       {formatNumber(toString(stakingHydratedInfo?.userStakedLpAmount)) || '--'} RAY
                     </div>
-                  </Row>
+                  </Div>
                 }
                 fieldName={
-                  <Row className="gap-1 items-center">
+                  <Div icss={cssRow()} className="gap-1 items-center">
                     <div>Your staking</div>
 
                     <Tooltip placement="bottom">
@@ -587,7 +584,7 @@ function LotteryStateInfoPanel({ className }: { className?: string }) {
                         </div>
                       </Tooltip.Panel>
                     </Tooltip>
-                  </Row>
+                  </Div>
                 }
               />
               <Div icss={cssCol()}>
@@ -626,7 +623,7 @@ function LotteryStateInfoPanel({ className }: { className?: string }) {
             <IdoInfoItem
               fieldName="RAY staking deadline"
               fieldValue={
-                <Row className="items-baseline gap-1">
+                <Div icss={cssRow()} className="items-baseline gap-1">
                   {isDateBefore(getChainDate(), idoInfo.stakeTimeEnd) ? (
                     <>
                       <div className="text-[#ABC4FF80] font-medium text-xs">in</div>
@@ -642,7 +639,7 @@ function LotteryStateInfoPanel({ className }: { className?: string }) {
                       <div className="text-[#ABC4FF80] font-medium text-xs">{'UTC'}</div>
                     </>
                   )}
-                </Row>
+                </Div>
               }
             />
           )}
@@ -697,10 +694,10 @@ function LotteryLedgerPanel({ className }: { className?: string }) {
         <TopInfoPanelFieldItem
           fieldName="Allocation"
           fieldValue={
-            <Row className="items-baseline gap-1">
+            <Div icss={cssRow()} className="items-baseline gap-1">
               <div>{connected ? formatNumber(toString(idoInfo.userAllocation) || 0) : '--'}</div>
               <div className="text-sm text-primary opacity-50"> {idoInfo.base?.symbol ?? ''}</div>
-            </Row>
+            </Div>
           }
         />
       </Grid>
@@ -721,7 +718,7 @@ function LotteryProjectInfoPanel({ className }: { className?: string }) {
   const renderProjectDetails = (
     <>
       <Markdown className="py-6">{idoInfo.projectDetails ?? ''}</Markdown>
-      <Row className="justify-between mobile:gap-board">
+      <Div icss={cssRow()} className="justify-between mobile:gap-board">
         <Div icss_={isMobile ? cssCol() : cssRow()} className="gap-6 mobile:gap-3">
           {Object.entries(idoInfo.projectDocs ?? {}).map(([docName, linkAddress]) => (
             <Link
@@ -733,7 +730,7 @@ function LotteryProjectInfoPanel({ className }: { className?: string }) {
             </Link>
           ))}
         </Div>
-        <Row className="gap-6 mobile:gap-3">
+        <Div icss={cssRow()} className="gap-6 mobile:gap-3">
           {Object.entries(idoInfo.projectSocials ?? {}).map(([socialName, link]) => (
             <Link key={socialName} href={link} className="flex items-center">
               <Icon
@@ -743,16 +740,16 @@ function LotteryProjectInfoPanel({ className }: { className?: string }) {
               />
             </Link>
           ))}
-        </Row>
-      </Row>
+        </Div>
+      </Div>
     </>
   )
   const renderHowToJoin = (
     <div>
       {/* wrapbox(have scroll bar) */}
-      <Row>
+      <Div icss={cssRow()}>
         {/* card row */}
-        <Row className="overflow-auto gap-6 grow w-0">
+        <Div icss={cssRow()} className="overflow-auto gap-6 grow w-0">
           {/* step 1 */}
           <Card
             size="lg"
@@ -842,8 +839,8 @@ function LotteryProjectInfoPanel({ className }: { className?: string }) {
               </div>
             </Div>
           </Card>
-        </Row>
-      </Row>
+        </Div>
+      </Div>
       <Link
         className="pt-4 rounded-none flex-grow font-medium text-primary text-xs flex justify-center gap-1 items-center"
         href={idoInfo.projectDetailLink}
@@ -920,11 +917,11 @@ function LotteryInputPanel({ className }: { className?: string }) {
 
   if (!idoInfo) return null
   const renderPoolUpcoming = (
-    <Row className="items-center">
-      <Row className="items-center gap-1">
+    <Div icss={cssRow()} className="items-center">
+      <Div icss={cssRow()} className="items-center gap-1">
         <span>Pool opens in</span>
         <IdoCountDownClock singleValueMode labelClassName="text-base" endTime={idoInfo.startTime} onEnd={refreshSelf} />
-      </Row>
+      </Div>
       <div className="ml-auto">
         <RefreshCircle
           refreshKey="acceleraytor"
@@ -933,10 +930,10 @@ function LotteryInputPanel({ className }: { className?: string }) {
           }}
         />
       </div>
-    </Row>
+    </Div>
   )
   const renderPoolOpen = (
-    <Row className="items-center">
+    <Div icss={cssRow()} className="items-center">
       {idoInfo.isEligible || idoInfo.isEligible == null || !connected
         ? 'Join Lottery'
         : "You're not eligible to join pool"}
@@ -948,13 +945,13 @@ function LotteryInputPanel({ className }: { className?: string }) {
           }}
         />
       </div>
-    </Row>
+    </Div>
   )
   const renderPoolClosed = (
-    <Row className="items-center">
+    <Div icss={cssRow()} className="items-center">
       Pool Closed
       <div className="ml-auto"></div>
-    </Row>
+    </Div>
   )
 
   const joined = Boolean(owner && isMeaningfulNumber(idoInfo.ledger?.quoteDeposited))

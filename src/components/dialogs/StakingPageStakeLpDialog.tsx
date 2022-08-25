@@ -8,11 +8,11 @@ import Card from '@/tempUikits/Card'
 import CoinInputBox from '@/components/CoinInputBox'
 import Icon from '@/components/Icon'
 import ResponsiveDialogDrawer from '@/tempUikits/ResponsiveDialogDrawer'
-import Row from '@/tempUikits/Row'
 import { toTokenAmount } from '@/functions/format/toTokenAmount'
 import { toString } from '@/functions/numberish/toString'
 import { gt, gte } from '@/functions/numberish/compare'
 import useAppSettings from '@/application/appSettings/useAppSettings'
+import { Div, cssRow } from '@/../../uikit/dist'
 
 export function StakingPageStakeLpDialog() {
   const connected = useWallet((s) => s.connected)
@@ -57,12 +57,12 @@ export function StakingPageStakeLpDialog() {
           size="lg"
         >
           {/* {String(info?.lpMint)} */}
-          <Row className="justify-between items-center mb-6">
+          <Div icss={cssRow()} className="justify-between items-center mb-6">
             <div className="text-xl font-semibold text-white">
               {stakeDialogMode === 'withdraw' ? 'Unstake RAY' : 'Stake RAY'}
             </div>
             <Icon className="text-primary cursor-pointer" heroIconName="x" onClick={close} />
-          </Row>
+          </Div>
           {/* input-container-box */}
           <CoinInputBox
             className="mb-6"
@@ -78,7 +78,7 @@ export function StakingPageStakeLpDialog() {
                 : undefined
             }
           />
-          <Row className="flex-col gap-1">
+          <Div icss={cssRow()} className="flex-col gap-1">
             <Button
               className="frosted-glass-teal"
               isLoading={isApprovePanelShown}
@@ -112,7 +112,7 @@ export function StakingPageStakeLpDialog() {
             <Button type="text" disabled={isApprovePanelShown} className="text-sm backdrop-filter-none" onClick={close}>
               Cancel
             </Button>
-          </Row>
+          </Div>
         </Card>
       )}
     </ResponsiveDialogDrawer>

@@ -1,5 +1,5 @@
+import { Div, cssRow } from '@/../../uikit/dist'
 import DropdownTabs, { DropdownTabProps } from './DropdownTabs'
-import Row from './Row'
 import RowTabs, { RowTabProps } from './RowTabs'
 
 export type TabsProps<T extends string> = RowTabProps<T> &
@@ -11,9 +11,9 @@ export default function Tabs<T extends string>(props: TabsProps<T>) {
   const showTabValues = props.values.slice(0, props.showOffset)
   const dropdownTabValues = props.values.slice(props.showOffset)
   return (
-    <Row className="rounded-full bg-cyberpunk-card-bg">
+    <Div icss={cssRow()} className="rounded-full bg-cyberpunk-card-bg">
       <RowTabs {...props} values={showTabValues} $valuesLength={props.values.length} $transparentBg />
       <DropdownTabs {...props} values={dropdownTabValues} $valuesLength={props.values.length} $transparentBg />
-    </Row>
+    </Div>
   )
 }

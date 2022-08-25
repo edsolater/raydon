@@ -11,8 +11,8 @@ import Card from '@/tempUikits/Card'
 import CoinInputBox, { CoinInputBoxHandle } from '@/components/CoinInputBox'
 import Dialog from '@/tempUikits/Dialog'
 import Icon from '@/components/Icon'
-import Row from '@/tempUikits/Row'
 import { gt } from '@/functions/numberish/compare'
+import { Div, cssRow } from '@/../../uikit/dist'
 
 export function RemoveLiquidityDialog({
   info,
@@ -55,10 +55,10 @@ export function RemoveLiquidityDialog({
           )}
           size="lg"
         >
-          <Row className="justify-between items-center mb-6">
+          <Div icss={cssRow()} className="justify-between items-center mb-6">
             <div className="text-xl font-semibold text-white">Stake LP</div>
             <Icon className="text-primary cursor-pointer" heroIconName="x" onClick={closeDialog} />
-          </Row>
+          </Div>
 
           {/* input-container-box */}
           <CoinInputBox
@@ -79,7 +79,7 @@ export function RemoveLiquidityDialog({
             }}
           />
 
-          <Row className="flex-col gap-1">
+          <Div icss={cssRow()} className="flex-col gap-1">
             <Button
               className="frosted-glass frosted-glass-teal"
               isLoading={isApprovePanelShown}
@@ -112,7 +112,7 @@ export function RemoveLiquidityDialog({
             <Button type="text" className="text-sm text-primary opacity-50 backdrop-filter-none" onClick={closeDialog}>
               Cancel
             </Button>
-          </Row>
+          </Div>
         </Card>
       )}
     </Dialog>

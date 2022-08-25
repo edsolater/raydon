@@ -1,3 +1,4 @@
+import { Div, cssRow } from '@/../../uikit/dist'
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import Icon from '@/components/Icon'
 import toPercentString from '@/functions/format/toPercentString'
@@ -7,7 +8,6 @@ import { useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import Collapse, { CollapseHandler } from './Collapse'
 import RadioGroup, { RadioGroupProps } from './RadioGroup'
-import Row from './Row'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface DropdownTabProps<T extends string = string> extends RadioGroupProps<T> {
@@ -70,7 +70,8 @@ export default function DropdownTabs<T extends string>({
         ($transparentBg && !open) || open ? 'bg-transparent' : 'bg-cyberpunk-card-bg'
       }`}
     >
-      <Row
+      <Div
+        icss={cssRow()}
         className="items-center rounded-full w-full"
         style={
           isValueSelected
@@ -82,27 +83,35 @@ export default function DropdownTabs<T extends string>({
             : {}
         }
       >
-        <Row className="min-w-[120px] items-stretch justify-between mobile:min-w-[108px] h-9 mobile:h-7">
-          <Row
+        <Div
+          icss={cssRow()}
+          className="min-w-[120px] items-stretch justify-between mobile:min-w-[108px] h-9 mobile:h-7"
+        >
+          <Div
+            icss={cssRow()}
             onClick={onClickFace}
             className={`grow-2 justify-center items-center ${
               isValueSelected ? 'text-white' : 'text-primary'
             } text-sm mobile:text-xs font-medium whitespace-nowrap active:backdrop-brightness-90`}
           >
             {collapseFaceValue}
-          </Row>
+          </Div>
 
           {/* short line */}
           <div className="border-r border-[#abc4ff80] my-2 self-stretch"></div>
-          <Row onClick={onClickIcon} className="grow justify-center items-center active:backdrop-brightness-90">
+          <Div
+            icss={cssRow()}
+            onClick={onClickIcon}
+            className="grow justify-center items-center active:backdrop-brightness-90"
+          >
             <Icon
               size={isMobile ? 'xs' : 'sm'}
               className="text-[rgba(196,214,255,.5)]"
               heroIconName={`${open ? 'chevron-up' : 'chevron-down'}`}
             />
-          </Row>
-        </Row>
-      </Row>
+          </Div>
+        </Div>
+      </Div>
     </div>
   )
 

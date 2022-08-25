@@ -2,12 +2,11 @@ import { useRef, useState } from 'react'
 
 import { WalletAdapter, WalletReadyState } from '@solana/wallet-adapter-base'
 
-import { cssCol, Div } from '@/../../uikit/dist'
+import { cssCol, cssRow, Div } from '@/../../uikit/dist'
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import useWallet from '@/application/wallet/useWallet'
 import Icon from '@/components/Icon'
 import Card from '@/tempUikits/Card'
-import Row from '@/tempUikits/Row'
 import Button from '../../tempUikits/Button'
 import FadeInStable from '../../tempUikits/FadeIn'
 import Grid from '../../tempUikits/Grid'
@@ -27,7 +26,8 @@ function WalletSelectorPanelItem({
   const isMobile = useAppSettings((s) => s.isMobile)
   const { select } = useWallet()
   return (
-    <Row
+    <Div
+      icss={cssRow()}
       className={`relative items-center gap-3 m-auto px-6 mobile:px-3 mobile:py-1.5 py-3 w-64 mobile:w-[42vw] h-14  mobile:h-12 frosted-glass frosted-glass-teal rounded-xl mobile:rounded-lg ${
         detected ? 'opacity-100' : 'opacity-40'
       } clickable clickable-filter-effect`}
@@ -48,7 +48,7 @@ function WalletSelectorPanelItem({
           installed
         </Badge>
       )} */}
-    </Row>
+    </Div>
   )
 }
 
@@ -125,10 +125,10 @@ function PanelContent({
       className="flex flex-col max-h-screen  w-[586px] mobile:w-screen rounded-3xl mobile:rounded-none border-1.5 border-[rgba(171,196,255,0.2)] overflow-hidden bg-cyberpunk-card-bg shadow-cyberpunk-card"
       size="lg"
     >
-      <Row className="items-center justify-between px-8 py-8">
+      <Div icss={cssRow()} className="items-center justify-between px-8 py-8">
         <div className="text-xl font-semibold text-white">Connect your wallet to Raydium</div>
         <Icon className="text-primary cursor-pointer" heroIconName="x" onClick={close} />
-      </Row>
+      </Div>
 
       <Grid
         className={`px-8 mobile:px-6 gap-x-6 gap-y-3 mobile:gap-2 ${
@@ -158,13 +158,14 @@ function PanelContent({
         </FadeInStable>
       </div>
 
-      <Row
+      <Div
+        icss={cssRow()}
         className="m-4 text-primary justify-center items-center clickable"
         onClick={() => setIsAllWalletShown((b) => !b)}
       >
         <div className="font-bold">Show uninstalled wallets</div>
         <Icon className="mx-2" size="sm" heroIconName={isAllWalletShown ? 'chevron-up' : 'chevron-down'}></Icon>
-      </Row>
+      </Div>
 
       <div className="py-4 text-center font-medium text-sm border-t-1.5 border-[rgba(171,196,255,0.2)]">
         New here?{' '}

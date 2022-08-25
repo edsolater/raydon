@@ -3,7 +3,7 @@ import { twMerge } from 'tailwind-merge'
 
 import { SplToken } from '@/application/token/type'
 import CoinAvatar, { CoinAvatarProps } from '@/components/CoinAvatar'
-import Row from '@/tempUikits/Row'
+import { Div, cssRow } from '@/../../uikit/dist'
 
 export default function CoinAvatarPair({
   token1,
@@ -24,9 +24,9 @@ export default function CoinAvatarPair({
   CoinAvatar2?: CoinAvatarProps
 }) {
   return (
-    <Row className={twMerge('-space-x-1', className)}>
+    <Div icss={cssRow()} className={twMerge('-space-x-1', className)}>
       <CoinAvatar size={size} token={token1} {...CoinAvatar1} />
       <CoinAvatar size={size} token={token2} {...CoinAvatar2} />
-    </Row>
+    </Div>
   )
 }

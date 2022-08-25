@@ -15,12 +15,12 @@ import { twMerge } from 'tailwind-merge'
 import mergeRef from '@/functions/react/mergeRef'
 import useToggle from '@/hooks/useToggle'
 
-import Row from './Row'
 import { MayArray, MayFunction } from '@/types/constants'
 import { shrinkToValue } from '@/functions/shrinkToValue'
 import mergeProps from '@/functions/react/mergeProps'
 import { isRegExp } from '@/functions/judgers/dateType'
 import assert from 'assert'
+import { cssRow, Div, DivProps } from '@/../../uikit/dist'
 
 export interface InputComponentHandler {
   text: string | number | undefined
@@ -30,7 +30,7 @@ export interface InputComponentHandler {
   clearInputValue(): void
 }
 
-export interface InputProps {
+export interface InputProps extends Omit<DivProps<'input'>, 'onClick'> {
   id?: string // for accessibility
 
   type?: string // current support type in this app
@@ -78,15 +78,12 @@ export interface InputProps {
   /** Optional. usually, it is an <Input>'s unit or feature icon */
   suffix?: MayFunction<ReactNode, [InputComponentHandler]>
 
-  domRef?: RefObject<any>
-  className?: string
   componentRef?: RefObject<any>
   inputDomRef?: RefObject<any>
 
   inputWrapperClassName?: string
   inputClassName?: string
   inputHTMLProps?: InputHTMLAttributes<any>
-  style?: CSSProperties
   /**
    * this callback may be invoked every time value change regardless it is change by user input or js code
    * as a controlled formkit, U should avoid using it if U can
@@ -166,9 +163,6 @@ export default function Input(props: InputProps) {
 
     prefix,
     suffix,
-    domRef,
-    style,
-    className,
     componentRef,
     inputDomRef,
     inputWrapperClassName,
@@ -179,7 +173,8 @@ export default function Input(props: InputProps) {
     onEnter,
     onBlur,
     onFocus,
-    onClick
+    onClick,
+    ...divProps
   } = mergeProps(props, fallbackProps)
 
   const inputRef = useRef<HTMLInputElement>()
@@ -228,8 +223,10 @@ export default function Input(props: InputProps) {
   }, [selfValue])
 
   return (
-    <Row
-      className={twMerge(`Input ${disabled ? 'cursor-not-allowed' : 'cursor-text'} items-center`, className)}
+    <Div
+      {...divProps}
+      icss={cssRow()}
+      className_={`Input flex ${disabled ? 'cursor-not-allowed' : 'cursor-text'} items-center`}
       onClick={() => {
         if (disabled || !inputRef.current) return
         inputRef.current.focus()
@@ -243,8 +240,6 @@ export default function Input(props: InputProps) {
           }
         })
       }}
-      style={style}
-      domRef={domRef}
     >
       <div className="flex-initial">{shrinkToValue(prefix, [inputComponentHandler])}</div>
 
@@ -344,7 +339,7 @@ export default function Input(props: InputProps) {
         />
       </div>
       {suffix && <div className="flex-initial ml-2">{shrinkToValue(suffix, [inputComponentHandler])}</div>}
-    </Row>
+    </Div>
   )
 }
 

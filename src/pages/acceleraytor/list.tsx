@@ -36,7 +36,6 @@ import Image from '@/tempUikits/Image'
 import Input from '@/tempUikits/Input'
 import Link from '@/tempUikits/Link'
 import Progress from '@/tempUikits/Progress'
-import Row from '@/tempUikits/Row'
 import RowTabs from '@/tempUikits/RowTabs'
 import { twMerge } from 'tailwind-merge'
 
@@ -142,10 +141,13 @@ function IdoList() {
         itemClassName={isMobile ? 'min-w-[112px] h-[30px] px-2' : 'min-w-[128px]'}
       />
       {(upcomingPools.length > 0 || closedPools.length > 0) && (
-        <Row className="mobile:px-4 gap-6 mb-6 mobile:mb-4 justify-between w-[min(890px,100%)] self-center">
+        <Div
+          icss={cssRow()}
+          className="mobile:px-4 gap-6 mb-6 mobile:mb-4 justify-between w-[min(890px,100%)] self-center"
+        >
           <div className="text-2xl mobile:text-base font-semibold text-white">{currentTab}</div>
           {currentTab === 'Closed Pools' && <IdoSearchBlock className="mobile:w-[12em]" />}
-        </Row>
+        </Div>
       )}
 
       <Div icss={cssCol()} className="gap-12 mobile:gap-8 w-[min(890px,100%)] mx-auto mobile:w-full">
@@ -215,8 +217,9 @@ function AcceleRaytorCollapseItemFace({ open, info }: { open: boolean; info: Hyd
       }`}
     >
       <Div icss_={isMobile ? cssCol() : cssRow()} className={`flex-wrap items-stretch gap-5`}>
-        <Row className="items-center gap-4 mobile:w-full">
-          <Row
+        <Div icss={cssRow()} className="items-center gap-4 mobile:w-full">
+          <Div
+            icss={cssRow()}
             className="items-center min-w-[160px] mobile:min-w-[120px] gap-4 mobile:gap-3 mobile:w-auto clickable"
             onClick={() => routeTo('/acceleraytor/detail', { queryProps: { idoId: info.id } })}
           >
@@ -225,9 +228,12 @@ function AcceleRaytorCollapseItemFace({ open, info }: { open: boolean; info: Hyd
               <div className="text-base mobile:text-sm font-semibold text-white">{info.baseSymbol}</div>
               <div className="text-sm mobile:text-xs text-[#ABC4FF80]">{info.projectName}</div>
             </div>
-          </Row>
+          </Div>
           {info.filled && (
-            <Row className="flex-wrap gap-4  items-center border-l border-[rgba(171,196,255,0.5)] w-full self-center pl-6 mobile:pl-4">
+            <Div
+              icss={cssRow()}
+              className="flex-wrap gap-4  items-center border-l border-[rgba(171,196,255,0.5)] w-full self-center pl-6 mobile:pl-4"
+            >
               <Progress
                 borderThemeMode
                 className="w-[180px] mobile:w-full"
@@ -235,11 +241,11 @@ function AcceleRaytorCollapseItemFace({ open, info }: { open: boolean; info: Hyd
                 value={toPercentNumber(info.filled)}
                 labelFormat={(v) => `Filled: ${toPercentString(v, { fixed: 0 })}`}
               />
-            </Row>
+            </Div>
           )}
-        </Row>
+        </Div>
 
-        <Row className="gap-4 mobile:gap-6 grow justify-end mobile:justify-center">
+        <Div icss={cssRow()} className="gap-4 mobile:gap-6 grow justify-end mobile:justify-center">
           {info.isUpcoming ? (
             <FaceButtonGroupUpcoming info={info} />
           ) : info.isOpen ? (
@@ -247,7 +253,7 @@ function AcceleRaytorCollapseItemFace({ open, info }: { open: boolean; info: Hyd
           ) : (
             <FaceButtonGroupClaim idoInfo={info} />
           )}
-        </Row>
+        </Div>
       </Div>
       {isDateAfter(getChainDate(), info.endTime) && (
         <Icon
@@ -426,7 +432,10 @@ function AcceleRaytorCollapseItemContent({ info }: { info: HydratedIdoInfo }) {
   return (
     <div className="p-6 mobile:p-3">
       {<IdoItemCardStakeChip info={info} />}
-      <Row className="flex-wrap gap-6 mobile:gap-3 rounded-b-3xl mobile:rounded-b-lg  bg-cyberpunk-card-bg items-center">
+      <Div
+        icss={cssRow()}
+        className="flex-wrap gap-6 mobile:gap-3 rounded-b-3xl mobile:rounded-b-lg  bg-cyberpunk-card-bg items-center"
+      >
         <div className={`relative w-[360px] mobile:w-full max-h-[192px] mobile:h-[106px] rounded-xl overflow-hidden`}>
           <Image
             src={info.projectPosters}
@@ -435,12 +444,12 @@ function AcceleRaytorCollapseItemContent({ info }: { info: HydratedIdoInfo }) {
           />
           {!isMobile && (
             <div className="bg-[#141041cc] absolute bottom-0 w-full  ">
-              <Row className="py-1 justify-center items-center">
+              <Div icss={cssRow()} className="py-1 justify-center items-center">
                 <Icon className="mr-2" iconSrc="/icons/acceleraytor-list-medium.svg" />
                 <Link href={info.projectDetailLink} className="text-[#ABC4FF80] font-medium text-xs">
                   Read Full Details
                 </Link>
-              </Row>
+              </Div>
             </div>
           )}
         </div>
@@ -449,47 +458,47 @@ function AcceleRaytorCollapseItemContent({ info }: { info: HydratedIdoInfo }) {
             <IdoItem
               fieldName="Total Raise"
               fieldValue={
-                <Row className="items-baseline gap-1">
+                <Div icss={cssRow()} className="items-baseline gap-1">
                   <div className="text-white font-medium">{formatNumber(toString(info.totalRaise))}</div>
                   <div className="text-[#ABC4FF80] font-medium text-xs">{info.baseSymbol}</div>
-                </Row>
+                </Div>
               }
             />
             <IdoItem
               fieldName={`Per ${info.base?.symbol ?? 'UNKNOWN'}`}
               fieldValue={
-                <Row className="items-baseline gap-1">
+                <Div icss={cssRow()} className="items-baseline gap-1">
                   <div className="text-white font-medium">
                     {formatNumber(toString(info.coinPrice), { fractionLength: 'auto' })}
                   </div>
                   <div className="text-[#ABC4FF80] font-medium text-xs">{info.quote?.symbol ?? 'UNKNOWN'}</div>
-                </Row>
+                </Div>
               }
             />
             <IdoItem
               fieldName={`Total tickets deposited`}
               fieldValue={
-                <Row className="items-baseline gap-1">
+                <Div icss={cssRow()} className="items-baseline gap-1">
                   <div className="text-white font-medium">{formatNumber(info.depositedTicketCount)}</div>
                   <div className="text-[#ABC4FF80] font-medium text-xs">Tickets</div>
-                </Row>
+                </Div>
               }
             />
             <IdoItem
               fieldName={`Allocation / Winning Ticket`}
               fieldValue={
-                <Row className="items-baseline gap-1">
+                <Div icss={cssRow()} className="items-baseline gap-1">
                   <div className="text-white font-medium">
                     {formatNumber(toString(info.ticketPrice), { fractionLength: 'auto' })}
                   </div>
                   <div className="text-[#ABC4FF80] font-medium text-xs">{info.quote?.symbol ?? 'UNKNOWN'}</div>
-                </Row>
+                </Div>
               }
             />
             <IdoItem
               fieldName="Pool open"
               fieldValue={
-                <Row className="items-baseline gap-1">
+                <Div icss={cssRow()} className="items-baseline gap-1">
                   {isDateBefore(getChainDate(), info.startTime) ? (
                     <>
                       <div className="text-[#ABC4FF80] font-medium text-xs">in</div>
@@ -510,13 +519,13 @@ function AcceleRaytorCollapseItemContent({ info }: { info: HydratedIdoInfo }) {
                       <div className="text-[#ABC4FF80] font-medium text-xs">{'UTC'}</div>
                     </>
                   )}
-                </Row>
+                </Div>
               }
             />
             <IdoItem
               fieldName="Pool close"
               fieldValue={
-                <Row className="items-baseline gap-1">
+                <Div icss={cssRow()} className="items-baseline gap-1">
                   {isDateBefore(getChainDate(), info.endTime) ? (
                     <>
                       <div className="text-[#ABC4FF80] font-medium text-xs">in</div>
@@ -537,13 +546,13 @@ function AcceleRaytorCollapseItemContent({ info }: { info: HydratedIdoInfo }) {
                       <div className="text-[#ABC4FF80] font-medium text-xs">{'UTC'}</div>
                     </>
                   )}
-                </Row>
+                </Div>
               }
             />
           </div>
         </Div>
         <IdoItemCardContentButtonGroup className="w-full" info={info} />
-      </Row>
+      </Div>
     </div>
   )
 }
@@ -553,7 +562,7 @@ function IdoItemCardStakeChip({ info }: { info: HydratedIdoInfo }) {
   const getChainDate = useConnection((s) => s.getChainDate)
   if (isMobile || isDateAfter(getChainDate(), info.stakeTimeEnd)) return null
   return (
-    <Row className={`AlertText items-center bg-[#abc4ff1a] p-3 rounded-xl mb-6`}>
+    <Div icss={cssRow()} className={`AlertText items-center bg-[#abc4ff1a] p-3 rounded-xl mb-6`}>
       <Icon className="flex-none text-[#ABC4FF80] mr-2" size="sm" heroIconName="exclamation-circle" />
       <div className="text-[#ABC4FF80] font-medium text-xs">
         To be eligible for the lottery, you need to <span className="text-primary">stake 100 RAY</span> with a deadline
@@ -581,7 +590,7 @@ function IdoItemCardStakeChip({ info }: { info: HydratedIdoInfo }) {
       >
         Stake
       </Button>
-    </Row>
+    </Div>
   )
 }
 function IdoItemCardContentButtonGroup({ className, info }: { className?: string; info: HydratedIdoInfo }) {
@@ -600,16 +609,16 @@ function IdoItemCardContentButtonGroup({ className, info }: { className?: string
       >
         <IdoItem
           fieldValue={
-            <Row className="items-baseline gap-1">
+            <Div icss={cssRow()} className="items-baseline gap-1">
               <div className="text-white font-medium">
                 {toString(stakingHydratedInfo?.userStakedLpAmount) || '--'} RAY
               </div>
-            </Row>
+            </Div>
           }
           fieldName={
-            <Row className="gap-1 items-center">
+            <Div icss={cssRow()} className="gap-1 items-center">
               <div className="text-xs font-bold text-[#ABC4FF80]">Your staking</div>
-            </Row>
+            </Div>
           }
         />
         <Div icss={cssCol()}>

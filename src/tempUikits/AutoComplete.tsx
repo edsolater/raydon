@@ -11,6 +11,7 @@ import { useSearchText } from '../hooks/useSearchText'
 import { SearchOptions } from '../functions/searchItems'
 import Card from './Card'
 import Icon from '../components/Icon'
+// import Icon from '../components/Icon'
 import Input, { InputComponentHandler, InputProps } from './Input'
 import Popover, { PopoverHandles } from './Popover'
 
@@ -143,7 +144,7 @@ export default function AutoComplete<T extends AutoCompleteCandidateItem<T>>({
         <Input
           {...restProps}
           {...restProps.inputProps}
-          domRef={mergeRef(inputWrapperRef, restProps.domRef, restProps.inputProps?.domRef)}
+          domRef={[inputWrapperRef, restProps.domRef, restProps.inputProps?.domRef]}
           componentRef={inputComponentRef}
           value={searchText}
           defaultValue={searchText}

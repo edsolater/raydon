@@ -31,7 +31,6 @@ import Button from '@/tempUikits/Button'
 import Collapse from '@/tempUikits/Collapse'
 import CyberpunkStyleCard from '@/tempUikits/CyberpunkStyleCard'
 import Grid from '@/tempUikits/Grid'
-import Row from '@/tempUikits/Row'
 import { StakingPageStakeLpDialog } from '../components/dialogs/StakingPageStakeLpDialog'
 
 export default function StakingPage() {
@@ -65,13 +64,13 @@ function StakingCard() {
   const infos = useMemo(() => hydratedInfos.filter((i) => i.isStakePool), [hydratedInfos])
   if (!infos.length)
     return (
-      <Row className="text-center justify-center text-2xl p-12 opacity-50 text-[rgb(171,196,255)]">
+      <Div icss={cssRow()} className="text-center justify-center text-2xl p-12 opacity-50 text-[rgb(171,196,255)]">
         <LoadingCircle />
-      </Row>
+      </Div>
     )
   return (
     <CyberpunkStyleCard>
-      <Row type="grid" className="gap-3 text-primary">
+      <Div className="grid gap-3 text-primary">
         {infos.map((info) => (
           <div key={String(info.id)}>
             <Collapse>
@@ -83,7 +82,7 @@ function StakingCard() {
           </div>
         ))}
         <StakingPageStakeLpDialog />
-      </Row>
+      </Div>
     </CyberpunkStyleCard>
   )
 }
@@ -91,9 +90,8 @@ function StakingCard() {
 function StakingCardCollapseItemFace({ open, info }: { open: boolean; info: HydratedFarmInfo }) {
   const isMobile = useAppSettings((s) => s.isMobile)
   const pcCotent = (
-    <Row
-      type="grid-x"
-      className={`py-5 px-8 mobile:py-4 mobile:px-5 gap-2 items-stretch grid-cols-[1.5fr,1fr,1fr,1fr,1fr,auto] mobile:grid-cols-[1fr,1fr,1fr,auto] rounded-t-3xl mobile:rounded-t-lg ${
+    <Div
+      className={`grid grid-flow-col py-5 px-8 mobile:py-4 mobile:px-5 gap-2 items-stretch grid-cols-[1.5fr,1fr,1fr,1fr,1fr,auto] mobile:grid-cols-[1fr,1fr,1fr,auto] rounded-t-3xl mobile:rounded-t-lg ${
         open ? '' : 'rounded-b-3xl mobile:rounded-b-lg'
       }`}
     >
@@ -137,15 +135,14 @@ function StakingCardCollapseItemFace({ open, info }: { open: boolean; info: Hydr
       <Grid className="w-9 h-9 place-items-center self-center">
         <Icon size="sm" className="justify-self-end mr-1.5" heroIconName={`${open ? 'chevron-up' : 'chevron-down'}`} />
       </Grid>
-    </Row>
+    </Div>
   )
 
   const mobileContent = (
     <Collapse open={open}>
       <Collapse.Face>
-        <Row
-          type="grid-x"
-          className={`py-4 px-5 items-center gap-2 grid-cols-[1fr,1fr,1fr,auto] mobile:rounded-t-lg ${
+        <Div
+          className={`grid grid-flow-col py-4 px-5 items-center gap-2 grid-cols-[1fr,1fr,1fr,auto] mobile:rounded-t-lg ${
             open ? '' : 'rounded-b-3xl mobile:rounded-b-lg'
           }`}
         >
@@ -173,11 +170,11 @@ function StakingCardCollapseItemFace({ open, info }: { open: boolean; info: Hydr
           <Grid className="w-6 h-6 place-items-center">
             <Icon size="sm" heroIconName={`${open ? 'chevron-up' : 'chevron-down'}`} />
           </Grid>
-        </Row>
+        </Div>
       </Collapse.Face>
 
       <Collapse.Body>
-        <Row type="grid-x" className="py-4 px-5 relative items-stretch gap-2 grid-cols-[1fr,1fr,1fr,auto]">
+        <Div className="grid grid-flow-col py-4 px-5 relative items-stretch gap-2 grid-cols-[1fr,1fr,1fr,auto]">
           <div className="absolute top-0 left-5 right-5 border-[rgba(171,196,255,.2)] border-t-1.5"></div>
 
           <TextInfoItem
@@ -193,7 +190,7 @@ function StakingCardCollapseItemFace({ open, info }: { open: boolean; info: Hydr
           <div></div>
 
           <Grid className="w-6 h-6 place-items-center"></Grid>
-        </Row>
+        </Div>
       </Collapse.Body>
     </Collapse>
   )
@@ -221,7 +218,10 @@ function StakingCardCollapseItemContent({ hydratedInfo }: { hydratedInfo: Hydrat
       icss_={isMobile ? cssCol() : cssRow()}
       className={`gap-8 mobile:gap-3 flex-grow px-8 py-5 mobile:px-4 mobile:py-3 bg-gradient-to-br from-[rgba(171,196,255,0.12)] to-[rgba(171,196,255,0.06)]  rounded-b-3xl mobile:rounded-b-lg`}
     >
-      <Row className="p-6 mobile:py-3 mobile:px-4 flex-grow ring-inset ring-1.5 mobile:ring-1 ring-[rgba(171,196,255,.5)] rounded-3xl mobile:rounded-xl items-center gap-3">
+      <Div
+        icss={cssRow()}
+        className="p-6 mobile:py-3 mobile:px-4 flex-grow ring-inset ring-1.5 mobile:ring-1 ring-[rgba(171,196,255,.5)] rounded-3xl mobile:rounded-xl items-center gap-3"
+      >
         <div className="flex-grow">
           <div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-2xs mb-1">Deposited</div>
           <div className="text-white font-medium text-base mobile:text-xs">
@@ -236,7 +236,7 @@ function StakingCardCollapseItemContent({ hydratedInfo }: { hydratedInfo: Hydrat
               : '--'}
           </div>
         </div>
-        <Row className="gap-3">
+        <Div icss={cssRow()} className="gap-3">
           {hydratedInfo.userHasStaked ? (
             <>
               <Button
@@ -287,8 +287,8 @@ function StakingCardCollapseItemContent({ hydratedInfo }: { hydratedInfo: Hydrat
               {connected ? 'Start Staking' : 'Connect Wallet'}
             </Button>
           )}
-        </Row>
-      </Row>
+        </Div>
+      </Div>
 
       <Div
         icss_={isMobile ? cssCol() : cssRow()}
@@ -296,7 +296,7 @@ function StakingCardCollapseItemContent({ hydratedInfo }: { hydratedInfo: Hydrat
           'p-6 mobile:py-3 mobile:px-4 flex-grow ring-inset ring-1.5 mobile:ring-1 ring-[rgba(171,196,255,.5)] rounded-3xl mobile:rounded-xl items-center gap-3'
         )}
       >
-        <Row className="flex-grow divide-x-1.5 w-full">
+        <Div icss={cssRow()} className="flex-grow divide-x-1.5 w-full">
           {hydratedInfo.rewards?.map(
             (reward, idx) =>
               reward.userHavedReward && (
@@ -320,7 +320,7 @@ function StakingCardCollapseItemContent({ hydratedInfo }: { hydratedInfo: Hydrat
                 </div>
               )
           )}
-        </Row>
+        </Div>
         <Button
           // disable={Number(info.pendingReward?.numerator) <= 0}
           className="frosted-glass frosted-glass-teal rounded-xl mobile:w-full mobile:py-2 mobile:text-xs whitespace-nowrap"

@@ -6,7 +6,6 @@ const config = {
   mode: 'jit',
   content: ['./src/**/*.{js,ts,jsx,tsx}'],
   darkMode: 'class', // or 'media' or 'class'
-  important: '#app',
   theme: {
     extend: {
       screens: {

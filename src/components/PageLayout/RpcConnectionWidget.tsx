@@ -5,7 +5,7 @@ import { Badge } from '../../tempUikits/Badge'
 import Button from '../../tempUikits/Button'
 import Icon from '../Icon'
 import Input from '../../tempUikits/Input'
-import Row from '../../tempUikits/Row'
+import { Div, cssRow } from '@/../../uikit/dist'
 
 export function RpcConnectionFace() {
   const currentEndPoint = useConnection((s) => s.currentEndPoint)
@@ -16,7 +16,7 @@ export function RpcConnectionFace() {
 
   return (
     <div className="block py-4 mobile:py-3 px-8 pl-6 mobile:px-5 hover:bg-[rgba(57,208,216,0.1)] active:bg-[rgba(41,157,163,0.3)] cursor-pointer group">
-      <Row className="items-center w-full mobile:justify-center">
+      <Div icss={cssRow()} className="items-center w-full mobile:justify-center">
         <div className="h-4 w-4 mobile:w-3 mobile:h-3 grid place-items-center mr-3 ">
           {isLoading ? (
             <Icon iconClassName="h-4 w-4 mobile:w-3 mobile:h-3" iconSrc="/icons/loading-dual.svg" />
@@ -42,7 +42,7 @@ export function RpcConnectionFace() {
             : '--'}
         </span>
         <Icon size={isMobile ? 'xs' : 'sm'} heroIconName="chevron-right" iconClassName="text-[#ACE3E6]" />
-      </Row>
+      </Div>
     </div>
   )
 }
@@ -66,7 +66,8 @@ export function RpcConnectionPanelPopover({ close: closePanel }: { close: () => 
         {availableEndPoints.map((endPoint) => {
           const isCurrentEndPoint = currentEndPoint?.url === endPoint.url
           return (
-            <Row
+            <Div
+              icss={cssRow()}
               key={endPoint.url}
               className="group flex-wrap gap-3 py-4 px-6 mobile:px-3 border-[rgba(171,196,255,0.05)]"
               onClick={() => {
@@ -79,8 +80,9 @@ export function RpcConnectionPanelPopover({ close: closePanel }: { close: () => 
                 }
               }}
             >
-              <Row className="items-center w-full">
-                <Row
+              <Div icss={cssRow()} className="items-center w-full">
+                <Div
+                  icss={cssRow()}
                   className={`${
                     isCurrentEndPoint
                       ? 'text-[rgba(255,255,255,0.85)]'
@@ -112,16 +114,16 @@ export function RpcConnectionPanelPopover({ close: closePanel }: { close: () => 
                       }}
                     ></Icon>
                   )}
-                </Row>
+                </Div>
                 {isLoading && endPoint === currentEndPoint && (
                   <Icon className="ml-3" iconClassName="h-4 w-4" iconSrc="/icons/loading-dual.svg" />
                 )}
-              </Row>
-            </Row>
+              </Div>
+            </Div>
           )
         })}
 
-        <Row className="border-[rgba(171,196,255,0.05)] items-center gap-3 p-4 mobile:py-4 mobile:px-2">
+        <Div icss={cssRow()} className="border-[rgba(171,196,255,0.05)] items-center gap-3 p-4 mobile:py-4 mobile:px-2">
           <Input
             value={userCostomizedUrlText}
             className={`px-2 py-2 border-1.5 flex-grow ${
@@ -156,7 +158,7 @@ export function RpcConnectionPanelPopover({ close: closePanel }: { close: () => 
           >
             Switch
           </Button>
-        </Row>
+        </Div>
       </div>
     </>
   )

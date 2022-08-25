@@ -8,12 +8,11 @@ import CoinAvatarPair from '@/components/CoinAvatarPair'
 
 import Icon from '@/components/Icon'
 import ListTable from '@/tempUikits/ListTable'
-import Row from '@/tempUikits/Row'
 import Tooltip from '@/tempUikits/Tooltip'
 import toPubString from '@/functions/format/toMintString'
 import toPercentString from '@/functions/format/toPercentString'
 import toUsdVolume from '@/functions/format/toUsdVolume'
-import { Div, cssCol } from '@/../../uikit/dist'
+import { Div, cssCol, cssRow } from '@/../../uikit/dist'
 
 export function PoolInfoSummary() {
   const poolId = useCreateFarms((s) => s.poolId)
@@ -46,7 +45,7 @@ export function PoolInfoSummary() {
         {
           label: 'APR',
           renderLabel: () => (
-            <Row>
+            <Div icss={cssRow()}>
               <div>APR</div>
               <Tooltip>
                 <Icon className="ml-1" size="sm" heroIconName="question-mark-circle" />
@@ -57,14 +56,14 @@ export function PoolInfoSummary() {
                   </div>
                 </Tooltip.Panel>
               </Tooltip>
-            </Row>
+            </Div>
           )
         }
       ]}
       renderRowItem={({ item, label }) => {
         if (label === 'Pool') {
           return item.id ? (
-            <Row className="gap-1 items-center">
+            <Div icss={cssRow()} className="gap-1 items-center">
               <CoinAvatarPair token1={item.pool?.baseToken} token2={item.pool?.quoteToken} size="sm" />
               <div>
                 <div>
@@ -74,7 +73,7 @@ export function PoolInfoSummary() {
                   {toPubString(item.pool?.id)}
                 </AddressItem>
               </div>
-            </Row>
+            </Div>
           ) : (
             '--'
           )

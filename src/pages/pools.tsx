@@ -39,7 +39,6 @@ import Grid from '@/tempUikits/Grid'
 import Input from '@/tempUikits/Input'
 import ListFast from '@/tempUikits/ListFast'
 import Popover from '@/tempUikits/Popover'
-import Row from '@/tempUikits/Row'
 import Select from '@/tempUikits/Select'
 import Switcher from '@/tempUikits/Switcher'
 import Tooltip from '@/tempUikits/Tooltip'
@@ -66,28 +65,35 @@ function PoolHeader() {
   const volume24h = usePools((s) => s.volume24h)
   const isMobile = useAppSettings((s) => s.isMobile)
   return isMobile ? (
-    <Row className="mx-auto my-2 text-base mobile:text-xs justify-self-start self-end text-[#abc4ff80] gap-4">
+    <Div
+      icss={cssRow()}
+      className="mx-auto my-2 text-base mobile:text-xs justify-self-start self-end text-[#abc4ff80] gap-4"
+    >
       <div className="whitespace-nowrap">
         TVL: <span className="font-medium text-primary">${formatNumber(tvl)}</span>
       </div>
       <div className="whitespace-nowrap">
         Volume24H: <span className="font-medium text-primary">${formatNumber(volume24h)}</span>
       </div>
-    </Row>
+    </Div>
   ) : (
     <Grid className="grid-cols-[1fr,1fr] mobile:grid-cols-2 grid-flow-row-dense items-center gap-y-8 pb-8">
-      <Row className="justify-self-start gap-8">
+      <Div icss={cssRow()} className="justify-self-start gap-8">
         <div className="text-2xl mobile:text-lg text-white font-semibold">Pools</div>
-        <Row className="title text-base mobile:text-xs justify-self-start self-end text-[#abc4ff80] gap-4">
+        <Div
+          icss={cssRow()}
+          className="title text-base mobile:text-xs justify-self-start self-end text-[#abc4ff80] gap-4"
+        >
           <div className="whitespace-nowrap">
             TVL: <span className="font-medium text-primary">${formatNumber(tvl)}</span>
           </div>
           <div className="whitespace-nowrap">
             Volume24H: <span className="font-medium text-primary">${formatNumber(volume24h)}</span>
           </div>
-        </Row>
-      </Row>
-      <Row
+        </Div>
+      </Div>
+      <Div
+        icss={cssRow()}
         className={`justify-self-end self-center gap-1 flex-wrap items-center opacity-100 pointer-events-auto clickable transition`}
         onClick={() => {
           routeTo('/liquidity/create')
@@ -95,7 +101,7 @@ function PoolHeader() {
       >
         <Icon heroIconName="plus-circle" className="text-primary" size="sm" />
         <span className="text-primary font-medium text-sm mobile:text-xs">Create Pool</span>
-      </Row>
+      </Div>
     </Grid>
   )
 }
@@ -105,7 +111,7 @@ function PoolStakedOnlyBlock() {
   const connected = useWallet((s) => s.connected)
   if (!connected) return null
   return (
-    <Row className="justify-self-end mobile:justify-self-auto items-center">
+    <Div icss={cssRow()} className="justify-self-end mobile:justify-self-auto items-center">
       <span className="text-[rgba(196,214,255,0.5)] font-medium text-sm mobile:text-xs whitespace-nowrap">
         Show Staked
       </span>
@@ -116,7 +122,7 @@ function PoolStakedOnlyBlock() {
           usePools.setState({ onlySelfPools: isOnly })
         }}
       />
-    </Row>
+    </Div>
   )
 }
 
@@ -256,7 +262,7 @@ function PoolTableSorterBox({
 function PoolRefreshCircleBlock({ className }: { className?: string }) {
   const isMobile = useAppSettings((s) => s.isMobile)
   return isMobile ? (
-    <Row className={twMerge('items-center', className)}>
+    <Div icss={cssRow()} className={twMerge('items-center', className)}>
       <span className="text-[rgba(196,214,255,0.5)] font-medium text-sm mobile:text-xs">Refresh Pools</span>
       <RefreshCircle
         refreshKey="pools"
@@ -264,7 +270,7 @@ function PoolRefreshCircleBlock({ className }: { className?: string }) {
           usePools.getState().refreshPools()
         }}
       />
-    </Row>
+    </Div>
   ) : (
     <div className={twMerge('justify-self-end', className)}>
       <RefreshCircle
@@ -329,11 +335,9 @@ function PoolCard() {
 
   const TableHeaderBlock = useCallback(
     () => (
-      <Row
-        type="grid-x"
-        className="mb-3 h-12 justify-between sticky -top-6 backdrop-filter z-10 backdrop-blur-md bg-[rgba(20,16,65,0.2)] mr-scrollbar rounded-xl mobile:rounded-lg gap-2 grid-cols-[auto,1.6fr,1fr,1fr,1fr,.8fr,auto]"
-      >
-        <Row
+      <Div className="grid grid-flow-col mb-3 h-12 justify-between sticky -top-6 backdrop-filter z-10 backdrop-blur-md bg-[rgba(20,16,65,0.2)] mr-scrollbar rounded-xl mobile:rounded-lg gap-2 grid-cols-[auto,1.6fr,1fr,1fr,1fr,.8fr,auto]">
+        <Div
+          icss={cssRow()}
           className="group w-20 pl-10 font-medium text-primary text-sm items-center cursor-pointer  clickable clickable-filter-effect no-clicable-transform-effect"
           onClick={() => {
             setSortConfig({
@@ -352,14 +356,15 @@ function PoolCard() {
             size="sm"
             iconSrc="/icons/msic-sort-only-down.svg"
           />
-        </Row>
+        </Div>
 
         {/* empty header */}
         <Grid className="grid-cols-[.4fr,1.2fr] clickable clickable-filter-effect no-clicable-transform-effect">
           <div></div>
 
           {/* table head column: Pool */}
-          <Row
+          <Div
+            icss={cssRow()}
             className="font-medium text-primary text-sm items-center cursor-pointer"
             onClick={() => {
               setSortConfig({
@@ -381,11 +386,12 @@ function PoolCard() {
                   : '/icons/msic-sort.svg'
               }
             />
-          </Row>
+          </Div>
         </Grid>
 
         {/* table head column: liquidity */}
-        <Row
+        <Div
+          icss={cssRow()}
           className="font-medium text-primary text-sm items-center cursor-pointer clickable clickable-filter-effect no-clicable-transform-effect"
           onClick={() => {
             setSortConfig({ key: 'liquidity', sortCompare: (i) => i.liquidity })
@@ -403,10 +409,11 @@ function PoolCard() {
                 : '/icons/msic-sort.svg'
             }
           />
-        </Row>
+        </Div>
 
         {/* table head column: volume24h */}
-        <Row
+        <Div
+          icss={cssRow()}
           className="font-medium text-primary text-sm items-center cursor-pointer clickable clickable-filter-effect no-clicable-transform-effect"
           onClick={() => {
             const key = timeBasis === '24H' ? 'volume24h' : timeBasis === '7D' ? 'volume7d' : 'volume30d'
@@ -425,10 +432,11 @@ function PoolCard() {
                 : '/icons/msic-sort.svg'
             }
           />
-        </Row>
+        </Div>
 
         {/* table head column: fee7d */}
-        <Row
+        <Div
+          icss={cssRow()}
           className="font-medium text-primary text-sm items-center cursor-pointer clickable clickable-filter-effect no-clicable-transform-effect"
           onClick={() => {
             const key = timeBasis === '24H' ? 'fee24h' : timeBasis === '7D' ? 'fee7d' : 'fee30d'
@@ -447,10 +455,11 @@ function PoolCard() {
                 : '/icons/msic-sort.svg'
             }
           />
-        </Row>
+        </Div>
 
         {/* table head column: volume24h */}
-        <Row
+        <Div
+          icss={cssRow()}
           className="font-medium text-primary text-sm items-center cursor-pointer clickable clickable-filter-effect no-clicable-transform-effect"
           onClick={() => {
             const key = timeBasis === '24H' ? 'apr24h' : timeBasis === '7D' ? 'apr7d' : 'apr30d'
@@ -475,10 +484,10 @@ function PoolCard() {
                 : '/icons/msic-sort.svg'
             }
           />
-        </Row>
+        </Div>
 
         <PoolRefreshCircleBlock className="pr-8 self-center" />
-      </Row>
+      </Div>
     ),
     [sortConfig, timeBasis]
   )
@@ -486,7 +495,7 @@ function PoolCard() {
   // NOTE: filter widgets
   const innerPoolDatabaseWidgets = isMobile ? (
     <div>
-      <Row className="mb-4">
+      <Div icss={cssRow()} className="mb-4">
         <Grid className="grow gap-3 grid-cols-auto-fit">
           <PoolSearchBlock />
           <PoolTableSorterBox
@@ -502,18 +511,18 @@ function PoolCard() {
           />
         </Grid>
         <ToolsButton className="self-center" />
-      </Row>
+      </Div>
     </div>
   ) : (
     <div>
-      <Row className={'justify-between pb-5 gap-16 items-center'}>
+      <Div icss={cssRow()} className={'justify-between pb-5 gap-16 items-center'}>
         <PoolLabelBlock />
-        <Row className="gap-6 items-stretch">
+        <Div icss={cssRow()} className="gap-6 items-stretch">
           <PoolStakedOnlyBlock />
           <PoolTimeBasisSelectorBox />
           <PoolSearchBlock />
-        </Row>
-      </Row>
+        </Div>
+      </Div>
     </div>
   )
   return (
@@ -591,9 +600,8 @@ function PoolCardDatabaseBodyCollapseItemFace({
   const timeBasis = usePools((s) => s.timeBasis)
 
   const pcCotent = (
-    <Row
-      type="grid-x"
-      className={`py-5 mobile:py-4 mobile:px-5 bg-[#141041] items-center gap-2 grid-cols-[auto,1.6fr,1fr,1fr,1fr,.8fr,auto] mobile:grid-cols-[1fr,1fr,1fr,auto] rounded-t-3xl mobile:rounded-t-lg ${
+    <Div
+      className={`grid grid-flow-col py-5 mobile:py-4 mobile:px-5 bg-[#141041] items-center gap-2 grid-cols-[auto,1.6fr,1fr,1fr,1fr,.8fr,auto] mobile:grid-cols-[1fr,1fr,1fr,auto] rounded-t-3xl mobile:rounded-t-lg ${
         open ? '' : 'rounded-b-3xl mobile:rounded-b-lg'
       } transition-all`}
     >
@@ -668,15 +676,14 @@ function PoolCardDatabaseBodyCollapseItemFace({
       <Grid className="w-9 h-9 mr-8 place-items-center">
         <Icon size="sm" heroIconName={`${open ? 'chevron-up' : 'chevron-down'}`} />
       </Grid>
-    </Row>
+    </Div>
   )
 
   const mobileContent = (
     <Collapse open={open}>
       <Collapse.Face>
-        <Row
-          type="grid-x"
-          className={`py-3 px-3 items-center gap-2 grid-cols-[auto,1.5fr,1fr,1fr,auto] bg-[#141041] mobile:rounded-t-lg ${
+        <Div
+          className={`grid grid-flow-col py-3 px-3 items-center gap-2 grid-cols-[auto,1.5fr,1fr,1fr,auto] bg-[#141041] mobile:rounded-t-lg ${
             open ? '' : 'rounded-b-3xl mobile:rounded-b-lg'
           }`}
         >
@@ -730,14 +737,11 @@ function PoolCardDatabaseBodyCollapseItemFace({
           <Grid className="w-6 h-6 place-items-center">
             <Icon size="sm" heroIconName={`${open ? 'chevron-up' : 'chevron-down'}`} />
           </Grid>
-        </Row>
+        </Div>
       </Collapse.Face>
 
       <Collapse.Body>
-        <Row
-          type="grid-x"
-          className="py-4 px-5 pl-12 relative items-center gap-2 grid-cols-[1.5fr,1fr,1fr,auto]  bg-[#141041]"
-        >
+        <Div className="grid grid-flow-col py-4 px-5 pl-12 relative items-center gap-2 grid-cols-[1.5fr,1fr,1fr,auto]  bg-[#141041]">
           <div className="absolute top-0 left-5 right-5 border-[rgba(171,196,255,.2)] border-t-1.5"></div>
           <TextInfoItem
             name="Volume(7d)"
@@ -763,7 +767,7 @@ function PoolCardDatabaseBodyCollapseItemFace({
           />
 
           <Grid className="w-6 h-6 place-items-center"></Grid>
-        </Row>
+        </Div>
       </Collapse.Body>
     </Collapse>
   )
@@ -798,7 +802,7 @@ function PoolCardDatabaseBodyCollapseItemContent({ poolInfo: info }: { poolInfo:
         icss={isMobile ? cssCol() : cssRow()}
         className={`py-5 px-8 mobile:py-3 mobile:px-4 gap-[4vw] mobile:gap-3 mobile:grid-cols-3-auto flex-grow justify-between mobile:m-0`}
       >
-        <Row>
+        <Div icss={cssRow()}>
           <div className="flex-grow">
             <div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-2xs mb-1">Your Liquidity</div>
             <div className="text-white font-medium text-base mobile:text-xs">
@@ -808,8 +812,8 @@ function PoolCardDatabaseBodyCollapseItemContent({ poolInfo: info }: { poolInfo:
               {isHydratedPoolItemInfo(info) ? toString(balances[info.lpMint] ?? 0) + ' LP' : '--'}
             </div>
           </div>
-        </Row>
-        <Row>
+        </Div>
+        <Div icss={cssRow()}>
           <div className="flex-grow">
             <div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-2xs mb-1">Assets Pooled</div>
             <div className="text-white font-medium text-base mobile:text-xs">
@@ -819,24 +823,25 @@ function PoolCardDatabaseBodyCollapseItemContent({ poolInfo: info }: { poolInfo:
               {isHydratedPoolItemInfo(info) ? `${toString(info.quotePooled || 0)} ${info.quote?.symbol ?? ''}` : '--'}
             </div>
           </div>
-        </Row>
-        <Row>
+        </Div>
+        <Div icss={cssRow()}>
           <div className="flex-grow">
             <div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-2xs mb-1">Your Share</div>
             <div className="text-white font-medium text-base mobile:text-xs">
               {isHydratedPoolItemInfo(info) ? toPercentString(info.sharePercent) : '--%'}
             </div>
           </div>
-        </Row>
+        </Div>
       </Div>
 
-      <Row
+      <Div
+        icss={cssRow()}
         className={`px-8 py-2 gap-3 items-center self-center justify-center ${
           isMobile ? lightBoardClass : ''
         } mobile:w-full`}
       >
         {isMobile ? (
-          <Row className="gap-5">
+          <Div icss={cssRow()} className="gap-5">
             <Icon
               size="sm"
               heroIconName="plus"
@@ -875,7 +880,7 @@ function PoolCardDatabaseBodyCollapseItemContent({ poolInfo: info }: { poolInfo:
                 })
               }}
             />
-          </Row>
+          </Div>
         ) : (
           <>
             <Button
@@ -947,7 +952,7 @@ function PoolCardDatabaseBodyCollapseItemContent({ poolInfo: info }: { poolInfo:
             </Tooltip>
           </>
         )}
-      </Row>
+      </Div>
     </Div>
   )
 }
@@ -970,7 +975,7 @@ function CoinAvatarInfoItem({ info, className }: { info: HydratedPairItemInfo | 
         token1={info?.base}
         token2={info?.quote}
       />
-      <Row className="mobile:text-xs font-medium mobile:mt-px items-center flex-wrap gap-2">
+      <Div icss={cssRow()} className="mobile:text-xs font-medium mobile:mt-px items-center flex-wrap gap-2">
         {info?.name}
         {info?.isStablePool && <Badge className="self-center">Stable</Badge>}
         {lt(info?.liquidity.toFixed(0) ?? 0, 100000) && (
@@ -981,7 +986,7 @@ function CoinAvatarInfoItem({ info, className }: { info: HydratedPairItemInfo | 
             </Tooltip.Panel>
           </Tooltip>
         )}
-      </Row>
+      </Div>
     </Div>
   )
 }

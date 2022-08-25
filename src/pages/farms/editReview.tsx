@@ -7,7 +7,6 @@ import useToken from '@/application/token/useToken'
 import { AddressItem } from '@/components/AddressItem'
 import Button from '@/tempUikits/Button'
 import PageLayout from '@/components/PageLayout/PageLayout'
-import Row from '@/tempUikits/Row'
 import assert from '@/functions/assert'
 import tryCatch from '@/functions/tryCatch'
 import { EditableRewardSummary } from '@/components/createFarm/EditableRewardSummary'
@@ -15,6 +14,7 @@ import { NewAddedRewardSummary } from '@/components/createFarm/NewAddedRewardSum
 import { PoolInfoSummary } from '@/components/createFarm/PoolInfoSummery'
 import { useEffect, useMemo } from 'react'
 import useAppSettings from '@/application/appSettings/useAppSettings'
+import { Div, cssRow } from '@/../../uikit/dist'
 
 function useAvailableCheck() {
   useEffect(() => {
@@ -53,7 +53,7 @@ export default function EditReviewPage() {
   return (
     <PageLayout metaTitle="Farms - Raydium">
       <div className="self-center w-[min(720px,90vw)]">
-        <Row className="mb-8 justify-self-start items-baseline gap-2">
+        <Div icss={cssRow()} className="mb-8 justify-self-start items-baseline gap-2">
           <div className="text-2xl mobile:text-lg font-semibold text-white">Edit Farm</div>
           {farmId && (
             <div className="text-sm mobile:text-xs font-semibold text-[#abc4ff80]">
@@ -71,7 +71,7 @@ export default function EditReviewPage() {
               </div>
             </div>
           )}
-        </Row>
+        </Div>
 
         <div className="mb-8 text-xl mobile:text-lg font-semibold justify-self-start text-white">
           Review farm details
@@ -94,7 +94,7 @@ export default function EditReviewPage() {
           </div>
         )}
 
-        <Row className="gap-5 mt-12 justify-center">
+        <Div icss={cssRow()} className="gap-5 mt-12 justify-center">
           <Button
             className="frosted-glass-teal"
             isLoading={isApprovePanelShown}
@@ -118,7 +118,7 @@ export default function EditReviewPage() {
           <Button className="frosted-glass-skygray" size="lg" onClick={routeBack}>
             Edit
           </Button>
-        </Row>
+        </Div>
       </div>
     </PageLayout>
   )

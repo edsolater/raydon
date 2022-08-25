@@ -53,7 +53,6 @@ import Link from '@/tempUikits/Link'
 import ListFast from '@/tempUikits/ListFast'
 import Popover from '@/tempUikits/Popover'
 import ResponsiveDialogDrawer from '@/tempUikits/ResponsiveDialogDrawer'
-import Row from '@/tempUikits/Row'
 import RowTabs from '@/tempUikits/RowTabs'
 import Select from '@/tempUikits/Select'
 import Switcher from '@/tempUikits/Switcher'
@@ -105,7 +104,7 @@ function FarmTitle() {
       : { title: 'Raydium Farms', description: 'Stake LP tokens and earn token rewards' }
   return (
     <div>
-      <Row className="items-center">
+      <Div icss={cssRow()} className="items-center">
         <Div className="font-medium text-white text-lg" icss={{ letterSpacing: 1 }}>
           {farmCardTitleInfo.title}
         </Div>
@@ -115,7 +114,7 @@ function FarmTitle() {
             <Tooltip.Panel className="max-w-[300px]">{farmCardTitleInfo.tooltip}</Tooltip.Panel>
           </Tooltip>
         )}
-      </Row>
+      </Div>
       <div className="font-medium text-[rgba(196,214,255,.5)] text-sm ">{farmCardTitleInfo.description}</div>
     </div>
   )
@@ -225,7 +224,7 @@ function FarmStakedOnlyBlock({ className }: { className?: string }) {
   if (!connected) return null
   if (currentTab === 'Staked') return null // no staked switcher if it is staked
   return (
-    <Row className="justify-self-end  mobile:justify-self-auto items-center">
+    <Div icss={cssRow()} className="justify-self-end  mobile:justify-self-auto items-center">
       <span className="text-[rgba(196,214,255,0.5)] whitespace-nowrap font-medium text-sm mobile:text-xs">
         Show Staked
       </span>
@@ -234,14 +233,14 @@ function FarmStakedOnlyBlock({ className }: { className?: string }) {
         defaultChecked={onlySelfFarms}
         onToggle={(isOnly) => useFarms.setState({ onlySelfFarms: isOnly })}
       />
-    </Row>
+    </Div>
   )
 }
 
 function FarmSlefCreatedOnlyBlock({ className }: { className?: string }) {
   const onlySelfCreatedFarms = useFarms((s) => s.onlySelfCreatedFarms)
   return (
-    <Row className="justify-self-end  mobile:justify-self-auto items-center">
+    <Div icss={cssRow()} className="justify-self-end  mobile:justify-self-auto items-center">
       <span className="text-[rgba(196,214,255,0.5)] whitespace-nowrap font-medium text-sm mobile:text-xs">
         Show Created
       </span>
@@ -250,7 +249,7 @@ function FarmSlefCreatedOnlyBlock({ className }: { className?: string }) {
         defaultChecked={onlySelfCreatedFarms}
         onToggle={(isOnly) => useFarms.setState({ onlySelfCreatedFarms: isOnly })}
       />
-    </Row>
+    </Div>
   )
 }
 
@@ -261,7 +260,8 @@ function FarmCreateFarmEntryBlock({ className }: { className?: string }) {
   const haveOver300Ray = gte(userRayBalance ?? 0, 300)
   const isMobile = useAppSettings((s) => s.isMobile)
   return (
-    <Row
+    <Div
+      icss={cssRow()}
       className={twMerge(
         `justify-self-end mobile:justify-self-auto gap-1 flex-wrap items-center opacity-100 pointer-events-auto clickable transition`,
         className
@@ -272,7 +272,7 @@ function FarmCreateFarmEntryBlock({ className }: { className?: string }) {
     >
       <Icon heroIconName="plus-circle" className="text-primary" size="sm" />
       <span className="text-primary font-medium text-sm mobile:text-xs">Create Farm</span>
-    </Row>
+    </Div>
   )
 }
 
@@ -345,7 +345,7 @@ function FarmRefreshCircleBlock({ className }: { className?: string }) {
   const refreshFarmInfos = useFarms((s) => s.refreshFarmInfos)
   const isMobile = useAppSettings((s) => s.isMobile)
   return isMobile ? (
-    <Row className={twMerge('items-center', className)}>
+    <Div icss={cssRow()} className={twMerge('items-center', className)}>
       <span className="text-[rgba(196,214,255,0.5)] font-medium text-sm mobile:text-xs">Refresh farms</span>
       <RefreshCircle
         refreshKey="farms"
@@ -354,7 +354,7 @@ function FarmRefreshCircleBlock({ className }: { className?: string }) {
           refreshFarmInfos()
         }}
       />
-    </Row>
+    </Div>
   ) : (
     <div className={twMerge('justify-self-end', className)}>
       <RefreshCircle
@@ -386,13 +386,13 @@ function FarmDatabaseControllers({
 
   return (
     <Div {...restProps}>
-      <Row className="justify-end gap-4 mb-4">
+      <Div icss={cssRow()} className="justify-end gap-4 mb-4">
         {haveSelfCreatedFarm && <FarmSlefCreatedOnlyBlock />}
         <FarmStakedOnlyBlock />
         <FarmTimeBasisSelectorBox />
         <FarmSearchBlock />
         <FarmRefreshCircleBlock />
-      </Row>
+      </Div>
     </Div>
   )
 }
@@ -413,7 +413,8 @@ function FarmCardDatabaseHead({
         background: 'inherit'
       }}
     >
-      <Row
+      <Div
+        icss={cssRow()}
         className="group w-20 pl-10 font-medium text-sm items-center cursor-pointer  clickable clickable-filter-effect no-clicable-transform-effect"
         onClick={() => {
           setConfig({
@@ -432,9 +433,10 @@ function FarmCardDatabaseHead({
           size="sm"
           iconSrc="/icons/msic-sort-only-down.svg"
         />
-      </Row>
+      </Div>
       {/* table head column: Farm */}
-      <Row
+      <Div
+        icss={cssRow()}
         className="font-medium text-primary text-sm items-center cursor-pointer clickable clickable-filter-effect no-clicable-transform-effect"
         onClick={() => {
           setConfig({
@@ -457,11 +459,12 @@ function FarmCardDatabaseHead({
               : '/icons/msic-sort.svg'
           }
         />
-      </Row>
+      </Div>
       {/* table head column: Pending Reward */}
       <div className=" font-medium self-center text-primary text-sm">Pending Reward</div>
       {/* table head column: Total APR */}
-      <Row
+      <Div
+        icss={cssRow()}
         className=" font-medium items-center text-primary text-sm cursor-pointer gap-1  clickable clickable-filter-effect no-clicable-transform-effect"
         onClick={() => {
           const key = timeBasis === '24H' ? 'totalApr24h' : timeBasis === '7D' ? 'totalApr7d' : 'totalApr30d'
@@ -487,9 +490,10 @@ function FarmCardDatabaseHead({
               : '/icons/msic-sort.svg'
           }
         />
-      </Row>
+      </Div>
       {/* table head column: TVL */}
-      <Row
+      <Div
+        icss={cssRow()}
         className=" font-medium text-primary text-sm items-center cursor-pointer  clickable clickable-filter-effect no-clicable-transform-effect"
         onClick={() =>
           setConfig({
@@ -510,7 +514,7 @@ function FarmCardDatabaseHead({
               : '/icons/msic-sort.svg'
           }
         />
-      </Row>
+      </Div>
     </Div>
   )
 }
@@ -623,9 +627,9 @@ function FarmCardDatabaseBody({
           )}
         />
       ) : (
-        <Row className="text-center justify-center text-2xl p-12 opacity-50 text-[rgb(171,196,255)]">
+        <Div icss={cssRow()} className="text-center justify-center text-2xl p-12 opacity-50 text-[rgb(171,196,255)]">
           {isLoading ? <LoadingCircle /> : '(No results found)'}
-        </Row>
+        </Div>
       )}
       <FarmStakeLpDialog />
     </Div>
@@ -688,7 +692,8 @@ function FarmRewardBadge({
   const pendingAmount = isTokenAmount(reward) ? reward : reward.userPendingReward
   return (
     <Tooltip placement="bottom">
-      <Row
+      <Div
+        icss={cssRow()}
         className={`ring-1 ring-inset ring-[#abc4ff80] p-1 rounded-full items-center gap-2 overflow-hidden ${
           isRewarding ? '' : 'opacity-50'
         } ${isRewardBeforeStart ? '' : ''}`}
@@ -711,7 +716,7 @@ function FarmRewardBadge({
             </div>
           )}
         </div>
-      </Row>
+      </Div>
       <Tooltip.Panel>
         <div className="mb-1">
           {reward.token?.symbol ?? '--'}{' '}
@@ -801,7 +806,7 @@ function FarmCardItemFace({
         <TextInfoItem
           name="Pending Rewards"
           value={
-            <Row className="flex-wrap gap-2 w-full pr-8">
+            <Div icss={cssRow()} className="flex-wrap gap-2 w-full pr-8">
               {isJsonFarmInfo(info)
                 ? '--'
                 : info.rewards.map((reward) => {
@@ -811,14 +816,14 @@ function FarmCardItemFace({
                       </Fragment>
                     )
                   })}
-            </Row>
+            </Div>
           }
         />
       ) : (
         <TextInfoItem
           name="Pending Rewards"
           value={
-            <Row className="flex-wrap gap-2 w-full pr-8">
+            <Div icss={cssRow()} className="flex-wrap gap-2 w-full pr-8">
               {isJsonFarmInfo(info)
                 ? '--'
                 : info.rewards.map(
@@ -830,7 +835,7 @@ function FarmCardItemFace({
                         </div>
                       )
                   )}
-            </Row>
+            </Div>
           }
         />
       )}
@@ -1082,7 +1087,7 @@ function FarmDetailPanelItemContent({ farmInfo, ...divProps }: { farmInfo: Hydra
   const logSuccess = useNotification((s) => s.logSuccess)
   return (
     <Div {...divProps} icss_={cssCol({ gap: 12 * 4 })}>
-      <Row className="items-center gap-3">
+      <Div icss={cssRow()} className="items-center gap-3">
         <div className="flex-grow">
           <div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-2xs mb-1">Deposited</div>
           <div className="text-white font-medium text-base mobile:text-xs">
@@ -1100,9 +1105,9 @@ function FarmDetailPanelItemContent({ farmInfo, ...divProps }: { farmInfo: Hydra
           )}
         </div>
         <FarmItemStakeLpButtons farmInfo={farmInfo} />
-      </Row>
+      </Div>
 
-      <Row className="flex-grow items-center gap-3">
+      <Div icss={cssRow()} className="flex-grow items-center gap-3">
         {farmInfo.version === 6 ? (
           <div className="flex-grow w-full">
             <div
@@ -1135,7 +1140,7 @@ function FarmDetailPanelItemContent({ farmInfo, ...divProps }: { farmInfo: Hydra
             </Grid>
           </div>
         ) : (
-          <Row className="flex-grow divide-x-1.5 w-full">
+          <Div icss={cssRow()} className="flex-grow divide-x-1.5 w-full">
             {farmInfo.rewards?.map(
               (reward, idx) =>
                 reward.userHavedReward && (
@@ -1159,12 +1164,12 @@ function FarmDetailPanelItemContent({ farmInfo, ...divProps }: { farmInfo: Hydra
                   </div>
                 )
             )}
-          </Row>
+          </Div>
         )}
         <FarmItemHavestButton farmInfo={farmInfo} />
-      </Row>
+      </Div>
 
-      <Row className={`gap-3 items-center self-center justify-center`}>
+      <Div icss={cssRow()} className={`gap-3 items-center self-center justify-center`}>
         <Tooltip>
           <Icon
             size="smi"
@@ -1205,11 +1210,11 @@ function FarmDetailPanelItemContent({ farmInfo, ...divProps }: { farmInfo: Hydra
           />
           <Tooltip.Panel>Swap</Tooltip.Panel>
         </Tooltip>
-      </Row>
+      </Div>
 
       {/* farm edit button  */}
       {isMintEqual(farmInfo.creator, owner) && (
-        <Row className="bg-[#14104133] py-3 px-8 justify-end">
+        <Div icss={cssRow()} className="bg-[#14104133] py-3 px-8 justify-end">
           <Button
             className="frosted-glass-teal"
             onClick={() => {
@@ -1221,7 +1226,7 @@ function FarmDetailPanelItemContent({ farmInfo, ...divProps }: { farmInfo: Hydra
           >
             Edit Farm
           </Button>
-        </Row>
+        </Div>
       )}
     </Div>
   )
@@ -1277,12 +1282,12 @@ function FarmStakeLpDialog() {
           size="lg"
         >
           {/* {String(info?.lpMint)} */}
-          <Row className="justify-between items-center mb-6">
+          <Div icss={cssRow()} className="justify-between items-center mb-6">
             <div className="text-xl font-semibold text-white">
               {stakeDialogMode === 'withdraw' ? 'Unstake LP' : 'Stake LP'}
             </div>
             <Icon className="text-primary cursor-pointer" heroIconName="x" onClick={close} />
-          </Row>
+          </Div>
           {/* input-container-box */}
           <CoinInputBox
             className="mb-6"
@@ -1303,7 +1308,7 @@ function FarmStakeLpDialog() {
                 : undefined
             }
           />
-          <Row className="flex-col gap-1">
+          <Div icss={cssRow()} className="flex-col gap-1">
             <Button
               className="frosted-glass-teal"
               componentRef={buttonComponentRef}
@@ -1338,7 +1343,7 @@ function FarmStakeLpDialog() {
             <Button type="text" disabled={isApprovePanelShown} className="text-sm backdrop-filter-none" onClick={close}>
               Cancel
             </Button>
-          </Row>
+          </Div>
         </Card>
       )}
     </ResponsiveDialogDrawer>
@@ -1425,14 +1430,14 @@ function FarmCardTooltipPanelAddressItem({
   type?: 'token' | 'account'
 }) {
   return (
-    <Row className={twMerge('grid w-full gap-2 items-center grid-cols-[1fr,auto]', className)}>
-      <Row className="text-xs font-normal text-white">
+    <Div icss={cssRow()} className={twMerge('grid w-full gap-2 items-center grid-cols-[1fr,auto]', className)}>
+      <Div icss={cssRow()} className="text-xs font-normal text-white">
         {/* setting text-overflow empty string will make effect in FireFox, not Chrome */}
         <div className="self-end overflow-hidden tracking-wide">{address.slice(0, 6)}</div>
         <div className="tracking-wide">...</div>
         <div className="overflow-hidden tracking-wide">{address.slice(-6)}</div>
-      </Row>
-      <Row className="gap-1 items-center">
+      </Div>
+      <Div icss={cssRow()} className="gap-1 items-center">
         <Icon
           size="sm"
           heroIconName="clipboard-copy"
@@ -1444,7 +1449,7 @@ function FarmCardTooltipPanelAddressItem({
         <Link href={`https://solscan.io/${type}/${address}`}>
           <Icon size="sm" heroIconName="external-link" className="clickable text-primary" />
         </Link>
-      </Row>
-    </Row>
+      </Div>
+    </Div>
   )
 }

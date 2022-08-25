@@ -1,7 +1,6 @@
-import { cssCol, Div } from '@/../../uikit/dist'
+import { cssCol, cssRow, Div } from '@/../../uikit/dist'
 import { shrinkToValue } from '@/functions/shrinkToValue'
 import { ReactNode } from 'react'
-import Row from '../tempUikits/Row'
 
 /** must set either totalSteps or stepInfos */
 export default function SetpIndicator<T extends { /** start from 1  */ stepNumber: number; stepContent: ReactNode }>({
@@ -23,7 +22,7 @@ export default function SetpIndicator<T extends { /** start from 1  */ stepNumbe
   return (
     <div>
       {stepInfos.map((info, index, arrs) => (
-        <Row key={index}>
+        <Div icss={cssRow()} key={index}>
           {/* bubble */}
           <Div icss={cssCol()} className="items-center">
             {shrinkToValue(renderStepNumber, [info]) || (
@@ -54,7 +53,7 @@ export default function SetpIndicator<T extends { /** start from 1  */ stepNumbe
               </div>
             )}
           </div>
-        </Row>
+        </Div>
       ))}
     </div>
   )

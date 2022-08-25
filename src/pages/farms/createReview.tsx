@@ -10,7 +10,6 @@ import { AddressItem } from '@/components/AddressItem'
 import Button from '@/tempUikits/Button'
 
 import PageLayout from '@/components/PageLayout/PageLayout'
-import Row from '@/tempUikits/Row'
 import toPubString from '@/functions/format/toMintString'
 import { isMintEqual } from '@/functions/judgers/areEqual'
 import { gte } from '@/functions/numberish/compare'
@@ -22,7 +21,7 @@ import { PoolInfoSummary } from '@/components/createFarm/PoolInfoSummery'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { setInterval } from '../../functions/timeout'
-import { Div, cssCol } from '@/../../uikit/dist'
+import { Div, cssCol, cssRow } from '@/../../uikit/dist'
 
 function useAvailableCheck() {
   useEffect(() => {
@@ -134,14 +133,17 @@ export default function CreateFarmReviewPage() {
 
         {created ? (
           <Div icss={cssCol()}>
-            <Row className="w-full gap-2 justify-center my-8">
-              <Row className="items-center text-sm mobile:text-xs font-medium text-primary mobile:text-2xs">
+            <Div icss={cssRow()} className="w-full gap-2 justify-center my-8">
+              <Div
+                icss={cssRow()}
+                className="items-center text-sm mobile:text-xs font-medium text-primary mobile:text-2xs"
+              >
                 <div className="mr-1">Your Farm ID: </div>
-              </Row>
+              </Div>
               <AddressItem canCopy showDigitCount={'all'} className="text-white mobile:text-sm font-medium">
                 {useCreateFarms.getState().farmId}
               </AddressItem>
-            </Row>
+            </Div>
             <Button
               className="frosted-glass-skygray mobile:w-full"
               size={isMobile ? 'sm' : 'lg'}
@@ -167,13 +169,13 @@ export default function CreateFarmReviewPage() {
             </Div>
           </Div>
         ) : (
-          <Row className="gap-5 justify-center items-start">
+          <Div icss={cssRow()} className="gap-5 justify-center items-start">
             <Div icss={cssCol()} className="items-center">
               {createFarmButton}
               {estimatedIndicator}
             </Div>
             {editButton}
-          </Row>
+          </Div>
         )}
       </div>
     </PageLayout>

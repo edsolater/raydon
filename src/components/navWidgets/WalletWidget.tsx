@@ -6,12 +6,12 @@ import useToggle from '@/hooks/useToggle'
 
 import Button from '../../tempUikits/Button'
 import { FadeIn } from '../../tempUikits/FadeIn'
-import Row from '../../tempUikits/Row'
 import { ThreeSlotItem } from '../../tempUikits/ThreeSlotItem'
 import { AddressItem } from '../AddressItem'
 import Icon from '../Icon'
 import PageLayoutPopoverDrawer from '../PageLayoutPopoverDrawer'
 import { appColors } from '@/styles/colors'
+import { Div, cssRow } from '@/../../uikit/dist'
 
 /** this should be used in ./Navbar.tsx */
 export default function WalletWidget() {
@@ -85,17 +85,17 @@ export default function WalletWidget() {
           }}
         >
           {connected ? (
-            <Row className="items-center gap-3 my-0.5">
+            <Div icss={cssRow()} className="items-center gap-3 my-0.5">
               <Icon size="sm" iconSrc="/icons/coin-wallet.svg" />
               <div className="text-sm font-medium text-white">
                 {String(publicKey).slice(0, 5)}...{String(publicKey).slice(-5)}
               </div>
-            </Row>
+            </Div>
           ) : (
-            <Row className="items-center gap-3 my-0.5">
+            <Div icss={cssRow()} className="items-center gap-3 my-0.5">
               <Icon forceColor={appColors.iconMain} iconSrc="/icons/coin-wallet.svg" />
               <div className="text-sm font-medium">Connect Wallet</div>
-            </Row>
+            </Div>
           )}
         </Button>
       )}

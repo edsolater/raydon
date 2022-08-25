@@ -6,7 +6,7 @@ import { Transition } from '@headlessui/react'
 
 import Card from '../tempUikits/Card'
 import Icon, { AppHeroIconName } from './Icon'
-import Row from '../tempUikits/Row'
+import { Div, cssRow } from '@/../../uikit/dist'
 
 export interface NotificationItemInfo {
   type?: 'success' | 'warning' | 'error' | 'info'
@@ -153,7 +153,7 @@ export default function NotificationItem({ description, title, subtitle, type = 
             onClick={close}
             className="rounded-full absolute top-3 right-1 h-5 w-5 text-secondary cursor-pointer"
           /> */}
-          <Row className="gap-3">
+          <Div icss={cssRow()} className="gap-3">
             <Icon heroIconName={colors[type].heroIconName} className={colors[type].text} />
             <div>
               <div className="font-medium text-base text-white">{title}</div>
@@ -162,7 +162,7 @@ export default function NotificationItem({ description, title, subtitle, type = 
                 <div className="font-medium text-sm mobile:text-xs text-[rgba(171,196,255,0.5)]">{description}</div>
               )}
             </div>
-          </Row>
+          </Div>
         </Card>
       </div>
     </Transition>

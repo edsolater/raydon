@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-import Row from '@/tempUikits/Row'
-
 import parseDuration from '../functions/date/parseDuration'
 import { TimeStamp } from '@/functions/date/interface'
 import useConnection from '@/application/connection/useConnection'
+import { Div, cssRow } from '@/../../uikit/dist'
 
 /** !!! use Chain time  */
 export default function IdoCountDownClock({
@@ -72,28 +71,28 @@ export default function IdoCountDownClock({
   if (singleValueMode) {
     if (duration.days >= 1)
       return (
-        <Row className={twMerge('items-baseline', className)}>
+        <Div icss={cssRow()} className={twMerge('items-baseline', className)}>
           <div>{'>'}24</div>
           <div className={twMerge('text-xs', labelClassName)}>{labels['hours']}</div>
-        </Row>
+        </Div>
       )
     if (duration.hours >= 1 || duration.minutes >= 1)
       return (
-        <Row className={twMerge('items-baseline gap-1', className)}>
+        <Div icss={cssRow()} className={twMerge('items-baseline gap-1', className)}>
           {duration.hours >= 1 && (
-            <Row>
+            <Div icss={cssRow()}>
               <div>{24 * duration['days'] + duration['hours']}</div>
               <div className={twMerge('text-xs', labelClassName)}>{labels['hours']}</div>
-            </Row>
+            </Div>
           )}
-          <Row>
+          <Div icss={cssRow()}>
             <div>{duration['minutes']}</div>
             <div className={twMerge('text-xs', labelClassName)}>{labels['minutes']}</div>
-          </Row>
-        </Row>
+          </Div>
+        </Div>
       )
     return (
-      <Row className={twMerge('items-baseline', className)}>
+      <Div icss={cssRow()} className={twMerge('items-baseline', className)}>
         <div>
           {24 * 60 * 60 * duration['days'] +
             60 * 60 * duration['hours'] +
@@ -101,35 +100,35 @@ export default function IdoCountDownClock({
             duration['seconds']}
         </div>
         <div className={twMerge('text-xs', labelClassName)}>{labels['seconds']}</div>
-      </Row>
+      </Div>
     )
   }
   return (
-    <Row className={twMerge(`space-x-1 ${className ?? ''}`)}>
+    <Div icss={cssRow()} className={twMerge(`space-x-1 ${className ?? ''}`)}>
       {showDaysNumber && (
-        <Row className="items-baseline">
+        <Div icss={cssRow()} className="items-baseline">
           <div>{duration['days']}</div>
           <div className={twMerge('ml-1 text-xs', labelClassName)}>{labels['days']}</div>
-        </Row>
+        </Div>
       )}
       {showHourNumber && (
-        <Row className="items-baseline">
+        <Div icss={cssRow()} className="items-baseline">
           <div>{duration['hours']}</div>
           <div className={twMerge('ml-1 text-xs', labelClassName)}>{labels['hours']}</div>
-        </Row>
+        </Div>
       )}
       {showMinutesNumber && (
-        <Row className="items-baseline">
+        <Div icss={cssRow()} className="items-baseline">
           <div>{String(duration['minutes']).padStart(2, '0')}</div>
           <div className={twMerge('ml-1 text-xs', labelClassName)}>{labels['minutes']}</div>
-        </Row>
+        </Div>
       )}
       {showSecondsNumber && (
-        <Row className="items-baseline">
+        <Div icss={cssRow()} className="items-baseline">
           <div>{String(duration['seconds']).padStart(2, '0')}</div>
           <div className={twMerge('ml-1 text-xs', labelClassName)}>{labels['seconds']}</div>
-        </Row>
+        </Div>
       )}
-    </Row>
+    </Div>
   )
 }

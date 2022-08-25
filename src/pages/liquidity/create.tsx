@@ -21,7 +21,6 @@ import Icon from '@/components/Icon'
 import InputBox from '@/components/InputBox'
 import Link from '@/tempUikits/Link'
 import PageLayout from '@/components/PageLayout/PageLayout'
-import Row from '@/tempUikits/Row'
 import SetpIndicator from '@/components/SetpIndicator'
 import copyToClipboard from '@/functions/dom/copyToClipboard'
 import { isMeaningfulNumber } from '@/functions/numberish/compare'
@@ -29,7 +28,7 @@ import { div } from '@/functions/numberish/operations'
 import useToggle from '@/hooks/useToggle'
 import { createSplToken } from '@/application/token/useTokenListsLoader'
 import { toString } from '@/functions/numberish/toString'
-import { Div, cssCol } from '@/../../uikit/dist'
+import { Div, cssCol, cssRow } from '@/../../uikit/dist'
 
 /**
  * @see https://uiwjs.github.io/#/components/date-input
@@ -122,7 +121,7 @@ function PanelContent({ close }: { close(): void }) {
       </Div>
 
       {baseAmount && quoteAmount && isMeaningfulNumber(baseAmount) && isMeaningfulNumber(quoteAmount) && (
-        <Row className="mx-auto my-2 items-center gap-2">
+        <Div icss={cssRow()} className="mx-auto my-2 items-center gap-2">
           <div className="text-sm text-[rgb(171,196,255)]">price:</div>
           <div className="text-sm text-white">
             {toString(priceReverse ? div(quoteAmount || 0, baseAmount || 1) : div(baseAmount || 0, quoteAmount || 1), {
@@ -140,7 +139,7 @@ function PanelContent({ close }: { close(): void }) {
             size="sm"
             onClick={toggle}
           ></Icon>
-        </Row>
+        </Div>
       )}
 
       <CoinInputBox
@@ -211,7 +210,7 @@ function PanelContent({ close }: { close(): void }) {
         <InfoItem
           fieldName="AMM ID:"
           fieldValue={
-            <Row>
+            <Div icss={cssRow()}>
               <Link className="text-sm" href={`/liquidity/add/?ammId=${ammId}`} onClick={close}>
                 {ammId?.slice(0, 12) + '......' + ammId?.slice(-12)}
               </Link>
@@ -223,7 +222,7 @@ function PanelContent({ close }: { close(): void }) {
                   if (ammId) copyToClipboard(ammId)
                 }}
               />
-            </Row>
+            </Div>
           }
         />
       </Div>
@@ -284,14 +283,14 @@ function InfoItem({
   }
 
   return (
-    <Row className={twMerge('w-full justify-between', className)}>
-      <Row className="items-center text-xs font-medium text-primary mobile:text-2xs">
+    <Div icss={cssRow()} className={twMerge('w-full justify-between', className)}>
+      <Div icss={cssRow()} className="items-center text-xs font-medium text-primary mobile:text-2xs">
         <div className="mr-1">{fieldName}</div>
-      </Row>
+      </Div>
       <div className="text-xs font-medium text-white mobile:text-2xs">
         {autoShowTokenSymbol ? mintSearch(String(fieldValue)) ?? fieldValue : fieldValue}
       </div>
-    </Row>
+    </Div>
   )
 }
 
@@ -318,7 +317,7 @@ function AddressItem({
       className={className}
       fieldName={fieldName}
       fieldValue={
-        <Row>
+        <Div icss={cssRow()}>
           <div title={fieldValue}>
             {shortAddress} {autoShowTokenSymbol && mintSearch(String(fieldValue))}
           </div>
@@ -330,7 +329,7 @@ function AddressItem({
               copyToClipboard(fieldValue)
             }}
           />
-        </Row>
+        </Div>
       }
     />
   )
@@ -358,14 +357,14 @@ function UserCreatedPoolsExhibitionPanel() {
             >
               <Collapse.Face>
                 {(open) => (
-                  <Row className="items-center justify-between">
-                    <Row className="gap-2 items-center">
+                  <Div icss={cssRow()} className="items-center justify-between">
+                    <Div icss={cssRow()} className="gap-2 items-center">
                       <div className="text-base font-normal text-primary">
                         AMM ID: {info.ammId.slice(0, 6)}...{info.ammId.slice(-6)}
                       </div>
-                    </Row>
+                    </Div>
                     <Icon size="sm" className="text-primary" heroIconName={`${open ? 'chevron-up' : 'chevron-down'}`} />
-                  </Row>
+                  </Div>
                 )}
               </Collapse.Face>
               <Collapse.Body>
@@ -376,7 +375,7 @@ function UserCreatedPoolsExhibitionPanel() {
                   <AddressItem fieldName="Quote Mint: " fieldValue={info.quoteMint} autoShowTokenSymbol />
                   <InfoItem fieldName="Created On: " fieldValue={info.timestamp} />
                 </Div>
-                <Row className="gap-4 mb-1">
+                <Div icss={cssRow()} className="gap-4 mb-1">
                   <Button
                     className="text-base font-medium frosted-glass frosted-glass-teal rounded-xl flex-grow"
                     onClick={() => {
@@ -385,7 +384,7 @@ function UserCreatedPoolsExhibitionPanel() {
                   >
                     Add Liquidity
                   </Button>
-                </Row>
+                </Div>
               </Collapse.Body>
             </Collapse>
           ))}

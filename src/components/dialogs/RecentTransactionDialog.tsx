@@ -6,13 +6,13 @@ import Button from '@/tempUikits/Button'
 import Card from '@/tempUikits/Card'
 import Dialog from '@/tempUikits/Dialog'
 import Icon, { AppHeroIconName } from '@/components/Icon'
-import Row from '@/tempUikits/Row'
 import { toUTC } from '@/functions/date/dateFormat'
 
 import Drawer from '../../tempUikits/Drawer'
 import Link from '../../tempUikits/Link'
 import useWallet from '@/application/wallet/useWallet'
 import toPubString from '@/functions/format/toMintString'
+import { Div, cssRow } from '@/../../uikit/dist'
 
 const iconSettings: Record<
   'success' | 'fail' | 'droped' | 'pending',
@@ -65,33 +65,27 @@ function PanelContent({ historyItems, onClickX }: { historyItems: TxHistoryInfo[
       className="flex flex-col max-h-[60vh] mobile:max-h-screen rounded-3xl mobile:rounded-none w-[min(750px,100vw)] mobile:w-full border-1.5 border-[rgba(171,196,255,0.2)] overflow-hidden bg-cyberpunk-card-bg shadow-cyberpunk-card"
       size="lg"
     >
-      <Row className="justify-between items-center p-8">
+      <Div icss={cssRow()} className="justify-between items-center p-8">
         <div className="text-xl font-semibold text-white">Recent transactions</div>
         <Icon className="text-primary cursor-pointer" heroIconName="x" onClick={onClickX} />
-      </Row>
+      </Div>
 
-      <Row
-        type="grid-x"
-        className="gap-[3.5vw] grid-cols-[1fr,1fr,1fr] pb-3 px-8  border-b-1.5 border-[rgba(171,196,255,0.2)]"
-      >
+      <Div className="grid grid-flow-col gap-[3.5vw] grid-cols-[1fr,1fr,1fr] pb-3 px-8  border-b-1.5 border-[rgba(171,196,255,0.2)]">
         {/* table head column: Transaction type */}
         <div className="font-medium text-[rgba(171,196,255,0.5)] text-xs">Transaction type</div>
         {/* table head column: Details */}
         <div className="font-medium text-[rgba(171,196,255,0.5)] text-xs">Details</div>
         {/* table head column: Date and time */}
         <div className="font-medium text-[rgba(171,196,255,0.5)] text-xs">Date and time</div>
-      </Row>
+      </Div>
 
       <div className="overflow-y-auto flex-1 mx-3" /* let scrollbar have some space */>
         {historyItems.length > 0 ? (
           historyItems.map((txInfo) => (
             <Link noTextStyle key={txInfo.txid} href={`https://solscan.io/tx/${txInfo.txid}`}>
-              <Row
-                type="grid-x"
-                className="gap-[3.5vw] grid-cols-[1fr,1fr,1fr] py-4 px-3 clickable clickable-filter-effect items-center"
-              >
+              <Div className="grid grid-flow-col gap-[3.5vw] grid-cols-[1fr,1fr,1fr] py-4 px-3 clickable clickable-filter-effect items-center">
                 {/* table head column: Transaction type */}
-                <Row className="font-medium text-primary text-xs gap-2">
+                <Div icss={cssRow()} className="font-medium text-primary text-xs gap-2">
                   <Icon
                     size="sm"
                     heroIconName={(iconSettings[txInfo.status] as any).heroIconName}
@@ -99,12 +93,12 @@ function PanelContent({ historyItems, onClickX }: { historyItems: TxHistoryInfo[
                     className={(iconSettings[txInfo.status] as any).textColor}
                   />
                   <div>{txInfo.title ?? ''}</div>
-                </Row>
+                </Div>
                 {/* table head column: Details */}
                 <div className="font-medium text-primary text-xs">{txInfo.description}</div>
                 {/* table head column: Date and time */}
                 <div className="font-medium text-primary text-xs">{toUTC(txInfo.time)}</div>
-              </Row>
+              </Div>
             </Link>
           ))
         ) : (
@@ -114,7 +108,7 @@ function PanelContent({ historyItems, onClickX }: { historyItems: TxHistoryInfo[
         )}
       </div>
 
-      <Row className="border-t-1.5 border-[rgba(171,196,255,0.2)]">
+      <Div icss={cssRow()} className="border-t-1.5 border-[rgba(171,196,255,0.2)]">
         <Link
           className="py-4 rounded-none flex-grow font-medium text-primary text-xs flex justify-center gap-1 items-center"
           href={owner ? `https://solscan.io/account/${toPubString(owner)}` : ''}
@@ -122,7 +116,7 @@ function PanelContent({ historyItems, onClickX }: { historyItems: TxHistoryInfo[
           View all transactions
           <Icon size="xs" inline heroIconName="external-link" />
         </Link>
-      </Row>
+      </Div>
     </Card>
   )
 }
