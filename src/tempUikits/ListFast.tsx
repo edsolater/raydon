@@ -24,6 +24,8 @@ export type ListProps<T> = {
   sourceData: T[]
   getKey?: (item: T, idx: number) => string | number
 
+  /** cache item for performance  */
+  noItemCache?: boolean
   renderItem: (item: T, idx: number) => ReactNode
 
   getGroupTitle?: (item: T) => string /* groupName */

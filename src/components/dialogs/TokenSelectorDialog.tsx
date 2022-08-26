@@ -29,7 +29,7 @@ import List from '@/tempUikits/List'
 import ListFast from '@/tempUikits/ListFast'
 import { PublicKeyish } from '@raydium-io/raydium-sdk'
 import { useCallback, useDeferredValue, useMemo, useRef, useState } from 'react'
-import { Div, cssCol, cssRow } from '@/../../uikit/dist'
+import { Div, cssCol, cssRow } from '@edsolater/uikit'
 
 export type TokenSelectorProps = {
   open: boolean
@@ -161,8 +161,8 @@ function TokenSelectorDialogContent({
           <Div
             icss={cssRow()}
             className={`${
-              selectedTokenIdx === idx
-                ? 'clickable no-clicable-transform-effect clickable-mask-offset-2 before:bg-[rgba(0,0,0,0.2)]'
+              selectedTokenIdx === idx // FIXME not re-render
+                ? 'hover:clickable hover:no-clicable-transform-effect hover:clickable-mask-offset-2 hover:before:bg-[rgba(0,0,0,0.2)]'
                 : ''
             }`}
             onHover={({ is: hoverStatus }) => {
