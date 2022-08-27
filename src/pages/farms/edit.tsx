@@ -33,7 +33,7 @@ import produce from 'immer'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
-import { Div, cssRow } from '@/../../uikit/dist'
+import { Div, cssRow } from '@edsolater/uikit'
 
 function useAvailableCheck() {
   useEffect(() => {
@@ -103,13 +103,13 @@ export default function FarmEditPage() {
   return (
     <PageLayout metaTitle="Farms - Raydium" contentYPaddingShorter>
       <NavButtons className="sticky top-0" />
-      <div className="self-center w-[min(720px,90vw)]">
+      <Div className="self-center w-[min(720px,90vw)]">
         <Div icss={cssRow()} className="mb-10 justify-self-start items-baseline gap-2">
-          <div className="text-2xl mobile:text-lg font-semibold text-white">Edit Farm</div>
+          <Div className="text-2xl mobile:text-lg font-semibold text-white">Edit Farm</Div>
           {farmId && (
-            <div className="text-sm mobile:text-xs font-semibold text-[#abc4ff80]">
+            <Div className="text-sm mobile:text-xs font-semibold text-[#abc4ff80]">
               Farm ID:
-              <div className="inline-block ml-1">
+              <Div className="inline-block ml-1">
                 <AddressItem
                   className="flex-nowrap whitespace-nowrap"
                   canCopy
@@ -119,18 +119,18 @@ export default function FarmEditPage() {
                 >
                   {farmId}
                 </AddressItem>
-              </div>
-            </div>
+              </Div>
+            </Div>
           )}
         </Div>
 
-        <div className="mb-8">
-          <div className="mb-3 text-primary text-sm font-medium justify-self-start">Pool</div>
+        <Div className="mb-8">
+          <Div className="mb-3 text-primary text-sm font-medium justify-self-start">Pool</Div>
           <PoolInfoSummary />
-        </div>
+        </Div>
 
-        <div className="mb-4">
-          <div className="mb-3 text-primary text-sm font-medium justify-self-start">Farm rewards</div>
+        <Div className="mb-4">
+          <Div className="mb-3 text-primary text-sm font-medium justify-self-start">Farm rewards</Div>
           <EditableRewardSummary
             canUserEdit
             onClickIncreaseReward={({ reward }) => {
@@ -139,7 +139,7 @@ export default function FarmEditPage() {
             onClaimReward={({ reward, onTxSuccess }) => txClaimReward({ reward, onTxSuccess })}
             onClaimAllReward={({ rewards, onTxSuccess }) => txClaimReward({ reward: rewards, onTxSuccess })}
           />
-        </div>
+        </Div>
 
         {cachedInputs}
 
@@ -158,8 +158,8 @@ export default function FarmEditPage() {
           }}
         >
           <Icon className="text-primary" heroIconName="plus-circle" size="sm" />
-          <div className="ml-1.5 text-primary font-medium mobile:text-sm">Add another reward token</div>
-          <div className="ml-1.5 text-[#abc4ff80] font-medium mobile:text-sm">({5 - allRewards.length} more)</div>
+          <Div className="ml-1.5 text-primary font-medium mobile:text-sm">Add another reward token</Div>
+          <Div className="ml-1.5 text-[#abc4ff80] font-medium mobile:text-sm">({5 - allRewards.length} more)</Div>
         </Div>
 
         <Button
@@ -258,14 +258,14 @@ export default function FarmEditPage() {
         </Button>
 
         <Card className={`p-6 rounded-3xl ring-1 ring-inset ring-[#abc4ff1a] bg-[#1B1659] relative`}>
-          <div className="absolute -left-4 top-5 -translate-x-full">
+          <Div className="absolute -left-4 top-5 -translate-x-full">
             <Icon iconSrc="/icons/create-farm-info-circle.svg" iconClassName="w-7 h-7" />
-          </div>
+          </Div>
 
-          <div className="font-medium text-base text-primary mb-3">How to add more rewards?</div>
+          <Div className="font-medium text-base text-primary mb-3">How to add more rewards?</Div>
 
-          <div>
-            <div className="font-medium text-sm text-[#ABC4FF80] mb-4">
+          <Div>
+            <Div className="font-medium text-sm text-[#ABC4FF80] mb-4">
               <ol className="list-decimal ml-4 space-y-4">
                 <li>
                   You can add additional rewards to the farm 72 hrs prior to rewards ending, but this can only be done
@@ -276,8 +276,8 @@ export default function FarmEditPage() {
                   ends before starting a new period and rewards amount.
                 </li>
               </ol>
-            </div>
-          </div>
+            </Div>
+          </Div>
         </Card>
 
         {focusReward != null && (
@@ -290,7 +290,7 @@ export default function FarmEditPage() {
             onClose={() => setFocusReward(undefined)}
           />
         )}
-      </div>
+      </Div>
     </PageLayout>
   )
 }

@@ -11,7 +11,7 @@ import { AddressItem } from '../AddressItem'
 import Icon from '../Icon'
 import PageLayoutPopoverDrawer from '../PageLayoutPopoverDrawer'
 import { appColors } from '@/styles/colors'
-import { Div, cssRow } from '@/../../uikit/dist'
+import { Div, cssRow } from '@edsolater/uikit'
 
 /** this should be used in ./Navbar.tsx */
 export default function WalletWidget() {
@@ -31,10 +31,10 @@ export default function WalletWidget() {
       popupPlacement="bottom-right"
       renderPopoverContent={({ close: closePanel }) => (
         <>
-          <div className="pt-3 -mb-1 mobile:mb-2 px-6 text-[rgba(171,196,255,0.5)] text-xs mobile:text-sm">
+          <Div className="pt-3 -mb-1 mobile:mb-2 px-6 text-[rgba(171,196,255,0.5)] text-xs mobile:text-sm">
             CONNECTED WALLET
-          </div>
-          <div className="gap-3 divide-y-1.5">
+          </Div>
+          <Div className="gap-3 divide-y-1.5">
             <FadeIn ignoreEnterTransition>
               <AddressItem
                 textClassName="text-white"
@@ -64,7 +64,7 @@ export default function WalletWidget() {
                 closePanel?.()
               }}
             />
-          </div>
+          </Div>
         </>
       )}
     >
@@ -87,14 +87,14 @@ export default function WalletWidget() {
           {connected ? (
             <Div icss={cssRow()} className="items-center gap-3 my-0.5">
               <Icon size="sm" iconSrc="/icons/coin-wallet.svg" />
-              <div className="text-sm font-medium text-white">
+              <Div className="text-sm font-medium text-white">
                 {String(publicKey).slice(0, 5)}...{String(publicKey).slice(-5)}
-              </div>
+              </Div>
             </Div>
           ) : (
             <Div icss={cssRow()} className="items-center gap-3 my-0.5">
               <Icon forceColor={appColors.iconMain} iconSrc="/icons/coin-wallet.svg" />
-              <div className="text-sm font-medium">Connect Wallet</div>
+              <Div className="text-sm font-medium">Connect Wallet</Div>
             </Div>
           )}
         </Button>

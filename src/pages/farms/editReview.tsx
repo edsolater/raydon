@@ -14,7 +14,7 @@ import { NewAddedRewardSummary } from '@/components/createFarm/NewAddedRewardSum
 import { PoolInfoSummary } from '@/components/createFarm/PoolInfoSummery'
 import { useEffect, useMemo } from 'react'
 import useAppSettings from '@/application/appSettings/useAppSettings'
-import { Div, cssRow } from '@/../../uikit/dist'
+import { Div, cssRow } from '@edsolater/uikit'
 
 function useAvailableCheck() {
   useEffect(() => {
@@ -52,13 +52,13 @@ export default function EditReviewPage() {
 
   return (
     <PageLayout metaTitle="Farms - Raydium">
-      <div className="self-center w-[min(720px,90vw)]">
+      <Div className="self-center w-[min(720px,90vw)]">
         <Div icss={cssRow()} className="mb-8 justify-self-start items-baseline gap-2">
-          <div className="text-2xl mobile:text-lg font-semibold text-white">Edit Farm</div>
+          <Div className="text-2xl mobile:text-lg font-semibold text-white">Edit Farm</Div>
           {farmId && (
-            <div className="text-sm mobile:text-xs font-semibold text-[#abc4ff80]">
+            <Div className="text-sm mobile:text-xs font-semibold text-[#abc4ff80]">
               Farm ID:
-              <div className="inline-block ml-1">
+              <Div className="inline-block ml-1">
                 <AddressItem
                   className="flex-nowrap whitespace-nowrap"
                   canCopy
@@ -68,30 +68,30 @@ export default function EditReviewPage() {
                 >
                   {farmId}
                 </AddressItem>
-              </div>
-            </div>
+              </Div>
+            </Div>
           )}
         </Div>
 
-        <div className="mb-8 text-xl mobile:text-lg font-semibold justify-self-start text-white">
+        <Div className="mb-8 text-xl mobile:text-lg font-semibold justify-self-start text-white">
           Review farm details
-        </div>
+        </Div>
 
-        <div className="mb-8">
-          <div className="mb-3 text-primary text-sm font-medium justify-self-start">Pool</div>
+        <Div className="mb-8">
+          <Div className="mb-3 text-primary text-sm font-medium justify-self-start">Pool</Div>
           <PoolInfoSummary />
-        </div>
+        </Div>
 
-        <div className="mb-6">
-          <div className="mb-3 text-primary text-sm font-medium justify-self-start">Existing farm rewards</div>
+        <Div className="mb-6">
+          <Div className="mb-3 text-primary text-sm font-medium justify-self-start">Existing farm rewards</Div>
           <EditableRewardSummary canUserEdit={false} />
-        </div>
+        </Div>
 
         {newRewards.length > 0 && (
-          <div className="mb-6">
-            <div className="mb-3 text-primary text-sm font-medium justify-self-start">New farm rewards</div>
+          <Div className="mb-6">
+            <Div className="mb-3 text-primary text-sm font-medium justify-self-start">New farm rewards</Div>
             <NewAddedRewardSummary canUserEdit={false} />
-          </div>
+          </Div>
         )}
 
         <Div icss={cssRow()} className="gap-5 mt-12 justify-center">
@@ -119,7 +119,7 @@ export default function EditReviewPage() {
             Edit
           </Button>
         </Div>
-      </div>
+      </Div>
     </PageLayout>
   )
 }

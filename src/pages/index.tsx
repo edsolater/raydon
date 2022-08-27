@@ -1,4 +1,4 @@
-import { Div, cssCol, cssRow } from '@/../../uikit/dist'
+import { Div, cssCol, cssRow } from '@edsolater/uikit'
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import { useHomeInfo } from '@/application/homeInfo'
 import Icon from '@/components/Icon'
@@ -20,7 +20,7 @@ function HomePageContainer({ children }: { children?: ReactNode }) {
   useDocumentScrollActionDetector()
   useDocumentMetaTitle('Raydium')
   return (
-    <div
+    <Div
       className="flow-root overflow-x-hidden"
       style={{
         backgroundColor: '#141041',
@@ -30,7 +30,7 @@ function HomePageContainer({ children }: { children?: ReactNode }) {
       }}
     >
       {children}
-    </div>
+    </Div>
   )
 }
 
@@ -61,8 +61,8 @@ function HomePageSection0() {
   return (
     <section className="grid-child-center grid-cover-container mb-16 relative">
       <Image src="/backgroundImages/home-bg-element-1.png" className="w-[744px] mobile:w-[394px]" />
-      <div className="grid-cover-content children-center">
-        <div className="font-light text-[64px] mobile:text-[30px] text-white mb-4 mt-14 mobile:mt-9 leading-[60px] mobile:leading-[32px]">
+      <Div className="grid-cover-content children-center">
+        <Div className="font-light text-[64px] mobile:text-[30px] text-white mb-4 mt-14 mobile:mt-9 leading-[60px] mobile:leading-[32px]">
           An avenue for <br />
           the evolution of{' '}
           <span
@@ -75,10 +75,10 @@ function HomePageSection0() {
           >
             DeFi
           </span>
-        </div>
-        <div className="font-normal text-xl mobile:text-base text-[#adc6ff] mb-6">
+        </Div>
+        <Div className="font-normal text-xl mobile:text-base text-[#adc6ff] mb-6">
           Light-speed <b>swaps</b>. Next-level <b>liquidity</b>. {isMobile ? <br /> : ''} Friction-less <b>yield</b>.
-        </div>
+        </Div>
         {/* two button */}
         <Div icss={cssRow()} className="gap-8 mobile:gap-4 mb-16 mobile:mb-6 grid grid-cols-2-fr">
           <Button
@@ -88,7 +88,7 @@ function HomePageSection0() {
             }}
           >
             <Div icss={cssRow()} className="items-center gap-2">
-              <div>Launch app</div>
+              <Div>Launch app</Div>
               <Icon heroIconName="chevron-right" size="xs" />
             </Div>
           </Button>
@@ -100,7 +100,7 @@ function HomePageSection0() {
             }}
           >
             <Div icss={cssRow()} className="items-center gap-2">
-              <div>Read docs</div>
+              <Div>Read docs</Div>
               <Icon iconSrc="/icons/gitbook.svg" size="sm" />
             </Div>
           </Button>
@@ -108,13 +108,13 @@ function HomePageSection0() {
         {/* two panels */}
         <Div icss={cssRow()} className="gap-6 mobile:gap-3 mb-9 grid grid-cols-2-fr">
           <Card className="frosted-glass-smoke forsted-blur-sm rounded-3xl mobile:rounded-2xl p-6 mobile:py-3 mobile:px-6 mobile:min-w-[156px] min-w-[250px] tablet:min-w-[250px]">
-            <div className="text-sm text-[#adc6ff] mb-1 mobile:text-[8px]">TOTAL VALUE LOCKED</div>
+            <Div className="text-sm text-[#adc6ff] mb-1 mobile:text-[8px]">TOTAL VALUE LOCKED</Div>
             {/* value */}
             <Div
               icss={cssRow()}
               className="justify-center text-xl mobile:text-xs font-normal text-white tracking-widest mobile:tracking-wider"
             >
-              <div className="mr-1">$</div>
+              <Div className="mr-1">$</Div>
               {tvl && (
                 <NumberJelly
                   fractionLength={0}
@@ -129,13 +129,13 @@ function HomePageSection0() {
           </Card>
 
           <Card className="frosted-glass-smoke forsted-blur-sm rounded-3xl mobile:rounded-2xl p-6 mobile:py-3 mobile:px-6 mobile:min-w-[156px] min-w-[250px] tablet:min-w-[250px]">
-            <div className="text-sm text-[#adc6ff] mb-1 mobile:text-[8px]">TOTAL TRADING VOLUME</div>
+            <Div className="text-sm text-[#adc6ff] mb-1 mobile:text-[8px]">TOTAL TRADING VOLUME</Div>
             {/* value */}
             <Div
               icss={cssRow()}
               className="justify-center text-xl mobile:text-xs font-normal text-white tracking-widest mobile:tracking-wider"
             >
-              <div className="mr-1">$</div>
+              <Div className="mr-1">$</Div>
               {totalvolume && (
                 <NumberJelly
                   fractionLength={0}
@@ -150,7 +150,7 @@ function HomePageSection0() {
           </Card>
         </Div>
         <Image src="/logo/build-on-slogan.svg" className="transform mobile:scale-75" />
-      </div>
+      </Div>
     </section>
   )
 }
@@ -168,7 +168,7 @@ function HomePageSection1() {
         backgroundSize: '100% 100%'
       }}
     >
-      <div
+      <Div
         className="absolute inset-0 opacity-30"
         style={{
           background: 'linear-gradient(245.22deg, #da2eef 7.97%, #2b6aff 49.17%, #39d0d8 92.1%)',
@@ -178,22 +178,22 @@ function HomePageSection1() {
           WebkitMaskSize: 'cover'
         }}
       />
-      <div>
-        <div className="mb-8">
-          <div
+      <Div>
+        <Div className="mb-8">
+          <Div
             className="w-10 h-px my-2 mx-auto rounded-full"
             style={{ background: 'radial-gradient(39.84% 47.5% at 96.82% 58.33%, #39d0d8 0%, #2b6aff 100%)' }}
           />
-          <div className="text-lg">A suite of features powering the evolution of DeFi on Solana</div>
-        </div>
+          <Div className="text-lg">A suite of features powering the evolution of DeFi on Solana</Div>
+        </Div>
 
         <Grid className="gap-5 grid-cols-4 tablet:grid-cols-2 mobile:grid-cols-1">
           <Card className="flex-1 children-center frosted-glass-lightsmoke forsted-blur-sm py-6 px-12 rounded-3xl">
-            <div className="frosted-glass-teal p-3 mb-3 rounded-xl">
+            <Div className="frosted-glass-teal p-3 mb-3 rounded-xl">
               <Icon iconSrc="/icons/home-trade.svg" />
-            </div>
-            <div className="font-semibold text-lg text-white mb-2">Trade</div>
-            <div className="font-light text-sm text-[#c4d6ff] mb-5">Swap or Trade quickly and cheaply.</div>
+            </Div>
+            <Div className="font-semibold text-lg text-white mb-2">Trade</Div>
+            <Div className="font-light text-sm text-[#c4d6ff] mb-5">Swap or Trade quickly and cheaply.</Div>
             <Button
               className="frosted-glass-teal"
               onClick={() => {
@@ -205,11 +205,11 @@ function HomePageSection1() {
           </Card>
 
           <Card className="flex-1 children-center frosted-glass-lightsmoke forsted-blur-sm py-6 px-12 rounded-3xl">
-            <div className="frosted-glass-teal p-3 mb-3 rounded-xl">
+            <Div className="frosted-glass-teal p-3 mb-3 rounded-xl">
               <Icon iconSrc="/icons/home-yield.svg" />
-            </div>
-            <div className="font-semibold text-lg text-white mb-2">Yield</div>
-            <div className="font-light text-sm text-[#c4d6ff] mb-5">Earn yield through fees and yield farms.</div>
+            </Div>
+            <Div className="font-semibold text-lg text-white mb-2">Yield</Div>
+            <Div className="font-light text-sm text-[#c4d6ff] mb-5">Earn yield through fees and yield farms.</Div>
             <Button
               className="frosted-glass-teal"
               onClick={() => {
@@ -221,11 +221,11 @@ function HomePageSection1() {
           </Card>
 
           <Card className="flex-1 children-center frosted-glass-lightsmoke forsted-blur-sm py-6 px-12 rounded-3xl">
-            <div className="frosted-glass-teal p-3 mb-3 rounded-xl">
+            <Div className="frosted-glass-teal p-3 mb-3 rounded-xl">
               <Icon iconSrc="/icons/home-pool.svg" />
-            </div>
-            <div className="font-semibold text-lg text-white mb-2">Pool</div>
-            <div className="font-light text-sm text-[#c4d6ff] mb-5">Provide liquidity for any SPL token.</div>
+            </Div>
+            <Div className="font-semibold text-lg text-white mb-2">Pool</Div>
+            <Div className="font-light text-sm text-[#c4d6ff] mb-5">Provide liquidity for any SPL token.</Div>
             <Button
               className="frosted-glass-teal"
               onClick={() => {
@@ -237,11 +237,11 @@ function HomePageSection1() {
           </Card>
 
           <Card className="flex-1 children-center frosted-glass-lightsmoke forsted-blur-sm py-6 px-12 rounded-3xl">
-            <div className="frosted-glass-teal p-3 mb-3 rounded-xl">
+            <Div className="frosted-glass-teal p-3 mb-3 rounded-xl">
               <Icon iconSrc="/icons/home-acceleraytor.svg" />
-            </div>
-            <div className="font-semibold text-lg text-white mb-2">AcceleRaytor</div>
-            <div className="font-light text-sm text-[#c4d6ff] mb-5">Launchpad for new Solana projects.</div>
+            </Div>
+            <Div className="font-semibold text-lg text-white mb-2">AcceleRaytor</Div>
+            <Div className="font-light text-sm text-[#c4d6ff] mb-5">Launchpad for new Solana projects.</Div>
             <Button
               className="frosted-glass-teal"
               onClick={() => {
@@ -252,7 +252,7 @@ function HomePageSection1() {
             </Button>
           </Card>
         </Grid>
-      </div>
+      </Div>
     </section>
   )
 }
@@ -263,7 +263,7 @@ function HomePageSection2() {
 
   return (
     <section className="grid-child-center grid-cover-container">
-      <div
+      <Div
         className="w-screen h-full"
         style={{
           background:
@@ -272,14 +272,14 @@ function HomePageSection2() {
               : "url('/backgroundImages/home-bg-element-3.png') 0% 0% / 100% 100%"
         }}
       />
-      <div className="max-w-[1220px] px-14 tablet:px-4 mt-28 mx-16 tablet:mx-4 mb-44">
-        <div className="mb-8">
-          <div
+      <Div className="max-w-[1220px] px-14 tablet:px-4 mt-28 mx-16 tablet:mx-4 mb-44">
+        <Div className="mb-8">
+          <Div
             className="w-10 h-px my-2 mx-auto rounded-full"
             style={{ background: 'radial-gradient(39.84% 47.5% at 96.82% 58.33%, #39d0d8 0%, #2b6aff 100%)' }}
           />
-          <div className="text-lg">Raydium provides Ecosystem-Wide Liquidity for users and projects</div>
-        </div>
+          <Div className="text-lg">Raydium provides Ecosystem-Wide Liquidity for users and projects</Div>
+        </Div>
 
         <Grid className="gap-6 grid-cols-3 tablet:grid-cols-1 mobile:grid-cols-1 justify-items-center">
           <Card
@@ -289,14 +289,14 @@ function HomePageSection2() {
               alignItems: 'normal'
             }}
           >
-            <div className="frosted-glass-teal p-3 mb-3 rounded-xl">
+            <Div className="frosted-glass-teal p-3 mb-3 rounded-xl">
               <Icon iconSrc="/icons/home-order-book-AMM.svg" />
-            </div>
-            <div className="font-semibold text-lg text-white mb-2">Order Book AMM</div>
-            <div className="font-light text-[#c4d6ff] mb-5">
+            </Div>
+            <Div className="font-semibold text-lg text-white mb-2">Order Book AMM</Div>
+            <Div className="font-light text-[#c4d6ff] mb-5">
               Raydium{"'"}s AMM interacts with Serum{"'"}s central limit order book, meaning that pools have access to
               all order flow and liquidity on Serum, and vice versa.
-            </div>
+            </Div>
           </Card>
 
           <Card
@@ -306,14 +306,14 @@ function HomePageSection2() {
               alignItems: 'normal'
             }}
           >
-            <div className="frosted-glass-teal p-3 mb-3 rounded-xl">
+            <Div className="frosted-glass-teal p-3 mb-3 rounded-xl">
               <Icon iconSrc="/icons/home-yield.svg" />
-            </div>
-            <div className="font-semibold text-lg text-white mb-2">Best Price Swaps</div>
-            <div className="font-light text-[#c4d6ff] mb-5">
+            </Div>
+            <Div className="font-semibold text-lg text-white mb-2">Best Price Swaps</Div>
+            <Div className="font-light text-[#c4d6ff] mb-5">
               Raydium determines whether swapping within a liquidity pool or through the Serum order book will provide
               the best price for the user, and executes accordingly.
-            </div>
+            </Div>
           </Card>
 
           <Card
@@ -323,17 +323,17 @@ function HomePageSection2() {
               alignItems: 'normal'
             }}
           >
-            <div className="frosted-glass-teal p-3 mb-3 rounded-xl">
+            <Div className="frosted-glass-teal p-3 mb-3 rounded-xl">
               <Icon iconSrc="/icons/home-pool.svg" />
-            </div>
-            <div className="font-semibold text-lg text-white mb-2">High-Liquidity Launches</div>
-            <div className="font-light text-[#c4d6ff] mb-5">
+            </Div>
+            <Div className="font-semibold text-lg text-white mb-2">High-Liquidity Launches</Div>
+            <Div className="font-light text-[#c4d6ff] mb-5">
               AcceleRaytor offers projects a straightforward 3 step process to raise funds and bootstrap liquidity on
               Raydium and Serum.
-            </div>
+            </Div>
           </Card>
         </Grid>
-      </div>
+      </Div>
     </section>
   )
 }
@@ -341,13 +341,13 @@ function HomePageSection2() {
 function HomePageSection3() {
   return (
     <section className="children-center mb-24">
-      <div className="mb-8">
-        <div className="text-lg">Partners</div>
-        <div
+      <Div className="mb-8">
+        <Div className="text-lg">Partners</Div>
+        <Div
           className="w-10 h-px my-2 mx-auto rounded-full"
           style={{ background: 'radial-gradient(39.84% 47.5% at 96.82% 58.33%, #39d0d8 0%, #2b6aff 100%)' }}
         />
-      </div>
+      </Div>
       <Div
         icss={cssRow()}
         className="w-full justify-around px-56 tablet:px-0 mobile:px-0 tablet:grid mobile:grid gap-16"
@@ -373,14 +373,14 @@ function HomePageFooter() {
       }}
     >
       <Grid className="mobile:gap-14 justify-around px-[10%] grid-cols-4 tablet:grid-cols-3 mobile:grid-cols-1 gap-16">
-        <div>
-          <div className="mb-8">
-            <div className="text-sm mb-3 tablet:text-center">ABOUT</div>
-            <div
+        <Div>
+          <Div className="mb-8">
+            <Div className="text-sm mb-3 tablet:text-center">ABOUT</Div>
+            <Div
               className="w-6 h-px my-2 rounded-full tablet:mx-auto"
               style={{ background: 'radial-gradient(39.84% 47.5% at 96.82% 58.33%, #39d0d8 0%, #2b6aff 100%)' }}
             />
-          </div>
+          </Div>
           <Div icss={cssCol()} className="gap-6">
             <Link
               className="text-[#c4d6ff] hover:text-white tablet:text-center"
@@ -404,16 +404,16 @@ function HomePageFooter() {
               Disclaimer
             </Link>
           </Div>
-        </div>
+        </Div>
 
-        <div>
-          <div className="mb-8">
-            <div className="text-sm mb-3 tablet:text-center">PROTOCOL</div>
-            <div
+        <Div>
+          <Div className="mb-8">
+            <Div className="text-sm mb-3 tablet:text-center">PROTOCOL</Div>
+            <Div
               className="w-6 h-px my-2 rounded-full tablet:mx-auto"
               style={{ background: 'radial-gradient(39.84% 47.5% at 96.82% 58.33%, #39d0d8 0%, #2b6aff 100%)' }}
             />
-          </div>
+          </Div>
           <Div icss={cssCol()} className="gap-6">
             <Link
               className="text-[#c4d6ff] hover:text-white tablet:text-center"
@@ -440,16 +440,16 @@ function HomePageFooter() {
               Permissionless Pool
             </Link>
           </Div>
-        </div>
+        </Div>
 
-        <div>
-          <div className="mb-8">
-            <div className="text-sm mb-3 tablet:text-center">SUPPORT</div>
-            <div
+        <Div>
+          <Div className="mb-8">
+            <Div className="text-sm mb-3 tablet:text-center">SUPPORT</Div>
+            <Div
               className="w-6 h-px my-2 rounded-full tablet:mx-auto"
               style={{ background: 'radial-gradient(39.84% 47.5% at 96.82% 58.33%, #39d0d8 0%, #2b6aff 100%)' }}
             />
-          </div>
+          </Div>
           <Div icss={cssCol()} className="gap-6">
             <Link
               className="text-[#c4d6ff] hover:text-white tablet:text-center"
@@ -464,16 +464,16 @@ function HomePageFooter() {
               FAQ
             </Link>
           </Div>
-        </div>
+        </Div>
 
-        <div className="tablet:col-span-full tablet:justify-self-center">
-          <div className="mb-8 tablet:hidden">
-            <div className="text-sm mb-3">COMMUNITY</div>
-            <div
+        <Div className="tablet:col-span-full tablet:justify-self-center">
+          <Div className="mb-8 tablet:hidden">
+            <Div className="text-sm mb-3">COMMUNITY</Div>
+            <Div
               className="w-6 h-px my-2 rounded-full"
               style={{ background: 'radial-gradient(39.84% 47.5% at 96.82% 58.33%, #39d0d8 0%, #2b6aff 100%)' }}
             />
-          </div>
+          </Div>
           <Grid className="flex flex-col tablet:flex-row gap-6 tablet:gap-10">
             <Link className="text-[#c4d6ff] hover:text-white" href="https://twitter.com/RaydiumProtocol">
               <Div icss={cssRow()} className="items-center gap-2">
@@ -482,7 +482,7 @@ function HomePageFooter() {
                   iconClassName="w-5 h-5 tablet:w-6 tablet:h-6"
                   iconSrc="icons/media-twitter.svg"
                 />
-                <div className="tablet:hidden">Twitter</div>
+                <Div className="tablet:hidden">Twitter</Div>
               </Div>
             </Link>
             <Link className="text-[#c4d6ff] hover:text-white" href="https://raydium.medium.com/">
@@ -492,7 +492,7 @@ function HomePageFooter() {
                   iconClassName="w-5 h-5 tablet:w-6 tablet:h-6"
                   iconSrc="icons/media-medium.svg"
                 />
-                <div className="tablet:hidden">Medium</div>
+                <Div className="tablet:hidden">Medium</Div>
               </Div>
             </Link>
             <Link className="text-[#c4d6ff] hover:text-white" href="https://discord.gg/raydium">
@@ -502,7 +502,7 @@ function HomePageFooter() {
                   iconClassName="w-5 h-5 tablet:w-6 tablet:h-6"
                   iconSrc="icons/media-discord.svg"
                 />
-                <div className="tablet:hidden">Discord</div>
+                <Div className="tablet:hidden">Discord</Div>
               </Div>
             </Link>
             <Div icss={cssRow()} className="items-center gap-2">
@@ -513,7 +513,7 @@ function HomePageFooter() {
                     iconClassName="w-5 h-5 tablet:w-6 tablet:h-6"
                     iconSrc="/icons/media-telegram.svg"
                   />
-                  <div className="tablet:hidden">Telegram</div>
+                  <Div className="tablet:hidden">Telegram</Div>
                   <Icon size="sm" heroIconName="chevron-down" />
                 </Div>
                 <Tooltip.Panel>
@@ -577,7 +577,7 @@ function HomePageFooter() {
               </Tooltip>
             </Div>
           </Grid>
-        </div>
+        </Div>
       </Grid>
 
       <Image className="mx-auto p-20 transform scale-125 pointer-events-none" src="/logo/logo-with-text.svg" />

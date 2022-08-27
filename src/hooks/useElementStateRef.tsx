@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 
 /**
- * !!! only for DOM element (props:ref on `<div>`)\
+ * !!! only for DOM element (props:ref on `<Div>`)\
  * like ref but actually it's state, so inner-hooks can re-render
  *
  * @returns React RefObject-like

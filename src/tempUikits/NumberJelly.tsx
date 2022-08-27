@@ -10,6 +10,7 @@ import { add, clamp, div, mul, sub } from '@/functions/numberish/operations'
 import { toString } from '@/functions/numberish/toString'
 import { Numberish } from '@/types/constants'
 import { toHumanReadable } from '@/functions/format/toHumanReadable'
+import { Div } from '@/../../uikit/dist'
 
 interface NumberJellyProps extends FormatOptions {
   className?: string
@@ -99,8 +100,8 @@ export default function NumberJelly({
   }, [targetNumber, initValue])
 
   return (
-    <div ref={domRef} className={twMerge('NumberJelly tabular-nums inline-block', className)}>
+    <Div domRef={domRef} className={twMerge('NumberJelly tabular-nums inline-block', className)}>
       {format(toString(currentNumber.current))}
-    </div>
+    </Div>
   )
 }

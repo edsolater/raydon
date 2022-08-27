@@ -24,6 +24,7 @@ import { isTokenAmount } from '@/functions/judgers/dateType'
 import assert from 'assert'
 import { gt } from '@/functions/numberish/compare'
 import useAutoFetchIdoInfos from '@/application/ido/useAutoFetchIdoInfos'
+import { Div } from '@/../../uikit/dist'
 
 export default function BasementPage() {
   useAutoFetchIdoInfos()
@@ -79,18 +80,18 @@ function IdoPanel() {
       shadowKeypairs?.map(({ publicKey }, idx) => [toPubString(publicKey), shallowBalanceList[idx]]) ?? []
     )
   return (
-    <div className="justify-self-end">
-      <div className="text-2xl mobile:text-lg font-semibold justify-self-start text-white col-span-full mb-8">
+    <Div className="justify-self-end">
+      <Div className="text-2xl mobile:text-lg font-semibold justify-self-start text-white col-span-full mb-8">
         Ido Tickets
-      </div>
+      </Div>
       <Grid className="grid-cols-2 gap-24 pb-4 pt-2">
         {Object.entries(switchKeyLeveledShadowIdoHydratedInfos ?? {}).map(([idoId, idoHydratedInfoCollection]) => (
           <Grid key={idoId} className="gap-2">
-            <div className="text-2xl mobile:text-lg font-semibold justify-self-start text-white col-span-full mb-8">
+            <Div className="text-2xl mobile:text-lg font-semibold justify-self-start text-white col-span-full mb-8">
               {Object.values(idoHydratedInfoCollection)[0].base?.symbol}
-            </div>
+            </Div>
             {Object.entries(idoHydratedInfoCollection ?? {}).map(([walletOwner, idoHydratedInfo]) => (
-              <div key={walletOwner} className="odd:backdrop-brightness-50 p-4">
+              <Div key={walletOwner} className="odd:backdrop-brightness-50 p-4">
                 <AddressItem>{walletOwner}</AddressItem>
                 <Grid className="grid-cols-3 gap-4">
                   <ItemBlock
@@ -98,7 +99,7 @@ function IdoPanel() {
                     value={String(idoHydratedInfo.userEligibleTicketAmount ?? '--')}
                   />
                   <ItemBlock label="Winning tickets count" value={idoHydratedInfo.winningTickets?.length} />
-                  <div>
+                  <Div>
                     <ItemBlock
                       label={`claimable ${idoHydratedInfo.quote?.symbol ?? '--'}`}
                       value={toString(idoHydratedInfo.claimableQuote)}
@@ -121,12 +122,12 @@ function IdoPanel() {
                         claim
                       </Button>
                     )}
-                  </div>
+                  </Div>
                   <ItemBlock
                     label={`claimable ${idoHydratedInfo.quote?.symbol ?? '--'}`}
                     value={toString(idoHydratedInfo.claimableQuote)}
                   />
-                  <div>
+                  <Div>
                     <ItemBlock
                       label={`${idoHydratedInfo.quote?.symbol ?? '--'} balance`}
                       value={`${
@@ -187,9 +188,9 @@ function IdoPanel() {
                     >
                       transform to DJ
                     </Button>
-                  </div>
+                  </Div>
                 </Grid>
-              </div>
+              </Div>
             ))}
             <Grid className="grid-cols-3 gap-4">
               <ItemBlock
@@ -223,14 +224,14 @@ function IdoPanel() {
           </Grid>
         ))}
       </Grid>
-    </div>
+    </Div>
   )
 }
 
 function ItemBlock(props: { label: ReactNode; value: ReactNode }) {
   return (
     <ThreeSlotItem
-      prefix={<div className="text-xs opacity-75">{props.label}: </div>}
+      prefix={<Div className="text-xs opacity-75">{props.label}: </Div>}
       text={props.value}
       textClassName="text-base"
     />

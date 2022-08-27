@@ -2,7 +2,7 @@
  * depends on <List>
  */
 
-import { cssCol, cssRow, Div } from '@/../../uikit/dist'
+import { cssCol, cssRow, CSSStyle, Div } from '@edsolater/uikit'
 import { isNumber, isObject } from '@/functions/judgers/dateType'
 import { shrinkToValue } from '@/functions/shrinkToValue'
 import { MayArray, MayFunction } from '@/types/constants'
@@ -107,7 +107,7 @@ export default function ListTable<T>({
   const gridTemplateStyle = {
     gridTemplateColumns: parsedShowedPropertyNames.map((i) => i.cssGridItemWidth ?? '1fr').join(' '),
     gap: 4
-  } as CSSProperties
+  } as CSSStyle
 
   const renderListTableRowContent = ({ data }: typeof wrapped[number], idx: number) => {
     return type === 'list-table' ? (
@@ -129,7 +129,7 @@ export default function ListTable<T>({
             )?.[1]
           const headerElement = headerRefs.current.find(({ label: headerLabel }) => headerLabel === label)?.el
           return (
-            <div
+            <Div
               key={label}
               className={itemClassName}
               style={{ width: headerElement?.clientWidth, alignSelf: 'stretch' }}
@@ -147,12 +147,12 @@ export default function ListTable<T>({
                 : key
                 ? String(targetDataItemValue ?? '')
                 : ''}
-            </div>
+            </Div>
           )
         })}
       </Grid>
     ) : (
-      <div
+      <Div
         className={twMerge(
           'bg-[#141041] p-3 divide-y divide-[#abc4ff1a]',
           shrinkToValue(rowClassName, [{ index: idx, item: data }])
@@ -184,16 +184,16 @@ export default function ListTable<T>({
           return (
             <Grid key={label} className={twMerge('grid-cols-2 py-3', itemClassName)}>
               {/* label */}
-              <div className="grow text-xs font-semibold text-[#abc4ff80]">{label}</div>
+              <Div className="grow text-xs font-semibold text-[#abc4ff80]">{label}</Div>
 
               {/* item */}
-              <div key={label} className="text-primary text-xs font-medium">
+              <Div key={label} className="text-primary text-xs font-medium">
                 {itemNode}
-              </div>
+              </Div>
             </Grid>
           )
         })}
-      </div>
+      </Div>
     )
   }
 
@@ -213,12 +213,12 @@ export default function ListTable<T>({
         {parsedShowedPropertyNames.map(({ key, label, renderLabel }, idx) => (
           <Fragment key={idx}>
             {renderPropertyLabel?.({ key, label, wholeList: list }) ?? (
-              <div
-                ref={(el) => (headerRefs.current[idx] = { label, el })}
+              <Div
+                domRef={(el) => (headerRefs.current[idx] = { label, el })}
                 className="grow text-xs font-semibold text-[#abc4ff80] py-3"
               >
                 {renderLabel ? renderLabel(list) : label}
-              </div>
+              </Div>
             )}
           </Fragment>
         ))}
@@ -242,16 +242,16 @@ export default function ListTable<T>({
             index: idx
           })
           return (
-            <div key={isObject(data) ? (data as any)?.id ?? idx : idx} className="relative">
+            <Div key={isObject(data) ? (data as any)?.id ?? idx : idx} className="relative">
               {userSettedWholeEntry ?? (
                 <>
                   {contentNode}
                   {controlsNode && (
-                    <div className="absolute -right-10 top-1/2 -translate-y-1/2 translate-x-full">{controlsNode}</div>
+                    <Div className="absolute -right-10 top-1/2 -translate-y-1/2 translate-x-full">{controlsNode}</Div>
                   )}
                 </>
               )}
-            </div>
+            </Div>
           )
         })}
       </Div>
@@ -285,10 +285,10 @@ export default function ListTable<T>({
           >
             {/* Body */}
             {userSettedWholeEntry ? (
-              <div className="relative">{userSettedWholeEntry}</div>
+              <Div className="relative">{userSettedWholeEntry}</Div>
             ) : (
               <>
-                <div className="relative">{contentNode}</div>
+                <Div className="relative">{contentNode}</Div>
                 <Div icss={cssRow()}>
                   {/* another btns */}
                   {/* <Div icss={cssRow()} className="grow justify-start py-3 px-5">{controlsNode}</Div> */}

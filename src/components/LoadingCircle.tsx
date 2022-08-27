@@ -1,14 +1,16 @@
+import { Div } from '@/../../uikit/dist'
+
 export default function LoadingCircle({ className }: { className?: string }) {
   return (
-    <div className={`lds-roller ${className ?? ''} mobile:scale-75`}>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-    </div>
+    <Div className={`lds-roller ${className ?? ''} mobile:scale-75`}>
+      <Div></Div>
+      <Div></Div>
+      <Div></Div>
+      <Div></Div>
+      <Div></Div>
+      <Div></Div>
+      <Div></Div>
+      <Div></Div>
+    </Div>
   )
 }

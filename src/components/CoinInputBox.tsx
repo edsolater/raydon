@@ -255,8 +255,8 @@ export default function CoinInputBox({
       >
         {/* from & balance */}
         <Div icss={cssRow()} className="justify-between mb-2 mobile:mb-4">
-          <div className="text-xs mobile:text-2xs text-[rgba(171,196,255,.5)]">{topLeftLabel}</div>
-          <div
+          <Div className="text-xs mobile:text-2xs text-[rgba(171,196,255,.5)]">{topLeftLabel}</Div>
+          <Div
             className={`text-xs mobile:text-2xs justify-self-end text-[rgba(171,196,255,.5)] ${
               disabledInput ? '' : 'clickable no-clicable-transform-effect clickable-filter-effect'
             }`}
@@ -266,7 +266,7 @@ export default function CoinInputBox({
             }}
           >
             {topRightLabel ?? `Balance: ${toString(maxValue) || (connected ? '--' : '(Wallet not connected)')}`}
-          </div>
+          </Div>
         </Div>
 
         {/* input-container */}
@@ -296,19 +296,19 @@ export default function CoinInputBox({
                 }}
               >
                 {haveCoinIcon && token && <CoinAvatar token={token} size={isMobile ? 'smi' : 'md'} />}
-                <div
+                <Div
                   className={`text-[rgb(171,196,255)] max-w-[7em] ${
                     token ? 'min-w-[2em]' : ''
                   } overflow-hidden text-ellipsis font-medium text-base flex-grow mobile:text-sm whitespace-nowrap`}
                 >
                   {token?.symbol ?? '--'}
-                </div>
+                </Div>
                 {showTokenSelectIcon && !disabledTokenSelect && (
                   <Icon size="xs" heroIconName="chevron-down" className="text-primary" />
                 )}
               </Div>
               {/* divider */}
-              <div className="my-1 mx-4 mobile:my-0 mobile:mx-2 border-r border-[rgba(171,196,255,0.5)] self-stretch" />
+              <Div className="my-1 mx-4 mobile:my-0 mobile:mx-2 border-r border-[rgba(171,196,255,0.5)] self-stretch" />
             </>
           )}
           <Div icss={cssRow()} className="justify-between flex-grow-2">
@@ -363,13 +363,13 @@ export default function CoinInputBox({
 
         {/* price-predictor */}
         {!hidePricePredictor && (
-          <div
+          <Div
             className={`text-xs mobile:text-2xs text-[rgba(171,196,255,.5)] ${
               !inputedAmount || inputedAmount === '0' ? 'invisible' : ''
             } text-ellipsis overflow-hidden text-right`}
           >
             {totalPrice ? toUsdVolume(totalPrice) : '--'}
-          </div>
+          </Div>
         )}
       </Div>
     </Div>

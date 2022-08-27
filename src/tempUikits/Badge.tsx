@@ -1,4 +1,4 @@
-import { Div, cssRow } from '@/../../uikit/dist'
+import { Div, cssRow } from '@edsolater/uikit'
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import { useHover } from '@/hooks/useHover'
 import React, { ReactNode, useRef, useState } from 'react'
@@ -36,13 +36,13 @@ export function Badge(props: {
       onClick={props.onClick}
     >
       {props.hoverChildren && (
-        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-300">
+        <Div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-300">
           {props.hoverChildren}
-        </div>
+        </Div>
       )}
-      <div className={props.hoverChildren ? 'group-hover:opacity-0 transition duration-300' : undefined}>
+      <Div className={props.hoverChildren ? 'group-hover:opacity-0 transition duration-300' : undefined}>
         {props.children}
-      </div>
+      </Div>
     </Div>
   )
 }

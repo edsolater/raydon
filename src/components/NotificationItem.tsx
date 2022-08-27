@@ -6,7 +6,7 @@ import { Transition } from '@headlessui/react'
 
 import Card from '../tempUikits/Card'
 import Icon, { AppHeroIconName } from './Icon'
-import { Div, cssRow } from '@/../../uikit/dist'
+import { Div, cssRow } from '@edsolater/uikit'
 
 export interface NotificationItemInfo {
   type?: 'success' | 'warning' | 'error' | 'info'
@@ -119,25 +119,25 @@ export default function NotificationItem({ description, title, subtitle, type = 
         destory()
       }}
     >
-      {/* U have to gen another <div> to have the gap between <NotificationItem> */}
-      <div ref={itemWrapperRef} className={`overflow-hidden mobile:w-screen transition-all duration-500`}>
+      {/* U have to gen another <Div> to have the gap between <NotificationItem> */}
+      <Div domRef={itemWrapperRef} className={`overflow-hidden mobile:w-screen transition-all duration-500`}>
         <Card
           domRef={itemRef}
           className={`min-w-[260px] relative rounded-xl ring-1.5 ring-inset ${colors[type].ring} bg-[#1B1659] py-4 pl-5 pr-10 mx-4 my-2 overflow-hidden pointer-events-auto`}
         >
           {/* timeline */}
-          <div className="h-1 absolute top-0 left-0 right-0">
+          <Div className="h-1 absolute top-0 left-0 right-0">
             {/* track */}
-            <div className={`opacity-5 ${colors[type].bg} absolute inset-0`} />
+            <Div className={`opacity-5 ${colors[type].bg} absolute inset-0`} />
             {/* remain-line */}
-            <div
+            <Div
               className={`${colors[type].bg} absolute inset-0`}
               style={{
                 animation: `shrink ${itemExistTime}ms linear forwards`,
                 animationPlayState: isTimePassing ? 'running' : 'paused'
               }}
             />
-          </div>
+          </Div>
 
           <Icon
             size="sm"
@@ -155,16 +155,16 @@ export default function NotificationItem({ description, title, subtitle, type = 
           /> */}
           <Div icss={cssRow()} className="gap-3">
             <Icon heroIconName={colors[type].heroIconName} className={colors[type].text} />
-            <div>
-              <div className="font-medium text-base text-white">{title}</div>
-              {subtitle && <div className="font-normal text-base mobile:text-sm text-primary">{subtitle}</div>}
+            <Div>
+              <Div className="font-medium text-base text-white">{title}</Div>
+              {subtitle && <Div className="font-normal text-base mobile:text-sm text-primary">{subtitle}</Div>}
               {description && (
-                <div className="font-medium text-sm mobile:text-xs text-[rgba(171,196,255,0.5)]">{description}</div>
+                <Div className="font-medium text-sm mobile:text-xs text-[rgba(171,196,255,0.5)]">{description}</Div>
               )}
-            </div>
+            </Div>
           </Div>
         </Card>
-      </div>
+      </Div>
     </Transition>
   )
 }

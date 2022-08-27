@@ -1,4 +1,4 @@
-import { cssCol, Div } from '@/../../uikit/dist'
+import { cssCol, Div } from '@edsolater/uikit'
 import mergeRef from '@/functions/react/mergeRef'
 import { shrinkToValue } from '@/functions/shrinkToValue'
 import { ReactNode, RefObject, useRef } from 'react'
@@ -55,11 +55,11 @@ export default function InputBox({
       )}
     >
       {label && (
-        <div
+        <Div
           className={twMerge(`text-xs mobile:text-2xs text-[#abc4ff80] font-medium mb-2 mobile:mb-1`, labelClassName)}
         >
           {label}
-        </div>
+        </Div>
       )}
       {shrinkToValue(renderInput, [inputRef]) ??
         (decimalMode ? (

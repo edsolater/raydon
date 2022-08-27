@@ -179,7 +179,7 @@ export default function Icon({
         : heroIconName === 'link'
         ? LinkIcon
         : heroIconName === ' '
-        ? ({ className }: { className?: string }) => <div className={className} />
+        ? ({ className }: { className?: string }) => <Div className={className} />
         : Fragment
     return (
       <Div {...restProps} className_={styleClass} domRef_={selfRef} style_={{ color: forceColor }}>

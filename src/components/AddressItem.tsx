@@ -1,4 +1,4 @@
-import { Div, cssRow } from '@/../../uikit/dist'
+import { Div, cssRow } from '@edsolater/uikit'
 import copyToClipboard from '@/functions/dom/copyToClipboard'
 import toPubString from '@/functions/format/toMintString'
 import useToggle from '@/hooks/useToggle'
@@ -51,22 +51,26 @@ export function AddressItem({
       className={className}
       textClassName={textClassName}
       text={
-        <div title={toPubString(publicKey)} className="relative" onClick={(ev) => canCopy && handleClickCopy(ev)}>
-          <div className={`${isCopied ? 'opacity-10' : 'opacity-100'} transition`}>
+        <Div
+          htmlProps={{ title: toPubString(publicKey) }}
+          className="relative"
+          onClick={({ ev }) => canCopy && handleClickCopy(ev)}
+        >
+          <Div className={`${isCopied ? 'opacity-10' : 'opacity-100'} transition`}>
             {showDigitCount === 'all'
               ? `${toPubString(publicKey)}`
               : `${toPubString(publicKey).slice(0, showDigitCount)}...${toPubString(publicKey).slice(
                   -1 * showDigitCount
                 )}`}
-          </div>
-          <div
+          </Div>
+          <Div
             className={`absolute inset-0 ${
               isCopied ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
             } transition flex items-center justify-center`}
           >
             Copied
-          </div>
-        </div>
+          </Div>
+        </Div>
       }
       suffix={
         canCopy || canExternalLink ? (

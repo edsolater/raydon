@@ -7,6 +7,7 @@ import { shrinkToValue } from '@/functions/shrinkToValue'
 import HDrawer, { DrawerPlacement } from '../tempUikits/HDrawer'
 import Popover, { PopoverPlacement } from '../tempUikits/Popover'
 import { PopupLocationInfo } from '../tempUikits/Popover/useLocationCalculator'
+import { Div } from '@/../../uikit/dist'
 
 /**
  * for PageLayout
@@ -61,7 +62,7 @@ export default function PageLayoutPopoverDrawer({
 
 function SmartBubbleDrawerPanel({ children }: { children?: ReactNode }) {
   return (
-    <div
+    <Div
       className="w-screen p-4 pb-6 rounded-tl-3xl rounded-tr-3xl"
       style={{
         background:
@@ -69,7 +70,7 @@ function SmartBubbleDrawerPanel({ children }: { children?: ReactNode }) {
       }}
     >
       {children}
-    </div>
+    </Div>
   )
 }
 
@@ -120,12 +121,12 @@ function SmartBubblePanel({
   }, [arrowLocationInfo, arrowPosition])
 
   return (
-    <div
+    <Div
       style={{
         filter: 'drop-shadow(0px 8px 48px rgba(171, 196, 255, 0.12)) drop-shadow(0px 0px 2px rgba(171, 196, 255, 0.5))'
       }}
     >
-      <div
+      <Div
         className={twMerge(
           arrowPosition?.startsWith('left')
             ? 'pl-2'
@@ -136,7 +137,7 @@ function SmartBubblePanel({
             : 'pr-2',
           className
         )}
-        ref={panelDom}
+        domRef={panelDom}
         style={{
           background:
             'linear-gradient(139.48deg, rgba(0, 182, 191, 0.15) 1.07%, rgba(27, 22, 89, 0.1) 86.75%), linear-gradient(321.17deg, #18134D 0%, #1B1659 98.97%)',
@@ -145,7 +146,7 @@ function SmartBubblePanel({
         }}
       >
         {children}
-      </div>
-    </div>
+      </Div>
+    </Div>
   )
 }

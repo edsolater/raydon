@@ -14,6 +14,7 @@ import { inServer } from '@/functions/judgers/isSSR'
 import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect '
 import Tooltip from '@/tempUikits/Tooltip'
 import { PopoverPlacement } from '@/tempUikits/Popover'
+import { Div } from '@/../../uikit/dist'
 
 const REFRESH_LOOP_DURATION = 60 * 1000
 
@@ -102,11 +103,11 @@ export default function RefreshCircle({
         }}
       />
       <Tooltip.Panel>
-        <div className="w-60">
+        <Div className="w-60">
           Displayed data will auto-refresh after{' '}
           {Math.round(60 * (1 - (intervalCircleRef.current?.currentProgressPercent ?? 0)))} seconds. Click this circle
           to update manually.
-        </div>
+        </Div>
       </Tooltip.Panel>
     </Tooltip>
   )

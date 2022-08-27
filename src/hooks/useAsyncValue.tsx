@@ -10,11 +10,11 @@ import useAsyncEffect from './useAsyncEffect'
  * @example
  * //  async function will cause React component update after it's end
  * const value = useAsynceValue(async () => await Promise.resolve(3))
- * return <div>{value}</div> //it will render nothing first, then will render 3.
+ * return <Div>{value}</Div> //it will render nothing first, then will render 3.
  *
  *
  * const value = useAsynceValue(async () => await Promise.resolve(3), 5)
- * return <div>{value}</div> //it will render 5 first, then will render 3.
+ * return <Div>{value}</Div> //it will render 5 first, then will render 3.
  */
 export default function useAsyncValue<V, F = never>(
   asyncGetValue: MayFunction<MayPromise<V>>,

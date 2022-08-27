@@ -4,17 +4,18 @@ import { twMerge } from 'tailwind-merge'
 import { shrinkToValue } from '@/functions/shrinkToValue'
 import { RadioGroup as _RadioGroup } from '@headlessui/react'
 import { MayFunction } from '@/types/constants'
+import { CSSStyle, Div } from '@/../../uikit/dist'
 
 export interface RadioGroupProps<T extends string> {
   className?: string
-  style?: CSSProperties
+  style?: CSSStyle
   // TODO: itemClassName\itemStyle\value\label should be merged into a obj
   // flex/flex-col
   vertical?: boolean
   // /** @deprecated use props:items instead */
   itemClassName?: string | ((checked: boolean) => string)
   // /** @deprecated use props:items instead */
-  itemStyle?: CSSProperties | ((checked: boolean, itemIndex: number, values: readonly T[]) => CSSProperties)
+  itemStyle?: CSSStyle | ((checked: boolean, itemIndex: number, values: readonly T[]) => CSSStyle)
   currentValue?: T
   // /** @deprecated use props:items instead */
   values: readonly T[]
@@ -55,14 +56,14 @@ export default function RadioGroup<T extends string>({
         <_RadioGroup.Option value={value} key={idx} className={`cursor-pointer flex grow`}>
           {({ checked }) =>
             value && (
-              <div
+              <Div
                 className={`grid grow ${vertical ? '' : 'place-items-center'} ${shrinkToValue(itemClassName, [
                   checked
                 ])}`}
                 style={shrinkToValue(itemStyle, [checked, idx, vals])}
               >
                 {shrinkToValue(labels[idx], [checked, idx, vals])}
-              </div>
+              </Div>
             )
           }
         </_RadioGroup.Option>

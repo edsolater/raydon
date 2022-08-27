@@ -46,15 +46,15 @@ function StakingHeader() {
   const refreshFarmInfos = useFarms((s) => s.refreshFarmInfos)
   return (
     <Grid className="grid-cols-[1fr,1fr] items-center gap-y-8 pb-4 pt-2">
-      <div className="title text-2xl mobile:text-lg font-semibold justify-self-start text-white">Staking</div>
-      <div className="justify-self-end">
+      <Div className="title text-2xl mobile:text-lg font-semibold justify-self-start text-white">Staking</Div>
+      <Div className="justify-self-end">
         <RefreshCircle
           refreshKey="staking"
           popPlacement="left"
           className="justify-self-end"
           freshFunction={refreshFarmInfos}
         />
-      </div>
+      </Div>
     </Grid>
   )
 }
@@ -72,14 +72,14 @@ function StakingCard() {
     <CyberpunkStyleCard>
       <Div className="grid gap-3 text-primary">
         {infos.map((info) => (
-          <div key={String(info.id)}>
+          <Div key={String(info.id)}>
             <Collapse>
               <Collapse.Face>{(open) => <StakingCardCollapseItemFace open={open} info={info} />}</Collapse.Face>
               <Collapse.Body>
                 <StakingCardCollapseItemContent hydratedInfo={info} />
               </Collapse.Body>
             </Collapse>
-          </div>
+          </Div>
         ))}
         <StakingPageStakeLpDialog />
       </Div>
@@ -100,16 +100,16 @@ function StakingCardCollapseItemFace({ open, info }: { open: boolean; info: Hydr
       <TextInfoItem
         name="Pending Rewards"
         value={
-          <div>
+          <Div>
             {info.rewards.map(
               ({ token, userPendingReward, userHavedReward }, idx) =>
                 userHavedReward && (
-                  <div key={idx}>
+                  <Div key={idx}>
                     {toString(userPendingReward ?? 0)} {token?.symbol}
-                  </div>
+                  </Div>
                 )
             )}
-          </div>
+          </Div>
         }
       />
       <TextInfoItem
@@ -151,16 +151,16 @@ function StakingCardCollapseItemFace({ open, info }: { open: boolean; info: Hydr
           <TextInfoItem
             name="Pending Rewards"
             value={
-              <div>
+              <Div>
                 {info.rewards.map(
                   ({ token, userPendingReward, userHavedReward }, idx) =>
                     userHavedReward && (
-                      <div key={idx}>
+                      <Div key={idx}>
                         {toString(userPendingReward ?? 0)} {token?.symbol ?? ''}
-                      </div>
+                      </Div>
                     )
                 )}
-              </div>
+              </Div>
             }
           />
 
@@ -175,7 +175,7 @@ function StakingCardCollapseItemFace({ open, info }: { open: boolean; info: Hydr
 
       <Collapse.Body>
         <Div className="grid grid-flow-col py-4 px-5 relative items-stretch gap-2 grid-cols-[1fr,1fr,1fr,auto]">
-          <div className="absolute top-0 left-5 right-5 border-[rgba(171,196,255,.2)] border-t-1.5"></div>
+          <Div className="absolute top-0 left-5 right-5 border-[rgba(171,196,255,.2)] border-t-1.5"></Div>
 
           <TextInfoItem
             name="Staked"
@@ -187,7 +187,7 @@ function StakingCardCollapseItemFace({ open, info }: { open: boolean; info: Hydr
             value={info.tvl ? `≈${toUsdVolume(info.tvl, { autoSuffix: true })}` : '--'}
             subValue={info.stakedLpAmount && `${formatNumber(toString(info.stakedLpAmount, { decimalLength: 0 }))} RAY`}
           />
-          <div></div>
+          <Div></Div>
 
           <Grid className="w-6 h-6 place-items-center"></Grid>
         </Div>
@@ -222,20 +222,20 @@ function StakingCardCollapseItemContent({ hydratedInfo }: { hydratedInfo: Hydrat
         icss={cssRow()}
         className="p-6 mobile:py-3 mobile:px-4 flex-grow ring-inset ring-1.5 mobile:ring-1 ring-[rgba(171,196,255,.5)] rounded-3xl mobile:rounded-xl items-center gap-3"
       >
-        <div className="flex-grow">
-          <div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-2xs mb-1">Deposited</div>
-          <div className="text-white font-medium text-base mobile:text-xs">
+        <Div className="flex-grow">
+          <Div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-2xs mb-1">Deposited</Div>
+          <Div className="text-white font-medium text-base mobile:text-xs">
             {formatNumber(toString(hydratedInfo.userStakedLpAmount ?? 0), {
               fractionLength: hydratedInfo.userStakedLpAmount?.token.decimals
             })}{' '}
             RAY
-          </div>
-          <div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-xs">
+          </Div>
+          <Div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-xs">
             {prices[String(hydratedInfo.lpMint)] && hydratedInfo.userStakedLpAmount
               ? toUsdVolume(toTotalPrice(hydratedInfo.userStakedLpAmount, prices[String(hydratedInfo.lpMint)]))
               : '--'}
-          </div>
-        </div>
+          </Div>
+        </Div>
         <Div icss={cssRow()} className="gap-3">
           {hydratedInfo.userHasStaked ? (
             <>
@@ -300,24 +300,24 @@ function StakingCardCollapseItemContent({ hydratedInfo }: { hydratedInfo: Hydrat
           {hydratedInfo.rewards?.map(
             (reward, idx) =>
               reward.userHavedReward && (
-                <div
+                <Div
                   key={idx}
                   className={`px-4 ${idx === 0 ? 'pl-0' : ''} ${
                     idx === hydratedInfo.rewards.length - 1 ? 'pr-0' : ''
                   } border-[rgba(171,196,255,.5)]`}
                 >
-                  <div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-2xs mb-1">
+                  <Div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-2xs mb-1">
                     Pending rewards
-                  </div>
-                  <div className="text-white font-medium text-base mobile:text-xs">
+                  </Div>
+                  <Div className="text-white font-medium text-base mobile:text-xs">
                     {toString(reward.userPendingReward ?? 0)} {reward.token?.symbol}
-                  </div>
-                  <div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-2xs">
+                  </Div>
+                  <Div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-2xs">
                     {prices?.[String(reward.token?.mint)] && reward?.userPendingReward
                       ? toUsdVolume(toTotalPrice(reward.userPendingReward, prices[String(reward.token?.mint)]))
                       : '--'}
-                  </div>
-                </div>
+                  </Div>
+                </Div>
               )
           )}
         </Div>
@@ -364,7 +364,7 @@ function CoinAvatarInfoItem({ info }: { info: HydratedFarmInfo }) {
       // }}
     >
       <CoinAvatar size={isMobile ? 'sm' : 'md'} token={base} className="justify-self-center mr-2" />
-      <div className="mobile:text-xs font-medium mobile:mt-px mr-1.5">{name}</div>
+      <Div className="mobile:text-xs font-medium mobile:mt-px mr-1.5">{name}</Div>
     </Div>
   )
 }
@@ -382,10 +382,10 @@ function TextInfoItem({
 }) {
   return (
     <Div icss={cssCol()} className={twMerge('w-max', className)}>
-      <div className="mb-1 text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-2xs">{name}</div>
+      <Div className="mb-1 text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-2xs">{name}</Div>
       <Div icss={cssCol()} className="flex-grow justify-center">
-        <div className="text-base mobile:text-xs">{value || '--'}</div>
-        {subValue && <div className="text-sm mobile:text-2xs text-[rgba(171,196,255,0.5)]">{subValue}</div>}
+        <Div className="text-base mobile:text-xs">{value || '--'}</Div>
+        {subValue && <Div className="text-sm mobile:text-2xs text-[rgba(171,196,255,0.5)]">{subValue}</Div>}
       </Div>
     </Div>
   )

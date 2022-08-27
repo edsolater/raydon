@@ -103,7 +103,7 @@ function FarmTitle() {
       ? { title: 'Your Staked Farms', description: 'You are currently staked in these farms' }
       : { title: 'Raydium Farms', description: 'Stake LP tokens and earn token rewards' }
   return (
-    <div>
+    <Div>
       <Div icss={cssRow()} className="items-center">
         <Div className="font-medium text-white text-lg" icss={{ letterSpacing: 1 }}>
           {farmCardTitleInfo.title}
@@ -115,8 +115,8 @@ function FarmTitle() {
           </Tooltip>
         )}
       </Div>
-      <div className="font-medium text-[rgba(196,214,255,.5)] text-sm ">{farmCardTitleInfo.description}</div>
-    </div>
+      <Div className="font-medium text-[rgba(196,214,255,.5)] text-sm ">{farmCardTitleInfo.description}</Div>
+    </Div>
   )
 }
 
@@ -142,12 +142,12 @@ function ToolsButton({ className }: { className?: string }) {
     <>
       <Popover placement="bottom-right">
         <Popover.Button>
-          <div className={twMerge('mx-1 rounded-full p-2 text-primary clickable justify-self-start', className)}>
+          <Div className={twMerge('mx-1 rounded-full p-2 text-primary clickable justify-self-start', className)}>
             <Icon className="w-4 h-4" iconClassName="w-4 h-4" heroIconName="dots-vertical" />
-          </div>
+          </Div>
         </Popover.Button>
         <Popover.Panel>
-          <div>
+          <Div>
             <Card
               className="flex flex-col py-3 px-4  max-h-[80vh] border-1.5 border-[rgba(171,196,255,0.2)] bg-cyberpunk-card-bg shadow-cyberpunk-card"
               size="lg"
@@ -159,7 +159,7 @@ function ToolsButton({ className }: { className?: string }) {
                 <FarmCreateFarmEntryBlock />
               </Grid>
             </Card>
-          </div>
+          </Div>
         </Popover.Panel>
       </Popover>
     </>
@@ -356,7 +356,7 @@ function FarmRefreshCircleBlock({ className }: { className?: string }) {
       />
     </Div>
   ) : (
-    <div className={twMerge('justify-self-end', className)}>
+    <Div className={twMerge('justify-self-end', className)}>
       <RefreshCircle
         refreshKey="farms"
         className="justify-self-end"
@@ -364,7 +364,7 @@ function FarmRefreshCircleBlock({ className }: { className?: string }) {
           refreshFarmInfos()
         }}
       />
-    </div>
+    </Div>
   )
 }
 
@@ -446,7 +446,7 @@ function FarmCardDatabaseHead({
           })
         }}
       >
-        <div className="mr-16"></div>
+        <Div className="mr-16"></Div>
         Farm
         <Icon
           className="ml-1"
@@ -461,7 +461,7 @@ function FarmCardDatabaseHead({
         />
       </Div>
       {/* table head column: Pending Reward */}
-      <div className=" font-medium self-center text-primary text-sm">Pending Reward</div>
+      <Div className=" font-medium self-center text-primary text-sm">Pending Reward</Div>
       {/* table head column: Total APR */}
       <Div
         icss={cssRow()}
@@ -699,36 +699,36 @@ function FarmRewardBadge({
         } ${isRewardBeforeStart ? '' : ''}`}
       >
         {gt(pendingAmount, 0.001) && (
-          <div className="text-xs translate-y-0.125 pl-1">
+          <Div className="text-xs translate-y-0.125 pl-1">
             {formatNumber(toString(pendingAmount), {
               fractionLength: 3
             })}
-          </div>
+          </Div>
         )}
-        <div className="relative">
+        <Div className="relative">
           <CoinAvatar size="smi" token={reward.token} className={isRewardBeforeStart ? 'blur-sm' : ''} />
           {isRewardEnded && (
-            <div className="absolute h-[1.5px] w-full top-1/2 -translate-y-1/2 rotate-45 bg-[#abc4ff80] scale-x-125"></div>
+            <Div className="absolute h-[1.5px] w-full top-1/2 -translate-y-1/2 rotate-45 bg-[#abc4ff80] scale-x-125"></Div>
           )}
           {isRewardBeforeStart && (
-            <div className="absolute top-1/2 -translate-y-1/2 opacity-70">
+            <Div className="absolute top-1/2 -translate-y-1/2 opacity-70">
               <Icon heroIconName="dots-horizontal" />
-            </div>
+            </Div>
           )}
-        </div>
+        </Div>
       </Div>
       <Tooltip.Panel>
-        <div className="mb-1">
+        <Div className="mb-1">
           {reward.token?.symbol ?? '--'}{' '}
           {!isTokenAmount(reward) &&
             reward.openTime &&
             reward.endTime &&
             (isRewardEnded ? 'Reward Ended' : isRewardBeforeStart ? 'Reward Not Started' : 'Reward Period')}
-        </div>
+        </Div>
         {!isTokenAmount(reward) && reward.openTime && reward.endTime && (
-          <div className="opacity-50">
+          <Div className="opacity-50">
             {toUTC(reward.openTime, { hideTimeDetail: true })} ~ {toUTC(reward.endTime, { hideTimeDetail: true })}
-          </div>
+          </Div>
         )}
         {reward.token?.mint && (
           <AddressItem
@@ -778,7 +778,7 @@ function FarmCardItemFace({
       onClick_={() => onClickItemFace?.(toPubString(info.id))}
       {...divProps}
     >
-      <div className="w-12 self-center ml-6 mr-2">
+      <Div className="w-12 self-center ml-6 mr-2">
         {isFavourite ? (
           <Icon
             iconSrc="/icons/misc-star-filled.svg"
@@ -798,7 +798,7 @@ function FarmCardItemFace({
             className="clickable clickable-mask-offset-2 opacity-30 hover:opacity-80 transition m-auto self-center"
           />
         )}
-      </div>
+      </Div>
 
       <CoinAvatarInfoItem info={info} className="self-center" />
 
@@ -830,9 +830,9 @@ function FarmCardItemFace({
                     ({ token, userPendingReward, userHavedReward }) =>
                       userHavedReward &&
                       token && (
-                        <div key={toPubString(token?.mint)}>
+                        <Div key={toPubString(token?.mint)}>
                           <FarmRewardBadge farmInfo={info} reward={userPendingReward ?? toTokenAmount(token, 0)} />
-                        </div>
+                        </Div>
                       )
                   )}
             </Div>
@@ -851,14 +851,14 @@ function FarmCardItemFace({
               {info.totalApr24h ? toPercentString(info.totalApr24h) : '--'}
               <Tooltip.Panel>
                 {info.raydiumFeeApr24h && (
-                  <div className="whitespace-nowrap">Fees {toPercentString(info.raydiumFeeApr24h)}</div>
+                  <Div className="whitespace-nowrap">Fees {toPercentString(info.raydiumFeeApr24h)}</Div>
                 )}
                 {info.rewards.map(
                   ({ apr, token, userHavedReward }, idx) =>
                     userHavedReward && (
-                      <div key={idx} className="whitespace-nowrap">
+                      <Div key={idx} className="whitespace-nowrap">
                         {token?.symbol} {toPercentString(apr)}
-                      </div>
+                      </Div>
                     )
                 )}
               </Tooltip.Panel>
@@ -868,14 +868,14 @@ function FarmCardItemFace({
               {info.totalApr30d ? toPercentString(info.totalApr30d) : '--'}
               <Tooltip.Panel>
                 {info.raydiumFeeApr30d && (
-                  <div className="whitespace-nowrap">Fees {toPercentString(info.raydiumFeeApr30d)}</div>
+                  <Div className="whitespace-nowrap">Fees {toPercentString(info.raydiumFeeApr30d)}</Div>
                 )}
                 {info.rewards.map(
                   ({ apr, token, userHavedReward }, idx) =>
                     userHavedReward && (
-                      <div key={idx} className="whitespace-nowrap">
+                      <Div key={idx} className="whitespace-nowrap">
                         {token?.symbol} {toPercentString(apr)}
-                      </div>
+                      </Div>
                     )
                 )}
               </Tooltip.Panel>
@@ -885,14 +885,14 @@ function FarmCardItemFace({
               {info.totalApr7d ? toPercentString(info.totalApr7d) : '--'}
               <Tooltip.Panel>
                 {info.raydiumFeeApr7d && (
-                  <div className="whitespace-nowrap">Fees {toPercentString(info.raydiumFeeApr7d)}</div>
+                  <Div className="whitespace-nowrap">Fees {toPercentString(info.raydiumFeeApr7d)}</Div>
                 )}
                 {info.rewards.map(
                   ({ apr, token, userHavedReward }, idx) =>
                     userHavedReward && (
-                      <div key={idx} className="whitespace-nowrap">
+                      <Div key={idx} className="whitespace-nowrap">
                         {token?.symbol} {toPercentString(apr)}
-                      </div>
+                      </Div>
                     )
                 )}
               </Tooltip.Panel>
@@ -1088,35 +1088,35 @@ function FarmDetailPanelItemContent({ farmInfo, ...divProps }: { farmInfo: Hydra
   return (
     <Div {...divProps} icss_={cssCol({ gap: 12 * 4 })}>
       <Div icss={cssRow()} className="items-center gap-3">
-        <div className="flex-grow">
-          <div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-2xs mb-1">Deposited</div>
-          <div className="text-white font-medium text-base mobile:text-xs">
+        <Div className="flex-grow">
+          <Div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-2xs mb-1">Deposited</Div>
+          <Div className="text-white font-medium text-base mobile:text-xs">
             {lpPrices[String(farmInfo.lpMint)] && farmInfo.userStakedLpAmount
               ? toUsdVolume(toTotalPrice(farmInfo.userStakedLpAmount, lpPrices[String(farmInfo.lpMint)]))
               : '--'}
-          </div>
+          </Div>
           {farmInfo.userStakedLpAmount && (
-            <div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-xs">
+            <Div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-xs">
               {formatNumber(toString(farmInfo.userStakedLpAmount), {
                 fractionLength: farmInfo.userStakedLpAmount?.token.decimals
               })}{' '}
               LP
-            </div>
+            </Div>
           )}
-        </div>
+        </Div>
         <FarmItemStakeLpButtons farmInfo={farmInfo} />
       </Div>
 
       <Div icss={cssRow()} className="flex-grow items-center gap-3">
         {farmInfo.version === 6 ? (
-          <div className="flex-grow w-full">
-            <div
+          <Div className="flex-grow w-full">
+            <Div
               className={`text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-2xs ${
                 farmInfo.rewards.length > 2 ? 'mb-5' : 'mb-1'
               }`}
             >
               Pending rewards
-            </div>
+            </Div>
             <Grid
               className={`gap-board 
                    ${farmInfo.rewards.length > 1 ? 'grid-cols-2' : 'grid-cols-1'}`}
@@ -1126,42 +1126,42 @@ function FarmDetailPanelItemContent({ farmInfo, ...divProps }: { farmInfo: Hydra
               }}
             >
               {farmInfo.rewards.map((reward, idx) => (
-                <div key={idx} className="p-4">
-                  <div className={`text-white font-medium text-base mobile:text-xs`}>
+                <Div key={idx} className="p-4">
+                  <Div className={`text-white font-medium text-base mobile:text-xs`}>
                     {reward.userPendingReward ? toString(reward.userPendingReward) : 0} {reward.token?.symbol}
-                  </div>
-                  <div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-xs">
+                  </Div>
+                  <Div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-xs">
                     {prices?.[String(reward.token?.mint)] && reward?.userPendingReward
                       ? toUsdVolume(toTotalPrice(reward.userPendingReward, prices[String(reward.token?.mint)]))
                       : null}
-                  </div>
-                </div>
+                  </Div>
+                </Div>
               ))}
             </Grid>
-          </div>
+          </Div>
         ) : (
           <Div icss={cssRow()} className="flex-grow divide-x-1.5 w-full">
             {farmInfo.rewards?.map(
               (reward, idx) =>
                 reward.userHavedReward && (
-                  <div
+                  <Div
                     key={idx}
                     className={`px-4 ${idx === 0 ? 'pl-0' : ''} ${
                       idx === farmInfo.rewards.length - 1 ? 'pr-0' : ''
                     } border-[rgba(171,196,255,.5)]`}
                   >
-                    <div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-2xs mb-1">
+                    <Div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-2xs mb-1">
                       Pending rewards
-                    </div>
-                    <div className={`text-white font-medium text-base mobile:text-xs`}>
+                    </Div>
+                    <Div className={`text-white font-medium text-base mobile:text-xs`}>
                       {reward.userPendingReward ? toString(reward.userPendingReward) : 0} {reward.token?.symbol}
-                    </div>
-                    <div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-xs">
+                    </Div>
+                    <Div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-xs">
                       {prices?.[String(reward.token?.mint)] && reward?.userPendingReward
                         ? toUsdVolume(toTotalPrice(reward.userPendingReward, prices[String(reward.token?.mint)]))
                         : null}
-                    </div>
-                  </div>
+                    </Div>
+                  </Div>
                 )
             )}
           </Div>
@@ -1182,7 +1182,7 @@ function FarmDetailPanelItemContent({ farmInfo, ...divProps }: { farmInfo: Hydra
                   window.location.origin
                 ).toString()
               ).then(() => {
-                logSuccess('Copy Farm Link', <div>Farm ID: {toPubString(farmInfo.id)}</div>)
+                logSuccess('Copy Farm Link', <Div>Farm ID: {toPubString(farmInfo.id)}</Div>)
               })
             }}
           />
@@ -1283,9 +1283,9 @@ function FarmStakeLpDialog() {
         >
           {/* {String(info?.lpMint)} */}
           <Div icss={cssRow()} className="justify-between items-center mb-6">
-            <div className="text-xl font-semibold text-white">
+            <Div className="text-xl font-semibold text-white">
               {stakeDialogMode === 'withdraw' ? 'Unstake LP' : 'Stake LP'}
-            </div>
+            </Div>
             <Icon className="text-primary cursor-pointer" heroIconName="x" onClick={close} />
           </Div>
           {/* input-container-box */}
@@ -1370,13 +1370,13 @@ function CoinAvatarInfoItem({ info, className }: { info: HydratedFarmInfo | Farm
           token1={getToken(info.baseMint)}
           token2={getToken(info.quoteMint)}
         />
-        <div>
+        <Div>
           {getToken(info.baseMint) && (
-            <div className="mobile:text-xs font-medium mobile:mt-px mr-1.5">{`${
+            <Div className="mobile:text-xs font-medium mobile:mt-px mr-1.5">{`${
               getToken(info.baseMint)?.symbol ?? 'unknown'
-            }-${getToken(info.quoteMint)?.symbol ?? 'unknown'}`}</div>
+            }-${getToken(info.quoteMint)?.symbol ?? 'unknown'}`}</Div>
           )}
-        </div>
+        </Div>
       </Div>
     )
   }
@@ -1387,7 +1387,7 @@ function CoinAvatarInfoItem({ info, className }: { info: HydratedFarmInfo | Farm
       className={twMerge('flex-wrap items-center mobile:items-start gap-x-2 gap-y-1', className)}
     >
       <CoinAvatarPair className="justify-self-center mr-2" size={isMobile ? 'sm' : 'md'} token1={base} token2={quote} />
-      <div className="mobile:text-xs font-medium mobile:mt-px mr-1.5">{name}</div>
+      <Div className="mobile:text-xs font-medium mobile:mt-px mr-1.5">{name}</Div>
       {info.isClosedPool && <Badge cssColor="#DA2EEF">Inactive</Badge>}
       {isStable && <Badge>Stable</Badge>}
       {info.isDualFusionPool && info.version !== 6 && <Badge cssColor="#DA2EEF">Dual Yield</Badge>}
@@ -1411,10 +1411,10 @@ function TextInfoItem({
   const isMobile = useAppSettings((s) => s.isMobile)
   return (
     <Div icss={cssCol()} className={className}>
-      {isMobile && <div className=" mb-1 text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-2xs">{name}</div>}
+      {isMobile && <Div className=" mb-1 text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-2xs">{name}</Div>}
       <Div icss={cssCol()} className="flex-grow justify-center">
-        <div className="text-base mobile:text-xs">{value || '--'}</div>
-        {subValue && <div className="text-sm mobile:text-2xs text-[rgba(171,196,255,0.5)]">{subValue}</div>}
+        <Div className="text-base mobile:text-xs">{value || '--'}</Div>
+        {subValue && <Div className="text-sm mobile:text-2xs text-[rgba(171,196,255,0.5)]">{subValue}</Div>}
       </Div>
     </Div>
   )
@@ -1433,9 +1433,9 @@ function FarmCardTooltipPanelAddressItem({
     <Div icss={cssRow()} className={twMerge('grid w-full gap-2 items-center grid-cols-[1fr,auto]', className)}>
       <Div icss={cssRow()} className="text-xs font-normal text-white">
         {/* setting text-overflow empty string will make effect in FireFox, not Chrome */}
-        <div className="self-end overflow-hidden tracking-wide">{address.slice(0, 6)}</div>
-        <div className="tracking-wide">...</div>
-        <div className="overflow-hidden tracking-wide">{address.slice(-6)}</div>
+        <Div className="self-end overflow-hidden tracking-wide">{address.slice(0, 6)}</Div>
+        <Div className="tracking-wide">...</Div>
+        <Div className="overflow-hidden tracking-wide">{address.slice(-6)}</Div>
       </Div>
       <Div icss={cssRow()} className="gap-1 items-center">
         <Icon

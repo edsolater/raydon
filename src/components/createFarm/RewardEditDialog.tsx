@@ -16,7 +16,7 @@ import { twMerge } from 'tailwind-merge'
 import Card from '../../tempUikits/Card'
 import Dialog from '../../tempUikits/Dialog'
 import { RewardCardInputsHandler, RewardFormCardInputs, RewardFormCardInputsParams } from './RewardFormInputs'
-import { Div, cssRow } from '@/../../uikit/dist'
+import { Div, cssRow } from '@edsolater/uikit'
 
 export default function RewardInputDialog({
   cardTitle,
@@ -74,10 +74,10 @@ export default function RewardInputDialog({
           )}
           size="lg"
         >
-          <div className="font-semibold text-xl mobile:text-sm text-white mb-5">{cardTitle}</div>
+          <Div className="font-semibold text-xl mobile:text-sm text-white mb-5">{cardTitle}</Div>
 
           {reward.isRwardingBeforeEnd72h && (
-            <div className="border border-[rgba(171,196,255,0.2)] rounded-3xl p-6 mb-4">
+            <Div className="border border-[rgba(171,196,255,0.2)] rounded-3xl p-6 mb-4">
               <ol className="list-decimal ml-4 space-y-4 font-medium text-[#abc4ff80] text-sm">
                 <li>
                   You can add additional rewards to the farm 72 hrs prior to rewards ending, but this can only be done
@@ -92,7 +92,7 @@ export default function RewardInputDialog({
                   ends before starting a new period and rewards amount.
                 </li>
               </ol>
-            </div>
+            </Div>
           )}
           {cachedInputs}
 

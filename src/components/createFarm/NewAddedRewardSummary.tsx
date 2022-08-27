@@ -1,4 +1,4 @@
-import { cssCol, cssRow, Div } from '@/../../uikit/dist'
+import { cssCol, cssRow, Div } from '@edsolater/uikit'
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import { getRewardSignature } from '@/application/createFarm/parseRewardInfo'
 import { UIRewardInfo } from '@/application/createFarm/type'
@@ -81,7 +81,7 @@ export function NewAddedRewardSummary({
             <Div icss={cssCol()} className="h-full justify-center gap-1">
               <Div icss={cssRow()} className="gap-1 items-center">
                 <CoinAvatar token={reward.token} size="sm" />
-                <div>{reward.token?.symbol ?? 'UNKNOWN'}</div>
+                <Div>{reward.token?.symbol ?? 'UNKNOWN'}</Div>
               </Div>
               {(reward.isRewardEnded || reward.isRewardBeforeStart || reward.isRewarding) && (
                 <Div icss={cssRow()} className="gap-1 flex-wrap">
@@ -135,8 +135,8 @@ export function NewAddedRewardSummary({
             <Grid className={`gap-4 h-full`}>
               {reward?.startTime && reward.endTime ? (
                 <Div icss={cssCol()} className="grow justify-center">
-                  <div>{toUTC(reward.startTime)}</div>
-                  <div>{toUTC(reward.endTime)}</div>
+                  <Div>{toUTC(reward.startTime)}</Div>
+                  <Div>{toUTC(reward.endTime)}</Div>
                 </Div>
               ) : undefined}
             </Grid>
@@ -161,9 +161,9 @@ export function NewAddedRewardSummary({
             <Grid className={`gap-4 h-full`}>
               {originEstimatedValue && (
                 <Div icss={cssCol()} className="grow justify-center text-xs">
-                  <div>
+                  <Div>
                     {toString(originEstimatedValue)} {reward?.token?.symbol}/day
-                  </div>
+                  </Div>
                 </Div>
               )}
             </Grid>

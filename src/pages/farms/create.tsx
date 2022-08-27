@@ -26,7 +26,7 @@ import { twMerge } from 'tailwind-merge'
 import { NewRewardIndicatorAndForm } from '../../components/createFarm/NewRewardIndicatorAndForm'
 import { PoolIdInputBlock, PoolIdInputBlockHandle } from '../../components/createFarm/PoolIdInputBlock'
 import { useChainDate } from '../../hooks/useChainDate'
-import { Div, cssCol, cssRow } from '@/../../uikit/dist'
+import { Div, cssCol, cssRow } from '@edsolater/uikit'
 
 // unless ido have move this component, it can't be renamed or move to /components
 function StepBadge(props: { n: number }) {
@@ -35,7 +35,7 @@ function StepBadge(props: { n: number }) {
       wrapperClassName="w-8 h-8 mobile:w-6 mobile:h-6 flex-none"
       className="grid place-content-center bg-[#2f2c78]"
     >
-      <div className="font-semibold text-white mobile:text-xs">{props.n}</div>
+      <Div className="font-semibold text-white mobile:text-xs">{props.n}</Div>
     </CyberpunkStyleCard>
   )
 }
@@ -78,11 +78,11 @@ function WarningBoard({ className }: { className: string }) {
         <Card
           className={`p-6 mobile:p-4 grow mx-4 mobile:mx-0 my-2 rounded-3xl mobile:rounded-2xl ring-1 ring-inset ring-[#DA2EEF] bg-[#1B1659]`}
         >
-          <div className="mobile:text-sm font-medium text-base text-white mb-3">This tool is for advanced users!</div>
+          <Div className="mobile:text-sm font-medium text-base text-white mb-3">This tool is for advanced users!</Div>
 
-          <div className="font-medium text-sm mobile:text-xs text-[#ABC4FF80] mb-4">
+          <Div className="font-medium text-sm mobile:text-xs text-[#ABC4FF80] mb-4">
             Before attempting to create a new farm, we suggest going through the detailed guide.
-          </div>
+          </Div>
 
           <Div icss={cssRow()} className="gap-4">
             <Link href={detailedGuideHref}>
@@ -124,7 +124,7 @@ function FormStep({
     <Grid className="grid-cols-[1fr] gap-4">
       <Div icss={cssRow()} className="items-center gap-3">
         <StepBadge n={stepNumber} />
-        <div className="grow">{title}</div>
+        <Div className="grow">{title}</Div>
       </Div>
       <Div icss={cssCol()} className="grow">
         <Grid className="mb-10">{children}</Grid>
@@ -134,10 +134,10 @@ function FormStep({
     <Grid className="grid-cols-[auto,1fr] gap-4">
       <Div icss={cssCol()} className="items-center">
         <StepBadge n={stepNumber} />
-        <div className={`grow my-4 border-r-1.5 ${haveNavline ? 'border-[#abc4ff1a]' : 'border-transparent'} `} />
+        <Div className={`grow my-4 border-r-1.5 ${haveNavline ? 'border-[#abc4ff1a]' : 'border-transparent'} `} />
       </Div>
       <Div icss={cssCol()} className="grow">
-        <div className="ml-3 mb-5">{title}</div>
+        <Div className="ml-3 mb-5">{title}</Div>
         <Grid className="mb-16">{children}</Grid>
       </Div>
     </Grid>
@@ -189,19 +189,19 @@ export default function CreateFarmPage() {
     <PageLayout metaTitle="Farms - Raydium" mobileBarTitle="Create Farm">
       <NavButtons className="mb-8 mobile:mb-2 sticky z-10 top-0 mobile:bg-[#0f0b2f]" />
 
-      <div className={`pb-10 self-center transition-all duration-500 w-[min(720px,70vw)] mobile:w-[90vw]`}>
+      <Div className={`pb-10 self-center transition-all duration-500 w-[min(720px,70vw)] mobile:w-[90vw]`}>
         {!isMoblie && (
-          <div className="pb-8 text-2xl mobile:text-lg font-semibold justify-self-start text-white">Create Farm</div>
+          <Div className="pb-8 text-2xl mobile:text-lg font-semibold justify-self-start text-white">Create Farm</Div>
         )}
 
         <WarningBoard className="pb-16 mobile:pb-10 w-full" />
 
-        <div className="space-y-4">
+        <Div className="space-y-4">
           <FormStep
             stepNumber={1}
             title={
               <Div icss={cssRow()} className="justify-between items-center">
-                <div className="font-medium text-lg mobile:text-base text-white leading-8">Select Pool</div>
+                <Div className="font-medium text-lg mobile:text-base text-white leading-8">Select Pool</Div>
                 <Div
                   icss={cssRow()}
                   className={`justify-self-end  mobile:justify-self-auto gap-1 flex-wrap items-center opacity-100 pointer-events-auto clickable transition`}
@@ -223,14 +223,14 @@ export default function CreateFarmPage() {
             stepNumber={2}
             title={
               <>
-                <div className="font-medium text-lg mobile:text-base text-white leading-8 mb-1">Farming Reward</div>
+                <Div className="font-medium text-lg mobile:text-base text-white leading-8 mb-1">Farming Reward</Div>
                 <Div icss={cssRow()} className="text-sm mobile:text-xs">
-                  <div className="text-primary mr-2">Cluster time: </div>
+                  <Div className="text-primary mr-2">Cluster time: </Div>
                   <TimeClock className="text-[#abc4ff80]" offset={chainTimeOffset} />
                 </Div>
-                <div className="font-medium text-sm mobile:text-xs leading-snug text-[#abc4ff80]">
+                <Div className="font-medium text-sm mobile:text-xs leading-snug text-[#abc4ff80]">
                   This is Solana's current on-chain time, there could be a delay depending on Solana's network status
-                </div>
+                </Div>
               </>
             }
           >
@@ -249,20 +249,20 @@ export default function CreateFarmPage() {
             >
               <Div icss={cssRow()} className="items-center">
                 <Icon className="text-primary" heroIconName="plus-circle" size="sm" />
-                <div className="ml-1.5 text-primary font-medium mobile:text-sm">Add another reward token</div>
-                <div className="ml-1.5 text-[#abc4ff80] font-medium mobile:text-sm">({5 - rewards.length} more)</div>
+                <Div className="ml-1.5 text-primary font-medium mobile:text-sm">Add another reward token</Div>
+                <Div className="ml-1.5 text-[#abc4ff80] font-medium mobile:text-sm">({5 - rewards.length} more)</Div>
               </Div>
             </Button>
           </FormStep>
-        </div>
+        </Div>
 
         <Div icss={cssCol()} className="items-center ml-12 mobile:ml-0">
-          <div className="font-medium text-sm mobile:text-xs text-justify leading-snug text-[#abc4ff80] mb-8">
+          <Div className="font-medium text-sm mobile:text-xs text-justify leading-snug text-[#abc4ff80] mb-8">
             <span className="text-[#DA2EEF]">Please note: </span>Rewards allocated to farms are final and unused rewards
             cannot be claimed. However, you can add additional rewards to the farm. 300 RAY is collected as an Ecosystem
             farm creation fee, which will be deposited into the Raydium treasury. Token rewards should have a minimum
             duration period of at least 7 days and last no more than 90 days.
-          </div>
+          </Div>
 
           <Button
             className="frosted-glass-teal mobile:w-full"
@@ -378,12 +378,12 @@ export default function CreateFarmPage() {
             Review Farm
           </Button>
         </Div>
-      </div>
+      </Div>
     </PageLayout>
   )
 }
 
 function TimeClock({ offset, className }: { /* different of current date */ offset?: number; className?: string }) {
   useForceUpdate({ loop: 1000 * 15 })
-  return <div className={className}>{toUTC(offsetDateTime(Date.now(), { milliseconds: offset }))}</div>
+  return <Div className={className}>{toUTC(offsetDateTime(Date.now(), { milliseconds: offset }))}</Div>
 }

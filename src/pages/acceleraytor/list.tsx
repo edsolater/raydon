@@ -58,9 +58,9 @@ function AcceleRaytorHeaderCyberpunk() {
         className="items-center cyberpunk-bg-light-acceleraytor mobile:scale-75 mobile:translate-y-4"
       >
         <Image src="/logo/accecleraytor-text-logo.svg" />
-        <div className="text-[20px] mt-2 font-medium text-[#ABC4FF80] whitespace-nowrap">
+        <Div className="text-[20px] mt-2 font-medium text-[#ABC4FF80] whitespace-nowrap">
           A launchpad for new Solana projects
-        </div>
+        </Div>
       </Div>
     </Div>
   )
@@ -106,12 +106,12 @@ function IdoList() {
     <>
       {openPools.length > 0 && (
         <>
-          <div className="text-2xl mobile:text-base mobile:px-4 mb-6 mobile:mb-4 font-semibold text-white w-[min(890px,100%)] self-center">
+          <Div className="text-2xl mobile:text-base mobile:px-4 mb-6 mobile:mb-4 font-semibold text-white w-[min(890px,100%)] self-center">
             Open Pool{openPools.length > 1 ? 's' : ''}
-          </div>
+          </Div>
           <Div icss={cssCol()} className="gap-10 mobile:gap-8 w-[min(890px,100%)] mx-auto mobile:w-full">
             {openPools.map((info) => (
-              <div key={info.id}>
+              <Div key={info.id}>
                 <CyberpunkStyleCard>
                   <Collapse defaultOpen>
                     <Collapse.Face>{(open) => <AcceleRaytorCollapseItemFace open={open} info={info} />}</Collapse.Face>
@@ -120,7 +120,7 @@ function IdoList() {
                     </Collapse.Body>
                   </Collapse>
                 </CyberpunkStyleCard>
-              </div>
+              </Div>
             ))}
           </Div>
         </>
@@ -145,7 +145,7 @@ function IdoList() {
           icss={cssRow()}
           className="mobile:px-4 gap-6 mb-6 mobile:mb-4 justify-between w-[min(890px,100%)] self-center"
         >
-          <div className="text-2xl mobile:text-base font-semibold text-white">{currentTab}</div>
+          <Div className="text-2xl mobile:text-base font-semibold text-white">{currentTab}</Div>
           {currentTab === 'Closed Pools' && <IdoSearchBlock className="mobile:w-[12em]" />}
         </Div>
       )}
@@ -153,7 +153,7 @@ function IdoList() {
       <Div icss={cssCol()} className="gap-12 mobile:gap-8 w-[min(890px,100%)] mx-auto mobile:w-full">
         {upcomingOrClosedPoolItems.length > 0 ? (
           upcomingOrClosedPoolItems.map((info) => (
-            <div key={info.id}>
+            <Div key={info.id}>
               <CyberpunkStyleCard>
                 <Collapse defaultOpen={currentTab === 'Upcoming Pools'}>
                   <Collapse.Face>{(open) => <AcceleRaytorCollapseItemFace open={open} info={info} />}</Collapse.Face>
@@ -162,12 +162,12 @@ function IdoList() {
                   </Collapse.Body>
                 </Collapse>
               </CyberpunkStyleCard>
-            </div>
+            </Div>
           ))
         ) : (
-          <div className="text-xl mobile:text-lg text-[#ABC4FF80] mx-auto">
+          <Div className="text-xl mobile:text-lg text-[#ABC4FF80] mx-auto">
             ( {currentTab === 'Closed Pools' && searchText ? 'Searched Not Found' : 'Empty'} )
-          </div>
+          </Div>
         )}
       </Div>
     </>
@@ -211,7 +211,7 @@ function AcceleRaytorCollapseItemFace({ open, info }: { open: boolean; info: Hyd
   const getChainDate = useConnection((s) => s.getChainDate)
   const isCurrentAfter = (time: TimeStamp) => isDateAfter(getChainDate(), time)
   return (
-    <div
+    <Div
       className={`py-6 px-8 mobile:py-4 mobile:px-5 bg-[#141041]  rounded-t-3xl mobile:rounded-t-lg  ${
         open ? '' : 'rounded-b-3xl mobile:rounded-b-lg'
       }`}
@@ -224,10 +224,10 @@ function AcceleRaytorCollapseItemFace({ open, info }: { open: boolean; info: Hyd
             onClick={() => routeTo('/acceleraytor/detail', { queryProps: { idoId: info.id } })}
           >
             <CoinAvatar noCoinIconBorder size={isMobile ? 'md' : 'lg'} token={info.base} />
-            <div>
-              <div className="text-base mobile:text-sm font-semibold text-white">{info.baseSymbol}</div>
-              <div className="text-sm mobile:text-xs text-[#ABC4FF80]">{info.projectName}</div>
-            </div>
+            <Div>
+              <Div className="text-base mobile:text-sm font-semibold text-white">{info.baseSymbol}</Div>
+              <Div className="text-sm mobile:text-xs text-[#ABC4FF80]">{info.projectName}</Div>
+            </Div>
           </Div>
           {info.filled && (
             <Div
@@ -261,7 +261,7 @@ function AcceleRaytorCollapseItemFace({ open, info }: { open: boolean; info: Hyd
           className="mx-auto -mt-3 -mb-3 translate-y-3 mobile:mt-3 mobile:mb-0 clickable hover:brightness-110 "
         />
       )}
-    </div>
+    </Div>
   )
 }
 
@@ -342,7 +342,7 @@ function FaceButtonGroupClaim({ idoInfo }: { idoInfo: HydratedIdoInfo }) {
               should: idoInfo.canWithdrawBase,
               fallbackProps: {
                 children: (
-                  <div>
+                  <Div>
                     Claim {idoInfo.base?.symbol ?? 'UNKNOWN'} in{' '}
                     <IdoCountDownClock
                       className="justify-center"
@@ -351,7 +351,7 @@ function FaceButtonGroupClaim({ idoInfo }: { idoInfo: HydratedIdoInfo }) {
                       endTime={Number(idoInfo.startWithdrawTime)}
                       onEnd={forceUpdate}
                     />
-                  </div>
+                  </Div>
                 )
               }
             }
@@ -374,9 +374,9 @@ function FaceButtonGroupClaim({ idoInfo }: { idoInfo: HydratedIdoInfo }) {
         </Button>
         <FadeIn>
           {gt(idoInfo.winningTickets?.length, 0) && eq(idoInfo.ledger?.baseWithdrawn, 0) && (
-            <div className="text-xs mt-1 font-semibold text-[#ABC4FF80]">
+            <Div className="text-xs mt-1 font-semibold text-[#ABC4FF80]">
               {idoInfo.winningTickets?.length} winning tickets
-            </div>
+            </Div>
           )}
         </FadeIn>
       </Div>
@@ -416,9 +416,9 @@ function FaceButtonGroupClaim({ idoInfo }: { idoInfo: HydratedIdoInfo }) {
         </Button>
         <FadeIn>
           {eq(idoInfo.ledger?.quoteWithdrawn, 0) && (
-            <div className="text-xs mt-1 font-semibold text-[#ABC4FF80]">
+            <Div className="text-xs mt-1 font-semibold text-[#ABC4FF80]">
               {(idoInfo.depositedTickets?.length ?? 0) - (idoInfo.winningTickets?.length ?? 0)} non-winning tickets
-            </div>
+            </Div>
           )}
         </FadeIn>
       </Div>
@@ -430,37 +430,37 @@ function AcceleRaytorCollapseItemContent({ info }: { info: HydratedIdoInfo }) {
   const getChainDate = useConnection((s) => s.getChainDate)
   const refreshIdo = useIdo((s) => s.refreshIdo)
   return (
-    <div className="p-6 mobile:p-3">
+    <Div className="p-6 mobile:p-3">
       {<IdoItemCardStakeChip info={info} />}
       <Div
         icss={cssRow()}
         className="flex-wrap gap-6 mobile:gap-3 rounded-b-3xl mobile:rounded-b-lg  bg-cyberpunk-card-bg items-center"
       >
-        <div className={`relative w-[360px] mobile:w-full max-h-[192px] mobile:h-[106px] rounded-xl overflow-hidden`}>
+        <Div className={`relative w-[360px] mobile:w-full max-h-[192px] mobile:h-[106px] rounded-xl overflow-hidden`}>
           <Image
             src={info.projectPosters}
             className={`shrink-0 mobile:h-full mobile:w-full object-contain mobile:object-cover clickable`}
             onClick={() => routeTo('/acceleraytor/detail', { queryProps: { idoId: info.id } })}
           />
           {!isMobile && (
-            <div className="bg-[#141041cc] absolute bottom-0 w-full  ">
+            <Div className="bg-[#141041cc] absolute bottom-0 w-full  ">
               <Div icss={cssRow()} className="py-1 justify-center items-center">
                 <Icon className="mr-2" iconSrc="/icons/acceleraytor-list-medium.svg" />
                 <Link href={info.projectDetailLink} className="text-[#ABC4FF80] font-medium text-xs">
                   Read Full Details
                 </Link>
               </Div>
-            </div>
+            </Div>
           )}
-        </div>
+        </Div>
         <Div icss={cssCol()} className="grow justify-between">
-          <div className="grid grid-flow-row grid-cols-2 mobile:grid-cols-1 mobile:gap-board px-6 mobile:p-0">
+          <Div className="grid grid-flow-row grid-cols-2 mobile:grid-cols-1 mobile:gap-board px-6 mobile:p-0">
             <IdoItem
               fieldName="Total Raise"
               fieldValue={
                 <Div icss={cssRow()} className="items-baseline gap-1">
-                  <div className="text-white font-medium">{formatNumber(toString(info.totalRaise))}</div>
-                  <div className="text-[#ABC4FF80] font-medium text-xs">{info.baseSymbol}</div>
+                  <Div className="text-white font-medium">{formatNumber(toString(info.totalRaise))}</Div>
+                  <Div className="text-[#ABC4FF80] font-medium text-xs">{info.baseSymbol}</Div>
                 </Div>
               }
             />
@@ -468,10 +468,10 @@ function AcceleRaytorCollapseItemContent({ info }: { info: HydratedIdoInfo }) {
               fieldName={`Per ${info.base?.symbol ?? 'UNKNOWN'}`}
               fieldValue={
                 <Div icss={cssRow()} className="items-baseline gap-1">
-                  <div className="text-white font-medium">
+                  <Div className="text-white font-medium">
                     {formatNumber(toString(info.coinPrice), { fractionLength: 'auto' })}
-                  </div>
-                  <div className="text-[#ABC4FF80] font-medium text-xs">{info.quote?.symbol ?? 'UNKNOWN'}</div>
+                  </Div>
+                  <Div className="text-[#ABC4FF80] font-medium text-xs">{info.quote?.symbol ?? 'UNKNOWN'}</Div>
                 </Div>
               }
             />
@@ -479,8 +479,8 @@ function AcceleRaytorCollapseItemContent({ info }: { info: HydratedIdoInfo }) {
               fieldName={`Total tickets deposited`}
               fieldValue={
                 <Div icss={cssRow()} className="items-baseline gap-1">
-                  <div className="text-white font-medium">{formatNumber(info.depositedTicketCount)}</div>
-                  <div className="text-[#ABC4FF80] font-medium text-xs">Tickets</div>
+                  <Div className="text-white font-medium">{formatNumber(info.depositedTicketCount)}</Div>
+                  <Div className="text-[#ABC4FF80] font-medium text-xs">Tickets</Div>
                 </Div>
               }
             />
@@ -488,10 +488,10 @@ function AcceleRaytorCollapseItemContent({ info }: { info: HydratedIdoInfo }) {
               fieldName={`Allocation / Winning Ticket`}
               fieldValue={
                 <Div icss={cssRow()} className="items-baseline gap-1">
-                  <div className="text-white font-medium">
+                  <Div className="text-white font-medium">
                     {formatNumber(toString(info.ticketPrice), { fractionLength: 'auto' })}
-                  </div>
-                  <div className="text-[#ABC4FF80] font-medium text-xs">{info.quote?.symbol ?? 'UNKNOWN'}</div>
+                  </Div>
+                  <Div className="text-[#ABC4FF80] font-medium text-xs">{info.quote?.symbol ?? 'UNKNOWN'}</Div>
                 </Div>
               }
             />
@@ -501,8 +501,8 @@ function AcceleRaytorCollapseItemContent({ info }: { info: HydratedIdoInfo }) {
                 <Div icss={cssRow()} className="items-baseline gap-1">
                   {isDateBefore(getChainDate(), info.startTime) ? (
                     <>
-                      <div className="text-[#ABC4FF80] font-medium text-xs">in</div>
-                      <div className="text-white font-medium">
+                      <Div className="text-[#ABC4FF80] font-medium text-xs">in</Div>
+                      <Div className="text-white font-medium">
                         <IdoCountDownClock
                           endTime={info.startTime}
                           onEnd={() => {
@@ -511,12 +511,12 @@ function AcceleRaytorCollapseItemContent({ info }: { info: HydratedIdoInfo }) {
                             }, 1000)
                           }}
                         />
-                      </div>
+                      </Div>
                     </>
                   ) : (
                     <>
-                      <div className="text-white font-medium">{toUTC(info.startTime, { hideUTCBadge: true })}</div>
-                      <div className="text-[#ABC4FF80] font-medium text-xs">{'UTC'}</div>
+                      <Div className="text-white font-medium">{toUTC(info.startTime, { hideUTCBadge: true })}</Div>
+                      <Div className="text-[#ABC4FF80] font-medium text-xs">{'UTC'}</Div>
                     </>
                   )}
                 </Div>
@@ -528,8 +528,8 @@ function AcceleRaytorCollapseItemContent({ info }: { info: HydratedIdoInfo }) {
                 <Div icss={cssRow()} className="items-baseline gap-1">
                   {isDateBefore(getChainDate(), info.endTime) ? (
                     <>
-                      <div className="text-[#ABC4FF80] font-medium text-xs">in</div>
-                      <div className="text-white font-medium">
+                      <Div className="text-[#ABC4FF80] font-medium text-xs">in</Div>
+                      <Div className="text-white font-medium">
                         <IdoCountDownClock
                           endTime={info.endTime}
                           onEnd={() => {
@@ -538,22 +538,22 @@ function AcceleRaytorCollapseItemContent({ info }: { info: HydratedIdoInfo }) {
                             }, 1000)
                           }}
                         />
-                      </div>
+                      </Div>
                     </>
                   ) : (
                     <>
-                      <div className="text-white font-medium">{toUTC(info.endTime, { hideUTCBadge: true })}</div>
-                      <div className="text-[#ABC4FF80] font-medium text-xs">{'UTC'}</div>
+                      <Div className="text-white font-medium">{toUTC(info.endTime, { hideUTCBadge: true })}</Div>
+                      <Div className="text-[#ABC4FF80] font-medium text-xs">{'UTC'}</Div>
                     </>
                   )}
                 </Div>
               }
             />
-          </div>
+          </Div>
         </Div>
         <IdoItemCardContentButtonGroup className="w-full" info={info} />
       </Div>
-    </div>
+    </Div>
   )
 }
 function IdoItemCardStakeChip({ info }: { info: HydratedIdoInfo }) {
@@ -564,10 +564,10 @@ function IdoItemCardStakeChip({ info }: { info: HydratedIdoInfo }) {
   return (
     <Div icss={cssRow()} className={`AlertText items-center bg-[#abc4ff1a] p-3 rounded-xl mb-6`}>
       <Icon className="flex-none text-[#ABC4FF80] mr-2" size="sm" heroIconName="exclamation-circle" />
-      <div className="text-[#ABC4FF80] font-medium text-xs">
+      <Div className="text-[#ABC4FF80] font-medium text-xs">
         To be eligible for the lottery, you need to <span className="text-primary">stake 100 RAY</span> with a deadline
         of <span className="text-primary">{toUTC(info.stakeTimeEnd)}</span>.
-      </div>
+      </Div>
       <Button
         className="frosted-glass-skygray ml-auto"
         size="xs"
@@ -610,14 +610,14 @@ function IdoItemCardContentButtonGroup({ className, info }: { className?: string
         <IdoItem
           fieldValue={
             <Div icss={cssRow()} className="items-baseline gap-1">
-              <div className="text-white font-medium">
+              <Div className="text-white font-medium">
                 {toString(stakingHydratedInfo?.userStakedLpAmount) || '--'} RAY
-              </div>
+              </Div>
             </Div>
           }
           fieldName={
             <Div icss={cssRow()} className="gap-1 items-center">
-              <div className="text-xs font-bold text-[#ABC4FF80]">Your staking</div>
+              <Div className="text-xs font-bold text-[#ABC4FF80]">Your staking</Div>
             </Div>
           }
         />
@@ -645,9 +645,9 @@ function IdoItemCardContentButtonGroup({ className, info }: { className?: string
             Stake
           </Button>
 
-          <div className="text-xs text-center text-[#ABC4FF80] my-1">
+          <Div className="text-xs text-center text-[#ABC4FF80] my-1">
             APR: {toPercentString(stakingHydratedInfo?.totalApr7d)}
-          </div>
+          </Div>
         </Div>
       </Div>
     ) : null
@@ -681,13 +681,13 @@ function IdoItem({ fieldName, fieldValue }: { fieldName?: ReactNode; fieldValue?
 
   return isMobile ? (
     <Grid className="grid-cols-[3fr,4fr] items-center py-3 px-2 gap-8">
-      <div className="text-xs font-bold text-[#ABC4FF80]">{fieldName}</div>
-      <div className="text-sm font-semibold text-white">{fieldValue}</div>
+      <Div className="text-xs font-bold text-[#ABC4FF80]">{fieldName}</Div>
+      <Div className="text-sm font-semibold text-white">{fieldValue}</Div>
     </Grid>
   ) : (
-    <div className={`top-info-panel-field-item py-3`}>
-      <div>{fieldValue}</div>
-      <div className="text-primary font-bold text-xs opacity-50 mt-1">{fieldName}</div>
-    </div>
+    <Div className={`top-info-panel-field-item py-3`}>
+      <Div>{fieldValue}</Div>
+      <Div className="text-primary font-bold text-xs opacity-50 mt-1">{fieldName}</Div>
+    </Div>
   )
 }

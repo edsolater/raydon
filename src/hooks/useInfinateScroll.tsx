@@ -16,9 +16,9 @@ type UseInfinateScrollOptions<T> = {
 }
 
 /**
- * with it , scrollable `<div>` can easily render infinite items
+ * with it , scrollable `<Div>` can easily render infinite items
  *
- * @param ref scrill `<div>`'s ref
+ * @param ref scrill `<Div>`'s ref
  * @param options options about infinite scroll
  * @returns render item count (component apply infinite scroll should only render "count" item)
  */

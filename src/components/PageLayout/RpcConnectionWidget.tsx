@@ -5,7 +5,7 @@ import { Badge } from '../../tempUikits/Badge'
 import Button from '../../tempUikits/Button'
 import Icon from '../Icon'
 import Input from '../../tempUikits/Input'
-import { Div, cssRow } from '@/../../uikit/dist'
+import { Div, cssRow } from '@edsolater/uikit'
 
 export function RpcConnectionFace() {
   const currentEndPoint = useConnection((s) => s.currentEndPoint)
@@ -15,20 +15,20 @@ export function RpcConnectionFace() {
   const isMobile = useAppSettings((s) => s.isMobile)
 
   return (
-    <div className="block py-4 mobile:py-3 px-8 pl-6 mobile:px-5 hover:bg-[rgba(57,208,216,0.1)] active:bg-[rgba(41,157,163,0.3)] cursor-pointer group">
+    <Div className="block py-4 mobile:py-3 px-8 pl-6 mobile:px-5 hover:bg-[rgba(57,208,216,0.1)] active:bg-[rgba(41,157,163,0.3)] cursor-pointer group">
       <Div icss={cssRow()} className="items-center w-full mobile:justify-center">
-        <div className="h-4 w-4 mobile:w-3 mobile:h-3 grid place-items-center mr-3 ">
+        <Div className="h-4 w-4 mobile:w-3 mobile:h-3 grid place-items-center mr-3 ">
           {isLoading ? (
             <Icon iconClassName="h-4 w-4 mobile:w-3 mobile:h-3" iconSrc="/icons/loading-dual.svg" />
           ) : (
-            <div
+            <Div
               className={`w-1.5 h-1.5 mobile:w-1 mobile:h-1 bg-[#2de680] text-[#2de680] rounded-full`}
               style={{
                 boxShadow: '0 0 6px 1px currentColor'
               }}
             />
           )}
-        </div>
+        </Div>
         <span
           className="text-[rgba(172,227,229)] text-sm mobile:text-xs font-medium flex-grow overflow-ellipsis overflow-hidden"
           title={currentEndPoint?.url}
@@ -43,7 +43,7 @@ export function RpcConnectionFace() {
         </span>
         <Icon size={isMobile ? 'xs' : 'sm'} heroIconName="chevron-right" iconClassName="text-[#ACE3E6]" />
       </Div>
-    </div>
+    </Div>
   )
 }
 export function RpcConnectionPanelPopover({ close: closePanel }: { close: () => void }) {
@@ -59,10 +59,10 @@ export function RpcConnectionPanelPopover({ close: closePanel }: { close: () => 
 
   return (
     <>
-      <div className="pt-3 -mb-1 mobile:mb-2 px-6 mobile:px-3 text-[rgba(171,196,255,0.5)] text-xs mobile:text-sm">
+      <Div className="pt-3 -mb-1 mobile:mb-2 px-6 mobile:px-3 text-[rgba(171,196,255,0.5)] text-xs mobile:text-sm">
         RPC CONNECTION
-      </div>
-      <div className="gap-3 divide-y-1.5">
+      </Div>
+      <Div className="gap-3 divide-y-1.5">
         {availableEndPoints.map((endPoint) => {
           const isCurrentEndPoint = currentEndPoint?.url === endPoint.url
           return (
@@ -159,7 +159,7 @@ export function RpcConnectionPanelPopover({ close: closePanel }: { close: () => 
             Switch
           </Button>
         </Div>
-      </div>
+      </Div>
     </>
   )
 }

@@ -50,6 +50,7 @@ import WalletSelectorDialog from '@/components/dialogs/WalletSelectorDialog'
 
 import '../styles/index.css'
 import NoSsr from '@/components/NoSsr'
+import { Div } from '@/../../uikit/dist'
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const { pathname } = useRouter()
@@ -84,7 +85,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <ClientInitialization />
         {pathname !== '/' && <ApplicationsInitializations />}
 
-        <div id="app">
+        <Div htmlProps={{ id: 'app' }}>
           <NextNProgress color="#34ade5" showOnShallow={false} />
 
           {/* Page Components */}
@@ -94,7 +95,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           <RecentTransactionDialog />
           <WalletSelectorDialog />
           <NotificationSystemStack />
-        </div>
+        </Div>
       </SolanaWalletProviders>
     </NoSsr>
   )

@@ -1,4 +1,4 @@
-import { cssCol, Div } from '@/../../uikit/dist'
+import { cssCol, Div } from '@edsolater/uikit'
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import useNotification from '@/application/notification/useNotification'
 import { ReactNode, useEffect, useMemo, useState } from 'react'
@@ -57,9 +57,9 @@ export default function NotificationSystemStack() {
           type: options?.isSuccess ? 'success' : 'info',
           title: title ?? 'Transaction sent',
           description: (
-            <div>
+            <Div>
               View on <Link href={`https://solscan.io/tx/${txid}`}>Solscan</Link>
-            </div>
+            </Div>
           )
         })
       },

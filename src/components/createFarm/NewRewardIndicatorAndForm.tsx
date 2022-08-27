@@ -8,6 +8,7 @@ import { RewardFormCard } from '../../pages/farms/create'
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import { UIRewardInfo } from '@/application/createFarm/type'
 import RewardInputDialog from './RewardEditDialog'
+import { Div } from '@/../../uikit/dist'
 
 export function NewRewardIndicatorAndForm({ className }: { className?: string }) {
   const rewards = useCreateFarms((s) => s.rewards)
@@ -28,9 +29,9 @@ export function NewRewardIndicatorAndForm({ className }: { className?: string })
   if (!newRewards.length) return null
 
   return (
-    <div className={className}>
+    <Div className={className}>
       {newRewards.length >= 2 && (
-        <div className={`${activeReward ? 'pb-8' : 'pb-2'}`}>
+        <Div className={`${activeReward ? 'pb-8' : 'pb-2'}`}>
           <NewAddedRewardSummary
             canUserEdit
             activeReward={activeReward}
@@ -44,7 +45,7 @@ export function NewRewardIndicatorAndForm({ className }: { className?: string })
               }
             }}
           />
-        </div>
+        </Div>
       )}
       <Grid className="grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-8">
         <FadeIn>
@@ -64,6 +65,6 @@ export function NewRewardIndicatorAndForm({ className }: { className?: string })
           onClose={() => setFocusReward(undefined)}
         />
       )}
-    </div>
+    </Div>
   )
 }

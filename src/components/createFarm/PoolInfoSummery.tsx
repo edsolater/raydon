@@ -12,7 +12,7 @@ import Tooltip from '@/tempUikits/Tooltip'
 import toPubString from '@/functions/format/toMintString'
 import toPercentString from '@/functions/format/toPercentString'
 import toUsdVolume from '@/functions/format/toUsdVolume'
-import { Div, cssCol, cssRow } from '@/../../uikit/dist'
+import { Div, cssCol, cssRow } from '@edsolater/uikit'
 
 export function PoolInfoSummary() {
   const poolId = useCreateFarms((s) => s.poolId)
@@ -46,14 +46,14 @@ export function PoolInfoSummary() {
           label: 'APR',
           renderLabel: () => (
             <Div icss={cssRow()}>
-              <div>APR</div>
+              <Div>APR</Div>
               <Tooltip>
                 <Icon className="ml-1" size="sm" heroIconName="question-mark-circle" />
                 <Tooltip.Panel>
-                  <div className="max-w-[300px]">
+                  <Div className="max-w-[300px]">
                     APR based on trading fees earned by the pool in the past 30D. Farming reward APR will be calculated
                     once the farm is live and users have staked.
-                  </div>
+                  </Div>
                 </Tooltip.Panel>
               </Tooltip>
             </Div>
@@ -65,14 +65,14 @@ export function PoolInfoSummary() {
           return item.id ? (
             <Div icss={cssRow()} className="gap-1 items-center">
               <CoinAvatarPair token1={item.pool?.baseToken} token2={item.pool?.quoteToken} size="sm" />
-              <div>
-                <div>
+              <Div>
+                <Div>
                   {item.pool?.baseToken?.symbol ?? 'UNKNOWN'}-{item.pool?.quoteToken?.symbol ?? 'UNKNOWN'}
-                </div>
+                </Div>
                 <AddressItem showDigitCount={8} textClassName="text-[#abc4ff80] text-xs" canCopy={false}>
                   {toPubString(item.pool?.id)}
                 </AddressItem>
-              </div>
+              </Div>
             </Div>
           ) : (
             '--'

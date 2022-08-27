@@ -6,6 +6,7 @@ import { shrinkToValue } from '@/functions/shrinkToValue'
 import useBFlag from '@/hooks/useBFlag'
 
 import RadioGroup, { RadioGroupProps } from './RadioGroup'
+import { Div } from '@/../../uikit/dist'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface TabWithPanelProps<T extends string = string>
@@ -67,7 +68,7 @@ export default function TabWithPanel<T extends string = string>({
   const isMoveByCode = useBFlag()
 
   return (
-    <div className={`Tab-with-panel text ${className ?? ''}`}>
+    <Div className={`Tab-with-panel text ${className ?? ''}`}>
       <RadioGroup
         values={values}
         className={`grid grid-cols-auto-fit ${tabGroupClassName ?? ''}`}
@@ -84,28 +85,30 @@ export default function TabWithPanel<T extends string = string>({
           setcurrentValue(v)
         }}
       />
-      <div
-        ref={panelRef}
+      <Div
+        domRef={panelRef}
         className="panel-content flex overflow-x-scroll overflow-y-hidden no-scrollbar"
         style={{ scrollSnapType: 'x mandatory' }}
-        onWheel={isMoveByCode.off}
-        onPointerDown={isMoveByCode.off}
-        onScroll={({ target }) => {
-          if (isMoveByCode.value) return
-          const currentScrollLeft = (target as HTMLDivElement).scrollLeft
-          const differents = Object.fromEntries(
-            values.map((value, idx) => [
-              Math.abs(idx * (target as HTMLDivElement).clientWidth - currentScrollLeft),
-              value
-            ])
-          )
-          const nearistValue = findMinimum(differents)
-          setcurrentValue(nearistValue)
+        htmlProps={{
+          onWheel: isMoveByCode.off,
+          onPointerDown: isMoveByCode.off,
+          onScroll: ({ target }) => {
+            if (isMoveByCode.value) return
+            const currentScrollLeft = (target as HTMLDivElement).scrollLeft
+            const differents = Object.fromEntries(
+              values.map((value, idx) => [
+                Math.abs(idx * (target as HTMLDivElement).clientWidth - currentScrollLeft),
+                value
+              ])
+            )
+            const nearistValue = findMinimum(differents)
+            setcurrentValue(nearistValue)
+          }
         }}
       >
         {TabPanels}
-      </div>
-    </div>
+      </Div>
+    </Div>
   )
 }
 
@@ -120,9 +123,9 @@ function TabPanel({
 }) {
   if (!$isRenderByMain) return null
   return (
-    <div className={`Tab-panel w-full flex-shrink-0 ${className ?? ''}`} style={{ scrollSnapAlign: 'start' }}>
+    <Div className={`Tab-panel w-full flex-shrink-0 ${className ?? ''}`} style={{ scrollSnapAlign: 'start' }}>
       {children}
-    </div>
+    </Div>
   )
 }
 

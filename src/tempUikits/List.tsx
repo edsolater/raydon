@@ -1,4 +1,4 @@
-import { cssCol, Div } from '@/../../uikit/dist'
+import { cssCol, Div, DivProps } from '@edsolater/uikit'
 import addPropsToReactElement from '@/functions/react/addPropsToReactElement'
 import mergeRef from '@/functions/react/mergeRef'
 import { pickReactChildren } from '@/functions/react/pickChild'
@@ -87,13 +87,13 @@ List.Item = function ListItem({
   $isRenderByMain?: boolean
   children?: ReactNode
   className?: string
-  style?: CSSProperties
+  style?: DivProps['style']
   domRef?: RefObject<any>
 }) {
   if (!$isRenderByMain) return null
   return (
-    <div className={`ListItem w-full ${className}`} ref={domRef} style={style}>
+    <Div className={`ListItem w-full ${className}`} domRef={domRef} style={style}>
       {children}
-    </div>
+    </Div>
   )
 }

@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 
 import { WalletAdapter, WalletReadyState } from '@solana/wallet-adapter-base'
 
-import { cssCol, cssRow, Div } from '@/../../uikit/dist'
+import { cssCol, cssRow, Div } from '@edsolater/uikit'
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import useWallet from '@/application/wallet/useWallet'
 import Icon from '@/components/Icon'
@@ -38,7 +38,7 @@ function WalletSelectorPanelItem({
       }}
     >
       <Icon className="shrink-0" size={isMobile ? 'md' : 'lg'} iconSrc={wallet.adapter.icon} />
-      <div className="mobile:text-sm text-base font-bold text-white">{wallet.adapter.name}</div>
+      <Div className="mobile:text-sm text-base font-bold text-white">{wallet.adapter.name}</Div>
       {/* {installed && (
         <Badge
           noOutline
@@ -61,7 +61,7 @@ function SimulateWallet({ onClick }: { onClick?(): void }) {
       icss={cssCol()}
       className="p-6 mobile:py-3 mobile:px-4 flex-grow ring-inset ring-1.5 mobile:ring-1 ring-[rgba(171,196,255,.5)] rounded-3xl mobile:rounded-xl items-center gap-3 m-8 mt-2 mb-4"
     >
-      <div className="mobile:text-sm text-base font-bold text-white">Simulate Wallet Address</div>
+      <Div className="mobile:text-sm text-base font-bold text-white">Simulate Wallet Address</Div>
       <Input
         className="w-full"
         onUserInput={(value) => (valueRef.current = value)}
@@ -126,7 +126,7 @@ function PanelContent({
       size="lg"
     >
       <Div icss={cssRow()} className="items-center justify-between px-8 py-8">
-        <div className="text-xl font-semibold text-white">Connect your wallet to Raydium</div>
+        <Div className="text-xl font-semibold text-white">Connect your wallet to Raydium</Div>
         <Icon className="text-primary cursor-pointer" heroIconName="x" onClick={close} />
       </Div>
 
@@ -140,9 +140,9 @@ function PanelContent({
         ))}
       </Grid>
 
-      <div className={`flex-1 ${isAllWalletShown ? 'mt-4' : ''} h-32 overflow-auto no-native-scrollbar`}>
+      <Div className={`flex-1 ${isAllWalletShown ? 'mt-4' : ''} h-32 overflow-auto no-native-scrollbar`}>
         <FadeInStable show={isAllWalletShown}>
-          <div className="overflow-auto pt-8 no-native-scrollbar h-full" style={{ scrollbarGutter: 'always' }}>
+          <Div className="overflow-auto pt-8 no-native-scrollbar h-full" style={{ scrollbarGutter: 'always' }}>
             <Grid className="flex-1 px-8 justify-items-stretch mobile:px-6 pb-4 overflow-auto gap-x-6 gap-y-3 mobile:gap-2 grid-cols-2 mobile:grid-cols-[1fr,1fr]">
               {notInstalledWallets.map((wallet) => (
                 <WalletSelectorPanelItem
@@ -154,25 +154,25 @@ function PanelContent({
               ))}
             </Grid>
             {(isInLocalhost || isInBonsaiTest) && <SimulateWallet onClick={close} />}
-          </div>
+          </Div>
         </FadeInStable>
-      </div>
+      </Div>
 
       <Div
         icss={cssRow()}
         className="m-4 text-primary justify-center items-center clickable"
         onClick={() => setIsAllWalletShown((b) => !b)}
       >
-        <div className="font-bold">Show uninstalled wallets</div>
+        <Div className="font-bold">Show uninstalled wallets</Div>
         <Icon className="mx-2" size="sm" heroIconName={isAllWalletShown ? 'chevron-up' : 'chevron-down'}></Icon>
       </Div>
 
-      <div className="py-4 text-center font-medium text-sm border-t-1.5 border-[rgba(171,196,255,0.2)]">
+      <Div className="py-4 text-center font-medium text-sm border-t-1.5 border-[rgba(171,196,255,0.2)]">
         New here?{' '}
         <Link href="https://raydium.gitbook.io/raydium/" className="text-primary">
           Get started on Raydium!
         </Link>
-      </div>
+      </Div>
     </Card>
   )
 }

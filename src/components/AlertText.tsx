@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 
-import { Div } from '@/../../uikit/dist'
+import { Div } from '@edsolater/uikit'
 import Icon, { IconProps } from '@/components/Icon'
 
 /**
@@ -18,7 +18,7 @@ export default function AlertText({
   return (
     <Div className={`AlertText grid grid-flow-col gap-2 items-center ${className}`}>
       <Icon className="flex-shrink-0" size={iconSize} heroIconName="exclamation-circle" />
-      <div>{children}</div>
+      <Div>{children}</Div>
     </Div>
   )
 }

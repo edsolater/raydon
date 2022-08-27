@@ -8,6 +8,7 @@ import useAppSettings from '@/application/appSettings/useAppSettings'
 import { shrinkToValue } from '@/functions/shrinkToValue'
 import useTwoStateSyncer from '@/hooks/use2StateSyncer'
 import { MayFunction } from '@/types/generics'
+import { Div, DivProps } from '@/../../uikit/dist'
 
 export interface DialogProps {
   open: boolean

@@ -1,4 +1,4 @@
-import { Div, cssRow } from '@/../../uikit/dist'
+import { Div, cssRow } from '@edsolater/uikit'
 import DropdownTabs, { DropdownTabProps } from './DropdownTabs'
 import RowTabs, { RowTabProps } from './RowTabs'
 

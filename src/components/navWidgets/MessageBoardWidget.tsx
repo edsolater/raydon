@@ -1,4 +1,4 @@
-import { cssCol, cssRow, Div } from '@/../../uikit/dist'
+import { cssCol, cssRow, Div } from '@edsolater/uikit'
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import { MessageBoardItem } from '@/application/messageBoard/type'
 import useMessageBoard from '@/application/messageBoard/useMessageBoard'
@@ -29,16 +29,16 @@ function MessageItem({
       onClick={onClick}
     >
       <Div icss={cssRow()} className="gap-4 items-center">
-        <div className={`text-primary ${haveReaded ? 'opacity-40' : 'opacity-80'} font-semibold`}>{item.title}</div>
+        <Div className={`text-primary ${haveReaded ? 'opacity-40' : 'opacity-80'} font-semibold`}>{item.title}</Div>
         <Icon
           size="sm"
           className={`text-primary ${haveReaded ? 'opacity-40' : 'hidden'}`}
           heroIconName="check-circle"
         />
       </Div>
-      <div className={`text-[rgb(171,196,255)] ${haveReaded ? 'opacity-40' : 'opacity-80'} text-xs`}>
+      <Div className={`text-[rgb(171,196,255)] ${haveReaded ? 'opacity-40' : 'opacity-80'} text-xs`}>
         {item.summary}
-      </div>
+      </Div>
     </Div>
   )
 }
@@ -56,11 +56,11 @@ export default function MessageBoardWidget() {
         alwaysPopper
         popupPlacement="bottom-right"
         renderPopoverContent={({ close: closePanel }) => (
-          <div>
-            <div className="pt-3 -mb-1 mobile:mb-2 px-6 text-[rgba(171,196,255,0.5)] text-xs mobile:text-sm">
+          <Div>
+            <Div className="pt-3 -mb-1 mobile:mb-2 px-6 text-[rgba(171,196,255,0.5)] text-xs mobile:text-sm">
               Raydium Message Board
-            </div>
-            <div className="gap-3 divide-y-1.5 p-4">
+            </Div>
+            <Div className="gap-3 divide-y-1.5 p-4">
               {messageBoardItems.map((item) => (
                 <MessageItem
                   key={item.title + item.updatedAt}
@@ -72,8 +72,8 @@ export default function MessageBoardWidget() {
                   }}
                 />
               ))}
-            </div>
-          </div>
+            </Div>
+          </Div>
         )}
       >
         <Icon
@@ -100,14 +100,14 @@ export default function MessageBoardWidget() {
             size="lg"
           >
             <Div icss={cssRow()} className="justify-between items-center mb-6">
-              <div className="text-3xl font-semibold text-white">{currentMessageBoardItem?.title}</div>
+              <Div className="text-3xl font-semibold text-white">{currentMessageBoardItem?.title}</Div>
               <Icon className="text-primary cursor-pointer" heroIconName="x" onClick={close} />
             </Div>
-            <div className="overflow-y-auto my-4">
+            <Div className="overflow-y-auto my-4">
               <Markdown className="my-6 whitespace-pre-line mobile:text-sm">
                 {currentMessageBoardItem?.details ?? ''}
               </Markdown>
-            </div>
+            </Div>
 
             <Button className="frosted-glass-teal" onClick={close}>
               Mark as Read

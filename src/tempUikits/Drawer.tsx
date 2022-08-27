@@ -1,4 +1,4 @@
-import React, { Fragment, ReactNode, useEffect, useRef, useState } from 'react'
+import React, { CSSProperties, Fragment, ReactNode, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 
 import { Transition } from '@headlessui/react'
@@ -9,6 +9,7 @@ import { inClient } from '@/functions/judgers/isSSR'
 import { shrinkToValue } from '@/functions/shrinkToValue'
 import useTwoStateSyncer from '@/hooks/use2StateSyncer'
 import { MayFunction } from '@/types/constants'
+import { Div, DivProps } from '@/../../uikit/dist'
 
 export const DRAWER_STACK_ID = 'drawer-stack'
 
@@ -33,7 +34,7 @@ const placementClasses = {
 
 export interface DrawerProps {
   className?: string
-  style?: React.CSSProperties
+  style?: CSSProperties
   children?: MayFunction<ReactNode, [{ close(): void }]>
   open: boolean
   placement?: 'from-left' | 'from-bottom' | 'from-top' | 'from-right'

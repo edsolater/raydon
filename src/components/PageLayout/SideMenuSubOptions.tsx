@@ -12,8 +12,8 @@ import { SlippageTolerancePopover } from './SlippageTolerancePopover'
 export function SideMenuSubOptions({ className }: { className: string }) {
   return (
     <Div icss={cssCol()} className={className}>
-      <div className="mx-8 border-b border-[rgba(57,208,216,0.16)] my-2 mobile:my-1"></div>
-      <div className="flex-1 overflow-auto no-native-scrollbar mt-2">
+      <Div className="mx-8 border-b border-[rgba(57,208,216,0.16)] my-2 mobile:my-1"></Div>
+      <Div className="flex-1 overflow-auto no-native-scrollbar mt-2">
         <PageLayoutPopoverDrawer renderPopoverContent={({ close }) => <RpcConnectionPanelPopover close={close} />}>
           <RpcConnectionFace />
         </PageLayoutPopoverDrawer>
@@ -37,7 +37,7 @@ export function SideMenuSubOptions({ className }: { className: string }) {
         <OptionItem noArrow href="https://forms.gle/DvUS4YknduBgu2D7A" iconSrc="/icons/misc-feedback.svg">
           Feedback
         </OptionItem>
-      </div>
+      </Div>
     </Div>
   )
 }

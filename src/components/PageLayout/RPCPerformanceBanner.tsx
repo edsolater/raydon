@@ -3,7 +3,7 @@ import useConnection from '@/application/connection/useConnection'
 import jFetch from '@/functions/dom/jFetch'
 import useAsyncEffect from '@/hooks/useAsyncEffect'
 import { FadeIn } from '../../tempUikits/FadeIn'
-import { Div } from '@/../../uikit/dist'
+import { Div } from '@edsolater/uikit'
 
 export function RPCPerformanceBanner({ className }: { className?: string }) {
   const { connection, currentEndPoint } = useConnection()
@@ -42,7 +42,7 @@ export function RPCPerformanceBanner({ className }: { className?: string }) {
   }, [connection])
 
   return (
-    <div className={className}>
+    <Div className={className}>
       <FadeIn>
         {isLowRpcPerformance && (
           <Div className="bg-[#dacc363f] text-center text-[#D8CB39] text-sm mobile:text-xs px-4 py-1">
@@ -51,6 +51,6 @@ export function RPCPerformanceBanner({ className }: { className?: string }) {
           </Div>
         )}
       </FadeIn>
-    </div>
+    </Div>
   )
 }

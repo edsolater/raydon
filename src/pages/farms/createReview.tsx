@@ -21,7 +21,7 @@ import { PoolInfoSummary } from '@/components/createFarm/PoolInfoSummery'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { setInterval } from '../../functions/timeout'
-import { Div, cssCol, cssRow } from '@/../../uikit/dist'
+import { Div, cssCol, cssRow } from '@edsolater/uikit'
 
 function useAvailableCheck() {
   useEffect(() => {
@@ -79,12 +79,12 @@ export default function CreateFarmReviewPage() {
   )
   const estimatedIndicator = (
     <Div icss={cssCol()} className="mt-4 text-sm font-medium items-center">
-      <div>
+      <Div>
         <span className="text-[#abc4ff80]">Fee:</span> <span className="text-primary">300 RAY</span>
-      </div>
-      <div>
+      </Div>
+      <Div>
         <span className="text-[#abc4ff80]">Est. transaction fee:</span> <span className="text-primary">0.002 SOL</span>
-      </div>
+      </Div>
     </Div>
   )
   const editButton = (
@@ -95,40 +95,40 @@ export default function CreateFarmReviewPage() {
 
   return (
     <PageLayout metaTitle="Farms - Raydium" mobileBarTitle="Create Farm">
-      <div className="self-center w-[min(720px,90vw)] py-4">
+      <Div className="self-center w-[min(720px,90vw)] py-4">
         {!isMobile && (
-          <div className="pb-8 text-2xl mobile:text-lg font-semibold justify-self-start text-white">Create Farm</div>
+          <Div className="pb-8 text-2xl mobile:text-lg font-semibold justify-self-start text-white">Create Farm</Div>
         )}
 
-        <div className="mb-8 text-xl mobile:text-lg font-semibold justify-self-start text-white">
+        <Div className="mb-8 text-xl mobile:text-lg font-semibold justify-self-start text-white">
           Review farm details
-        </div>
+        </Div>
 
-        <div className="mb-8">
-          <div className="mb-3 text-primary text-sm font-medium justify-self-start">Pool</div>
+        <Div className="mb-8">
+          <Div className="mb-3 text-primary text-sm font-medium justify-self-start">Pool</Div>
           <PoolInfoSummary />
-        </div>
+        </Div>
 
-        <div className="mb-6">
-          <div className="mb-3 text-primary text-sm font-medium justify-self-start">Farm rewards</div>
+        <Div className="mb-6">
+          <Div className="mb-3 text-primary text-sm font-medium justify-self-start">Farm rewards</Div>
           <NewAddedRewardSummary canUserEdit={false} />
-        </div>
+        </Div>
 
-        <div className="font-medium text-sm mobile:text-xs text-justify leading-snug text-[#abc4ff80] mb-8">
+        <Div className="font-medium text-sm mobile:text-xs text-justify leading-snug text-[#abc4ff80] mb-8">
           <span className="text-[#DA2EEF]">Please note:</span> Rewards allocated to farms cannot be withdrawn after
           farming starts. Newly created farms generally appear on Raydium 10-30 minutes after creation, depending on
           Solana network status. A one-time fee of 300 RAY is required to create a farm, which will be deposited into
           the Raydium treasury.
-        </div>
+        </Div>
 
         {created ? (
-          <div className="text-[#39d0d8] font-medium text-center text-sm my-4 mobile:mx-4">
+          <Div className="text-[#39d0d8] font-medium text-center text-sm my-4 mobile:mx-4">
             Your farm has been created successfully and will be live on the UI shortly
-          </div>
+          </Div>
         ) : (
-          <div className="text-[#DA2EEF] font-medium text-center text-sm my-4 mobile:mx-4">
+          <Div className="text-[#DA2EEF] font-medium text-center text-sm my-4 mobile:mx-4">
             Creating a farm requires a one-time 300 RAY fee. Your RAY balance: {toString(userRayBalance) || 0} RAY
-          </div>
+          </Div>
         )}
 
         {created ? (
@@ -138,7 +138,7 @@ export default function CreateFarmReviewPage() {
                 icss={cssRow()}
                 className="items-center text-sm mobile:text-xs font-medium text-primary mobile:text-2xs"
               >
-                <div className="mr-1">Your Farm ID: </div>
+                <Div className="mr-1">Your Farm ID: </Div>
               </Div>
               <AddressItem canCopy showDigitCount={'all'} className="text-white mobile:text-sm font-medium">
                 {useCreateFarms.getState().farmId}
@@ -177,7 +177,7 @@ export default function CreateFarmReviewPage() {
             {editButton}
           </Div>
         )}
-      </div>
+      </Div>
     </PageLayout>
   )
 }

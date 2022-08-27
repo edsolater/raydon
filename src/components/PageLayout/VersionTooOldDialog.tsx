@@ -1,4 +1,4 @@
-import { cssCol, Div } from '@/../../uikit/dist'
+import { cssCol, Div } from '@edsolater/uikit'
 import { refreshWindow } from '@/application/appVersion/forceWindowRefresh'
 import { useAppVersion } from '@/application/appVersion/useAppVersion'
 import { twMerge } from 'tailwind-merge'
@@ -21,10 +21,10 @@ export function VersionTooOldDialog() {
           }}
         >
           <Div icss={cssCol()} className="items-center">
-            <div className="font-semibold text-xl text-[#D8CB39] mb-3 text-center">New version available</div>
-            <div className="text-center mt-2  mb-6 text-primary">Refresh the page to update and use the app.</div>
+            <Div className="font-semibold text-xl text-[#D8CB39] mb-3 text-center">New version available</Div>
+            <Div className="text-center mt-2  mb-6 text-primary">Refresh the page to update and use the app.</Div>
 
-            <div className="self-stretch">
+            <Div className="self-stretch">
               <Div icss={cssCol()}>
                 <Button className={`text-primary  frosted-glass-teal`} onClick={() => refreshWindow({ noCache: true })}>
                   Refresh
@@ -33,7 +33,7 @@ export function VersionTooOldDialog() {
                   Update later
                 </Button>
               </Div>
-            </div>
+            </Div>
           </Div>
         </Card>
       )}

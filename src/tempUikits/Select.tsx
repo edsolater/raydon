@@ -1,4 +1,4 @@
-import { cssCol, cssRow, Div } from '@/../../uikit/dist'
+import { cssCol, cssRow, Div } from '@edsolater/uikit'
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import { isString } from '@/functions/judgers/dateType'
 import useLocalStorageItem from '@/hooks/useLocalStorage'
@@ -55,12 +55,12 @@ export default function Select<T extends string>({
 
   const FaceCotent = ({ open = false }) => (
     <Div icss={cssRow()} className="items-center w-full">
-      <div className="mobile:text-xs text-sm font-medium text-[rgba(196,214,255,.5)] mr-1 whitespace-nowrap">
+      <Div className="mobile:text-xs text-sm font-medium text-[rgba(196,214,255,.5)] mr-1 whitespace-nowrap">
         {prefix}
-      </div>
-      <div className="grow mobile:text-xs text-sm font-medium text-[rgba(196,214,255)] whitespace-nowrap">
+      </Div>
+      <Div className="grow mobile:text-xs text-sm font-medium text-[rgba(196,214,255)] whitespace-nowrap">
         {currentLable}
-      </div>
+      </Div>
       <Icon
         size={isMobile ? 'xs' : 'sm'}
         className="justify-self-end mr-1.5 text-[rgba(196,214,255,.5)] ml-2"
@@ -69,12 +69,12 @@ export default function Select<T extends string>({
     </Div>
   )
   return (
-    <div className={twMerge('relative', className)}>
-      <div
+    <Div className={twMerge('relative', className)}>
+      <Div
         className={`py-2 px-6 mobile:px-3 ring-inset ring-1 ring-[rgba(196,214,255,0.5)] h-full rounded-lg mobile:rounded-lg invisible`}
       >
         <FaceCotent />
-      </div>
+      </Div>
       <Collapse
         className={`absolute z-10 top-0 left-0 ring-inset ring-1 ring-[rgba(196,214,255,0.5)] rounded-lg mobile:rounded-lg w-full ${
           isOpen ? 'bg-cyberpunk-card-bg' : ''
@@ -85,9 +85,9 @@ export default function Select<T extends string>({
       >
         <Collapse.Face>
           {(open) => (
-            <div className="py-2 px-6 mobile:px-3 ">
+            <Div className="py-2 px-6 mobile:px-3 ">
               <FaceCotent open={open} />
-            </div>
+            </Div>
           )}
         </Collapse.Face>
         <Collapse.Body>
@@ -120,6 +120,6 @@ export default function Select<T extends string>({
           )}
         </Collapse.Body>
       </Collapse>
-    </div>
+    </Div>
   )
 }

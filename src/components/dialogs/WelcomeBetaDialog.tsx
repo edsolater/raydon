@@ -1,4 +1,4 @@
-import { cssCol, Div } from '@/../../uikit/dist'
+import { cssCol, Div } from '@edsolater/uikit'
 import useToggle from '@/hooks/useToggle'
 import * as react from 'react'
 import { twMerge } from 'tailwind-merge'
@@ -31,13 +31,13 @@ export default function WelcomeBetaDialog(props: { content: react.ReactNode; onC
         <Div icss={cssCol()} className="items-center">
           {props.content}
 
-          <div className="self-stretch">
+          <Div className="self-stretch">
             <Div icss={cssCol()}>
               <Button className={`frosted-glass-teal`} onClick={confirm}>
                 OK
               </Button>
             </Div>
-          </div>
+          </Div>
         </Div>
       </Card>
     </Dialog>

@@ -205,14 +205,14 @@ function TokenSelectorDialogContent({
       }}
     >
       {currentTabIsTokenList ? (
-        <div className="px-8 mobile:px-6 pt-6 pb-5">
+        <Div className="px-8 mobile:px-6 pt-6 pb-5">
           <Div icss={cssRow()} className="justify-between items-center mb-6">
             <Icon
               className="text-primary cursor-pointer clickable clickable-mask-offset-2"
               heroIconName="chevron-left"
               onClick={off}
             />
-            <div className="text-xl font-semibold text-white">Token List Settings</div>
+            <Div className="text-xl font-semibold text-white">Token List Settings</Div>
             <Icon
               className="text-primary cursor-pointer clickable clickable-mask-offset-2"
               heroIconName="x"
@@ -228,12 +228,12 @@ function TokenSelectorDialogContent({
                 </List.Item>
               ))}
           </List>
-        </div>
+        </Div>
       ) : (
         <>
-          <div className="px-8 mobile:px-6 pt-6 pb-5">
+          <Div className="px-8 mobile:px-6 pt-6 pb-5">
             <Div icss={cssRow()} className="justify-between items-center mb-6">
-              <div className="text-xl font-semibold text-white">Select a token</div>
+              <Div className="text-xl font-semibold text-white">Select a token</Div>
               <Icon
                 className="text-primary cursor-pointer clickable clickable-mask-offset-2"
                 heroIconName="x"
@@ -254,7 +254,7 @@ function TokenSelectorDialogContent({
               suffix={<Icon heroIconName="search" size="sm" className="text-[#C4D6FF]" />}
             />
 
-            <div className="text-xs font-medium text-[rgba(171,196,255,.5)] my-3">Popular tokens</div>
+            <Div className="text-xs font-medium text-[rgba(171,196,255,.5)] my-3">Popular tokens</Div>
 
             <Div icss={cssRow()} className="justify-between">
               {([RAYMint, QuantumSOLVersionSOL, USDTMint, USDCMint] as const).map((mintish, idx) => {
@@ -273,18 +273,18 @@ function TokenSelectorDialogContent({
                     }}
                   >
                     <CoinAvatar size={isMobile ? 'xs' : 'sm'} token={token} />
-                    <div className="text-base mobile:text-sm font-normal text-primary">{token?.symbol ?? '--'}</div>
+                    <Div className="text-base mobile:text-sm font-normal text-primary">{token?.symbol ?? '--'}</Div>
                   </Div>
                 )
               })}
             </Div>
-          </div>
+          </Div>
 
-          <div className="mobile:mx-6 border-t-1.5 border-[rgba(171,196,255,0.2)]"></div>
+          <Div className="mobile:mx-6 border-t-1.5 border-[rgba(171,196,255,0.2)]"></Div>
 
           <Div icss={cssCol()} className="flex-1 overflow-hidden border-b-1.5 py-3 border-[rgba(171,196,255,0.2)]">
             <Div icss={cssRow()} className="px-8 mobile:px-6 justify-between">
-              <div className="text-xs font-medium text-[rgba(171,196,255,.5)]">Token</div>
+              <Div className="text-xs font-medium text-[rgba(171,196,255,.5)]">Token</Div>
               <Div icss={cssRow()} className="text-xs font-medium text-[rgba(171,196,255,.5)] items-center gap-1">
                 Balance
               </Div>
@@ -356,37 +356,37 @@ function TokenSelectorDialogTokenItem({ token, onClick }: { token: SplToken; onC
       <Div icss={cssRow()}>
         <CoinAvatar token={token} className="mr-2" />
         <Div icss={cssCol()} className="mr-2">
-          <div className="text-base  max-w-[7em] overflow-hidden text-ellipsis  font-normal text-primary">
+          <Div className="text-base  max-w-[7em] overflow-hidden text-ellipsis  font-normal text-primary">
             {token.symbol}
-          </div>
-          <div className="text-xs  max-w-[12em] overflow-hidden text-ellipsis whitespace-nowrap  font-medium text-[rgba(171,196,255,.5)]">
+          </Div>
+          <Div className="text-xs  max-w-[12em] overflow-hidden text-ellipsis whitespace-nowrap  font-medium text-[rgba(171,196,255,.5)]">
             {token.name}
-          </div>
+          </Div>
         </Div>
         {canFlaggedTokenMints.has(toPubString(token.mint)) ? (
-          <div
-            onClick={(ev) => {
+          <Div
+            onClick={({ev}) => {
               toggleFlaggedToken(token)
               ev.stopPropagation()
             }}
             className="group-hover:visible invisible inline-block text-sm mobile:text-xs text-[rgba(57,208,216,1)]  p-2 "
           >
             {userFlaggedTokenMints.has(toPubString(token.mint)) ? '[Remove Token]' : '[Add Token]'}
-          </div>
+          </Div>
         ) : null}
         {isUserAddedToken && !canFlaggedTokenMints.has(toPubString(token.mint)) ? (
-          <div
-            onClick={(ev) => {
+          <Div
+            onClick={({ev}) => {
               deleteUserAddedToken(token)
               ev.stopPropagation()
             }}
             className="group-hover:visible invisible inline-block text-sm mobile:text-xs text-[rgba(57,208,216,1)]  p-2 "
           >
             [Delete Token]
-          </div>
+          </Div>
         ) : null}
       </Div>
-      <div className="text-sm text-primary justify-self-end">{getBalance(token)?.toExact?.()}</div>
+      <Div className="text-sm text-primary justify-self-end">{getBalance(token)?.toExact?.()}</Div>
     </Div>
   )
 }
@@ -414,9 +414,9 @@ function TokenSelectorDialogTokenListItem({ tokenListName }: { tokenListName: Su
       {tokenList?.icon && <Image className="rounded-full h-8 w-8 overflow-hidden" src={tokenList.icon} />}
 
       <Div icss={cssCol()}>
-        <div className="text-base font-normal text-primary">{tokenListName}</div>
+        <Div className="text-base font-normal text-primary">{tokenListName}</Div>
         {tokenList && (
-          <div className="text-sm font-medium text-[rgba(171,196,255,.5)]">{tokenList.mints?.size ?? '--'} tokens</div>
+          <Div className="text-sm font-medium text-[rgba(171,196,255,.5)]">{tokenList.mints?.size ?? '--'} tokens</Div>
         )}
       </Div>
 

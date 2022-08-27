@@ -7,6 +7,7 @@ import { pickReactChild } from '@/functions/react/pickChild'
 
 import Card from './Card'
 import Popover, { PopoverPlacement, PopoverProps } from './Popover'
+import { Div } from '@/../../uikit/dist'
 
 export type TooltipHandle = {
   open(): void
@@ -64,8 +65,8 @@ export default function Tooltip({
       <Popover.Button>{children}</Popover.Button>
       <Popover.Panel>
         {({ locationInfo }) => (
-          <div className="relative">
-            <div
+          <Div className="relative">
+            <Div
               className="w-2 h-2 absolute bg-[#0C0926] rotate-45 -translate-x-1 -translate-y-1"
               style={
                 locationInfo
@@ -81,7 +82,7 @@ export default function Tooltip({
             <Card className={twMerge('TooltipPanel p-4 bg-[#0C0926] rounded text-xs text-white', panelClassName)}>
               {content}
             </Card>
-          </div>
+          </Div>
         )}
       </Popover.Panel>
     </Popover>
@@ -103,6 +104,6 @@ export function TooltipPanel({
   className?: string
 }) {
   if (!$isRenderByMain) return null
-  return <div className={className}>{children}</div>
+  return <Div className={className}>{children}</Div>
 }
 Tooltip.Panel = TooltipPanel

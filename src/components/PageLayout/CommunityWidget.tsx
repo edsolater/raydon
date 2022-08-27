@@ -1,4 +1,4 @@
-import { cssCol, cssRow, Div } from '@/../../uikit/dist'
+import { cssCol, cssRow, Div } from '@edsolater/uikit'
 import linkTo from '@/functions/dom/linkTo'
 import { LinkAddress } from '@/types/constants'
 import Link from '../../tempUikits/Link'
@@ -36,8 +36,8 @@ export function CommunityPopover() {
 
   return (
     <>
-      <div className="pt-3 -mb-1 mobile:mb-2 px-6 text-[rgba(171,196,255,0.5)] text-xs mobile:text-sm">COMMUNITY</div>
-      <div className="gap-3 divide-y-1.5 divide-[rgba(171,196,255,0.2)] ">
+      <Div className="pt-3 -mb-1 mobile:mb-2 px-6 text-[rgba(171,196,255,0.5)] text-xs mobile:text-sm">COMMUNITY</Div>
+      <Div className="gap-3 divide-y-1.5 divide-[rgba(171,196,255,0.2)] ">
         <Item href="https://twitter.com/RaydiumProtocol" iconSrc="/icons/media-twitter.svg" text="Twitter" />
         <Item href="https://discord.gg/raydium" iconSrc="/icons/media-discord.svg" text="Discord" />
         <PageLayoutPopoverDrawer
@@ -111,7 +111,7 @@ export function CommunityPopover() {
         </PageLayoutPopoverDrawer>
 
         <Item href="https://raydium.medium.com/" iconSrc="/icons/media-medium.svg" text="Medium" />
-      </div>
+      </Div>
     </>
   )
 }

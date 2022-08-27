@@ -23,7 +23,7 @@ import { TimeStamp } from '@/functions/date/interface'
 import { Numberish } from '@/types/constants'
 import Tooltip from '@/tempUikits/Tooltip'
 import Button from '@/tempUikits/Button'
-import { Div, cssCol, cssRow } from '@/../../uikit/dist'
+import { Div, cssCol, cssRow } from '@edsolater/uikit'
 
 export function EditableRewardSummary({
   canUserEdit,
@@ -79,7 +79,7 @@ export function EditableRewardSummary({
               <Div icss={cssCol()} className="h-full justify-center">
                 <Div icss={cssRow()} className="gap-1 items-center">
                   <CoinAvatar token={reward.token} size="sm" />
-                  <div>{reward.token?.symbol ?? 'UNKNOWN'}</div>
+                  <Div>{reward.token?.symbol ?? 'UNKNOWN'}</Div>
                 </Div>
                 <Div icss={cssRow()} className="gap-1 flex-wrap mt-1">
                   {reward.isRewardEnded && <Badge cssColor="#da2Eef">Ended</Badge>}
@@ -141,14 +141,14 @@ export function EditableRewardSummary({
               <Grid className={`gap-4 ${hasBeenEdited ? 'grid-rows-2' : ''} h-full`}>
                 {reward.originData?.startTime && reward.originData.endTime ? (
                   <Div icss={cssCol()} className="grow justify-center">
-                    <div>{toUTC(reward.originData.startTime)}</div>
-                    <div>{toUTC(reward.originData.endTime)}</div>
+                    <Div>{toUTC(reward.originData.startTime)}</Div>
+                    <Div>{toUTC(reward.originData.endTime)}</Div>
                   </Div>
                 ) : undefined}
                 {hasBeenEdited ? (
                   <Div icss={cssCol()} className="grow justify-center text-[#39d0d8]">
-                    <div>{toUTC(reward.startTime)}</div>
-                    <div>{toUTC(reward.endTime)}</div>
+                    <Div>{toUTC(reward.startTime)}</Div>
+                    <Div>{toUTC(reward.endTime)}</Div>
                   </Div>
                 ) : undefined}
               </Grid>
@@ -178,18 +178,18 @@ export function EditableRewardSummary({
               <Grid className={`gap-4 ${showEditedEstimated ? 'grid-rows-2' : ''} h-full`}>
                 {originEstimatedValue && (
                   <Div icss={cssCol()} className="grow justify-center text-xs">
-                    <div>
+                    <Div>
                       {toString(originEstimatedValue)} {reward.originData?.token?.symbol}/day
-                    </div>
-                    {reward.originData?.apr && <div>{toPercentString(reward.originData.apr)} APR</div>}
+                    </Div>
+                    {reward.originData?.apr && <Div>{toPercentString(reward.originData.apr)} APR</Div>}
                   </Div>
                 )}
                 {showEditedEstimated && (
                   <Div icss={cssCol()} className="grow justify-center text-xs text-[#39d0d8]">
-                    <div>
+                    <Div>
                       {toString(editedEstimatedValue)} {reward?.token?.symbol}/day
-                    </div>
-                    {reward?.apr && <div>{toPercentString(reward.apr)} APR</div>}
+                    </Div>
+                    {reward?.apr && <Div>{toPercentString(reward.apr)} APR</Div>}
                   </Div>
                 )}
               </Grid>
@@ -202,10 +202,10 @@ export function EditableRewardSummary({
           const isRewardOwner = owner && isMintEqual(owner, reward.owner)
           const isRewardEdited = hasRewardBeenEdited(reward)
           return (
-            <div className={isRewardBeforeStart ? 'not-selectable' : ''}>
+            <Div className={isRewardBeforeStart ? 'not-selectable' : ''}>
               {contentNode}
               {canUserEdit && isRewardEditable && (
-                <div className="bg-[#abc4ff1a] rounded-md p-2 mb-4 empty:hidden">
+                <Div className="bg-[#abc4ff1a] rounded-md p-2 mb-4 empty:hidden">
                   {reward.originData?.isRwardingBeforeEnd72h && !isRewardEdited && (
                     <Div
                       icss={cssCol()}
@@ -216,9 +216,9 @@ export function EditableRewardSummary({
                     >
                       <Div icss={cssRow()} className="items-center gap-1">
                         <Icon iconSrc="/icons/create-farm-plus.svg" size="xs" className="text-[#abc4ff80]" />
-                        <div className="text-xs text-primary font-medium">Add more rewards</div>
+                        <Div className="text-xs text-primary font-medium">Add more rewards</Div>
                       </Div>
-                      <div className="text-xs text-[#abc4ff80] font-medium">(no rate changed allowed)</div>
+                      <Div className="text-xs text-[#abc4ff80] font-medium">(no rate changed allowed)</Div>
                     </Div>
                   )}
 
@@ -237,7 +237,7 @@ export function EditableRewardSummary({
                           onClick={() => onClickIncreaseReward?.({ reward })}
                         >
                           <Icon iconSrc="/icons/create-farm-plus.svg" size="xs" className="text-[#abc4ff80]" />
-                          <div className="text-xs text-primary font-medium">Add more rewards</div>
+                          <Div className="text-xs text-primary font-medium">Add more rewards</Div>
                         </Div>
                       )}
 
@@ -272,27 +272,27 @@ export function EditableRewardSummary({
                         <Icon iconSrc="/icons/create-farm-roll-back.svg" size="xs" className="text-[#abc4ff80]" />
                         <Div icss={cssCol()}>
                           <Div icss={cssRow()} className="text-xs text-primary font-medium">
-                            <div>Claim unemmitted rewards</div>
+                            <Div>Claim unemmitted rewards</Div>
                             <Tooltip>
                               <Icon className="ml-1" size="sm" heroIconName="question-mark-circle" />
                               <Tooltip.Panel>
-                                <div className="max-w-[300px]">
+                                <Div className="max-w-[300px]">
                                   Rewards are only emitted when LP tokens are staked in the farm. If there is a period
                                   when no LP tokens are staked, unemmitted rewards can be claimed here once farming
                                   period ends
-                                </div>
+                                </Div>
                               </Tooltip.Panel>
                             </Tooltip>
                           </Div>
-                          <div className="text-xs text-[#abc4ff80] font-medium">
+                          <Div className="text-xs text-[#abc4ff80] font-medium">
                             {toString(reward.originData.claimableRewards)}{' '}
                             {reward.originData.claimableRewards?.token.symbol ?? 'UNKNOWN'}
-                          </div>
+                          </Div>
                         </Div>
                       </Div>
                     </Grid>
                   )}
-                </div>
+                </Div>
               )}
               {hasRewardBeenEdited(reward) && (
                 <Badge
@@ -307,7 +307,7 @@ export function EditableRewardSummary({
                   {canUserEdit ? 'Reset' : 'Added'}
                 </Badge>
               )}
-            </div>
+            </Div>
           )
         }}
         onListChange={(list) => {

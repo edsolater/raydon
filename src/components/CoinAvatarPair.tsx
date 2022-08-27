@@ -3,7 +3,7 @@ import { twMerge } from 'tailwind-merge'
 
 import { SplToken } from '@/application/token/type'
 import CoinAvatar, { CoinAvatarProps } from '@/components/CoinAvatar'
-import { Div, cssRow } from '@/../../uikit/dist'
+import { Div, cssRow } from '@edsolater/uikit'
 
 export default function CoinAvatarPair({
   token1,

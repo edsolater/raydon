@@ -5,6 +5,7 @@ import { shrinkToValue } from '@/functions/shrinkToValue'
 import { MayFunction } from '@/types/constants'
 
 import Drawer from './Drawer'
+import { CSSStyle, Div } from '@/../../uikit/dist'
 
 const { ContextProvider, useStore, useSetters } = createContextStore<{
   isDrawerContentShown: boolean
@@ -75,9 +76,9 @@ export function DrawerButton({
   const closePanel = useCallback(() => setIsDrawerContentShown(false), [setIsDrawerContentShown])
   const togglePanel = useCallback(() => setIsDrawerContentShown((b) => !b), [setIsDrawerContentShown])
   return (
-    <div onClick={openPanel}>
+    <Div onClick={openPanel}>
       {shrinkToValue(children, [{ open: openPanel, close: closePanel, toggle: togglePanel }])}
-    </div>
+    </Div>
   )
 }
 
@@ -87,7 +88,7 @@ export function DrawerPanel({
   children
 }: {
   className?: string
-  style?: CSSProperties
+  style?: CSSStyle
   children?: MayFunction<ReactNode, [{ open(): void; close(): void; toggle(): void }]>
 }) {
   const { setIsDrawerContentShown, isDrawerContentShown: isOpen, position, onOpen, onClose, canOpen } = useStore()

@@ -61,7 +61,7 @@ import { SplToken } from '@/application/token/type'
 import { capitalize } from '@/functions/changeCase'
 import { objectShakeFalsy } from '@/functions/objectMethods'
 import { AddressItem } from '@/components/AddressItem'
-import { Div, cssCol, cssRow } from '@/../../uikit/dist'
+import { Div, cssCol, cssRow } from '@edsolater/uikit'
 
 const { ContextProvider: LiquidityUIContextProvider, useStore: useLiquidityContextStore } = createContextStore({
   hasAcceptedPriceChange: false,
@@ -198,21 +198,21 @@ function ConfirmRiskPanel({
   onPermanentlyConfirm?: (checkState: boolean) => void
 }) {
   return (
-    <div className={twMerge('bg-[#141041] rounded-xl py-3 px-6 mobile:px-4', className)}>
-      <div className="text-sm">
+    <Div className={twMerge('bg-[#141041] rounded-xl py-3 px-6 mobile:px-4', className)}>
+      <Div className="text-sm">
         I have read{' '}
         <Link href="https://raydium.gitbook.io/raydium/exchange-trade-and-swap/liquidity-pools">
           Raydium's Liquidity Guide
         </Link>{' '}
         and understand the risks involved with providing liquidity and impermanent loss.
-      </div>
+      </Div>
 
       <Checkbox
         checkBoxSize="sm"
         className="my-2 w-max"
         checked={temporarilyConfirm}
         onChange={onTemporarilyConfirm}
-        label={<div className="text-sm italic text-[rgba(171,196,255,0.5)]">Confirm</div>}
+        label={<Div className="text-sm italic text-[rgba(171,196,255,0.5)]">Confirm</Div>}
       />
 
       <Checkbox
@@ -220,9 +220,9 @@ function ConfirmRiskPanel({
         className="my-2 w-max"
         checked={permanentlyConfirm}
         onChange={onPermanentlyConfirm}
-        label={<div className="text-sm italic text-[rgba(171,196,255,0.5)]">Do not warn again for this pool</div>}
+        label={<Div className="text-sm italic text-[rgba(171,196,255,0.5)]">Do not warn again for this pool</Div>}
       />
-    </div>
+    </Div>
   )
 }
 
@@ -318,7 +318,7 @@ function LiquidityCard() {
         />
 
         {/* swap button */}
-        <div className="relative h-8 my-4">
+        <Div className="relative h-8 my-4">
           <Div
             icss={cssRow()}
             className={`absolute h-full items-center transition-all ${
@@ -339,7 +339,7 @@ function LiquidityCard() {
                 useLiquidity.setState({ isSearchAmmDialogOpen: true })
               }}
             />
-            <div className={isApprovePanelShown ? 'not-clickable' : 'clickable'}>
+            <Div className={isApprovePanelShown ? 'not-clickable' : 'clickable'}>
               <RefreshCircle
                 run={!isApprovePanelShown}
                 refreshKey="liquidity/add"
@@ -350,9 +350,9 @@ function LiquidityCard() {
                   refreshTokenPrice()
                 }}
               />
-            </div>
+            </Div>
           </Div>
-        </div>
+        </Div>
 
         <CoinInputBox
           componentRef={coinInputBox2ComponentRef}
@@ -541,9 +541,9 @@ function LiquidityCardPriceIndicator({ className }: { className?: string }) {
         zeroDecimalNotAuto: true
       })}{' '}
       {innerPriceRightCoin?.symbol ?? '--'}
-      <div className="ml-2 clickable" onClick={() => setInnerReversed((b) => !b)}>
+      <Div className="ml-2 clickable" onClick={() => setInnerReversed((b) => !b)}>
         ⇋
-      </div>
+      </Div>
     </Div>
   )
 }
@@ -597,21 +597,21 @@ function LiquidityCardInfo({ className }: { className?: string }) {
         <LiquidityCardItem
           fieldName={`Pool liquidity (${coinBase?.symbol ?? 'unknown'})`}
           fieldValue={
-            <div>
+            <Div>
               {pooledBaseTokenAmount
                 ? `${formatNumber(pooledBaseTokenAmount.toExact())} ${coinBase?.symbol ?? 'unknown'}`
                 : '--'}
-            </div>
+            </Div>
           }
         />
         <LiquidityCardItem
           fieldName={`Pool liquidity (${coinQuote?.symbol ?? 'unknown'})`}
           fieldValue={
-            <div>
+            <Div>
               {pooledQuoteTokenAmount
                 ? `${formatNumber(pooledQuoteTokenAmount.toExact())} ${coinQuote?.symbol ?? 'unknown'}`
                 : '--'}
-            </div>
+            </Div>
           }
         />
         <LiquidityCardItem
@@ -619,13 +619,13 @@ function LiquidityCardInfo({ className }: { className?: string }) {
           fieldValue={
             <Div icss={cssRow()} className="items-center gap-2">
               {isStable && <Badge className="self-center">Stable</Badge>}
-              <div>
+              <Div>
                 {currentHydratedInfo?.lpToken
                   ? `${formatNumber(
                       toString(toTokenAmount(currentHydratedInfo.lpToken, currentHydratedInfo.lpSupply))
                     )} LP`
                   : '--'}
-              </div>
+              </Div>
             </Div>
           }
         />
@@ -650,7 +650,7 @@ function LiquidityCardInfo({ className }: { className?: string }) {
                         }
                       }}
                     />
-                    <div className="opacity-50 ml-1">%</div>
+                    <Div className="opacity-50 ml-1">%</Div>
                   </Div>
                 }
               />
@@ -662,7 +662,7 @@ function LiquidityCardInfo({ className }: { className?: string }) {
                 icss={cssRow()}
                 className="w-full items-center text-xs font-medium text-[rgba(171,196,255,0.5)] cursor-pointer select-none"
               >
-                <div className="py-1.5">{open ? 'Show less' : 'More information'}</div>
+                <Div className="py-1.5">{open ? 'Show less' : 'More information'}</Div>
                 <Icon size="xs" heroIconName={open ? 'chevron-up' : 'chevron-down'} className="ml-1" />
               </Div>
             )}
@@ -689,7 +689,7 @@ function LiquidityCardItem({
   return (
     <Div icss={cssRow()} className={twMerge('w-full justify-between my-1.5', className)}>
       <Div icss={cssRow()} className="items-center text-xs font-medium text-primary">
-        <div className="mr-1">{fieldName}</div>
+        <Div className="mr-1">{fieldName}</Div>
         {tooltipContent && (
           <Tooltip className={className} placement="bottom-right" forceOpen={debugForceOpen}>
             <Icon size="xs" heroIconName="question-mark-circle" className="cursor-help" />
@@ -697,7 +697,7 @@ function LiquidityCardItem({
           </Tooltip>
         )}
       </Div>
-      <div className="text-xs font-medium text-white text-right">{fieldValue}</div>
+      <Div className="text-xs font-medium text-white text-right">{fieldValue}</Div>
     </Div>
   )
 }
@@ -707,8 +707,8 @@ function LiquidityCardTooltipPanelAddress() {
   const coin2 = useLiquidity((s) => s.coin2)
   const { lpMint, id, marketId } = useLiquidity((s) => s.currentJsonInfo) ?? {}
   return (
-    <div className="w-60">
-      <div className="text-sm font-semibold mb-2">Addresses</div>
+    <Div className="w-60">
+      <Div className="text-sm font-semibold mb-2">Addresses</Div>
       <Div icss={cssCol()} className="gap-2">
         {coin1 && (
           <LiquidityCardTooltipPanelAddressItem
@@ -728,7 +728,7 @@ function LiquidityCardTooltipPanelAddress() {
         {Boolean(id) && <LiquidityCardTooltipPanelAddressItem label="Amm ID" address={id!} />}
         {Boolean(marketId) && <LiquidityCardTooltipPanelAddressItem label="Market ID" address={marketId!} />}
       </Div>
-    </div>
+    </Div>
   )
 }
 
@@ -745,7 +745,7 @@ function LiquidityCardTooltipPanelAddressItem({
 }) {
   return (
     <Div icss={cssRow()} className={twMerge('grid gap-2 items-center grid-cols-[5em,1fr,auto,auto]', className)}>
-      <div className="text-xs font-normal text-white">{label}</div>
+      <Div className="text-xs font-normal text-white">{label}</Div>
       <AddressItem
         showDigitCount={5}
         addressType={type}
@@ -782,8 +782,8 @@ function UserLiquidityExhibition() {
     [hydratedInfos, userExhibitionLiquidityIds]
   )
   return (
-    <div className="mt-12 max-w-[456px] self-center">
-      <div className="mb-6 text-xl font-medium text-white">Your Liquidity</div>
+    <Div className="mt-12 max-w-[456px] self-center">
+      <Div className="mb-6 text-xl font-medium text-white">Your Liquidity</Div>
       <Card className="p-6 mt-6 mobile:py-5 mobile:px-3 bg-cyberpunk-card-bg" size="lg">
         <List className={`flex flex-col gap-6 mobile:gap-5 ${exhibitionInfos.length ? 'mb-5' : ''}`}>
           {exhibitionInfos.map((info, idx) => {
@@ -804,9 +804,9 @@ function UserLiquidityExhibition() {
                               token2={info.quoteToken}
                               size={isMobile ? 'sm' : 'md'}
                             />
-                            <div className="text-base font-normal text-primary">
+                            <Div className="text-base font-normal text-primary">
                               {info.baseToken?.symbol ?? ''}/{info.quoteToken?.symbol ?? ''}
-                            </div>
+                            </Div>
                           </Div>
                           <Icon
                             size="sm"
@@ -817,36 +817,36 @@ function UserLiquidityExhibition() {
                       )}
                     </Collapse.Face>
                     <Collapse.Body>
-                      <div className="pb-4 px-6 mobile:px-4">
+                      <Div className="pb-4 px-6 mobile:px-4">
                         <Div icss={cssCol()} className="border-t-1.5 border-[rgba(171,196,255,.5)] py-5 gap-3 ">
                           <Div icss={cssRow()} className="justify-between">
-                            <div className="text-xs mobile:text-2xs font-medium text-primary">Pooled (Base)</div>
-                            <div className="text-xs mobile:text-2xs font-medium text-white">
+                            <Div className="text-xs mobile:text-2xs font-medium text-primary">Pooled (Base)</Div>
+                            <Div className="text-xs mobile:text-2xs font-medium text-white">
                               {toString(info.userBasePooled) || '--'} {info.baseToken?.symbol}
-                            </div>
+                            </Div>
                           </Div>
                           <Div icss={cssRow()} className="justify-between">
-                            <div className="text-xs mobile:text-2xs font-medium text-primary">Pooled (Quote)</div>
-                            <div className="text-xs mobile:text-2xs font-medium text-white">
+                            <Div className="text-xs mobile:text-2xs font-medium text-primary">Pooled (Quote)</Div>
+                            <Div className="text-xs mobile:text-2xs font-medium text-white">
                               {toString(info.userQuotePooled) || '--'} {info.quoteToken?.symbol}
-                            </div>
+                            </Div>
                           </Div>
                           <Div icss={cssRow()} className="justify-between">
-                            <div className="text-xs mobile:text-2xs font-medium text-primary">Your Liquidity</div>
-                            <div className="text-xs mobile:text-2xs font-medium text-white">
+                            <Div className="text-xs mobile:text-2xs font-medium text-primary">Your Liquidity</Div>
+                            <Div className="text-xs mobile:text-2xs font-medium text-white">
                               {info.lpMint
                                 ? toString(div(rawBalances[String(info.lpMint)], 10 ** info.lpDecimals), {
                                     decimalLength: `auto ${info.lpDecimals}`
                                   })
                                 : '--'}{' '}
                               LP
-                            </div>
+                            </Div>
                           </Div>
                           <Div icss={cssRow()} className="justify-between">
-                            <div className="text-xs mobile:text-2xs font-medium text-primary">Your share</div>
-                            <div className="text-xs mobile:text-2xs font-medium text-white">
+                            <Div className="text-xs mobile:text-2xs font-medium text-primary">Your share</Div>
+                            <Div className="text-xs mobile:text-2xs font-medium text-white">
                               {computeSharePercentValue(info.sharePercent)}
-                            </div>
+                            </Div>
                           </Div>
                         </Div>
                         <Div icss={cssRow()} className="gap-4 mb-1">
@@ -911,7 +911,7 @@ function UserLiquidityExhibition() {
                             <Tooltip.Panel>Remove Liquidity</Tooltip.Panel>
                           </Tooltip>
                         </Div>
-                      </div>
+                      </Div>
                     </Collapse.Body>
                   </Collapse>
                 </FadeIn>
@@ -926,21 +926,21 @@ function UserLiquidityExhibition() {
             useLiquidity.setState({ isRemoveDialogOpen: false })
           }}
         />
-        <div className="text-xs mobile:text-2xs font-medium text-[rgba(171,196,255,0.5)]">
+        <Div className="text-xs mobile:text-2xs font-medium text-[rgba(171,196,255,0.5)]">
           If you staked your LP tokens in a farm, unstake them to see them here
-        </div>
+        </Div>
       </Card>
-    </div>
+    </Div>
   )
 }
 
 function CreatePoolCardEntry() {
   return (
-    <div className="mt-12 max-w-[456px] self-center">
-      <div className="mb-6 text-xl font-medium text-white">Create Pool</div>
+    <Div className="mt-12 max-w-[456px] self-center">
+      <Div className="mb-6 text-xl font-medium text-white">Create Pool</Div>
       <Card className="p-6 mt-6 mobile:py-5 mobile:px-3 bg-cyberpunk-card-bg" size="lg">
         <Div icss={cssRow()} className="gap-4">
-          <div className="text-xs mobile:text-2xs font-medium text-[rgba(171,196,255,0.5)]">
+          <Div className="text-xs mobile:text-2xs font-medium text-[rgba(171,196,255,0.5)]">
             Create a liquidity pool on Raydium that can be traded on the swap interface.{' '}
             <Link
               noTextStyle
@@ -950,7 +950,7 @@ function CreatePoolCardEntry() {
               Read the guide
             </Link>{' '}
             before attempting.
-          </div>
+          </Div>
 
           <Button
             className="flex items-center frosted-glass-teal opacity-80"
@@ -959,10 +959,10 @@ function CreatePoolCardEntry() {
             }}
           >
             <Icon className="mr-2" heroIconName="plus" />
-            <div>Create Pool</div>
+            <Div>Create Pool</Div>
           </Button>
         </Div>
       </Card>
-    </div>
+    </Div>
   )
 }

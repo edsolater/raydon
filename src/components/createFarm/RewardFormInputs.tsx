@@ -255,7 +255,7 @@ export function RewardFormCardInputs({
         allowSOLWSOLSwitch
         onTryToSwitchSOLWSOL={handleSwitchSOLWSOLRewardToken}
       />
-      <div>
+      <Div>
         <Div icss_={isMobile ? cssCol() : cssRow()} className="gap-4">
           <InputBox
             className="grow-2 rounded-md text-sm font-medium text-white px-4"
@@ -275,9 +275,9 @@ export function RewardFormCardInputs({
               setIsInputDuration(false)
             }}
             suffix={
-              <div className="font-medium text-sm text-[#abc4ff80]">
+              <Div className="font-medium text-sm text-[#abc4ff80]">
                 {durationBoundaryUnit === 'hours' ? 'Hours' : 'Days'}
-              </div>
+              </Div>
             }
             onUserInput={(v) => {
               if (!v) return
@@ -421,19 +421,19 @@ export function RewardFormCardInputs({
           />
         </Div>
         {needShowAlert && (
-          <div>
+          <Div>
             {durationTime! > maxDurationSeconds * 1e3 ? (
-              <div className="text-[#DA2EEF] text-sm font-medium pt-2 pl-2">
+              <Div className="text-[#DA2EEF] text-sm font-medium pt-2 pl-2">
                 Period is longer than max duration of {maxDurationValue} {durationBoundaryUnit}
-              </div>
+              </Div>
             ) : durationTime! < minDurationSeconds * 1e3 ? (
-              <div className="text-[#DA2EEF] text-sm font-medium pt-2 pl-2">
+              <Div className="text-[#DA2EEF] text-sm font-medium pt-2 pl-2">
                 Period is shorter than min duration of {minDurationValue} {durationBoundaryUnit}
-              </div>
+              </Div>
             ) : null}
-          </div>
+          </Div>
         )}
-      </div>
+      </Div>
       <InputBox
         disabled={disableEstimatedInput}
         decimalMode
@@ -448,7 +448,7 @@ export function RewardFormCardInputs({
         }}
         suffix={
           isMeaningfulNumber(estimatedValue) ? (
-            <div className="font-medium text-sm text-[#abc4ff80]">{reward.token?.symbol ?? '--'}</div>
+            <Div className="font-medium text-sm text-[#abc4ff80]">{reward.token?.symbol ?? '--'}</Div>
           ) : undefined
         }
       />

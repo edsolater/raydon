@@ -66,7 +66,7 @@ export default function Progress({
         borderColor: themeColor
       }}
     >
-      <div
+      <Div
         className={twMerge(
           `Progress-inner-pillar absolute top-0 rounded-full opacity-20 h-full ${pillarClassName ?? ''}`
         )}
@@ -75,8 +75,8 @@ export default function Progress({
           backgroundColor: themeColor
         }}
       />
-      <div
-        ref={labelRef}
+      <Div
+        domRef={labelRef}
         className={twMerge(`inline-block Progress-label ${labelClassName ?? ''}`)}
         style={{
           marginInline: 'auto',
@@ -84,25 +84,25 @@ export default function Progress({
         }}
       >
         {shrinkToValue(labelFormat, [value])}
-      </div>
+      </Div>
     </Div>
   ) : (
     <Div domRef={progressRef} className={twMerge(`Progress relative ${className ?? ''}`)}>
-      <div
+      <Div
         className={twMerge(
           `Progress-whole-slot bg-gray-50 bg-opacity-20 rounded-full overflow-hidden w-full h-2 ${slotClassName ?? ''}`
         )}
       >
-        <div
+        <Div
           className={twMerge(`Progress-inner-pillar rounded-full  h-full ${pillarClassName ?? ''}`)}
           style={{
             width: `${clampedValue * 100}%`,
             backgroundColor: themeColor
           }}
         />
-      </div>
-      <div
-        ref={labelRef}
+      </Div>
+      <Div
+        domRef={labelRef}
         className={twMerge(`inline-block Progress-label ${labelClassName ?? ''}`)}
         style={{
           marginLeft: `${clampedValue * 100}%`,
@@ -111,7 +111,7 @@ export default function Progress({
         }}
       >
         {shrinkToValue(labelFormat, [value])}
-      </div>
+      </Div>
     </Div>
   )
 }

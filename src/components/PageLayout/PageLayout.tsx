@@ -11,7 +11,7 @@ import { FadeIn } from '@/tempUikits/FadeIn'
 import MessageBoardWidget from '../navWidgets/MessageBoardWidget'
 import WalletWidget from '../navWidgets/WalletWidget'
 import { appColors } from '@/styles/colors'
-import { Div, cssCol } from '@/../../uikit/dist'
+import { Div, cssCol } from '@edsolater/uikit'
 
 export default function PageLayout(props: {
   /** only mobile  */
@@ -36,7 +36,7 @@ export default function PageLayout(props: {
   const isMobile = useAppSettings((s) => s.isMobile)
   const isSideBarMenuShown = useAppSettings((s) => s.isSideBarMenuShown)
   return (
-    <div
+    <Div
       style={{
         padding:
           'env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px)',
@@ -113,6 +113,6 @@ export default function PageLayout(props: {
         {/* <VersionTooOldDialog /> */}
         {props.children}
       </main>
-    </div>
+    </Div>
   )
 }

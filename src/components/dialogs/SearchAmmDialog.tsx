@@ -12,7 +12,7 @@ import { isValidPublicKey } from '@/functions/judgers/dateType'
 import { findTokenMintByAmmId, findTokenMintByMarketId } from '@/application/liquidity/miscToolFns'
 import useNotification from '@/application/notification/useNotification'
 import InputBox from '../InputBox'
-import { Div, cssRow } from '@/../../uikit/dist'
+import { Div, cssRow } from '@edsolater/uikit'
 
 export function SearchAmmDialog({
   open,
@@ -66,7 +66,7 @@ export function SearchAmmDialog({
           size="lg"
         >
           <Div icss={cssRow()} className="justify-between items-center mb-6">
-            <div className="text-xl font-semibold text-white">Pool Search</div>
+            <Div className="text-xl font-semibold text-white">Pool Search</Div>
             <Icon className="text-primary cursor-pointer" heroIconName="x" onClick={closeDialog} />
           </Div>
 

@@ -132,8 +132,8 @@ export default function LotteryDetailPageLayout() {
     <PageLayout metaTitle="AcceleRaytor" mobileBarTitle="AcceleRaytor" contentYPaddingShorter>
       <NavButtons className="mb-8 sticky top-0" />
       {idoInfo ? (
-        <div className="max-w-[1130px] mobile:max-w-[530px] mx-auto">
-          <div className="-z-10 cyberpunk-bg-light-acceleraytor-detail-page top-1/2 left-1/2"></div>
+        <Div className="max-w-[1130px] mobile:max-w-[530px] mx-auto">
+          <Div className="-z-10 cyberpunk-bg-light-acceleraytor-detail-page top-1/2 left-1/2"></Div>
 
           <WinningTicketPanel className="mb-5" />
 
@@ -144,7 +144,7 @@ export default function LotteryDetailPageLayout() {
             <LotteryProjectInfoPanel className="grid-area-d" />
             <LotteryLicense className="grid-area-e" />
           </PageGridTemplate>
-        </div>
+        </Div>
       ) : (
         <LoadingCircle className="mx-auto my-12" />
       )}
@@ -164,9 +164,9 @@ function TicketItem({
   if (!ticket) return null
   return (
     <Div className={['items-center gap-1', className]} icss={cssRow()}>
-      <div className={`text-xs font-semibold ${ticket.isWinning ? 'text-[#39D0D8]' : 'text-primary'} `}>
+      <Div className={`text-xs font-semibold ${ticket.isWinning ? 'text-[#39D0D8]' : 'text-primary'} `}>
         {ticket.no}
-      </div>
+      </Div>
       {idoInfo?.isClosed && (
         <Icon
           size="smi"
@@ -214,25 +214,25 @@ function WinningTicketPanel({ className }: { className?: string }) {
             <Div icss={cssRow()} className="flex-wrap gap-7 justify-between p-8 mobile:p-5">
               <Div icss={cssCol()} className="gap-1">
                 {idoInfo.winningTicketsTailNumber ? (
-                  <div className="mobile:text-sm font-semibold text-base text-white">
+                  <Div className="mobile:text-sm font-semibold text-base text-white">
                     {['1', '2'].includes(String(idoInfo.winningTicketsTailNumber?.isWinning)) ? (
-                      <div>
+                      <Div>
                         {idoInfo.winningTicketsTailNumber?.tickets
                           .map(({ no, isPartial }) => `${no}${isPartial ? ' (partial)' : ''}`)
                           .join(', ')}
-                      </div>
+                      </Div>
                     ) : ['3'].includes(String(idoInfo.winningTicketsTailNumber?.isWinning)) ? (
-                      <div>(Every deposited ticket wins)</div>
+                      <Div>(Every deposited ticket wins)</Div>
                     ) : (
-                      <div className="opacity-50">
+                      <Div className="opacity-50">
                         {idoInfo?.isClosed ? '(Lottery in progress)' : '(Numbers selected when lottery ends)'}
-                      </div>
+                      </Div>
                     )}
-                  </div>
+                  </Div>
                 ) : (
-                  <div></div>
+                  <Div></Div>
                 )}
-                <div className="text-xs font-semibold  text-primary opacity-50">
+                <Div className="text-xs font-semibold  text-primary opacity-50">
                   {
                     {
                       '0': 'Lucky Ending Numbers',
@@ -242,7 +242,7 @@ function WinningTicketPanel({ className }: { className?: string }) {
                       undefined: 'Lucky Ending Numbers'
                     }[String(idoInfo.winningTicketsTailNumber?.isWinning)] // TODO: to hydrated info
                   }
-                </div>
+                </Div>
               </Div>
               <FadeIn>
                 {idoInfo.ledger && idoInfo?.depositedTickets?.length && (
@@ -295,9 +295,9 @@ function WinningTicketPanel({ className }: { className?: string }) {
                       </Button>
                       <FadeIn>
                         {gt(idoInfo.winningTickets?.length, 0) && eq(idoInfo.ledger.baseWithdrawn, 0) && (
-                          <div className="text-xs mt-1 font-semibold text-primary opacity-50">
+                          <Div className="text-xs mt-1 font-semibold text-primary opacity-50">
                             {idoInfo.winningTickets?.length} winning tickets
-                          </div>
+                          </Div>
                         )}
                       </FadeIn>
                     </Div>
@@ -336,10 +336,10 @@ function WinningTicketPanel({ className }: { className?: string }) {
                       </Button>
                       <FadeIn>
                         {eq(idoInfo.ledger?.quoteWithdrawn, 0) && (
-                          <div className="text-xs mt-1 font-semibold text-primary opacity-50">
+                          <Div className="text-xs mt-1 font-semibold text-primary opacity-50">
                             {(idoInfo.depositedTickets?.length ?? 0) - (idoInfo.winningTickets?.length ?? 0)}{' '}
                             non-winning tickets
-                          </div>
+                          </Div>
                         )}
                       </FadeIn>
                     </Div>
@@ -353,11 +353,11 @@ function WinningTicketPanel({ className }: { className?: string }) {
             {isMeaningfulNumber(idoInfo.depositedTickets?.length) && (
               <Div icss={cssCol()} className="bg-[#141041] py-5 px-6">
                 {!idoInfo.isClosed && (
-                  <div className="text-xl mobile:text-sm font-semibold  text-white">
+                  <Div className="text-xl mobile:text-sm font-semibold  text-white">
                     You have deposited successfully
-                  </div>
+                  </Div>
                 )}
-                <div className="text-sm mb-5 font-semibold  text-primary opacity-50">Your ticket numbers</div>
+                <Div className="text-sm mb-5 font-semibold  text-primary opacity-50">Your ticket numbers</Div>
                 <Grid
                   className="gap-board -mx-5"
                   style={{
@@ -398,14 +398,14 @@ function LotteryStateInfoPanel({ className }: { className?: string }) {
   }) =>
     isMobile ? (
       <Grid className={twMerge('grid-cols-[3fr,4fr] items-center p-3 px-4 gap-3', className)}>
-        <div className="text-xs font-bold text-primary opacity-50">{fieldName}</div>
-        <div className="text-sm font-semibold text-white">{fieldValue}</div>
+        <Div className="text-xs font-bold text-primary opacity-50">{fieldName}</Div>
+        <Div className="text-sm font-semibold text-white">{fieldValue}</Div>
       </Grid>
     ) : (
-      <div className={twMerge('py-3 px-4', className)}>
-        <div>{fieldValue}</div>
-        <div className="text-primary font-bold text-xs mt-1">{fieldName}</div>
-      </div>
+      <Div className={twMerge('py-3 px-4', className)}>
+        <Div>{fieldValue}</Div>
+        <Div className="text-primary font-bold text-xs mt-1">{fieldName}</Div>
+      </Div>
     )
   return (
     <Card
@@ -422,12 +422,12 @@ function LotteryStateInfoPanel({ className }: { className?: string }) {
         wrapperClassName="w-[140px] mobile:w-auto mobile:rounded-2xl"
       >
         <CoinAvatar noCoinIconBorder size="lg" token={idoInfo.base} />
-        <div>
-          <div className="text-center mobile:text-left text-base font-semibold text-white">
+        <Div>
+          <Div className="text-center mobile:text-left text-base font-semibold text-white">
             {idoInfo.base?.symbol ?? 'UNKNOWN'}
-          </div>
-          <div className="text-center mobile:text-left text-sm text-primary opacity-50">{idoInfo.projectName}</div>
-        </div>
+          </Div>
+          <Div className="text-center mobile:text-left text-sm text-primary opacity-50">{idoInfo.projectName}</Div>
+        </Div>
         <Badge
           size="md"
           className="mobile:ml-auto"
@@ -437,7 +437,7 @@ function LotteryStateInfoPanel({ className }: { className?: string }) {
         </Badge>
       </CyberpunkStyleCard>
 
-      <div className={`${isMobile ? '' : 'w-0 grow'} m-4`}>
+      <Div className={`${isMobile ? '' : 'w-0 grow'} m-4`}>
         <Grid
           className={`${
             isMobile
@@ -451,10 +451,10 @@ function LotteryStateInfoPanel({ className }: { className?: string }) {
             fieldName="Total Raise"
             fieldValue={
               <Div icss={cssRow()} className="items-baseline gap-1">
-                <div className="text-white font-medium">{formatNumber(toString(idoInfo.totalRaise))}</div>
-                <div className="text-[#ABC4FF80] font-medium text-xs">
+                <Div className="text-white font-medium">{formatNumber(toString(idoInfo.totalRaise))}</Div>
+                <Div className="text-[#ABC4FF80] font-medium text-xs">
                   {idoInfo.totalRaise?.token.symbol ?? 'UNKNOWN'}
-                </div>
+                </Div>
               </Div>
             }
           />
@@ -462,10 +462,10 @@ function LotteryStateInfoPanel({ className }: { className?: string }) {
             fieldName={`Allocation / Winning Ticket`}
             fieldValue={
               <Div icss={cssRow()} className="items-baseline gap-1">
-                <div className="text-white font-medium">
+                <Div className="text-white font-medium">
                   {formatNumber(toString(idoInfo.ticketPrice), { fractionLength: 'auto' })}
-                </div>
-                <div className="text-[#ABC4FF80] font-medium text-xs">{idoInfo.quote?.symbol ?? 'UNKNOWN'}</div>
+                </Div>
+                <Div className="text-[#ABC4FF80] font-medium text-xs">{idoInfo.quote?.symbol ?? 'UNKNOWN'}</Div>
               </Div>
             }
           />
@@ -473,29 +473,29 @@ function LotteryStateInfoPanel({ className }: { className?: string }) {
             fieldName={`Per ${idoInfo.base?.symbol ?? 'UNKNOWN'}`}
             fieldValue={
               <Div icss={cssRow()} className="items-baseline gap-1">
-                <div className="text-white font-medium">
+                <Div className="text-white font-medium">
                   {formatNumber(toString(idoInfo.coinPrice), { fractionLength: 'auto' })}
-                </div>
-                <div className="text-[#ABC4FF80] font-medium text-xs">{idoInfo.quote?.symbol ?? 'UNKNOWN'}</div>
+                </Div>
+                <Div className="text-[#ABC4FF80] font-medium text-xs">{idoInfo.quote?.symbol ?? 'UNKNOWN'}</Div>
               </Div>
             }
           />
-          <div>
+          <Div>
             <IdoInfoItem
               fieldName="Total tickets deposited"
               fieldValue={
                 <Div icss={cssRow()} className="items-baseline gap-1">
-                  <div className="text-white font-medium">{formatNumber(idoInfo.depositedTicketCount)}</div>
-                  <div className="text-[#ABC4FF80] font-medium text-xs"> / {formatNumber(idoInfo.maxWinLotteries)}</div>
+                  <Div className="text-white font-medium">{formatNumber(idoInfo.depositedTicketCount)}</Div>
+                  <Div className="text-[#ABC4FF80] font-medium text-xs"> / {formatNumber(idoInfo.maxWinLotteries)}</Div>
                   <Tooltip placement="bottom" className="self-center">
                     <Icon size="sm" heroIconName="information-circle" className="text-[#ABC4FF80]" />
                     <Tooltip.Panel>
-                      <div className="max-w-[260px]">
-                        <div className="font-normal text-xs opacity-50">
+                      <Div className="max-w-[260px]">
+                        <Div className="font-normal text-xs opacity-50">
                           The amount shows the number of winning tickets. A pool can be oversubscribed if more tickets
                           are deposited.
-                        </div>
-                      </div>
+                        </Div>
+                      </Div>
                     </Tooltip.Panel>
                   </Tooltip>
                 </Div>
@@ -507,22 +507,22 @@ function LotteryStateInfoPanel({ className }: { className?: string }) {
               labelClassName="text-xs font-bold px-4"
               value={toPercentNumber(idoInfo.filled)}
             />
-          </div>
+          </Div>
           <IdoInfoItem
             fieldName="Pool open"
             fieldValue={
               <Div icss={cssRow()} className="items-baseline gap-1">
                 {isDateBefore(getChainDate(), idoInfo.startTime) ? (
                   <>
-                    <div className="text-[#ABC4FF80] font-medium text-xs">in</div>
-                    <div className="text-white font-medium">
+                    <Div className="text-[#ABC4FF80] font-medium text-xs">in</Div>
+                    <Div className="text-white font-medium">
                       <IdoCountDownClock endTime={idoInfo.startTime} />
-                    </div>
+                    </Div>
                   </>
                 ) : (
                   <>
-                    <div className="text-white font-medium">{toUTC(idoInfo.startTime, { hideUTCBadge: true })}</div>
-                    <div className="text-[#ABC4FF80] font-medium text-xs">{'UTC'}</div>
+                    <Div className="text-white font-medium">{toUTC(idoInfo.startTime, { hideUTCBadge: true })}</Div>
+                    <Div className="text-[#ABC4FF80] font-medium text-xs">{'UTC'}</Div>
                   </>
                 )}
               </Div>
@@ -534,17 +534,17 @@ function LotteryStateInfoPanel({ className }: { className?: string }) {
               <Div icss={cssRow()} className="items-baseline gap-1">
                 {isDateBefore(getChainDate(), idoInfo.endTime) ? (
                   <>
-                    <div className="text-[#ABC4FF80] font-medium text-xs">in</div>
-                    <div className="text-white font-medium">
+                    <Div className="text-[#ABC4FF80] font-medium text-xs">in</Div>
+                    <Div className="text-white font-medium">
                       <IdoCountDownClock endTime={Number(idoInfo.endTime)} />
-                    </div>
+                    </Div>
                   </>
                 ) : (
                   <>
-                    <div className="text-white font-medium">
+                    <Div className="text-white font-medium">
                       {toUTC(Number(idoInfo.endTime), { hideUTCBadge: true })}
-                    </div>
-                    <div className="text-[#ABC4FF80] font-medium text-xs">{'UTC'}</div>
+                    </Div>
+                    <Div className="text-[#ABC4FF80] font-medium text-xs">{'UTC'}</Div>
                   </>
                 )}
               </Div>
@@ -559,29 +559,29 @@ function LotteryStateInfoPanel({ className }: { className?: string }) {
                 className="p-0"
                 fieldValue={
                   <Div icss={cssRow()} className="items-baseline gap-1">
-                    <div className="text-white font-medium">
+                    <Div className="text-white font-medium">
                       {formatNumber(toString(stakingHydratedInfo?.userStakedLpAmount)) || '--'} RAY
-                    </div>
+                    </Div>
                   </Div>
                 }
                 fieldName={
                   <Div icss={cssRow()} className="gap-1 items-center">
-                    <div>Your staking</div>
+                    <Div>Your staking</Div>
 
                     <Tooltip placement="bottom">
                       <Icon size="sm" heroIconName="information-circle" className="text-[#ABC4FF80]" />
                       <Tooltip.Panel>
-                        <div className="text-sm font-semibold max-w-[160px]">
-                          <div className="text-white pb-1">
+                        <Div className="text-sm font-semibold max-w-[160px]">
+                          <Div className="text-white pb-1">
                             Your Stake Ray:{' '}
                             {connected
                               ? formatNumber(toString(stakingHydratedInfo?.userStakedLpAmount))
                               : '(not connected)'}
-                          </div>
-                          <div className="font-normal text-xs opacity-50">
+                          </Div>
+                          <Div className="font-normal text-xs opacity-50">
                             The more and longer you stake RAY the more tickets you will receive.
-                          </div>
-                        </div>
+                          </Div>
+                        </Div>
                       </Tooltip.Panel>
                     </Tooltip>
                   </Div>
@@ -613,9 +613,9 @@ function LotteryStateInfoPanel({ className }: { className?: string }) {
                   Stake
                 </Button>
 
-                <div className="text-xs text-center text-primary mt-1">
+                <Div className="text-xs text-center text-primary mt-1">
                   APR: {toPercentString(stakingHydratedInfo?.totalApr7d)}
-                </div>
+                </Div>
               </Div>
             </Div>
           )}
@@ -626,17 +626,17 @@ function LotteryStateInfoPanel({ className }: { className?: string }) {
                 <Div icss={cssRow()} className="items-baseline gap-1">
                   {isDateBefore(getChainDate(), idoInfo.stakeTimeEnd) ? (
                     <>
-                      <div className="text-[#ABC4FF80] font-medium text-xs">in</div>
-                      <div className="text-white font-medium">
+                      <Div className="text-[#ABC4FF80] font-medium text-xs">in</Div>
+                      <Div className="text-white font-medium">
                         <IdoCountDownClock endTime={idoInfo.stakeTimeEnd} />
-                      </div>
+                      </Div>
                     </>
                   ) : (
                     <>
-                      <div className="text-white font-medium">
+                      <Div className="text-white font-medium">
                         {toUTC(idoInfo.stakeTimeEnd, { hideUTCBadge: true })}
-                      </div>
-                      <div className="text-[#ABC4FF80] font-medium text-xs">{'UTC'}</div>
+                      </Div>
+                      <Div className="text-[#ABC4FF80] font-medium text-xs">{'UTC'}</Div>
                     </>
                   )}
                 </Div>
@@ -644,7 +644,7 @@ function LotteryStateInfoPanel({ className }: { className?: string }) {
             />
           )}
         </Grid>
-      </div>
+      </Div>
     </Card>
   )
 }
@@ -657,14 +657,14 @@ function LotteryLedgerPanel({ className }: { className?: string }) {
   const TopInfoPanelFieldItem = (props: { fieldName: ReactNode; fieldValue: ReactNode }) =>
     isMobile ? (
       <Grid className="grid-cols-[3fr,1fr] items-center p-3 px-4 gap-3">
-        <div className="text-xs font-bold text-primary opacity-50">{props.fieldName}</div>
-        <div className="text-sm font-semibold text-white">{props.fieldValue}</div>
+        <Div className="text-xs font-bold text-primary opacity-50">{props.fieldName}</Div>
+        <Div className="text-sm font-semibold text-white">{props.fieldValue}</Div>
       </Grid>
     ) : (
-      <div className="px-6">
-        <div className="text-base font-semibold text-white">{props.fieldValue}</div>
-        <div className="text-sm text-primary font-bold">{props.fieldName}</div>
-      </div>
+      <Div className="px-6">
+        <Div className="text-base font-semibold text-white">{props.fieldValue}</Div>
+        <Div className="text-sm text-primary font-bold">{props.fieldName}</Div>
+      </Div>
     )
 
   if (!idoInfo) return null
@@ -695,8 +695,8 @@ function LotteryLedgerPanel({ className }: { className?: string }) {
           fieldName="Allocation"
           fieldValue={
             <Div icss={cssRow()} className="items-baseline gap-1">
-              <div>{connected ? formatNumber(toString(idoInfo.userAllocation) || 0) : '--'}</div>
-              <div className="text-sm text-primary opacity-50"> {idoInfo.base?.symbol ?? ''}</div>
+              <Div>{connected ? formatNumber(toString(idoInfo.userAllocation) || 0) : '--'}</Div>
+              <Div className="text-sm text-primary opacity-50"> {idoInfo.base?.symbol ?? ''}</Div>
             </Div>
           }
         />
@@ -745,7 +745,7 @@ function LotteryProjectInfoPanel({ className }: { className?: string }) {
     </>
   )
   const renderHowToJoin = (
-    <div>
+    <Div>
       {/* wrapbox(have scroll bar) */}
       <Div icss={cssRow()}>
         {/* card row */}
@@ -757,14 +757,14 @@ function LotteryProjectInfoPanel({ className }: { className?: string }) {
           >
             <Div icss={cssCol()} className="items-center gap-3">
               <StepBadge n={1} />
-              <div className="text-sm text-center text-primary font-semibold">Stake RAY</div>
+              <Div className="text-sm text-center text-primary font-semibold">Stake RAY</Div>
             </Div>
 
             <Div icss={cssCol()} className="grow gap-3">
-              <div className="text-xs text-center text-primary opacity-50">
+              <Div className="text-xs text-center text-primary opacity-50">
                 Stake and Earn RAY to participate in pools. The more and longer you stake the more lottery tickets
                 you'll be eligible to join with.
-              </div>
+              </Div>
               <Div icss={cssCol()} className="items-center">
                 <Button
                   className="frosted-glass-skygray"
@@ -788,9 +788,9 @@ function LotteryProjectInfoPanel({ className }: { className?: string }) {
                   Stake
                 </Button>
 
-                <div className="text-xs text-center text-primary opacity-50 mt-1">
+                <Div className="text-xs text-center text-primary opacity-50 mt-1">
                   APR: {toPercentString(stakingHydratedInfo?.totalApr7d)}
-                </div>
+                </Div>
               </Div>
             </Div>
           </Card>
@@ -802,11 +802,11 @@ function LotteryProjectInfoPanel({ className }: { className?: string }) {
           >
             <Div icss={cssCol()} className="items-center gap-3">
               <StepBadge n={2} />
-              <div className="text-sm text-center text-primary font-semibold">Deposit {idoInfo.quote?.symbol}</div>
+              <Div className="text-sm text-center text-primary font-semibold">Deposit {idoInfo.quote?.symbol}</Div>
             </Div>
 
             <Div icss={cssCol()} className="grow gap-3">
-              <div className="text-xs text-center text-primary opacity-50 space-y-3">
+              <Div className="text-xs text-center text-primary opacity-50 space-y-3">
                 <p>
                   When the pool opens, deposit {idoInfo.quote?.symbol} for each ticket in order for it to be counted in
                   the lottery.
@@ -815,7 +815,7 @@ function LotteryProjectInfoPanel({ className }: { className?: string }) {
                   The lottery will be done on-chain, with lottery numbers assigned to tickets in the order that users
                   deposit.
                 </p>
-              </div>
+              </Div>
             </Div>
           </Card>
 
@@ -826,17 +826,17 @@ function LotteryProjectInfoPanel({ className }: { className?: string }) {
           >
             <Div icss={cssCol()} className="items-center gap-3">
               <StepBadge n={3} />
-              <div className="text-sm text-center text-primary font-semibold">Claim tokens</div>
+              <Div className="text-sm text-center text-primary font-semibold">Claim tokens</Div>
             </Div>
 
             <Div icss={cssCol()} className="grow gap-3">
-              <div className="text-xs text-center text-primary opacity-50 space-y-3">
+              <Div className="text-xs text-center text-primary opacity-50 space-y-3">
                 <p>
                   If you have winning tickets you can claim your token allocation. You can then stake these tokens to
                   earn yield on them.
                 </p>
                 <p>For the non-winning tickets you can withdraw your {idoInfo.quote?.symbol}.</p>
-              </div>
+              </Div>
             </Div>
           </Card>
         </Div>
@@ -848,7 +848,7 @@ function LotteryProjectInfoPanel({ className }: { className?: string }) {
         <Icon size="sm" inline heroIconName="information-circle" />
         Read full details on Medium
       </Link>
-    </div>
+    </Div>
   )
   return (
     <Card
@@ -922,14 +922,14 @@ function LotteryInputPanel({ className }: { className?: string }) {
         <span>Pool opens in</span>
         <IdoCountDownClock singleValueMode labelClassName="text-base" endTime={idoInfo.startTime} onEnd={refreshSelf} />
       </Div>
-      <div className="ml-auto">
+      <Div className="ml-auto">
         <RefreshCircle
           refreshKey="acceleraytor"
           freshFunction={() => {
             refreshIdo(idoInfo.id)
           }}
         />
-      </div>
+      </Div>
     </Div>
   )
   const renderPoolOpen = (
@@ -937,20 +937,20 @@ function LotteryInputPanel({ className }: { className?: string }) {
       {idoInfo.isEligible || idoInfo.isEligible == null || !connected
         ? 'Join Lottery'
         : "You're not eligible to join pool"}
-      <div className="ml-auto">
+      <Div className="ml-auto">
         <RefreshCircle
           refreshKey="acceleraytor"
           freshFunction={() => {
             refreshIdo(idoInfo.id)
           }}
         />
-      </div>
+      </Div>
     </Div>
   )
   const renderPoolClosed = (
     <Div icss={cssRow()} className="items-center">
       Pool Closed
-      <div className="ml-auto"></div>
+      <Div className="ml-auto"></Div>
     </Div>
   )
 
@@ -961,9 +961,9 @@ function LotteryInputPanel({ className }: { className?: string }) {
       className="flex flex-col mobile:rounded-2xl p-6 mobile:px-4 space-y-5"
       wrapperClassName={className}
     >
-      <div className="font-semibold text-base text-white">
+      <Div className="font-semibold text-base text-white">
         {idoInfo.isUpcoming ? renderPoolUpcoming : idoInfo.isOpen ? renderPoolOpen : renderPoolClosed}
-      </div>
+      </Div>
       <FadeIn>
         {connected && (idoInfo.isUpcoming || (idoInfo.isOpen && idoInfo.isEligible != null)) && (
           <AlertText
@@ -977,7 +977,7 @@ function LotteryInputPanel({ className }: { className?: string }) {
                 idoInfo.quote?.symbol ?? '--'
               } can be claimed after lottery ends and tokens after ${toUTC(idoInfo.startWithdrawTime)}.`
             ) : (
-              <div>
+              <Div>
                 <Link className="text-primary" href="https://twitter.com/RaydiumProtocol">
                   Follow us on Twitter
                 </Link>{' '}
@@ -986,12 +986,12 @@ function LotteryInputPanel({ className }: { className?: string }) {
                   join our Discord
                 </Link>
                 to get notified when we lunch our next pool.
-              </div>
+              </Div>
             )}
           </AlertText>
         )}
       </FadeIn>
-      <div className={`space-y-3 ${tempJoined || !notJoined || idoInfo.isClosed ? 'not-clickable' : ''}`}>
+      <Div className={`space-y-3 ${tempJoined || !notJoined || idoInfo.isClosed ? 'not-clickable' : ''}`}>
         <CoinInputBox
           className="px-4"
           topLeftLabel="Tickets"
@@ -1011,7 +1011,7 @@ function LotteryInputPanel({ className }: { className?: string }) {
           haveCoinIcon
           hideMaxButton
         />
-      </div>
+      </Div>
       <Button
         className="block w-full frosted-glass-teal"
         isLoading={isApprovePanelShown}
@@ -1085,7 +1085,7 @@ function LotteryInputPanel({ className }: { className?: string }) {
 
 function LotteryLicense({ className }: { className?: string }) {
   return (
-    <div
+    <Div
       className={twMerge(
         'text-2xs text-[#ABC4FF80] leading-relaxed pt-5 font-medium text-justify border-t border-[rgba(171,196,255,0.1)] mobile:p-4',
         className
@@ -1097,14 +1097,14 @@ function LotteryLicense({ className }: { className?: string }) {
       these services or participate in this token sale. For the avoidance of doubt, the foregoing restrictions on any of
       the services offered on the Raydium website from Prohibited Jurisdictions apply equally to residents and citizens
       of other nations while located in a Prohibited Jurisdiction.
-    </div>
+    </Div>
   )
 }
 
 function StepBadge(props: { n: number }) {
   return (
     <CyberpunkStyleCard wrapperClassName="w-8 h-8" className="grid place-content-center bg-[#2f2c78]">
-      <div className="font-semibold text-white">{props.n}</div>
+      <Div className="font-semibold text-white">{props.n}</Div>
     </CyberpunkStyleCard>
   )
 }

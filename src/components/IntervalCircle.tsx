@@ -2,6 +2,7 @@ import React, { RefObject, useEffect, useImperativeHandle, useRef, useState } fr
 import { twMerge } from 'tailwind-merge'
 
 import { useClick } from '@/hooks/useClick'
+import { Div } from '@/../../uikit/dist'
 
 export interface IntervalCircleHandler {
   /** percent */
@@ -71,7 +72,7 @@ export default function IntervalCircle({
   )
 
   return (
-    <div className={twMerge('w-full h-full rounded', className)}>
+    <Div className={twMerge('w-full h-full rounded', className)}>
       <svg ref={selfRef} width={width} height={height} viewBox={`0 0 ${width} ${height}`}>
         <circle r={r} cx="50%" cy="50%" fill="transparent" style={{ strokeWidth: strokeWidth, stroke: '#ffffff2e' }} />
         <circle
@@ -92,6 +93,6 @@ export default function IntervalCircle({
           }}
         />
       </svg>
-    </div>
+    </Div>
   )
 }

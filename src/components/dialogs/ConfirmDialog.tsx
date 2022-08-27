@@ -1,4 +1,4 @@
-import { cssCol, Div } from '@/../../uikit/dist'
+import { cssCol, Div } from '@edsolater/uikit'
 import useToggle from '@/hooks/useToggle'
 import { ReactNode, RefObject, useCallback, useRef } from 'react'
 import { twMerge } from 'tailwind-merge'
@@ -87,13 +87,13 @@ export default function ConfirmDialog(props: ConfirmDialogInfo & { domRef?: RefO
               />
             )}
 
-            <div className="mb-6 text-center">
-              <div className="font-semibold text-xl text-white mb-3">{props.title}</div>
-              {props.subtitle && <div className="font-semibold text-xl text-white">{props.subtitle}</div>}
-              {props.description && <div className="font-normal text-base text-primary">{props.description}</div>}
-            </div>
+            <Div className="mb-6 text-center">
+              <Div className="font-semibold text-xl text-white mb-3">{props.title}</Div>
+              {props.subtitle && <Div className="font-semibold text-xl text-white">{props.subtitle}</Div>}
+              {props.description && <Div className="font-normal text-base text-primary">{props.description}</Div>}
+            </Div>
 
-            <div className="self-stretch">
+            <Div className="self-stretch">
               {props.additionalContent}
               <Div icss={cssCol()}>
                 {!props.onlyConfirmButton && (
@@ -109,7 +109,7 @@ export default function ConfirmDialog(props: ConfirmDialogInfo & { domRef?: RefO
                   {props.confirmButtonText ?? 'OK'}
                 </Button>
               </Div>
-            </div>
+            </Div>
           </Div>
         </Card>
       )}

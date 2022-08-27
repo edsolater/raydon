@@ -25,6 +25,7 @@ import { MayFunction } from '@/types/constants'
 
 import { PopupLocationInfo, usePopoverLocation } from './useLocationCalculator'
 import { PopoverTiggerBy, PopoverTriggerControls, usePopoverTrigger } from './usePopoverTrigger'
+import { Div, DivProps } from '@/../../uikit/dist'
 
 export type PopoverPlacement =
   | 'left'
@@ -83,7 +84,7 @@ export type PopoverPanelProps = {
     ]
   >
   className?: string
-  style?: CSSProperties
+  style?: DivProps['style']
 }
 
 type PopoverButtonProps = {
@@ -196,9 +197,9 @@ export default function Popover({
 
   return (
     <>
-      <div ref={buttonRef}>{popoverButton}</div>
+      <Div domRef={buttonRef}>{popoverButton}</Div>
       <PopoverStackPortal>
-        <div className={twMerge(Popover.name, className)}>
+        <Div className={twMerge(Popover.name, className)}>
           <Transition
             appear
             show={forceOpen || isPanelShowed}
@@ -210,16 +211,16 @@ export default function Popover({
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-50"
           >
-            <div
+            <Div
               className={`absolute z-popover transform ${popupOrigins[placement]}`}
               style={
                 locationInfo ? { left: locationInfo.panelLeft, top: locationInfo.panelTop } : { visibility: 'hidden' }
               }
             >
               {popoverContent}
-            </div>
+            </Div>
           </Transition>
-        </div>
+        </Div>
       </PopoverStackPortal>
     </>
   )
@@ -228,9 +229,9 @@ export default function Popover({
 function PopoverButton({ $isRenderByMain, domRef, children, className }: PopoverButtonProps) {
   if (!$isRenderByMain) return null
   return (
-    <div ref={domRef} className={`${PopoverButton.name} ${className ?? ''}`}>
+    <Div domRef={domRef} className={`${PopoverButton.name} ${className ?? ''}`}>
       {children}
-    </div>
+    </Div>
   )
 }
 
@@ -246,16 +247,16 @@ function PopoverPanel({
   if (!$isRenderByMain) return null
 
   return (
-    <div
-      ref={domRef}
+    <Div
+      domRef={domRef}
       className={className}
       style={style}
-      onClick={(ev) => {
+      onClick={({ ev }) => {
         ev.stopPropagation()
       }}
     >
       {children as ReactNode}
-    </div>
+    </Div>
   )
 }
 

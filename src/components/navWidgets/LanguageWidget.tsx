@@ -2,7 +2,7 @@ import { useClickableElementRef } from '@/hooks/useClickableElement'
 import useTranslation from '@/hooks/useTranslation'
 
 import Menu from '../Menu'
-import { Div, cssRow } from '@/../../uikit/dist'
+import { Div, cssRow } from '@edsolater/uikit'
 
 function Item({ name = '', className, onClick }: { name?: string; className?: string; onClick?: () => void }) {
   const clickRef = useClickableElementRef({ onClick })

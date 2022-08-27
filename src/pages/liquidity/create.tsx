@@ -28,7 +28,7 @@ import { div } from '@/functions/numberish/operations'
 import useToggle from '@/hooks/useToggle'
 import { createSplToken } from '@/application/token/useTokenListsLoader'
 import { toString } from '@/functions/numberish/toString'
-import { Div, cssCol, cssRow } from '@/../../uikit/dist'
+import { Div, cssCol, cssRow } from '@edsolater/uikit'
 
 /**
  * @see https://uiwjs.github.io/#/components/date-input
@@ -63,10 +63,10 @@ function PanelContent({ close }: { close(): void }) {
   const step1Content = (
     <>
       {/* text */}
-      <div className="my-12 mobile:my-6 italic text-center text-sm font-medium text-[rgba(171,196,255,.5)]">
+      <Div className="my-12 mobile:my-6 italic text-center text-sm font-medium text-[rgba(171,196,255,.5)]">
         This tool is for advanced users. Before attempting to create a new liquidity pool, we suggest going through this{' '}
         <Link href="https://raydium.gitbook.io/raydium/permissionless/creating-a-pool">detailed guide</Link>
-      </div>
+      </Div>
       <InputBox
         label="Serum Market ID:"
         className="mb-5"
@@ -122,16 +122,16 @@ function PanelContent({ close }: { close(): void }) {
 
       {baseAmount && quoteAmount && isMeaningfulNumber(baseAmount) && isMeaningfulNumber(quoteAmount) && (
         <Div icss={cssRow()} className="mx-auto my-2 items-center gap-2">
-          <div className="text-sm text-[rgb(171,196,255)]">price:</div>
-          <div className="text-sm text-white">
+          <Div className="text-sm text-[rgb(171,196,255)]">price:</Div>
+          <Div className="text-sm text-white">
             {toString(priceReverse ? div(quoteAmount || 0, baseAmount || 1) : div(baseAmount || 0, quoteAmount || 1), {
               decimalLength: `auto ${Math.max(baseToken?.decimals ?? 6, quoteToken?.decimals ?? 6)}`
             })}
-          </div>
-          <div className="text-sm text-white">
+          </Div>
+          <Div className="text-sm text-white">
             {priceReverse ? quoteToken?.symbol : baseToken?.symbol} /{' '}
             {priceReverse ? baseToken?.symbol : quoteToken?.symbol}
-          </div>
+          </Div>
 
           <Icon
             heroIconName="switch-horizontal"
@@ -201,7 +201,7 @@ function PanelContent({ close }: { close(): void }) {
       <InfoItem fieldName="Quote Token Initial Liquidity:" fieldValue={quoteTokenInitialLiquidity} /> */}
       </Div>
 
-      <div className="font-medium text-center">Pool has been successfully created!</div>
+      <Div className="font-medium text-center">Pool has been successfully created!</Div>
 
       <Div
         icss={cssCol()}
@@ -230,8 +230,8 @@ function PanelContent({ close }: { close(): void }) {
   )
 
   return (
-    <div className="self-center w-[min(456px,90vw)]">
-      <div className="pb-8 text-2xl mobile:text-lg font-semibold justify-self-start text-white">Create Pool</div>
+    <Div className="self-center w-[min(456px,90vw)]">
+      <Div className="pb-8 text-2xl mobile:text-lg font-semibold justify-self-start text-white">Create Pool</Div>
       <Card
         className="p-8 mobile:p-4 flex flex-col rounded-3xl border-1.5 border-[rgba(171,196,255,0.2)] overflow-y-auto overflow-x-hidden bg-cyberpunk-card-bg shadow-cyberpunk-card"
         size="lg"
@@ -260,7 +260,7 @@ function PanelContent({ close }: { close(): void }) {
         {currentStep === 2 && step2Content}
         {currentStep === 3 && step3Content}
       </Card>
-    </div>
+    </Div>
   )
 }
 
@@ -285,11 +285,11 @@ function InfoItem({
   return (
     <Div icss={cssRow()} className={twMerge('w-full justify-between', className)}>
       <Div icss={cssRow()} className="items-center text-xs font-medium text-primary mobile:text-2xs">
-        <div className="mr-1">{fieldName}</div>
+        <Div className="mr-1">{fieldName}</Div>
       </Div>
-      <div className="text-xs font-medium text-white mobile:text-2xs">
+      <Div className="text-xs font-medium text-white mobile:text-2xs">
         {autoShowTokenSymbol ? mintSearch(String(fieldValue)) ?? fieldValue : fieldValue}
-      </div>
+      </Div>
     </Div>
   )
 }
@@ -318,9 +318,9 @@ function AddressItem({
       fieldName={fieldName}
       fieldValue={
         <Div icss={cssRow()}>
-          <div title={fieldValue}>
+          <Div htmlProps={{ title: fieldValue }}>
             {shortAddress} {autoShowTokenSymbol && mintSearch(String(fieldValue))}
-          </div>
+          </Div>
           <Icon
             size="sm"
             heroIconName="clipboard-copy"
@@ -346,8 +346,8 @@ function UserCreatedPoolsExhibitionPanel() {
 
   if (!userExhibitionHistory?.length) return null
   return (
-    <div className="self-center w-[min(456px,90vw)] mt-12">
-      <div className="pb-8 text-xl mobile:text-base font-semibold justify-self-start text-white">Your Created Pool</div>
+    <Div className="self-center w-[min(456px,90vw)] mt-12">
+      <Div className="pb-8 text-xl mobile:text-base font-semibold justify-self-start text-white">Your Created Pool</Div>
       <Card className="p-4 bg-cyberpunk-card-bg" size="lg">
         <Div icss={cssCol()} className={`gap-6 mobile:gap-5`}>
           {userExhibitionHistory.map((info, idx) => (
@@ -359,9 +359,9 @@ function UserCreatedPoolsExhibitionPanel() {
                 {(open) => (
                   <Div icss={cssRow()} className="items-center justify-between">
                     <Div icss={cssRow()} className="gap-2 items-center">
-                      <div className="text-base font-normal text-primary">
+                      <Div className="text-base font-normal text-primary">
                         AMM ID: {info.ammId.slice(0, 6)}...{info.ammId.slice(-6)}
-                      </div>
+                      </Div>
                     </Div>
                     <Icon size="sm" className="text-primary" heroIconName={`${open ? 'chevron-up' : 'chevron-down'}`} />
                   </Div>
@@ -390,6 +390,6 @@ function UserCreatedPoolsExhibitionPanel() {
           ))}
         </Div>
       </Card>
-    </div>
+    </Div>
   )
 }

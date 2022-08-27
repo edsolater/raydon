@@ -69,27 +69,27 @@ function PoolHeader() {
       icss={cssRow()}
       className="mx-auto my-2 text-base mobile:text-xs justify-self-start self-end text-[#abc4ff80] gap-4"
     >
-      <div className="whitespace-nowrap">
+      <Div className="whitespace-nowrap">
         TVL: <span className="font-medium text-primary">${formatNumber(tvl)}</span>
-      </div>
-      <div className="whitespace-nowrap">
+      </Div>
+      <Div className="whitespace-nowrap">
         Volume24H: <span className="font-medium text-primary">${formatNumber(volume24h)}</span>
-      </div>
+      </Div>
     </Div>
   ) : (
     <Grid className="grid-cols-[1fr,1fr] mobile:grid-cols-2 grid-flow-row-dense items-center gap-y-8 pb-8">
       <Div icss={cssRow()} className="justify-self-start gap-8">
-        <div className="text-2xl mobile:text-lg text-white font-semibold">Pools</div>
+        <Div className="text-2xl mobile:text-lg text-white font-semibold">Pools</Div>
         <Div
           icss={cssRow()}
           className="title text-base mobile:text-xs justify-self-start self-end text-[#abc4ff80] gap-4"
         >
-          <div className="whitespace-nowrap">
+          <Div className="whitespace-nowrap">
             TVL: <span className="font-medium text-primary">${formatNumber(tvl)}</span>
-          </div>
-          <div className="whitespace-nowrap">
+          </Div>
+          <Div className="whitespace-nowrap">
             Volume24H: <span className="font-medium text-primary">${formatNumber(volume24h)}</span>
-          </div>
+          </Div>
         </Div>
       </Div>
       <Div
@@ -131,12 +131,12 @@ function ToolsButton({ className }: { className?: string }) {
     <>
       <Popover placement="bottom-right">
         <Popover.Button>
-          <div className={twMerge('mx-1 rounded-full p-2 text-primary clickable justify-self-start', className)}>
+          <Div className={twMerge('mx-1 rounded-full p-2 text-primary clickable justify-self-start', className)}>
             <Icon className="w-4 h-4" iconClassName="w-4 h-4" heroIconName="dots-vertical" />
-          </div>
+          </Div>
         </Popover.Button>
         <Popover.Panel>
-          <div>
+          <Div>
             <Card
               className="flex flex-col py-3 px-4  max-h-[80vh] border-1.5 border-[rgba(171,196,255,0.2)] bg-cyberpunk-card-bg shadow-cyberpunk-card"
               size="lg"
@@ -147,7 +147,7 @@ function ToolsButton({ className }: { className?: string }) {
                 <PoolTimeBasisSelectorBox />
               </Grid>
             </Card>
-          </div>
+          </Div>
         </Popover.Panel>
       </Popover>
     </>
@@ -188,12 +188,12 @@ function PoolSearchBlock({ className }: { className?: string }) {
 
 function PoolLabelBlock({ className }: { className?: string }) {
   return (
-    <div className={className}>
-      <div className="font-medium text-xl mobile:text-base text-white">Liquidity Pools</div>
-      <div className="font-medium text-[rgba(196,214,255,.5)] text-base mobile:text-sm">
+    <Div className={className}>
+      <Div className="font-medium text-xl mobile:text-base text-white">Liquidity Pools</Div>
+      <Div className="font-medium text-[rgba(196,214,255,.5)] text-base mobile:text-sm">
         Earn yield on trading fees by providing liquidity
-      </div>
-    </div>
+      </Div>
+    </Div>
   )
 }
 
@@ -272,14 +272,14 @@ function PoolRefreshCircleBlock({ className }: { className?: string }) {
       />
     </Div>
   ) : (
-    <div className={twMerge('justify-self-end', className)}>
+    <Div className={twMerge('justify-self-end', className)}>
       <RefreshCircle
         refreshKey="pools"
         freshFunction={() => {
           usePools.getState().refreshPools()
         }}
       />
-    </div>
+    </Div>
   )
 }
 
@@ -360,7 +360,7 @@ function PoolCard() {
 
         {/* empty header */}
         <Grid className="grid-cols-[.4fr,1.2fr] clickable clickable-filter-effect no-clicable-transform-effect">
-          <div></div>
+          <Div></Div>
 
           {/* table head column: Pool */}
           <Div
@@ -494,7 +494,7 @@ function PoolCard() {
 
   // NOTE: filter widgets
   const innerPoolDatabaseWidgets = isMobile ? (
-    <div>
+    <Div>
       <Div icss={cssRow()} className="mb-4">
         <Grid className="grow gap-3 grid-cols-auto-fit">
           <PoolSearchBlock />
@@ -512,9 +512,9 @@ function PoolCard() {
         </Grid>
         <ToolsButton className="self-center" />
       </Div>
-    </div>
+    </Div>
   ) : (
-    <div>
+    <Div>
       <Div icss={cssRow()} className={'justify-between pb-5 gap-16 items-center'}>
         <PoolLabelBlock />
         <Div icss={cssRow()} className="gap-6 items-stretch">
@@ -523,7 +523,7 @@ function PoolCard() {
           <PoolSearchBlock />
         </Div>
       </Div>
-    </div>
+    </Div>
   )
   return (
     <CyberpunkStyleCard
@@ -573,9 +573,9 @@ function PoolCardDatabaseBody({ sortedData }: { sortedData: HydratedPairItemInfo
       )}
     />
   ) : (
-    <div className="text-center text-2xl p-12 opacity-50 text-[rgb(171,196,255)]">
+    <Div className="text-center text-2xl p-12 opacity-50 text-[rgb(171,196,255)]">
       {loading ? <LoadingCircle /> : '(No results found)'}
-    </div>
+    </Div>
   )
 }
 
@@ -605,7 +605,7 @@ function PoolCardDatabaseBodyCollapseItemFace({
         open ? '' : 'rounded-b-3xl mobile:rounded-b-lg'
       } transition-all`}
     >
-      <div className="w-12 self-center ml-6 mr-2">
+      <Div className="w-12 self-center ml-6 mr-2">
         {isFavourite ? (
           <Icon
             iconSrc="/icons/misc-star-filled.svg"
@@ -625,7 +625,7 @@ function PoolCardDatabaseBodyCollapseItemFace({
             className="clickable clickable-mask-offset-2 opacity-30 hover:opacity-80 transition m-auto self-center"
           />
         )}
-      </div>
+      </Div>
 
       <CoinAvatarInfoItem info={info} className="pl-0" />
 
@@ -687,7 +687,7 @@ function PoolCardDatabaseBodyCollapseItemFace({
             open ? '' : 'rounded-b-3xl mobile:rounded-b-lg'
           }`}
         >
-          <div className="w-8 self-center ">
+          <Div className="w-8 self-center ">
             {isFavourite ? (
               <Icon
                 className="clickable m-auto self-center"
@@ -709,7 +709,7 @@ function PoolCardDatabaseBodyCollapseItemFace({
                 size="sm"
               />
             )}
-          </div>
+          </Div>
 
           <CoinAvatarInfoItem info={info} />
 
@@ -742,7 +742,7 @@ function PoolCardDatabaseBodyCollapseItemFace({
 
       <Collapse.Body>
         <Div className="grid grid-flow-col py-4 px-5 pl-12 relative items-center gap-2 grid-cols-[1.5fr,1fr,1fr,auto]  bg-[#141041]">
-          <div className="absolute top-0 left-5 right-5 border-[rgba(171,196,255,.2)] border-t-1.5"></div>
+          <Div className="absolute top-0 left-5 right-5 border-[rgba(171,196,255,.2)] border-t-1.5"></Div>
           <TextInfoItem
             name="Volume(7d)"
             value={
@@ -803,34 +803,34 @@ function PoolCardDatabaseBodyCollapseItemContent({ poolInfo: info }: { poolInfo:
         className={`py-5 px-8 mobile:py-3 mobile:px-4 gap-[4vw] mobile:gap-3 mobile:grid-cols-3-auto flex-grow justify-between mobile:m-0`}
       >
         <Div icss={cssRow()}>
-          <div className="flex-grow">
-            <div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-2xs mb-1">Your Liquidity</div>
-            <div className="text-white font-medium text-base mobile:text-xs">
+          <Div className="flex-grow">
+            <Div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-2xs mb-1">Your Liquidity</Div>
+            <Div className="text-white font-medium text-base mobile:text-xs">
               {toUsdVolume(toTotalPrice(balances[info.lpMint], prices[info.lpMint]))}
-            </div>
-            <div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-2xs">
+            </Div>
+            <Div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-2xs">
               {isHydratedPoolItemInfo(info) ? toString(balances[info.lpMint] ?? 0) + ' LP' : '--'}
-            </div>
-          </div>
+            </Div>
+          </Div>
         </Div>
         <Div icss={cssRow()}>
-          <div className="flex-grow">
-            <div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-2xs mb-1">Assets Pooled</div>
-            <div className="text-white font-medium text-base mobile:text-xs">
+          <Div className="flex-grow">
+            <Div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-2xs mb-1">Assets Pooled</Div>
+            <Div className="text-white font-medium text-base mobile:text-xs">
               {isHydratedPoolItemInfo(info) ? `${toString(info.basePooled || 0)} ${info.base?.symbol ?? ''}` : '--'}
-            </div>
-            <div className="text-white font-medium text-base mobile:text-xs">
+            </Div>
+            <Div className="text-white font-medium text-base mobile:text-xs">
               {isHydratedPoolItemInfo(info) ? `${toString(info.quotePooled || 0)} ${info.quote?.symbol ?? ''}` : '--'}
-            </div>
-          </div>
+            </Div>
+          </Div>
         </Div>
         <Div icss={cssRow()}>
-          <div className="flex-grow">
-            <div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-2xs mb-1">Your Share</div>
-            <div className="text-white font-medium text-base mobile:text-xs">
+          <Div className="flex-grow">
+            <Div className="text-[rgba(171,196,255,0.5)] font-medium text-sm mobile:text-2xs mb-1">Your Share</Div>
+            <Div className="text-white font-medium text-base mobile:text-xs">
               {isHydratedPoolItemInfo(info) ? toPercentString(info.sharePercent) : '--%'}
-            </div>
-          </div>
+            </Div>
+          </Div>
         </Div>
       </Div>
 
@@ -982,7 +982,7 @@ function CoinAvatarInfoItem({ info, className }: { info: HydratedPairItemInfo | 
           <Tooltip placement="right">
             <Icon size="sm" heroIconName="question-mark-circle" className="cursor-help" />
             <Tooltip.Panel>
-              <div className="whitespace-pre">{lowLiquidityAlertText}</div>
+              <Div className="whitespace-pre">{lowLiquidityAlertText}</Div>
             </Tooltip.Panel>
           </Tooltip>
         )}
@@ -994,11 +994,11 @@ function CoinAvatarInfoItem({ info, className }: { info: HydratedPairItemInfo | 
 function TextInfoItem({ name, value }: { name: string; value?: any }) {
   const isMobile = useAppSettings((s) => s.isMobile)
   return isMobile ? (
-    <div>
-      <div className="mb-1 text-[rgba(171,196,255,0.5)] font-medium text-2xs">{name}</div>
-      <div className="text-xs">{value || '--'}</div>
-    </div>
+    <Div>
+      <Div className="mb-1 text-[rgba(171,196,255,0.5)] font-medium text-2xs">{name}</Div>
+      <Div className="text-xs">{value || '--'}</Div>
+    </Div>
   ) : (
-    <div className="tablet:text-sm">{value || '--'}</div>
+    <Div className="tablet:text-sm">{value || '--'}</Div>
   )
 }

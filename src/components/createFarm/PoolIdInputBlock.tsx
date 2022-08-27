@@ -16,7 +16,7 @@ import { isValidPublicKey } from '@/functions/judgers/dateType'
 import { useClickOutside } from '@/hooks/useClickOutside'
 import { LiquidityPoolJsonInfo } from '@raydium-io/raydium-sdk'
 import { RefObject, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react'
-import { Div, cssRow } from '@/../../uikit/dist'
+import { Div, cssRow } from '@edsolater/uikit'
 
 export interface PoolIdInputBlockHandle {
   validate?: () => void
@@ -115,13 +115,13 @@ export function PoolIdInputBlock({
               token2={tokens[candidate.quoteMint]}
               size={isMoblie ? 'smi' : 'md'}
             />
-            <div className="text-primary font-medium mobile:text-sm">
+            <Div className="text-primary font-medium mobile:text-sm">
               {tokens[candidate.baseMint]?.symbol ?? 'UNKNOWN'}-{tokens[candidate.quoteMint]?.symbol ?? 'UNKNOWN'}
-            </div>
+            </Div>
             {pairInfoMap[candidate.id] ? (
-              <div className="text-[#abc4ff80] text-sm font-medium mobile:text-end">
+              <Div className="text-[#abc4ff80] text-sm font-medium mobile:text-end">
                 {toUsdVolume(pairInfoMap[candidate.id].liquidity, { decimalPlace: 0 })}
-              </div>
+              </Div>
             ) : null}
             <AddressItem
               canCopy={false}
@@ -163,22 +163,22 @@ export function PoolIdInputBlock({
                 token2={tokens[selectedPool.quoteMint]}
                 size={isMoblie ? 'smi' : 'md'}
               />
-              <div className="text-primary text-base mobile:text-sm font-medium">
+              <Div className="text-primary text-base mobile:text-sm font-medium">
                 {tokens[selectedPool.baseMint]?.symbol ?? 'UNKNOWN'} -{' '}
                 {tokens[selectedPool.quoteMint]?.symbol ?? 'UNKNOWN'}
-              </div>
+              </Div>
               {selectedPoolPairInfo ? (
-                <div className="text-[#abc4ff80] text-sm mobile:text-xs ml-auto font-medium">
+                <Div className="text-[#abc4ff80] text-sm mobile:text-xs ml-auto font-medium">
                   Liquidity: {toUsdVolume(selectedPoolPairInfo.liquidity, { decimalPlace: 0 })}
-                </div>
+                </Div>
               ) : null}
             </>
           ) : (
             <>
               <Icon size="smi" heroIconName="x-circle" className="text-[#DA2EEF]" />
-              <div className="text-[#DA2EEF] text-sm font-medium">
+              <Div className="text-[#DA2EEF] text-sm font-medium">
                 {inputValue ? "Can't find pool" : 'You need to select one pool'}
-              </div>
+              </Div>
             </>
           )}
         </Div>

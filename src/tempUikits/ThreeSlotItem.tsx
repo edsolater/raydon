@@ -1,4 +1,4 @@
-import { Div, cssRow } from '@/../../uikit/dist'
+import { Div, cssRow } from '@edsolater/uikit'
 import React, { MouseEvent, ReactNode } from 'react'
 import { twMerge } from 'tailwind-merge'
 
@@ -21,7 +21,7 @@ export function ThreeSlotItem({
   return (
     <Div icss={cssRow()} className={twMerge('items-center', className)} onClick={({ ev }) => onClick?.(ev)}>
       {prefix}
-      <div className={twMerge('grow text-sm whitespace-nowrap', textClassName)}>{text}</div>
+      <Div className={twMerge('grow text-sm whitespace-nowrap', textClassName)}>{text}</Div>
       {suffix}
     </Div>
   )

@@ -12,7 +12,7 @@ import { toTokenAmount } from '@/functions/format/toTokenAmount'
 import { toString } from '@/functions/numberish/toString'
 import { gt, gte } from '@/functions/numberish/compare'
 import useAppSettings from '@/application/appSettings/useAppSettings'
-import { Div, cssRow } from '@/../../uikit/dist'
+import { Div, cssRow } from '@edsolater/uikit'
 
 export function StakingPageStakeLpDialog() {
   const connected = useWallet((s) => s.connected)
@@ -58,9 +58,9 @@ export function StakingPageStakeLpDialog() {
         >
           {/* {String(info?.lpMint)} */}
           <Div icss={cssRow()} className="justify-between items-center mb-6">
-            <div className="text-xl font-semibold text-white">
+            <Div className="text-xl font-semibold text-white">
               {stakeDialogMode === 'withdraw' ? 'Unstake RAY' : 'Stake RAY'}
-            </div>
+            </Div>
             <Icon className="text-primary cursor-pointer" heroIconName="x" onClick={close} />
           </Div>
           {/* input-container-box */}

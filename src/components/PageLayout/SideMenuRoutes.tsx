@@ -58,7 +58,7 @@ function SideMenuRoutesLinkItem({
             `text-link ${isCurrentRoutePath ? 'text-link-active' : ''} text-sm mobile:text-xs font-medium`
           )}
         >
-          <div>{children}</div>
+          <Div>{children}</Div>
           {isExternalLink && (
             <Icon inline className="opacity-80" size={isMobile ? 'xs' : 'sm'} heroIconName="external-link" />
           )}

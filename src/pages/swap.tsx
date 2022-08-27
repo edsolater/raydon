@@ -61,7 +61,7 @@ import { AddressItem } from '@/components/AddressItem'
 import { isMintEqual } from '@/functions/judgers/areEqual'
 import { Badge } from '@/tempUikits/Badge'
 import { useSwapTwoElements } from '../hooks/useSwapTwoElements'
-import { Div, cssCol, cssRow } from '@/../../uikit/dist'
+import { Div, cssCol, cssRow } from '@edsolater/uikit'
 
 function SwapEffect() {
   useSwapInitCoinFiller()
@@ -123,14 +123,14 @@ function useUnofficialTokenConfirmState(): { hasConfirmed: boolean; popConfirm: 
       type: 'warning',
       title: 'Confirm Token',
       description: (
-        <div className="space-y-2 text-left">
+        <Div className="space-y-2 text-left">
           <p>
             This token does not appear on the default token list. Anyone can create an SPL token on Solana, which may
             include fake versions of existing tokens or tokens that claim to represent projects that do not have a
             token. Take extra caution to confirm token addresses.
           </p>
           <p>Always check the quoted price and that the pool has sufficient liquidity before trading.</p>
-        </div>
+        </Div>
       ),
       onlyConfirmButton: true,
       confirmButtonText: 'I Understand',
@@ -146,7 +146,7 @@ function useUnofficialTokenConfirmState(): { hasConfirmed: boolean; popConfirm: 
               setUserPermanentConfirmedTokenMints((old) => removeItem(old ?? [], String(downCoin.mint)))
             }
           }}
-          label={<div className="text-sm italic text-[rgba(171,196,255,0.5)]">Do not warn again</div>}
+          label={<Div className="text-sm italic text-[rgba(171,196,255,0.5)]">Do not warn again</Div>}
         />
       ),
       onConfirm: () => {
@@ -254,7 +254,7 @@ function SwapCard() {
       className="w-[min(456px,100%)] self-center cyberpuzzzznk-bg-light py-8 pt-4 px-6 mobile:py-5 mobile:px-3"
     >
       {/* input twin */}
-      <div className="space-y-5 mt-5 mobile:mt-0">
+      <Div className="space-y-5 mt-5 mobile:mt-0">
         <CoinInputBox
           domRef={swapElementBox1}
           disabled={isApprovePanelShown}
@@ -282,7 +282,7 @@ function SwapCard() {
         />
 
         {/* swap button */}
-        <div className="relative h-8">
+        <Div className="relative h-8">
           <Div
             icss={cssRow()}
             className={`absolute items-center transition-all ${
@@ -302,12 +302,12 @@ function SwapCard() {
               }}
             />
             {executionPrice && (
-              <div className="absolute left-full">
+              <Div className="absolute left-full">
                 <SwapCardPriceIndicator />
-              </div>
+              </Div>
             )}
           </Div>
-          <div className={`absolute right-0 ${isApprovePanelShown ? 'not-clickable' : 'clickable'}`}>
+          <Div className={`absolute right-0 ${isApprovePanelShown ? 'not-clickable' : 'clickable'}`}>
             <RefreshCircle
               run={!isApprovePanelShown}
               refreshKey="swap"
@@ -317,8 +317,8 @@ function SwapCard() {
                 refreshTokenPrice()
               }}
             />
-          </div>
-        </div>
+          </Div>
+        </Div>
 
         <CoinInputBox
           domRef={swapElementBox2}
@@ -345,7 +345,7 @@ function SwapCard() {
             useSwap.setState({ focusSide: 'coin2', coin2Amount: value })
           }}
         />
-      </div>
+      </Div>
       {/* info panel */}
       <FadeInStable show={Boolean(hasSwapDetermined)}>
         <SwapCardInfo className="mt-5" />
@@ -485,7 +485,7 @@ function SwapCard() {
       type: 'error',
       title: 'Price Impact Warning',
       description: (
-        <div>
+        <Div>
           Price impact is{' '}
           {priceImpact ? (
             <>
@@ -495,7 +495,7 @@ function SwapCard() {
             ''
           )}
           <span className="text-[#DA2EEF]">higher than 5%.</span> Try a smaller trade!
-        </div>
+        </Div>
       ),
       confirmButtonText: 'Swap Anyway',
       onConfirm: txSwap
@@ -662,29 +662,29 @@ function SwapCardPriceIndicator({ className }: { className?: string }) {
       <FadeIn>
         {executionPrice && (
           <Div icss={cssRow()} className={twMerge('font-medium text-sm text-primary', className)}>
-            <div className="whitespace-nowrap">
+            <Div className="whitespace-nowrap">
               {1} {innerPriceLeftCoin?.symbol ?? '--'} ≈{' '}
               {toString(innerReversed ? div(1, executionPrice) : executionPrice, {
                 decimalLength: isMobile ? 'auto 2' : 'auto',
                 zeroDecimalNotAuto: true
               })}{' '}
               {innerPriceRightCoin?.symbol ?? '--'}
-            </div>
-            <div className="ml-2 clickable" onClick={() => setInnerReversed((b) => !b)}>
+            </Div>
+            <Div className="ml-2 clickable" onClick={() => setInnerReversed((b) => !b)}>
               ⇋
-            </div>
+            </Div>
           </Div>
         )}
       </FadeIn>
       <FadeIn>
         {priceImpact ? (
-          <div
+          <Div
             className={`font-medium text-xs whitespace-nowrap ${
               isDangerousPrice ? 'text-[#DA2EEF]' : isWarningPrice ? 'text-[#D8CB39]' : 'text-[#39D0D8]'
             } transition-colors`}
           >
             {isDangerousPrice || isWarningPrice ? 'Price Impact Warning' : 'Low Price Impact'}
-          </div>
+          </Div>
         ) : null}
       </FadeIn>
     </Div>
@@ -751,7 +751,7 @@ function SwapCardInfo({ className }: { className?: string }) {
           fieldValue={
             <Div icss={cssRow()} className="items-center gap-2">
               {isStable && <Badge className="self-center">Stable</Badge>}
-              <div>{swapThrough}</div>
+              <Div>{swapThrough}</Div>
             </Div>
           }
           tooltipContent="This venue gave the best price for your trade"
@@ -802,7 +802,7 @@ function SwapCardInfo({ className }: { className?: string }) {
                     }}
                     pattern={/^\d*\.?\d*$/}
                   />
-                  <div className="opacity-50 ml-1">%</div>
+                  <Div className="opacity-50 ml-1">%</Div>
                 </Div>
               }
             />
@@ -817,9 +817,9 @@ function SwapCardInfo({ className }: { className?: string }) {
                     {fee.map((CurrencyAmount) => {
                       const tokenAmount = toUITokenAmount(CurrencyAmount)
                       return (
-                        <div key={tokenAmount.token.symbol} className="text-right">
+                        <Div key={tokenAmount.token.symbol} className="text-right">
                           {toString(tokenAmount)} {getToken(tokenAmount.token.mint)?.symbol ?? '--'}
-                        </div>
+                        </Div>
                       )
                     })}
                   </Div>
@@ -837,7 +837,7 @@ function SwapCardInfo({ className }: { className?: string }) {
               icss={cssRow()}
               className="w-full items-center text-xs font-medium text-[rgba(171,196,255,0.5)] cursor-pointer select-none"
             >
-              <div>{open ? 'Show less' : 'More information'}</div>
+              <Div>{open ? 'Show less' : 'More information'}</Div>
               <Icon size="xs" heroIconName={open ? 'chevron-up' : 'chevron-down'} className="ml-1" />
             </Div>
           )}
@@ -869,19 +869,19 @@ function SwapCardItem({
         className="items-center text-xs font-medium text-primary"
         style={{ color: fieldNameTextColor }}
       >
-        <div className="mr-1">{fieldName}</div>
+        <Div className="mr-1">{fieldName}</Div>
         {tooltipContent && (
           <Tooltip className={className} placement="bottom-right">
             <Icon size="xs" heroIconName="question-mark-circle" className="cursor-help" />
             <Tooltip.Panel>
-              <div className="max-w-[30em]">{tooltipContent}</div>
+              <Div className="max-w-[30em]">{tooltipContent}</Div>
             </Tooltip.Panel>
           </Tooltip>
         )}
       </Div>
-      <div className="text-xs font-medium text-white text-right" style={{ color: fieldValueTextColor }}>
+      <Div className="text-xs font-medium text-white text-right" style={{ color: fieldValueTextColor }}>
         {fieldValue}
-      </div>
+      </Div>
     </Div>
   )
 }
@@ -891,8 +891,8 @@ function SwapCardTooltipPanelAddress() {
   const coin2 = useSwap((s) => s.coin2)
   const routes = useSwap((s) => s.routes)
   return (
-    <div className="w-60">
-      <div className="text-sm font-semibold mb-2">Addresses</div>
+    <Div className="w-60">
+      <Div className="text-sm font-semibold mb-2">Addresses</Div>
       <Div icss={cssCol()} className="gap-2">
         <SwapCardTooltipPanelAddressItem
           label={coin1?.symbol ?? '--'}
@@ -933,7 +933,7 @@ function SwapCardTooltipPanelAddress() {
           </>
         ) : null}
       </Div>
-    </div>
+    </Div>
   )
 }
 
@@ -951,7 +951,7 @@ function SwapCardTooltipPanelAddressItem({
 }) {
   return (
     <Div icss={cssRow()} className={twMerge('grid gap-2 items-center grid-cols-[5em,1fr,auto,auto]', className)}>
-      <div className="text-xs font-normal text-white">{label}</div>
+      <Div className="text-xs font-normal text-white">{label}</Div>
       <AddressItem
         showDigitCount={5}
         addressType={type}
@@ -1005,14 +1005,14 @@ function KLineChart() {
       } flex-col mt-10 p-2 w-[min(456px,100%)] self-center bg-cyberpunk-card-bg`}
       size="lg"
     >
-      <div ref={kline1Box}>
+      <Div domRef={kline1Box}>
         <KLineChartItem coin={coin1} onDataChange={(isReady) => setIsLine1BoxReady(isReady)} />
-      </div>
-      <div ref={kline2Box}>
+      </Div>
+      <Div domRef={kline2Box}>
         {toPubString(coin2?.mint) !== toPubString(coin1?.mint) && (
           <KLineChartItem coin={coin2} onDataChange={(isReady) => setIsLine2BoxReady(isReady)} />
         )}
-      </div>
+      </Div>
     </Card>
   )
 }
@@ -1052,37 +1052,37 @@ function KLineChartItem({
   return (
     <FadeIn>
       {canShowKline && (
-        <div className="flex mobile:grid mobile:grid-cols-3 mobile:gap-2 p-4 mobile:py-4 w-[min(456px,100%)] self-center items-center">
+        <Div className="flex mobile:grid mobile:grid-cols-3 mobile:gap-2 p-4 mobile:py-4 w-[min(456px,100%)] self-center items-center">
           <Div icss={cssRow()} className="items-center mobile:justify-self-center w-16 mobile:w-8 flex-shrink-0">
             <Div icss={cssCol()} className="gap-1 grow  mobile:items-center">
               <CoinAvatar token={coin} size={isMobile ? 'sm' : 'smi'} />
-              <div className="font-medium text-sm text-primary">{coin?.symbol ?? '--'}</div>
+              <Div className="font-medium text-sm text-primary">{coin?.symbol ?? '--'}</Div>
             </Div>
-            {/* <div className="ml-6 self-stretch border-l-1.5 border-[rgba(171,196,255,0.5)]"></div> */}
+            {/* <Div className="ml-6 self-stretch border-l-1.5 border-[rgba(171,196,255,0.5)]"></Div> */}
           </Div>
 
           <Div icss={cssCol()} className="items-end mobile:items-center mobile:justify-self-center mobile:ml-0 grow">
-            <div className="text-xs font-medium text-[rgba(171,196,255,0.5)]">Price</div>
-            <div className="text-sm font-medium text-primary whitespace-nowrap">
+            <Div className="text-xs font-medium text-[rgba(171,196,255,0.5)]">Price</Div>
+            <Div className="text-sm font-medium text-primary whitespace-nowrap">
               {'$' +
                 formatNumber(endPrice?.toFixed(lt(endPrice, 0.1) ? coin?.decimals ?? 4 : 2), {
                   fractionLength: 'auto'
                 }) ?? '--'}
-            </div>
+            </Div>
           </Div>
 
           <Div
             icss={cssCol()}
             className="items-start mobile:items-center mobile:justify-self-center ml-8  mobile:ml-0 w-8"
           >
-            <div className="text-xs font-medium text-[rgba(171,196,255,0.5)]">24H%</div>
-            <div
+            <Div className="text-xs font-medium text-[rgba(171,196,255,0.5)]">24H%</Div>
+            <Div
               className={`text-sm font-medium ${
                 isPositive ? 'text-[#39D0D8]' : isNegative ? 'text-[#DA2EEF]' : 'text-primary'
               }`}
             >
               {toPercentString(floatPercent, { alwaysSigned: true })}
-            </div>
+            </Div>
           </Div>
           <KLineChartItemThumbnail
             className="ml-10 w-36 mobile:w-full h-12 mobile:col-span-full  mobile:m-0 mobile:mt-4 flex-shrink-0"
@@ -1090,7 +1090,7 @@ function KLineChartItem({
             isNegative={isNegative}
             pricePoints={pricePoints!}
           />
-        </div>
+        </Div>
       )}
     </FadeIn>
   )
@@ -1174,10 +1174,10 @@ function KLineChartItemThumbnail({
 //     (tokenAccount) => toPubString(tokenAccount.mint) === toPubString(WSOLMint)
 //   )
 //   return (
-//     <div className="self-center">
+//     <Div className="self-center">
 //       <FadeIn>
 //         {wsolTokenAccounts.length > 0 && (
-//           <div className="mt-12 max-w-[456px]">
+//           <Div className="mt-12 max-w-[456px]">
 //             <Card
 //               className="p-6 mt-6 mobile:py-5 mobile:px-3"
 //               size="lg"
@@ -1188,9 +1188,9 @@ function KLineChartItemThumbnail({
 //             >
 //               <Div icss={cssRow()} className="gap-4 items-center">
 //                 <Div icss={cssCol()} className="gap-1">
-//                   <div className="text-xs mobile:text-2xs font-medium text-[rgba(171,196,255,0.5)]">
+//                   <Div className="text-xs mobile:text-2xs font-medium text-[rgba(171,196,255,0.5)]">
 //                     Click the button if you want to unwrap all WSOL
-//                   </div>
+//                   </Div>
 //                 </Div>
 
 //                 <Button
@@ -1203,9 +1203,9 @@ function KLineChartItemThumbnail({
 //                 </Button>
 //               </Div>
 //             </Card>
-//           </div>
+//           </Div>
 //         )}
 //       </FadeIn>
-//     </div>
+//     </Div>
 //   )
 // }

@@ -14,6 +14,7 @@ import Icon from '../components/Icon'
 // import Icon from '../components/Icon'
 import Input, { InputComponentHandler, InputProps } from './Input'
 import Popover, { PopoverHandles } from './Popover'
+import { Div } from '@/../../uikit/dist'
 
 export type AutoCompleteCandidateItem<Item = any> =
   | string
@@ -114,7 +115,7 @@ export default function AutoComplete<T extends AutoCompleteCandidateItem<T>>({
       {filtered?.length ? (
         filtered.map((candidate, idx, candidates) =>
           candidate ? (
-            <div
+            <Div
               key={isString(candidate) ? candidate : candidate.id ?? `${idx}_${candidate.label}`}
               className="clickable border-[#abc4ff1a]" /* divide-[#abc4ff1a] is not very stable */
               onClick={() => {
@@ -130,11 +131,11 @@ export default function AutoComplete<T extends AutoCompleteCandidateItem<T>>({
                 isSelected: idx === selectedCandidateIdx,
                 renderNode: renderCandidateItem
               })}
-            </div>
+            </Div>
           ) : null
         )
       ) : (
-        <div className="text-center text-[#abc4ff80] font-medium">There's no pool matched, please try again!</div>
+        <Div className="text-center text-[#abc4ff80] font-medium">There's no pool matched, please try again!</Div>
       )}
     </>
   )
@@ -210,12 +211,12 @@ export default function AutoComplete<T extends AutoCompleteCandidateItem<T>>({
             className="flex flex-col py-3 border-1.5 border-[#abc4ff80] bg-[#141041] shadow-cyberpunk-card"
             size="md"
           >
-            <div
+            <Div
               className="divide-y divide-[#abc4ff1a] max-h-[40vh] px-2 overflow-auto"
-              ref={popoverScrollDivRef as any}
+              domRef={popoverScrollDivRef as any}
             >
               {autoCompleteItemsContent}
-            </div>
+            </Div>
           </Card>
         )}
       </Popover.Panel>
@@ -240,6 +241,6 @@ function createLabelNode<T extends AutoCompleteCandidateItem<T>>({
   return renderNode ? (
     renderNode({ candidate, idx, candidates, isSelected })
   ) : (
-    <div className="py-3">{isString(candidate) ? candidate : candidate.label}</div>
+    <Div className="py-3">{isString(candidate) ? candidate : candidate.label}</Div>
   )
 }

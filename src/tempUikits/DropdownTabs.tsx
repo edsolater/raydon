@@ -1,4 +1,4 @@
-import { Div, cssRow } from '@/../../uikit/dist'
+import { Div, cssRow } from '@edsolater/uikit'
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import Icon from '@/components/Icon'
 import toPercentString from '@/functions/format/toPercentString'
@@ -65,7 +65,7 @@ export default function DropdownTabs<T extends string>({
     onClickIcon?: () => void
     onClickFace?: () => void
   }) => (
-    <div
+    <Div
       className={`rounded-[22px] mobile:rounded-[18px] p-1 ${
         ($transparentBg && !open) || open ? 'bg-transparent' : 'bg-cyberpunk-card-bg'
       }`}
@@ -98,7 +98,7 @@ export default function DropdownTabs<T extends string>({
           </Div>
 
           {/* short line */}
-          <div className="border-r border-[#abc4ff80] my-2 self-stretch"></div>
+          <Div className="border-r border-[#abc4ff80] my-2 self-stretch"></Div>
           <Div
             icss={cssRow()}
             onClick={onClickIcon}
@@ -112,14 +112,14 @@ export default function DropdownTabs<T extends string>({
           </Div>
         </Div>
       </Div>
-    </div>
+    </Div>
   )
 
   return (
-    <div className={twMerge('relative', className)}>
-      <div className={`invisible`}>
+    <Div className={twMerge('relative', className)}>
+      <Div className={`invisible`}>
         <FaceContent />
-      </div>
+      </Div>
       <Collapse
         componentRef={collapseRef}
         className={(open) =>
@@ -164,6 +164,6 @@ export default function DropdownTabs<T extends string>({
           />
         </Collapse.Body>
       </Collapse>
-    </div>
+    </Div>
   )
 }

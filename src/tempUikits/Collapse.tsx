@@ -9,6 +9,7 @@ import { useClickOutside } from '@/hooks/useClickOutside'
 import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect '
 import useToggle from '@/hooks/useToggle'
 import { MayFunction } from '@/types/constants'
+import { Div, DivProps } from '@/../../uikit/dist'
 
 type CollapseController = {
   open: () => void
@@ -21,7 +22,7 @@ export type CollapseHandler = CollapseController
 export type CollapseProps = {
   children?: ReactNode
   className?: MayFunction<string, [open: boolean]>
-  style?: CSSProperties
+  style?: DivProps['style']
   /** only first render, !important, this and open can only set one */
   defaultOpen?: boolean
   /** it's change will cause ui change, !important, this and defaultOpen can only set one  */
@@ -84,7 +85,11 @@ export default function Collapse({
   useImperativeHandle(componentRef, () => controller)
 
   return (
-    <div ref={collapseRef} className={`Collapse flex flex-col ${shrinkToValue(className, [innerOpen])}`} style={style}>
+    <Div
+      domRef={collapseRef}
+      className={`Collapse flex flex-col ${shrinkToValue(className, [innerOpen])}`}
+      style={style}
+    >
       <CollapseFace
         {...collapseFaceProps}
         onClick={() => {
@@ -156,7 +161,7 @@ export default function Collapse({
           $controller={controller}
         />
       </Transition>
-    </div>
+    </Div>
   )
 }
 
@@ -168,13 +173,13 @@ function CollapseFace(props: {
   $controller?: CollapseController
 }) {
   return (
-    <div onClick={props.onClick} className={`CollapseFace ${props.className ?? ''}`}>
+    <Div onClick={props.onClick} className={`CollapseFace ${props.className ?? ''}`}>
       {shrinkToValue(props.children, [Boolean(props.$open), props.$controller])}
-    </div>
+    </Div>
   )
 }
 function CollapseBody(props: {
-  style?: CSSProperties
+  style?: DivProps['style']
   children?: ReactNode | ((open: boolean, controller: CollapseController) => ReactNode)
   className?: string
   domRef?: RefObject<HTMLDivElement>
@@ -182,9 +187,9 @@ function CollapseBody(props: {
   $controller?: CollapseController
 }) {
   return (
-    <div ref={props.domRef} style={props.style} className={`CollapseBody ${props.className ?? ''}`}>
+    <Div domRef={props.domRef} style={props.style} className={`CollapseBody ${props.className ?? ''}`}>
       {shrinkToValue(props.children, [Boolean(props.$open), props.$controller])}
-    </div>
+    </Div>
   )
 }
 

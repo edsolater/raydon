@@ -1,3 +1,4 @@
+import { Div } from '@/../../uikit/dist'
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import { CSSProperties, useMemo } from 'react'
 import { twMerge } from 'tailwind-merge'
@@ -31,11 +32,10 @@ export default function CyberpunkStyleCard({
     return 20 + cyberpunkBoarderWidth // default size is lg
   }, [restProps.className, size, restProps.style?.borderRadius, isMobile])
   return (
-    <div
-      ref={domRef as any}
+    <Div
+      domRef={domRef as any}
       className={wrapperClassName}
-      style={{
-        //@ts-expect-error css variable
+      icss={{
         ['--gradient-rotate']: cssGradientRotate != null ? `${cssGradientRotate}deg` : undefined,
         minHeight: haveMinHeight ? '300px' : undefined, // or style will be freak
         borderRadius: borderRoundSize,
@@ -54,6 +54,6 @@ export default function CyberpunkStyleCard({
       >
         {children}
       </Card>
-    </div>
+    </Div>
   )
 }

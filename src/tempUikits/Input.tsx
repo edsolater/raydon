@@ -20,7 +20,7 @@ import { shrinkToValue } from '@/functions/shrinkToValue'
 import mergeProps from '@/functions/react/mergeProps'
 import { isRegExp } from '@/functions/judgers/dateType'
 import assert from 'assert'
-import { cssRow, Div, DivProps } from '@/../../uikit/dist'
+import { cssRow, Div, DivProps } from '@edsolater/uikit'
 
 export interface InputComponentHandler {
   text: string | number | undefined
@@ -241,10 +241,10 @@ export default function Input(props: InputProps) {
         })
       }}
     >
-      <div className="flex-initial">{shrinkToValue(prefix, [inputComponentHandler])}</div>
+      <Div className="flex-initial">{shrinkToValue(prefix, [inputComponentHandler])}</Div>
 
       {/* input-wrapperbox is for style input inner body easier */}
-      <div className={twMerge('flex flex-grow flex-shrink', inputWrapperClassName)}>
+      <Div className={twMerge('flex flex-grow flex-shrink', inputWrapperClassName)}>
         <input
           autoComplete="off"
           id={id}
@@ -337,8 +337,8 @@ export default function Input(props: InputProps) {
             }
           }}
         />
-      </div>
-      {suffix && <div className="flex-initial ml-2">{shrinkToValue(suffix, [inputComponentHandler])}</div>}
+      </Div>
+      {suffix && <Div className="flex-initial ml-2">{shrinkToValue(suffix, [inputComponentHandler])}</Div>}
     </Div>
   )
 }

@@ -4,7 +4,7 @@ import { shrinkToValue } from '@/functions/shrinkToValue'
 import useDevice from '@/hooks/useDevice'
 
 import Icon from '../components/Icon'
-import { Div, cssRow } from '@/../../uikit/dist'
+import { Div, cssRow } from '@edsolater/uikit'
 
 export default function Carousel<T>({
   list,
@@ -108,41 +108,41 @@ export default function Carousel<T>({
   }, [])
 
   return (
-    <div className="grid grid-cols-[auto,1fr,auto] justify-items-center items-center gap-2 gap-y-4 mobile:gap-y-2">
+    <Div className="grid grid-cols-[auto,1fr,auto] justify-items-center items-center gap-2 gap-y-4 mobile:gap-y-2">
       {!isMobile && list.length !== 1 && (
         <Icon heroIconName="chevron-left" className="opacity-80 cursor-pointer" onClick={goPrev} />
       )}
-      <div
+      <Div
         className="flex sadf items-center overflow-auto no-scrollbar"
-        ref={containerRef}
+        domRef={containerRef}
         style={{ scrollSnapType: 'x proximity' }}
       >
         {list.map((info, idx) => (
-          <div
+          <Div
             key={key?.(info, idx) ?? idx}
             className="relative flex-shrink-0  w-full h-full"
             style={{ scrollSnapAlign: 'center' }}
           >
             {children?.(info, idx, resetTabIndex)}
-          </div>
+          </Div>
         ))}
         {list.map((info, idx) => (
-          <div
+          <Div
             key={'shadow' + String(key?.(info, idx) ?? idx)}
             className="relative flex-shrink-0  w-full h-full"
             style={{ scrollSnapAlign: 'center' }}
           >
             {children?.(info, idx, resetTabIndex)}
-          </div>
+          </Div>
         ))}
-      </div>
+      </Div>
       {!isMobile && list.length !== 1 && (
         <Icon heroIconName="chevron-right" className="opacity-80 cursor-pointer" onClick={goNext} />
       )}
       {list.length !== 1 && (
         <Div icss={cssRow()} className="space-x-2 col-span-full">
           {list.map((_info, idx) => (
-            <div
+            <Div
               key={idx}
               className={`w-2 h-2 bg-white ${
                 idx === currentActiveTabIndex ? 'bg-opacity-75 cursor-not-allowed' : 'bg-opacity-25 cursor-pointer'
@@ -152,6 +152,6 @@ export default function Carousel<T>({
           ))}
         </Div>
       )}
-    </div>
+    </Div>
   )
 }
