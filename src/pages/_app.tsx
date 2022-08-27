@@ -50,7 +50,7 @@ import WalletSelectorDialog from '@/components/dialogs/WalletSelectorDialog'
 
 import '../styles/index.css'
 import NoSsr from '@/components/NoSsr'
-import { Div } from '@/../../uikit/dist'
+import { Div } from '@edsolater/uikit'
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const { pathname } = useRouter()

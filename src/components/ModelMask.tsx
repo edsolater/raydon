@@ -1,4 +1,4 @@
-import { Div } from '@/../../uikit/dist'
+import { Div } from '@edsolater/uikit'
 import { twMerge } from 'tailwind-merge'
 
 // TODO: should use React Portal

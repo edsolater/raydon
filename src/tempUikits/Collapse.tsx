@@ -9,7 +9,7 @@ import { useClickOutside } from '@/hooks/useClickOutside'
 import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect '
 import useToggle from '@/hooks/useToggle'
 import { MayFunction } from '@/types/constants'
-import { Div, DivProps } from '@/../../uikit/dist'
+import { Div, DivProps } from '@edsolater/uikit'
 
 type CollapseController = {
   open: () => void

@@ -14,7 +14,7 @@ import { inServer } from '@/functions/judgers/isSSR'
 import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect '
 import Tooltip from '@/tempUikits/Tooltip'
 import { PopoverPlacement } from '@/tempUikits/Popover'
-import { Div } from '@/../../uikit/dist'
+import { Div } from '@edsolater/uikit'
 
 const REFRESH_LOOP_DURATION = 60 * 1000
 

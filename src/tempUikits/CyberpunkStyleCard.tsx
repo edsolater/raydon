@@ -1,4 +1,4 @@
-import { Div } from '@/../../uikit/dist'
+import { Div } from '@edsolater/uikit'
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import { CSSProperties, useMemo } from 'react'
 import { twMerge } from 'tailwind-merge'

@@ -1,4 +1,4 @@
-import { Div } from '@/../../uikit/dist'
+import { Div } from '@edsolater/uikit'
 
 export default function DropZoneBadgeStatusTag({ tag }: { tag?: string }) {
   const tailwindClass = {

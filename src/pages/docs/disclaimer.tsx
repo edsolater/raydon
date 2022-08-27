@@ -1,4 +1,4 @@
-import { Div } from '@/../../uikit/dist'
+import { Div } from '@edsolater/uikit'
 import Card from '@/tempUikits/Card'
 import React from 'react'
 

@@ -7,7 +7,7 @@ import { shrinkToValue } from '@/functions/shrinkToValue'
 import HDrawer, { DrawerPlacement } from '../tempUikits/HDrawer'
 import Popover, { PopoverPlacement } from '../tempUikits/Popover'
 import { PopupLocationInfo } from '../tempUikits/Popover/useLocationCalculator'
-import { Div } from '@/../../uikit/dist'
+import { Div } from '@edsolater/uikit'
 
 /**
  * for PageLayout

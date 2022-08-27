@@ -14,7 +14,7 @@ import Icon from '../components/Icon'
 // import Icon from '../components/Icon'
 import Input, { InputComponentHandler, InputProps } from './Input'
 import Popover, { PopoverHandles } from './Popover'
-import { Div } from '@/../../uikit/dist'
+import { Div } from '@edsolater/uikit'
 
 export type AutoCompleteCandidateItem<Item = any> =
   | string

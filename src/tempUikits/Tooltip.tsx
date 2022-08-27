@@ -7,7 +7,7 @@ import { pickReactChild } from '@/functions/react/pickChild'
 
 import Card from './Card'
 import Popover, { PopoverPlacement, PopoverProps } from './Popover'
-import { Div } from '@/../../uikit/dist'
+import { Div } from '@edsolater/uikit'
 
 export type TooltipHandle = {
   open(): void

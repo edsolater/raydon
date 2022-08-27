@@ -24,7 +24,7 @@ import { isTokenAmount } from '@/functions/judgers/dateType'
 import assert from 'assert'
 import { gt } from '@/functions/numberish/compare'
 import useAutoFetchIdoInfos from '@/application/ido/useAutoFetchIdoInfos'
-import { Div } from '@/../../uikit/dist'
+import { Div } from '@edsolater/uikit'
 
 export default function BasementPage() {
   useAutoFetchIdoInfos()

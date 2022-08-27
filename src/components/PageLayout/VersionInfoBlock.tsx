@@ -4,7 +4,7 @@ import Tooltip from '../../tempUikits/Tooltip'
 import { useAppVersion } from '@/application/appVersion/useAppVersion'
 import { toUTC } from '@/functions/date/dateFormat'
 import { useForceUpdate } from '@/hooks/useForceUpdate'
-import { Div } from '@/../../uikit/dist'
+import { Div } from '@edsolater/uikit'
 
 export function VersionInfoBlock() {
   const lastestVersion = useAppVersion((s) => s.lastest)

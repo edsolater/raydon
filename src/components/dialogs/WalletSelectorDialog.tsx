@@ -140,9 +140,9 @@ function PanelContent({
         ))}
       </Grid>
 
-      <Div className={`flex-1 ${isAllWalletShown ? 'mt-4' : ''} h-32 overflow-auto no-native-scrollbar`}>
+      <Div className={`flex-1 h-32 overflow-auto no-native-scrollbar`}>
         <FadeInStable show={isAllWalletShown}>
-          <Div className="overflow-auto pt-8 no-native-scrollbar h-full" style={{ scrollbarGutter: 'always' }}>
+          <Div className="overflow-auto pt-8 no-native-scrollbar" style={{ scrollbarGutter: 'always' }}>
             <Grid className="flex-1 px-8 justify-items-stretch mobile:px-6 pb-4 overflow-auto gap-x-6 gap-y-3 mobile:gap-2 grid-cols-2 mobile:grid-cols-[1fr,1fr]">
               {notInstalledWallets.map((wallet) => (
                 <WalletSelectorPanelItem

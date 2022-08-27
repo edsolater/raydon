@@ -2,7 +2,7 @@ import React, { RefObject, useEffect, useImperativeHandle, useRef, useState } fr
 import { twMerge } from 'tailwind-merge'
 
 import { useClick } from '@/hooks/useClick'
-import { Div } from '@/../../uikit/dist'
+import { Div } from '@edsolater/uikit'
 
 export interface IntervalCircleHandler {
   /** percent */

@@ -10,7 +10,7 @@ import { add, clamp, div, mul, sub } from '@/functions/numberish/operations'
 import { toString } from '@/functions/numberish/toString'
 import { Numberish } from '@/types/constants'
 import { toHumanReadable } from '@/functions/format/toHumanReadable'
-import { Div } from '@/../../uikit/dist'
+import { Div } from '@edsolater/uikit'
 
 interface NumberJellyProps extends FormatOptions {
   className?: string

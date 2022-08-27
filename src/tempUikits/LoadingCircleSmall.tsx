@@ -1,4 +1,4 @@
-import { Div } from '@/../../uikit/dist'
+import { Div } from '@edsolater/uikit'
 import './loading-circle-small.css'
 export default function LoadingCircleSmall({ className }: { className?: string }) {
   return (

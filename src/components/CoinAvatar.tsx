@@ -5,7 +5,7 @@ import { twMerge } from 'tailwind-merge'
 import { SplToken, Token } from '@/application/token/type'
 
 import Image from '../tempUikits/Image'
-import { Div, DivProps } from '@/../../uikit/dist'
+import { Div, DivProps } from '@edsolater/uikit'
 
 export interface CoinAvatarProps extends DivProps {
   /** the shadow transparent fondation border */

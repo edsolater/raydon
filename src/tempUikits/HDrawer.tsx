@@ -5,7 +5,7 @@ import { shrinkToValue } from '@/functions/shrinkToValue'
 import { MayFunction } from '@/types/constants'
 
 import Drawer from './Drawer'
-import { CSSStyle, Div } from '@/../../uikit/dist'
+import { CSSStyle, Div } from '@edsolater/uikit'
 
 const { ContextProvider, useStore, useSetters } = createContextStore<{
   isDrawerContentShown: boolean

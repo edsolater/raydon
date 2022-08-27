@@ -16,7 +16,7 @@ import Link from '@/tempUikits/Link'
 import { useAppVersion } from '../appVersion/useAppVersion'
 import { inClient, inServer, isInBonsaiTest, isInLocalhost } from '@/functions/judgers/isSSR'
 import { useKeyboardShortcut } from '@edsolater/hookit'
-import { Div } from '@/../../uikit/dist'
+import { Div } from '@edsolater/uikit'
 
 export function useThemeModeSync() {
   const themeMode = useAppSettings((s) => s.themeMode)

@@ -25,7 +25,7 @@ import { MayFunction } from '@/types/constants'
 
 import { PopupLocationInfo, usePopoverLocation } from './useLocationCalculator'
 import { PopoverTiggerBy, PopoverTriggerControls, usePopoverTrigger } from './usePopoverTrigger'
-import { Div, DivProps } from '@/../../uikit/dist'
+import { Div, DivProps } from '@edsolater/uikit'
 
 export type PopoverPlacement =
   | 'left'

@@ -4,7 +4,7 @@ import { twMerge } from 'tailwind-merge'
 import { shrinkToValue } from '@/functions/shrinkToValue'
 import { RadioGroup as _RadioGroup } from '@headlessui/react'
 import { MayFunction } from '@/types/constants'
-import { CSSStyle, Div } from '@/../../uikit/dist'
+import { CSSStyle, Div } from '@edsolater/uikit'
 
 export interface RadioGroupProps<T extends string> {
   className?: string

@@ -1,4 +1,4 @@
-import { Div } from '@/../../uikit/dist'
+import { Div } from '@edsolater/uikit'
 
 export default function LoadingCircle({ className }: { className?: string }) {
   return (

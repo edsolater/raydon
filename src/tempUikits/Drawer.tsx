@@ -9,7 +9,7 @@ import { inClient } from '@/functions/judgers/isSSR'
 import { shrinkToValue } from '@/functions/shrinkToValue'
 import useTwoStateSyncer from '@/hooks/use2StateSyncer'
 import { MayFunction } from '@/types/constants'
-import { Div, DivProps } from '@/../../uikit/dist'
+import { Div, DivProps } from '@edsolater/uikit'
 
 export const DRAWER_STACK_ID = 'drawer-stack'
 

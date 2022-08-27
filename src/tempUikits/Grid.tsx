@@ -1,4 +1,4 @@
-import { Div, DivProps } from '@/../../uikit/dist'
+import { Div, DivProps } from '@edsolater/uikit'
 import mergeRef from '@/functions/react/mergeRef'
 import { useClick } from '@/hooks/useClick'
 import { ReactNode, RefObject, useRef } from 'react'

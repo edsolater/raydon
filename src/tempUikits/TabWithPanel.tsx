@@ -6,7 +6,7 @@ import { shrinkToValue } from '@/functions/shrinkToValue'
 import useBFlag from '@/hooks/useBFlag'
 
 import RadioGroup, { RadioGroupProps } from './RadioGroup'
-import { Div } from '@/../../uikit/dist'
+import { Div } from '@edsolater/uikit'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface TabWithPanelProps<T extends string = string>

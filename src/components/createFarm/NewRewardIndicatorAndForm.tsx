@@ -8,7 +8,7 @@ import { RewardFormCard } from '../../pages/farms/create'
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import { UIRewardInfo } from '@/application/createFarm/type'
 import RewardInputDialog from './RewardEditDialog'
-import { Div } from '@/../../uikit/dist'
+import { Div } from '@edsolater/uikit'
 
 export function NewRewardIndicatorAndForm({ className }: { className?: string }) {
   const rewards = useCreateFarms((s) => s.rewards)
