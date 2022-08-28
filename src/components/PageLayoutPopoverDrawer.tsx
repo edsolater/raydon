@@ -1,13 +1,10 @@
-import React, { ReactNode, RefObject, useMemo, useRef } from 'react'
-import { twMerge } from 'tailwind-merge'
-
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import { shrinkToValue } from '@/functions/shrinkToValue'
-
+import { Div, PopupLocationInfo } from '@edsolater/uikit'
+import { ReactNode, useMemo, useRef } from 'react'
+import { twMerge } from 'tailwind-merge'
 import HDrawer, { DrawerPlacement } from '../tempUikits/HDrawer'
 import Popover, { PopoverPlacement } from '../tempUikits/Popover'
-import { PopupLocationInfo } from '../tempUikits/Popover/useLocationCalculator'
-import { Div } from '@edsolater/uikit'
 
 /**
  * for PageLayout

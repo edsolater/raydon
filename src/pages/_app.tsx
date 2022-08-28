@@ -36,36 +36,19 @@ import { useSyncWithSolanaWallet } from '@/application/wallet/useSyncWithSolanaW
 import useTokenAccountsRefresher from '@/application/wallet/useTokenAccountsRefresher'
 import { useWalletAccountChangeListeners } from '@/application/wallet/useWalletAccountChangeListeners'
 import { useWalletConnectNotifaction } from '@/application/wallet/useWalletConnectNotifaction'
-import NotificationSystemStack from '@/components/NotificationSystemStack'
-import { POPOVER_STACK_ID } from '@/tempUikits/Popover'
-import { SolanaWalletProviders } from '@/components/SolanaWallets/SolanaWallets'
-import { createDOMElement } from '@/functions/dom/createDOMElement'
-import toPubString from '@/functions/format/toMintString'
-import { inClient } from '@/functions/judgers/isSSR'
-import useHandleWindowTopError from '@/hooks/useHandleWindowTopError'
-import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect '
 import RecentTransactionDialog from '@/components/dialogs/RecentTransactionDialog'
 import WalletSelectorDialog from '@/components/dialogs/WalletSelectorDialog'
+import NotificationSystemStack from '@/components/NotificationSystemStack'
+import { SolanaWalletProviders } from '@/components/SolanaWallets/SolanaWallets'
+import toPubString from '@/functions/format/toMintString'
+import useHandleWindowTopError from '@/hooks/useHandleWindowTopError'
 
-import '../styles/index.css'
 import NoSsr from '@/components/NoSsr'
 import { Div } from '@edsolater/uikit'
+import '../styles/index.css'
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const { pathname } = useRouter()
-
-  /* add popup stack */
-  useIsomorphicLayoutEffect(() => {
-    if (inClient) {
-      const hasPopoverStack = Boolean(document.getElementById(POPOVER_STACK_ID))
-      if (hasPopoverStack) return
-      const popoverStackElement = createDOMElement({
-        classNames: ['fixed', 'z-popover', 'inset-0', 'self-pointer-events-none'],
-        id: POPOVER_STACK_ID
-      })
-      document.body.append(popoverStackElement)
-    }
-  }, [])
 
   return (
     <NoSsr>
