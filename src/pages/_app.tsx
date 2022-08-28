@@ -36,7 +36,6 @@ import { useSyncWithSolanaWallet } from '@/application/wallet/useSyncWithSolanaW
 import useTokenAccountsRefresher from '@/application/wallet/useTokenAccountsRefresher'
 import { useWalletAccountChangeListeners } from '@/application/wallet/useWalletAccountChangeListeners'
 import { useWalletConnectNotifaction } from '@/application/wallet/useWalletConnectNotifaction'
-import { DRAWER_STACK_ID } from '@/tempUikits/Drawer'
 import NotificationSystemStack from '@/components/NotificationSystemStack'
 import { POPOVER_STACK_ID } from '@/tempUikits/Popover'
 import { SolanaWalletProviders } from '@/components/SolanaWallets/SolanaWallets'
@@ -65,16 +64,6 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         id: POPOVER_STACK_ID
       })
       document.body.append(popoverStackElement)
-    }
-
-    if (inClient) {
-      const hasDrawerStack = Boolean(document.getElementById(DRAWER_STACK_ID))
-      if (hasDrawerStack) return
-      const drawerStackElement = createDOMElement({
-        classNames: ['fixed', 'z-drawer', 'inset-0', 'self-pointer-events-none'],
-        id: DRAWER_STACK_ID
-      })
-      document.body.append(drawerStackElement)
     }
   }, [])
 
