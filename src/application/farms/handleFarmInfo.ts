@@ -1,4 +1,3 @@
-import { ConnectionStore } from '@/application/connection/useConnection'
 import { findAmmId } from '@/application/liquidity/miscToolFns'
 import { LiquidityStore } from '@/application/liquidity/useLiquidity'
 import { PoolsStore } from '@/application/pools/usePools'
@@ -30,6 +29,7 @@ import {
   ZERO
 } from '@raydium-io/raydium-sdk'
 import BN from 'bn.js'
+import { ConnectionAtom } from '../connection'
 import { SplToken } from '../token/type'
 import { APIRewardInfo, FarmPoolJsonInfo, FarmPoolsJsonFile, HydratedFarmInfo, SdkParsedFarmInfo } from './type'
 
@@ -92,7 +92,7 @@ export function hydrateFarmInfo(
     tokenPrices: TokenStore['tokenPrices']
     liquidityJsonInfos: LiquidityStore['jsonInfos']
     currentBlockChainDate: Date
-    chainTimeOffset: ConnectionStore['chainTimeOffset']
+    chainTimeOffset: ConnectionAtom['chainTimeOffset']
   }
 ): HydratedFarmInfo {
   const farmPoolType = judgeFarmType(farmInfo, payload.currentBlockChainDate)

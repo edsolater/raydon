@@ -63,7 +63,7 @@ export function RpcConnectionPanelPopover({ close: closePanel }: { close: () => 
         RPC CONNECTION
       </Div>
       <Div className="gap-3 divide-y-1.5">
-        {availableEndPoints.map((endPoint) => {
+        {availableEndPoints?.map((endPoint) => {
           const isCurrentEndPoint = currentEndPoint?.url === endPoint.url
           return (
             <Div

@@ -11,9 +11,6 @@ import {
   useThemeModeSync
 } from '@/application/appSettings/initializationHooks'
 import { useAppInitVersionPostHeartBeat, useJudgeAppVersion } from '@/application/appVersion/useAppVersion'
-import useConnectionInitialization from '@/application/connection/useConnectionInitialization'
-import useFreshChainTimeOffset from '@/application/connection/useFreshChainTimeOffset'
-import { useUserCustomizedEndpointInitLoad } from '@/application/connection/useUserCustomizedEndpointInitLoad'
 import useFarmInfoLoader from '@/application/farms/useFarmInfoLoader'
 import useLiquidityInfoLoader from '@/application/liquidity/useLiquidityInfoLoader'
 import useMessageBoardFileLoader from '@/application/messageBoard/useMessageBoardFileLoader'
@@ -98,9 +95,6 @@ function ApplicationsInitializations() {
   useJudgeAppVersion()
 
   /********************** connection **********************/
-  useUserCustomizedEndpointInitLoad()
-  useConnectionInitialization()
-  useFreshChainTimeOffset()
 
   /********************** message boards **********************/
   useMessageBoardFileLoader() // load `raydium-message-board.json`

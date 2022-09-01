@@ -1,4 +1,4 @@
-import { createXStore, XStoreAtom } from '@edsolater/xstore'
+import { createXAtom, createXStore, XStoreAtom } from '@edsolater/xstore'
 
 type RouteSettingItem = {
   label: string
@@ -17,7 +17,7 @@ export type UIConfigAtom = XStoreAtom<UIConfigStore>
 /**
  * faster change app settings should change this atom
  */
-export const uiConfigAtom = createXStore<UIConfigStore>({
+export const uiConfigAtom = createXAtom<UIConfigStore>({
   name: 'uiConfig',
   default: {
     sideMenuRoutes: [

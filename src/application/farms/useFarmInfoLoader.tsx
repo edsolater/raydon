@@ -1,4 +1,3 @@
-import { Endpoint } from '@/application/connection/fetchRPCConfig'
 import useLiquidity from '@/application/liquidity/useLiquidity'
 import { offsetDateTime } from '@/functions/date/dateFormat'
 import jFetch from '@/functions/dom/jFetch'
@@ -13,6 +12,7 @@ import { fetchFarmJsonInfos, hydrateFarmInfo, mergeSdkFarmInfo } from './handleF
 import useFarms from './useFarms'
 import { useEffectWithTransition } from '@/hooks/useEffectWithTransition'
 import { lazyMap } from '@/functions/lazyMap'
+import { Endpoint } from '../connection'
 
 export default function useFarmInfoLoader() {
   const { jsonInfos, sdkParsedInfos, farmRefreshCount } = useFarms()
