@@ -60,5 +60,10 @@ export const connectionAtom = createXAtom<ConnectionAtom>({
     getChainDate
   })
 })
+;(() => {
+  initializeDefaultConnection.activate()
+  autoUpdateBlockchainTime.activate()
+  loadUserRPC.activate()
+})()
 
 export const useConnection = createZustandStoreHook(connectionAtom) // temp for aerosol

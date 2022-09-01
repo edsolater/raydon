@@ -1,4 +1,4 @@
-import { createXAtom, createXStore, XStoreAtom } from '@edsolater/xstore'
+import { createXAtom, XStoreAtom } from '@edsolater/xstore'
 
 type RouteSettingItem = {
   label: string

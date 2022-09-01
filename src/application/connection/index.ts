@@ -1,6 +1,5 @@
 // atom
 export * from './atom'
-import './atomEffect'
 
 // utils
 export * from './utils/chooseBestRPC'
