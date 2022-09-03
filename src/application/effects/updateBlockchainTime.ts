@@ -5,7 +5,7 @@
 import { createXEffect } from '@/../../xstore/dist'
 import { minus, mul } from '@edsolater/fnkit'
 import { Connection } from '@solana/web3.js'
-import { connectionAtom } from '../atom'
+import { connectionAtom } from '../connection/atom'
 
 /** Atom effect */
 export const autoUpdateBlockchainTime = createXEffect(() => {

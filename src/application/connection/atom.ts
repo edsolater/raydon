@@ -2,11 +2,8 @@
  * * * ATOM *
  ************/
 
-import { createXAtom, createZustandStoreHook } from '@edsolater/xstore'
+import { createXAtom } from '@edsolater/xstore'
 import { Connection } from '@solana/web3.js'
-import { autoUpdateBlockchainTime } from './effects/autoUpdateBlockchainTime'
-import { initializeDefaultConnection } from './effects/initializeDefaultConnection'
-import { loadUserRPC } from './effects/loadUserRPC'
 import { Endpoint } from './type'
 import { extractConnectionName } from './utils/extractConnectionName'
 import { getChainDate } from './utils/getChainDate'
@@ -60,10 +57,3 @@ export const connectionAtom = createXAtom<ConnectionAtom>({
     getChainDate
   })
 })
-;(() => {
-  initializeDefaultConnection.activate()
-  autoUpdateBlockchainTime.activate()
-  loadUserRPC.activate()
-})()
-
-export const useConnection = createZustandStoreHook(connectionAtom) // temp for aerosol

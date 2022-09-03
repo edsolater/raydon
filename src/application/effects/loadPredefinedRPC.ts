@@ -7,9 +7,9 @@ import { getSessionItem } from '@/functions/dom/jStorage'
 import { unifyByKey } from '@edsolater/fnkit'
 import { jFetch } from '@edsolater/jfetch'
 import { Connection } from '@solana/web3.js'
-import { connectionAtom } from '../atom'
-import { Config, Endpoint } from '../type'
-import caculateEndpointUrlByRpcConfig from '../utils/chooseBestRPC'
+import { connectionAtom } from '../connection/atom'
+import { Config, Endpoint } from '../connection/type'
+import caculateEndpointUrlByRpcConfig from '../connection/utils/chooseBestRPC'
 
 const devRpcConfig: Omit<Config, 'success'> = {
   rpcs: [
@@ -31,7 +31,7 @@ export const SESSION_STORAGE_USER_SELECTED_RPC = 'user-selected-rpc'
  * will initialize one official RPC (auto select currently the best one)
  * *IMPORTANT: all fetch action must have a reliable RPC**
  */
-export const initializeDefaultConnection = createXEffect(async () => {
+export const loadPredefinedRPC = createXEffect(async () => {
   connectionAtom.set({ isLoading: true })
   const data = await jFetch<Config>('https://api.raydium.io/v2/main/rpcs')
 

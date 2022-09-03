@@ -43,10 +43,11 @@ import useHandleWindowTopError from '@/hooks/useHandleWindowTopError'
 import NoSsr from '@/components/NoSsr'
 import { Div } from '@edsolater/uikit'
 import '../styles/index.css'
+import { useEffect } from 'react'
+import { activateAllSubscribeEffects } from '@/application/effects/activateAllSubscribeEffects'
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const { pathname } = useRouter()
-
   return (
     <NoSsr>
       <SolanaWalletProviders>
@@ -79,6 +80,10 @@ PublicKey.prototype.toJSON = function () {
 }
 
 function ClientInitialization() {
+  useEffect(() => {
+    activateAllSubscribeEffects()
+  }, [])
+
   useHandleWindowTopError()
   useThemeModeSync()
   useDeviceInfoSyc()
