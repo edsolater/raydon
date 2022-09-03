@@ -27,12 +27,8 @@ import useTokenListsLoader from '@/application/token/useTokenListsLoader'
 import useTokenPriceRefresher from '@/application/token/useTokenPriceRefresher'
 import useInitRefreshTransactionStatus from '@/application/txHistory/useInitRefreshTransactionStatus'
 import useSyncTxHistoryWithLocalStorage from '@/application/txHistory/useSyncTxHistoryWithLocalStorage'
-import useInitBalanceRefresher from '@/application/wallet/useBalanceRefresher'
-import { useInitShadowKeypairs } from '@/application/wallet/useInitShadowKeypairs'
 import { useSyncWithSolanaWallet } from '@/application/wallet/useSyncWithSolanaWallet'
-import useTokenAccountsRefresher from '@/application/wallet/useTokenAccountsRefresher'
-import { useWalletAccountChangeListeners } from '@/application/wallet/useWalletAccountChangeListeners'
-import { useWalletConnectNotifaction } from '@/application/wallet/useWalletConnectNotifaction'
+import { listenWalletAccountChange } from '@/application/effects/listenWalletAccountChange'
 import RecentTransactionDialog from '@/components/dialogs/RecentTransactionDialog'
 import WalletSelectorDialog from '@/components/dialogs/WalletSelectorDialog'
 import NotificationSystemStack from '@/components/NotificationSystemStack'
@@ -80,10 +76,6 @@ PublicKey.prototype.toJSON = function () {
 }
 
 function ClientInitialization() {
-  useEffect(() => {
-    activateAllSubscribeEffects()
-  }, [])
-
   useHandleWindowTopError()
   useThemeModeSync()
   useDeviceInfoSyc()
@@ -92,6 +84,10 @@ function ClientInitialization() {
 }
 
 function ApplicationsInitializations() {
+  useEffect(() => {
+    activateAllSubscribeEffects()
+  }, [])
+
   useSlippageTolerenceValidator()
   useSlippageTolerenceSyncer()
 
@@ -106,14 +102,7 @@ function ApplicationsInitializations() {
   useMessageBoardReadedIdRecorder() // sync user's readedIds
 
   /********************** wallet **********************/
-
-  // experimental features. will not let user see
-  useInitShadowKeypairs()
   useSyncWithSolanaWallet()
-  useWalletConnectNotifaction()
-  useTokenAccountsRefresher()
-  useInitBalanceRefresher()
-  useWalletAccountChangeListeners()
 
   /********************** token **********************/
   // application initializations

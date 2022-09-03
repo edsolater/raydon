@@ -9,7 +9,7 @@ import { Connection, PublicKey } from '@solana/web3.js'
 
 import BN from 'bn.js'
 
-import { ITokenAccount, TokenAccountRawInfo } from './type'
+import { ITokenAccount, TokenAccountRawInfo } from '../type'
 
 const logger = new Logger('nft-ui')
 

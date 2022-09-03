@@ -1,59 +1,14 @@
-import useConnection from '@/application/connection/useConnection'
-import useAsyncEffect from '@/hooks/useAsyncEffect'
-
-import useToken from '../token/useToken'
-import useWallet from './useWallet'
-import { SplToken } from '@/application/token/type'
 import { WSOLMint, toQuantumSolAmount, QuantumSOL, WSOL } from '@/application/token/quantumSOL'
-import listToMap from '@/functions/format/listToMap'
+import { SplToken } from '@/application/token/type'
 import toPubString from '@/functions/format/toMintString'
 import { toTokenAmount } from '@/functions/format/toTokenAmount'
 import { isMintEqual } from '@/functions/judgers/areEqual'
 import { add } from '@/functions/numberish/operations'
 import toBN from '@/functions/numberish/toBN'
-import { objectShakeNil, objectMap } from '@/functions/objectMethods'
 import { Numberish } from '@/types/constants'
+import { listToMap, map, shakeNil } from '@edsolater/fnkit'
 import { PublicKeyish, TokenAmount } from '@raydium-io/raydium-sdk'
-import { ITokenAccount } from './type'
-
-/** it is base on tokenAccounts, so when tokenAccounts refresh, balance will auto refresh */
-export default function useInitBalanceRefresher() {
-  const tokenAccounts = useWallet((s) => s.tokenAccounts)
-  const allTokenAccounts = useWallet((s) => s.allTokenAccounts) // to get wsol balance
-  const nativeTokenAccount = useWallet((s) => s.nativeTokenAccount)
-  const getPureToken = useToken((s) => s.getPureToken)
-  const connection = useConnection((s) => s.connection)
-  const owner = useWallet((s) => s.owner)
-
-  useAsyncEffect(async () => {
-    if (!connection || !owner) {
-      useWallet.setState({
-        solBalance: undefined,
-        balances: {},
-        rawBalances: {},
-        pureBalances: {},
-        pureRawBalances: {}
-      })
-      return
-    }
-
-    // from tokenAccount to tokenAmount
-    const { solBalance, allWsolBalance, balances, rawBalances, pureBalances, pureRawBalances } =
-      parseBalanceFromTokenAccount({
-        getPureToken,
-        allTokenAccounts
-      })
-
-    useWallet.setState({
-      solBalance,
-      allWsolBalance,
-      balances,
-      rawBalances,
-      pureBalances,
-      pureRawBalances
-    })
-  }, [connection, tokenAccounts, nativeTokenAccount, getPureToken, owner])
-}
+import { ITokenAccount } from '../type'
 
 export function parseBalanceFromTokenAccount({
   getPureToken,
@@ -78,18 +33,19 @@ export function parseBalanceFromTokenAccount({
       )
     : undefined
 
+  const balancesOfTokenAccounts = listToMap(
+    tokenAccounts,
+    (tokenAccount) => String(tokenAccount.mint),
+    (tokenAccount) => toPureBalance(tokenAccount)
+  )
   // use TokenAmount (no QuantumSOL)
-  const pureBalances = objectShakeNil({
-    ...listToMap(
-      tokenAccounts,
-      (tokenAccount) => String(tokenAccount.mint),
-      (tokenAccount) => toPureBalance(tokenAccount)
-    ),
-    [toPubString(WSOLMint)]: allWsolBalance && toTokenAmount(WSOL, allWsolBalance)
+  const pureBalances = shakeNil({
+    ...balancesOfTokenAccounts,
+    [toPubString(WSOLMint)]: allWsolBalance ? toTokenAmount(WSOL, allWsolBalance) : undefined
   })
 
   // use BN (no QuantumSOL)
-  const pureRawBalances = objectMap(pureBalances, (balance) => balance.raw)
+  const pureRawBalances = map(pureBalances, (balance) => balance.raw)
 
   // native sol balance (for QuantumSOL)
   const nativeTokenAccount = allTokenAccounts.find((ta) => ta.isNative)
@@ -105,6 +61,6 @@ export function parseBalanceFromTokenAccount({
   const balances = { ...pureBalances, [String(QuantumSOL.mint)]: quantumSOLBalance }
 
   // use BN (QuantumSOL)
-  const rawBalances = objectMap(balances, (balance) => balance.raw)
+  const rawBalances = map(balances, (balance) => balance.raw)
   return { solBalance, allWsolBalance, balances, rawBalances, pureBalances, pureRawBalances, nativeTokenAccount }
 }

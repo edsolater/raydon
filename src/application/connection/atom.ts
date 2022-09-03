@@ -44,7 +44,7 @@ export type ConnectionAtom = {
 }
 
 export const connectionAtom = createXAtom<ConnectionAtom>({
-  name: 'connectionAtom',
+  name: 'connection',
   default: () => ({
     availableEndPoints: [],
     isLoading: false,

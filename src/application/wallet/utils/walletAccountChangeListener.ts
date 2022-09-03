@@ -1,11 +1,3 @@
-import { useEffect } from 'react'
-
-import { PublicKey } from '@solana/web3.js'
-
-import useConnection from '@/application/connection/useConnection'
-
-import useWallet from './useWallet'
-
 type WalletAccountChangeListener = () => void
 
 type ListenerId = number
@@ -19,32 +11,6 @@ type InnerWalletAccountChangeListenerSettings = {
 
 let walletAccountChangeListeners: InnerWalletAccountChangeListenerSettings[] = []
 let listenerIdCounter = 1
-
-export function useWalletAccountChangeListeners() {
-  const connection = useConnection((s) => s.connection)
-  const owner = useWallet((s) => s.owner)
-  useEffect(() => {
-    if (!connection || !owner) return
-    const listenerId = connection.onAccountChange(
-      new PublicKey(owner),
-      () => {
-        invokeWalletAccountChangeListeners('confirmed')
-      },
-      'confirmed'
-    )
-    const listenerId2 = connection.onAccountChange(
-      new PublicKey(owner),
-      () => {
-        invokeWalletAccountChangeListeners('finalized')
-      },
-      'finalized'
-    )
-    return () => {
-      connection.removeAccountChangeListener(listenerId)
-      connection.removeAccountChangeListener(listenerId2)
-    }
-  }, [connection, owner])
-}
 
 // TODO: the code form  of use this is not straightforward, should be integrated in handleMultiTx
 export function addWalletAccountChangeListener(

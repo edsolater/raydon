@@ -24,7 +24,7 @@ function WalletSelectorPanelItem({
   onClick?(): void
 }) {
   const isMobile = useAppSettings((s) => s.isMobile)
-  const { select } = useWallet()
+  const select = useWallet((s) => s.select)
   return (
     <Div
       icss={cssRow()}
@@ -54,7 +54,7 @@ function WalletSelectorPanelItem({
 
 function SimulateWallet({ onClick }: { onClick?(): void }) {
   const isMobile = useAppSettings((s) => s.isMobile)
-  const { select } = useWallet()
+  const select = useWallet((s) => s.select)
   const valueRef = useRef('')
   return (
     <Div
@@ -91,7 +91,7 @@ function SimulateWallet({ onClick }: { onClick?(): void }) {
 
 export default function WalletSelectorDialog() {
   const isWalletSelectorShown = useAppSettings((s) => s.isWalletSelectorShown)
-  const { availableWallets } = useWallet()
+  const availableWallets = useWallet((s) => s.availableWallets)
   return (
     <ResponsiveDialogDrawer
       placement="from-top"

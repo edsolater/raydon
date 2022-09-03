@@ -6,7 +6,7 @@ import handleMultiTx from '@/application/txTools/handleMultiTx'
 import {
   addWalletAccountChangeListener,
   removeWalletAccountChangeListener
-} from '@/application/wallet/useWalletAccountChangeListeners'
+} from '@/application/wallet/utils/walletAccountChangeListener'
 import assert from '@/functions/assert'
 import asyncMap from '@/functions/asyncMap'
 import { jsonInfo2PoolKeys } from '../txTools/jsonInfo2PoolKeys'

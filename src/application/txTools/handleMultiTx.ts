@@ -1,10 +1,8 @@
-import { WalletAdapter } from '@solana/wallet-adapter-base'
 import {
   Connection,
   Context,
   Keypair,
   PublicKey,
-  sendAndConfirmTransaction,
   SignatureResult,
   Transaction,
   TransactionError
@@ -15,17 +13,17 @@ import assert from '@/functions/assert'
 import useConnection from '../connection/useConnection'
 import useNotification from '../notification/useNotification'
 import useTxHistory, { TxHistoryInfo } from '../txHistory/useTxHistory'
-import useWallet, { WalletStore } from '../wallet/useWallet'
+import useWallet from '../wallet/useWallet'
+import { WalletStore } from '../wallet'
 
-import subscribeTx from './subscribeTx'
+import { toHumanReadable } from '@/functions/format/toHumanReadable'
+import { mergeFunction } from '@/functions/merge'
+import { shrinkToValue } from '@/functions/shrinkToValue'
 import { noTailingPeriod } from '../../functions/format/noTailingPeriod'
 import useAppSettings from '../appSettings/useAppSettings'
-import { mergeFunction } from '@/functions/merge'
+import { getRichWalletTokenAccounts } from '../wallet/utils/getRichWalletTokenAccounts'
 import { getRecentBlockhash } from './attachRecentBlockhash'
-import { getRichWalletTokenAccounts } from '../wallet/useTokenAccountsRefresher'
-import { shrinkToValue } from '@/functions/shrinkToValue'
-import PageLayout from '@/components/PageLayout/PageLayout'
-import { toHumanReadable } from '@/functions/format/toHumanReadable'
+import subscribeTx from './subscribeTx'
 
 //#region ------------------- basic info -------------------
 export type TxInfo = {

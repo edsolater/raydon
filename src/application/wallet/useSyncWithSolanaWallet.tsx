@@ -1,14 +1,12 @@
 import { useEffect } from 'react'
 
-import { useWallet as _useWallet } from '@solana/wallet-adapter-react'
+import { useConnection, useWallet as _useWallet } from '@solana/wallet-adapter-react'
 import { PublicKey, Transaction } from '@solana/web3.js'
 
-import useConnection from '@/application/connection/useConnection'
-import { attachRecentBlockhash } from '@/application/txTools/attachRecentBlockhash'
-
 import useWallet from './useWallet'
-import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect '
+import { useIsomorphicLayoutEffect } from '@edsolater/hookit'
 import { isValidPublicKey } from '@/functions/judgers/dateType'
+import { walletAtom } from './atom'
 
 /**
  * **only in `_app.tsx`**
@@ -33,32 +31,32 @@ export function useSyncWithSolanaWallet() {
   const _adapter = _wallet?.adapter
 
   useIsomorphicLayoutEffect(() => {
-    if (!useWallet.getState().inSimulateMode && useWallet.getState().owner != _publicKey) {
+    if (!walletAtom.get().inSimulateMode && walletAtom.get().owner != _publicKey) {
       useWallet.setState({ owner: _publicKey ?? undefined })
     }
   }, [_publicKey])
 
   useEffect(() => {
     // sometimes `_wallet`'s data is delayed is not ready
-    if (!useWallet.getState().inSimulateMode && useWallet.getState().availableWallets !== _wallets) {
+    if (!walletAtom.get().inSimulateMode && walletAtom.get().availableWallets !== _wallets) {
       useWallet.setState({ availableWallets: _wallets })
     }
   }, [_wallets])
 
   useIsomorphicLayoutEffect(() => {
-    if (!useWallet.getState().inSimulateMode && useWallet.getState().disconnecting !== _disconnecting) {
+    if (!walletAtom.get().inSimulateMode && walletAtom.get().disconnecting !== _disconnecting) {
       useWallet.setState({ disconnecting: _disconnecting })
     }
   }, [_disconnecting])
 
   useIsomorphicLayoutEffect(() => {
-    if (!useWallet.getState().inSimulateMode && useWallet.getState().connecting !== _connecting) {
+    if (!walletAtom.get().inSimulateMode && walletAtom.get().connecting !== _connecting) {
       useWallet.setState({ connecting: _connecting })
     }
   }, [_connecting])
 
   useIsomorphicLayoutEffect(() => {
-    if (!useWallet.getState().inSimulateMode && useWallet.getState().connected !== _connected) {
+    if (!walletAtom.get().inSimulateMode && walletAtom.get().connected !== _connected) {
       useWallet.setState({ connected: _connected })
     }
   }, [_connected])
@@ -71,14 +69,14 @@ export function useSyncWithSolanaWallet() {
   }, [_select])
 
   useIsomorphicLayoutEffect(() => {
-    const superDisconnect = () => (useWallet.getState().inSimulateMode ? disconnectSimulateFakeWallet() : _disconnect())
+    const superDisconnect = () => (walletAtom.get().inSimulateMode ? disconnectSimulateFakeWallet() : _disconnect())
     useWallet.setState({ disconnect: superDisconnect })
   }, [_disconnect])
 
   useEffect(() => {
     useWallet.setState({
       signAllTransactions: async (transactions: Transaction[]) => {
-        await attachRecentBlockhash(transactions)
+        // FIXME: // await attachRecentBlockhash(...transactions)
         return (
           (await _signAllTransactions?.(transactions).catch((err) => {
             throw err
@@ -89,13 +87,13 @@ export function useSyncWithSolanaWallet() {
   }, [_signAllTransactions, _adapter, connection])
 
   useIsomorphicLayoutEffect(() => {
-    if (!useWallet.getState().inSimulateMode && useWallet.getState().currentWallet !== _wallet) {
+    if (!walletAtom.get().inSimulateMode && walletAtom.get().currentWallet !== _wallet) {
       useWallet.setState({ currentWallet: _wallet })
     }
   }, [_wallet])
 
   useIsomorphicLayoutEffect(() => {
-    if (!useWallet.getState().inSimulateMode && useWallet.getState().adapter !== _adapter) {
+    if (!walletAtom.get().inSimulateMode && walletAtom.get().adapter !== _adapter) {
       useWallet.setState({ adapter: _adapter })
     }
   }, [_adapter])
