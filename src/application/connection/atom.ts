@@ -3,8 +3,7 @@
  ************/
 
 import { createXAtom } from '@edsolater/xstore'
-import { Connection } from '@solana/web3.js'
-import { Endpoint } from './type'
+import { Connection, Endpoint } from './type'
 import { extractConnectionName } from './utils/extractConnectionName'
 import { getChainDate } from './utils/getChainDate'
 import { deleteRpc, switchRpc } from './utils/swithRPC'

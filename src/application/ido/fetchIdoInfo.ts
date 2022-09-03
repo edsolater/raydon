@@ -4,7 +4,7 @@ import { isArray, isObject } from '@/functions/judgers/dateType'
 import { isInBonsaiTest, isInLocalhost } from '@/functions/judgers/isSSR'
 import { objectMap } from '@/functions/objectMethods'
 import { PublicKeyish } from '@raydium-io/raydium-sdk'
-import { Connection } from '@solana/web3.js'
+import { Connection } from '../connection'
 import { Ido } from './sdk'
 import { BackendApiIdoListItem, BackendApiIdoProjectDetails } from './type'
 

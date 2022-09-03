@@ -1,10 +1,10 @@
 import { setSessionItem, setLocalItem } from '@/functions/dom/jStorage'
 import { assert, unifyByKey } from '@edsolater/fnkit'
-import { Connection } from '@solana/web3.js'
 import { connectionAtom } from '../atom'
 import { SESSION_STORAGE_USER_SELECTED_RPC } from '../../effects/loadPredefinedRPC'
 import { Endpoint, UserCustomizedEndpoint } from '../type'
 import { extractConnectionName } from './extractConnectionName'
+import { Connection } from '@solana/web3.js'
 
 export const LOCALSTORAGE_KEY_USER_RPC = 'user_rpc'
 

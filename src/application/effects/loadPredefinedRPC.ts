@@ -8,7 +8,7 @@ import { unifyByKey } from '@edsolater/fnkit'
 import { jFetch } from '@edsolater/jfetch'
 import { Connection } from '@solana/web3.js'
 import { connectionAtom } from '../connection/atom'
-import { Config, Endpoint } from '../connection/type'
+import { Config, Endpoint } from '../connection'
 import caculateEndpointUrlByRpcConfig from '../connection/utils/chooseBestRPC'
 
 const devRpcConfig: Omit<Config, 'success'> = {

@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 
 import { jsonInfo2PoolKeys, Liquidity, Trade, WSOL } from '@raydium-io/raydium-sdk'
-import { Connection } from '@solana/web3.js'
+import { Connection } from '../connection'
 
 import { shakeUndifindedItem } from '@/functions/arrayMethods'
 import toPubString from '@/functions/format/toMintString'

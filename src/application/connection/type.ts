@@ -2,6 +2,8 @@
  ** connection's type *
  *****************/
 
+import { Connection as _Connection } from '@solana/web3.js'
+
 export interface UserCustomizedEndpoint {
   name: string
   url: string
@@ -20,3 +22,5 @@ export interface Config {
   success: boolean
   rpcs: Endpoint[]
 }
+
+export type Connection = _Connection
