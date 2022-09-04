@@ -44,13 +44,7 @@ export type TokenSelectorProps = {
 
 export default function TokenSelectorDialog(props: TokenSelectorProps) {
   return (
-    <ResponsiveDialogDrawer
-      maskNoBlur
-      transitionSpeed="fast"
-      placement="from-top"
-      open={props.open}
-      onClose={props.close}
-    >
+    <ResponsiveDialogDrawer transitionSpeed="fast" placement="from-top" open={props.open} onClose={props.close}>
       {({ close: closePanel }) => <TokenSelectorDialogContent {...props} close={closePanel} />}
     </ResponsiveDialogDrawer>
   )

@@ -1,5 +1,5 @@
 import toPubString from '@/functions/format/toMintString'
-import { createAtomEffect, createSubscribePath, createXEffect } from '@edsolater/xstore'
+import { createXEffect } from '@edsolater/xstore'
 import { tokenAtom, USER_ADDED_TOKEN_LIST_NAME } from '../token/atom'
 import { sortTokens } from '../token/utils/sortTokens'
 
@@ -31,10 +31,6 @@ export const autoUpdateSelectableTokens = createXEffect(() => {
     allSelectableTokens: sortTokens(settingsFiltedTokens)
   })
 }, [
-  // createSubscribePath(
-  //   () => tokenAtom,
-  //   ['verboseTokens', 'userAddedTokens', 'tokenListSettings', 'userFlaggedTokenMints', 'sortTokens']
-  // )
   // TODO FIXME: should also change when wallet owner change
   tokenAtom.subscribe.verboseTokens,
   tokenAtom.subscribe.userAddedTokens,
