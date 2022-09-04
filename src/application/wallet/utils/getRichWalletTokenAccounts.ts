@@ -35,6 +35,7 @@ export const fetchTokenAccounts = async (
   const hasWalletTokenAccountChanged = diffCount >= 2
   //#endregion
   if (options?.noSecondTry || hasWalletTokenAccountChanged || diffCount === 0) {
+    // FIXME it has setState action. it's not mind stright forward
     useWallet.setState({
       tokenAccountRawInfos,
       nativeTokenAccount,

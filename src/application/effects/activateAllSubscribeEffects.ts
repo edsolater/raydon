@@ -7,7 +7,7 @@ import { listenWalletAccountChange } from './listenWalletAccountChange'
 import { manuallyRefreshTokenAccount } from './manuallyRefreshTokenAccount'
 import { registerWalletConnectNotifaction } from './registerWalletConnectNotifaction'
 import { autoRefreshTokenPrice } from './autoRefreshTokenPrice'
-import { autoUpdateSelectableTokens } from './autoUpdateSelectableTokens'
+import { autoUpdateUserSelectableTokens } from './autoUpdateUserSelectableTokens'
 import { loadLpTokens } from './loadLpTokens'
 import { loadTokenList } from './loadTokenList'
 import { syncLoadUserAddedTokens } from './syncLoadUserAddedTokens'
@@ -29,7 +29,7 @@ export const activateAllSubscribeEffects = () => {
 
   // token
   autoRefreshTokenPrice.activate()
-  autoUpdateSelectableTokens.activate()
+  autoUpdateUserSelectableTokens.activate()
   loadLpTokens.activate()
   loadTokenList.activate()
   syncLoadUserAddedTokens.activate()
