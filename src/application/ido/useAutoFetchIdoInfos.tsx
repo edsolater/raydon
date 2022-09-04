@@ -1,21 +1,20 @@
+import { useXStore } from '@edsolater/xstore'
 import useConnection from '@/application/connection/useConnection'
+import { tokenAtom } from '@/application/token'
 import useWallet from '@/application/wallet/useWallet'
+import { shakeUndifindedItem } from '@/functions/arrayMethods'
+import asyncMap from '@/functions/asyncMap'
 import listToMap from '@/functions/format/listToMap'
-import useAsyncEffect from '@/hooks/useAsyncEffect'
-import useIdo, { IdoStore } from './useIdo'
-import { EffectCheckSetting, shouldEffectBeOn } from '../miscTools'
-import { useToken } from '@/application/token'
-import { fetchRawIdoListJson, fetchRawIdoProjectInfoJson, getSdkIdoList } from './fetchIdoInfo'
-import { hydrateIdoInfo } from './hydrateIdoInfo'
 import toPubString, { ToPubPropertyValue } from '@/functions/format/toMintString'
 import { objectMap, objectShakeNil, pick } from '@/functions/objectMethods'
-import { BackendApiIdoListItem } from './type'
-import asyncMap from '@/functions/asyncMap'
-import { shakeUndifindedItem } from '@/functions/arrayMethods'
+import { useEffectWithTransition } from '@/hooks/useEffectWithTransition'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
-import { useEffectWithTransition } from '@/hooks/useEffectWithTransition'
 import { createSplToken } from '../token/utils/createSplToken'
+import { fetchRawIdoListJson, fetchRawIdoProjectInfoJson, getSdkIdoList } from './fetchIdoInfo'
+import { hydrateIdoInfo } from './hydrateIdoInfo'
+import { BackendApiIdoListItem } from './type'
+import useIdo, { IdoStore } from './useIdo'
 
 export default function useAutoFetchIdoInfos() {
   const connection = useConnection((s) => s.connection)
@@ -24,7 +23,7 @@ export default function useAutoFetchIdoInfos() {
   const idoRawInfos = useIdo((s) => s.idoRawInfos)
   const currentIdoId = useIdo((s) => s.currentIdoId)
   const idoRefreshFactor = useIdo((s) => s.idoRefreshFactor)
-  const tokens = useToken((s) => s.tokens)
+  const { tokens } = useXStore(tokenAtom)
   const { pathname } = useRouter()
   const getChainDate = useConnection((s) => s.getChainDate)
   const inIdoDetailPage = pathname.includes('/acceleraytor/detail')

@@ -5,13 +5,12 @@ import { Fraction, TokenAmount, ZERO } from '@raydium-io/raydium-sdk'
 
 import { twMerge } from 'tailwind-merge'
 
-import { cssCol, cssRow, Div } from '@edsolater/uikit'
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import txFarmHarvest from '@/application/farms/txFarmHarvest'
 import { HydratedFarmInfo } from '@/application/farms/type'
 import useFarms from '@/application/farms/useFarms'
 import useStaking from '@/application/staking/useStaking'
-import { useToken } from '@/application/token'
+import { tokenAtom } from '@/application/token'
 import useWallet from '@/application/wallet/useWallet'
 import CoinAvatar from '@/components/CoinAvatar'
 import Icon from '@/components/Icon'
@@ -27,10 +26,12 @@ import { gt, isMeaningfulNumber } from '@/functions/numberish/compare'
 import { add } from '@/functions/numberish/operations'
 import { toString } from '@/functions/numberish/toString'
 import Button from '@/tempUikits/Button'
+import { cssCol, cssRow, Div } from '@edsolater/uikit'
 
 import Collapse from '@/tempUikits/Collapse'
 import CyberpunkStyleCard from '@/tempUikits/CyberpunkStyleCard'
 import Grid from '@/tempUikits/Grid'
+import { useXStore } from '@edsolater/xstore'
 import { StakingPageStakeLpDialog } from '../components/dialogs/StakingPageStakeLpDialog'
 
 export default function StakingPage() {
@@ -199,7 +200,7 @@ function StakingCardCollapseItemFace({ open, info }: { open: boolean; info: Hydr
 }
 
 function StakingCardCollapseItemContent({ hydratedInfo }: { hydratedInfo: HydratedFarmInfo }) {
-  const prices = useToken((s) => s.tokenPrices)
+  const { tokenPrices: prices } = useXStore(tokenAtom)
   const isMobile = useAppSettings((s) => s.isMobile)
   const lightBoardClass = 'bg-[rgba(20,16,65,.2)]'
   const { push } = useRouter()

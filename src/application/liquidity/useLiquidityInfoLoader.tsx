@@ -1,21 +1,20 @@
 import { LiquidityPoolsJsonFile } from '@raydium-io/raydium-sdk'
 
 import useConnection from '@/application/connection/useConnection'
-import { useToken } from '@/application/token'
+import { tokenAtom } from '@/application/token'
 import useWallet from '@/application/wallet/useWallet'
 import jFetch from '@/functions/dom/jFetch'
-import { isExist } from '@/functions/judgers/nil'
 import { gt } from '@/functions/numberish/compare'
-import useAsyncEffect from '@/hooks/useAsyncEffect'
 import { HexAddress } from '@/types/constants'
 
-import useLiquidity from './useLiquidity'
-import hydrateLiquidityInfo from './hydrateLiquidityInfo'
-import sdkParseJsonLiquidityInfo from './sdkParseJsonLiquidityInfo'
+import { useXStore } from '@edsolater/xstore'
 import { shakeUndifindedItem } from '@/functions/arrayMethods'
-import { useRecordedEffect } from '@/hooks/useRecordedEffect'
 import { areShallowEqual } from '@/functions/judgers/areEqual'
 import { useEffectWithTransition } from '@/hooks/useEffectWithTransition'
+import { useRecordedEffect } from '@/hooks/useRecordedEffect'
+import hydrateLiquidityInfo from './hydrateLiquidityInfo'
+import sdkParseJsonLiquidityInfo from './sdkParseJsonLiquidityInfo'
+import useLiquidity from './useLiquidity'
 
 /**
  * will load liquidity info (jsonInfo, sdkParsedInfo, hydratedInfo)
@@ -23,9 +22,7 @@ import { useEffectWithTransition } from '@/hooks/useEffectWithTransition'
 export default function useLiquidityInfoLoader({ disabled }: { disabled?: boolean } = {}) {
   const { jsonInfos, sdkParsedInfos, currentJsonInfo, currentSdkParsedInfo, userExhibitionLiquidityIds } =
     useLiquidity()
-  const getToken = useToken((s) => s.getToken)
-  const getLpToken = useToken((s) => s.getLpToken)
-  const isLpToken = useToken((s) => s.isLpToken)
+  const { getToken, getLpToken, isLpToken } = useXStore(tokenAtom)
   const refreshCount = useLiquidity((s) => s.refreshCount)
   const connection = useConnection((s) => s.connection)
   const rawBalances = useWallet((s) => s.rawBalances)

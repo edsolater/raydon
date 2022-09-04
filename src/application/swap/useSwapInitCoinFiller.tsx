@@ -1,15 +1,15 @@
 import { useEffect } from 'react'
 
-import { useToken } from '@/application/token'
-import { RAYMint } from '@/application/token'
+import { RAYMint, tokenAtom } from '@/application/token'
 
-import { useSwap } from './useSwap'
-import toPubString from '@/functions/format/toMintString'
-import { QuantumSOLVersionSOL } from '../token'
 import { getURLQueryEntry } from '@/functions/dom/getURLQueryEntries'
+import toPubString from '@/functions/format/toMintString'
+import { useXStore } from '@edsolater/xstore'
+import { QuantumSOLVersionSOL } from '../token'
+import { useSwap } from './useSwap'
 
 export default function useSwapInitCoinFiller() {
-  const getToken = useToken((s) => s.getToken)
+  const { getToken } = useXStore(tokenAtom)
   useEffect(() => {
     const { coin1, coin2 } = useSwap.getState()
     const query = getURLQueryEntry()

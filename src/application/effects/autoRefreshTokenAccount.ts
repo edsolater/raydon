@@ -1,4 +1,4 @@
-import { createXEffect } from '@/../../xstore/dist'
+import { createXEffect } from '@edsolater/xstore'
 import { connectionAtom } from '../connection'
 import { walletAtom } from '../wallet/atom'
 import { fetchTokenAccounts } from '../wallet/utils/getRichWalletTokenAccounts'

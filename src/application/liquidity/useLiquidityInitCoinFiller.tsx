@@ -1,15 +1,15 @@
 import { useEffect } from 'react'
 
-import { useToken } from '@/application/token'
-import { RAYMint } from '@/application/token'
+import { RAYMint, tokenAtom } from '@/application/token'
 
 import { QuantumSOLVersionSOL } from '@/application/token'
 import { getURLQueryEntry } from '@/functions/dom/getURLQueryEntries'
 import toPubString from '@/functions/format/toMintString'
+import { useXStore } from '@edsolater/xstore'
 import useLiquidity from './useLiquidity'
 
 export default function useLiquidityInitCoinFiller() {
-  const getToken = useToken((s) => s.getToken)
+  const { getToken } = useXStore(tokenAtom)
   useEffect(() => {
     setTimeout(() => {
       // NOTE this effect must later than ammid parser

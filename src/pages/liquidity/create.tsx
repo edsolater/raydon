@@ -1,34 +1,35 @@
-import React, { ReactNode, useMemo } from 'react'
 import { useRouter } from 'next/router'
+import { ReactNode, useMemo } from 'react'
 
 import { twMerge } from 'tailwind-merge'
 
 import useAppSettings from '@/application/appSettings/useAppSettings'
-import useInitlyGetCreatedPoolExhibitionData from '@/application/createPool/useInitlyGetCreatedPoolExhibitionData'
 import txCreateAndInitNewPool from '@/application/createPool/txCreateAndInitNewPool'
-import useCreatePool from '@/application/createPool/useCreatePool'
 import { updateCreatePoolInfo } from '@/application/createPool/updateCreatePoolInfo'
+import useCreatePool from '@/application/createPool/useCreatePool'
+import useInitlyGetCreatedPoolExhibitionData from '@/application/createPool/useInitlyGetCreatedPoolExhibitionData'
 import { routeTo } from '@/application/routeTools'
-import { useToken } from '@/application/token'
+import { tokenAtom } from '@/application/token'
 import useWallet from '@/application/wallet/useWallet'
+import CoinInputBox from '@/components/CoinInputBox'
 import Button from '@/tempUikits/Button'
 import Card from '@/tempUikits/Card'
-import CoinInputBox from '@/components/CoinInputBox'
 
-import Collapse from '@/tempUikits/Collapse'
-import DateInput from '@/tempUikits/Datepicker/DateInput'
+import { createSplToken } from '@/application/token'
 import Icon from '@/components/Icon'
 import InputBox from '@/components/InputBox'
-import Link from '@/tempUikits/Link'
 import PageLayout from '@/components/PageLayout/PageLayout'
 import SetpIndicator from '@/components/SetpIndicator'
 import copyToClipboard from '@/functions/dom/copyToClipboard'
 import { isMeaningfulNumber } from '@/functions/numberish/compare'
 import { div } from '@/functions/numberish/operations'
-import useToggle from '@/hooks/useToggle'
-import { createSplToken } from '@/application/token'
 import { toString } from '@/functions/numberish/toString'
-import { Div, cssCol, cssRow } from '@edsolater/uikit'
+import useToggle from '@/hooks/useToggle'
+import Collapse from '@/tempUikits/Collapse'
+import DateInput from '@/tempUikits/Datepicker/DateInput'
+import Link from '@/tempUikits/Link'
+import { cssCol, cssRow, Div } from '@edsolater/uikit'
+import { useXStore } from '@edsolater/xstore'
 
 /**
  * @see https://uiwjs.github.io/#/components/date-input
@@ -43,7 +44,7 @@ export default function CreatePoolPage() {
 }
 function PanelContent({ close }: { close(): void }) {
   const walletConnected = useWallet((s) => s.connected)
-  const getToken = useToken((s) => s.getToken)
+  const { getToken } = useXStore(tokenAtom)
   // const { currentStep, setCurrentStep } = usePageData()
   const currentStep = useCreatePool((s) => s.currentStep)
   const setCurrentStep = useCreatePool((s) => s.setCurrentStep)
@@ -275,7 +276,7 @@ function InfoItem({
   fieldName?: ReactNode
   fieldValue?: ReactNode
 }) {
-  const getToken = useToken((s) => s.getToken)
+  const { getToken } = useXStore(tokenAtom)
   const mintSearch = (mint: string) => {
     const token = getToken(mint)
     if (!token) return mint
@@ -305,7 +306,7 @@ function AddressItem({
   fieldName?: ReactNode
   fieldValue: string
 }) {
-  const getToken = useToken((s) => s.getToken)
+  const { getToken } = useXStore(tokenAtom)
   const mintSearch = (mint: string) => {
     const token = getToken(mint)
     if (!token) return undefined
@@ -337,7 +338,7 @@ function AddressItem({
 
 function UserCreatedPoolsExhibitionPanel() {
   const { push } = useRouter()
-  const getToken = useToken((s) => s.getToken)
+  const { getToken } = useXStore(tokenAtom)
   const owner = useWallet((s) => s.owner)
   const createdPoolHistory = useCreatePool((s) => s.createdPoolHistory)
   const userExhibitionHistory = useMemo(() => owner && createdPoolHistory?.[String(owner)], [createdPoolHistory, owner])

@@ -3,12 +3,11 @@ import jFetch from '@/functions/dom/jFetch'
 import toPubString from '@/functions/format/toMintString'
 import { lazyMap } from '@/functions/lazyMap'
 import { HexAddress } from '@/types/constants'
-import { listToMap, shakeNil } from '@edsolater/fnkit'
-import { createAtomEffect, createSubscribePath, createXEffect } from '@edsolater/xstore'
+import { listToMap } from '@edsolater/fnkit'
+import { createXEffect } from '@edsolater/xstore'
 import { LiquidityPoolsJsonFile, Token } from '@raydium-io/raydium-sdk'
-import { tokenAtom, useToken } from '../token/atom'
+import { tokenAtom } from '../token/atom'
 import { LpToken } from '../token/type'
-import { getLpToken, getToken } from '../token/utils/getToken'
 
 export const loadLpTokens = createXEffect(async () => {
   const { jsonInfos: ammJsonInfos } = await getLiquidityJsonInfos()

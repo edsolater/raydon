@@ -1,20 +1,21 @@
+import useAppSettings from '@/application/appSettings/useAppSettings'
 import { createNewUIRewardInfo, hasRewardBeenEdited } from '@/application/createFarm/parseRewardInfo'
 import txUpdateEdited from '@/application/createFarm/txUpdateFarm'
 import useCreateFarms from '@/application/createFarm/useCreateFarm'
 import useFarms from '@/application/farms/useFarms'
 import { routeBack, routeTo } from '@/application/routeTools'
-import { useToken } from '@/application/token'
+import { tokenAtom } from '@/application/token'
 import { AddressItem } from '@/components/AddressItem'
-import Button from '@/tempUikits/Button'
-import PageLayout from '@/components/PageLayout/PageLayout'
-import assert from '@/functions/assert'
-import tryCatch from '@/functions/tryCatch'
 import { EditableRewardSummary } from '@/components/createFarm/EditableRewardSummary'
 import { NewAddedRewardSummary } from '@/components/createFarm/NewAddedRewardSummary'
 import { PoolInfoSummary } from '@/components/createFarm/PoolInfoSummery'
+import PageLayout from '@/components/PageLayout/PageLayout'
+import assert from '@/functions/assert'
+import tryCatch from '@/functions/tryCatch'
+import Button from '@/tempUikits/Button'
+import { cssRow, Div } from '@edsolater/uikit'
+import { useXStore } from '@edsolater/xstore'
 import { useEffect, useMemo } from 'react'
-import useAppSettings from '@/application/appSettings/useAppSettings'
-import { Div, cssRow } from '@edsolater/uikit'
 
 function useAvailableCheck() {
   useEffect(() => {
@@ -24,7 +25,7 @@ function useAvailableCheck() {
 }
 
 export default function EditReviewPage() {
-  const getToken = useToken((s) => s.getToken)
+  const { getToken } = useXStore(tokenAtom)
   const { poolId, rewards, farmId } = useCreateFarms()
   const isApprovePanelShown = useAppSettings((s) => s.isApprovePanelShown)
   const canCreateFarm = useMemo(

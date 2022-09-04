@@ -2,7 +2,7 @@
  * * ATOM EFFECT *
  *****************/
 
-import { createXEffect } from '@/../../xstore/dist'
+import { createXEffect } from '@edsolater/xstore'
 import { getSessionItem } from '@/functions/dom/jStorage'
 import { unifyByKey } from '@edsolater/fnkit'
 import { jFetch } from '@edsolater/jfetch'

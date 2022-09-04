@@ -1,14 +1,10 @@
-import { createRef, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-
-import { RouteInfo } from '@raydium-io/raydium-sdk'
-
-import { twMerge } from 'tailwind-merge'
-
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import useNotification from '@/application/notification/useNotification'
 import { routeTo } from '@/application/routeTools'
 import { getCoingeckoChartPriceData } from '@/application/swap/klinePrice'
 import txSwap from '@/application/swap/txSwap'
+import { txUnwrapWSOL } from '@/application/swap/txUnwrapWSOL'
+import txWrapSOL from '@/application/swap/txWrapSOL'
 import { useSwap } from '@/application/swap/useSwap'
 import { useSwapAmountCalculator } from '@/application/swap/useSwapAmountCalculator'
 import useSwapInitCoinFiller from '@/application/swap/useSwapInitCoinFiller'
@@ -16,15 +12,20 @@ import useSwapUrlParser from '@/application/swap/useSwapUrlParser'
 import {
   isQuantumSOLVersionSOL,
   isQuantumSOLVersionWSOL,
+  RAYDIUM_MAINNET_TOKEN_LIST_NAME,
   SOLDecimals,
   SOL_BASE_BALANCE,
-  toUITokenAmount
+  tokenAtom,
+  toUITokenAmount,
+  USDCMint,
+  USDTMint
 } from '@/application/token'
 import { SplToken } from '@/application/token/type'
-import { useToken, RAYDIUM_MAINNET_TOKEN_LIST_NAME } from '@/application/token'
-import { USDCMint, USDTMint } from '@/application/token'
 import useWallet from '@/application/wallet/useWallet'
+import { AddressItem } from '@/components/AddressItem'
 import CoinAvatar from '@/components/CoinAvatar'
+import CoinInputBox, { CoinInputBoxHandle } from '@/components/CoinInputBox'
+import TokenSelectorDialog from '@/components/dialogs/TokenSelectorDialog'
 import Icon from '@/components/Icon'
 import PageLayout from '@/components/PageLayout/PageLayout'
 import RefreshCircle from '@/components/RefreshCircle'
@@ -33,6 +34,7 @@ import formatNumber from '@/functions/format/formatNumber'
 import toPubString from '@/functions/format/toMintString'
 import toPercentString from '@/functions/format/toPercentString'
 import { toTokenAmount } from '@/functions/format/toTokenAmount'
+import { isMintEqual } from '@/functions/judgers/areEqual'
 import { eq, gte, isMeaningfulNumber, lt, lte } from '@/functions/numberish/compare'
 import { div, mul } from '@/functions/numberish/operations'
 import { toString } from '@/functions/numberish/toString'
@@ -41,27 +43,22 @@ import useAsyncMemo from '@/hooks/useAsyncMemo'
 import useLocalStorageItem from '@/hooks/useLocalStorage'
 import { useRecordedEffect } from '@/hooks/useRecordedEffect'
 import useToggle from '@/hooks/useToggle'
-import TokenSelectorDialog from '@/components/dialogs/TokenSelectorDialog'
+import { Badge } from '@/tempUikits/Badge'
 import Button, { ButtonHandle } from '@/tempUikits/Button'
 import Card from '@/tempUikits/Card'
 import { Checkbox } from '@/tempUikits/Checkbox'
-import CoinInputBox, { CoinInputBoxHandle } from '@/components/CoinInputBox'
-
 import Collapse from '@/tempUikits/Collapse'
-import CyberpunkStyleCard from '@/tempUikits/CyberpunkStyleCard'
 import FadeInStable, { FadeIn } from '@/tempUikits/FadeIn'
 import Input from '@/tempUikits/Input'
 import RowTabs from '@/tempUikits/RowTabs'
 import Tooltip from '@/tempUikits/Tooltip'
 import { HexAddress, Numberish } from '@/types/constants'
-
-import { txUnwrapWSOL } from '@/application/swap/txUnwrapWSOL'
-import txWrapSOL from '@/application/swap/txWrapSOL'
-import { AddressItem } from '@/components/AddressItem'
-import { isMintEqual } from '@/functions/judgers/areEqual'
-import { Badge } from '@/tempUikits/Badge'
+import { cssCol, cssRow, Div } from '@edsolater/uikit'
+import { useXStore } from '@edsolater/xstore'
+import { RouteInfo } from '@raydium-io/raydium-sdk'
+import { createRef, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { twMerge } from 'tailwind-merge'
 import { useSwapTwoElements } from '../hooks/useSwapTwoElements'
-import { Div, cssCol, cssRow } from '@edsolater/uikit'
 
 function SwapEffect() {
   useSwapInitCoinFiller()
@@ -97,7 +94,7 @@ function useUnofficialTokenConfirmState(): { hasConfirmed: boolean; popConfirm: 
   const coin1 = useSwap((s) => s.coin1)
   const coin2 = useSwap((s) => s.coin2)
   const downCoin = directionReversed ? coin1 : coin2
-  const tokenListSettings = useToken((s) => s.tokenListSettings)
+  const { tokenListSettings } = useXStore(tokenAtom)
   const raydiumTokenMints = tokenListSettings[RAYDIUM_MAINNET_TOKEN_LIST_NAME]?.mints
 
   const [userPermanentConfirmedTokenMints, setUserPermanentConfirmedTokenMints] =
@@ -201,7 +198,7 @@ function SwapCard() {
   const balances = useWallet((s) => s.balances)
   const routes = useSwap((s) => s.routes)
   const swapable = useSwap((s) => s.swapable)
-  const refreshTokenPrice = useToken((s) => s.refreshTokenPrice)
+  const { refreshTokenPrice } = useXStore(tokenAtom)
   const { hasConfirmed, popConfirm: popUnofficialConfirm } = useUnofficialTokenConfirmState()
   const { hasAcceptedPriceChange, swapButtonComponentRef, coinInputBox1ComponentRef, coinInputBox2ComponentRef } =
     useSwapContextStore()
@@ -711,7 +708,7 @@ function SwapCardInfo({ className }: { className?: string }) {
   const maxSpent = useSwap((s) => s.maxSpent)
   const routes = useSwap((s) => s.routes)
   const slippageTolerance = useAppSettings((s) => s.slippageTolerance)
-  const getToken = useToken((s) => s.getToken)
+  const { getToken } = useXStore(tokenAtom)
 
   const isDangerousPrice = useMemo(() => priceImpact != null && gte(priceImpact, 0.05), [priceImpact])
   const isWarningPrice = useMemo(() => priceImpact != null && gte(priceImpact, 0.01), [priceImpact])

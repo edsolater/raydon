@@ -2,23 +2,24 @@ import useAppSettings from '@/application/appSettings/useAppSettings'
 import useCreateFarms from '@/application/createFarm/useCreateFarm'
 import useLiquidity from '@/application/liquidity/useLiquidity'
 import { usePools } from '@/application/pools/usePools'
-import { useToken } from '@/application/token'
+import { tokenAtom } from '@/application/token'
 import { AddressItem } from '@/components/AddressItem'
 import CoinAvatarPair from '@/components/CoinAvatarPair'
 
 import Icon from '@/components/Icon'
-import ListTable from '@/tempUikits/ListTable'
-import Tooltip from '@/tempUikits/Tooltip'
 import toPubString from '@/functions/format/toMintString'
 import toPercentString from '@/functions/format/toPercentString'
 import toUsdVolume from '@/functions/format/toUsdVolume'
-import { Div, cssCol, cssRow } from '@edsolater/uikit'
+import ListTable from '@/tempUikits/ListTable'
+import Tooltip from '@/tempUikits/Tooltip'
+import { cssCol, cssRow, Div } from '@edsolater/uikit'
+import { useXStore } from '@edsolater/xstore'
 
 export function PoolInfoSummary() {
   const poolId = useCreateFarms((s) => s.poolId)
   const pairInfos = usePools((s) => s.hydratedInfos)
   const liquidityPoolJsons = useLiquidity((s) => s.jsonInfos)
-  const tokens = useToken((s) => s.tokens)
+  const { tokens } = useXStore(tokenAtom)
   const isMobile = useAppSettings((s) => s.isMobile)
 
   const selectedPool = liquidityPoolJsons.find((i) => toPubString(i.id) === poolId)

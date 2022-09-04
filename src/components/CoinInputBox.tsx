@@ -1,28 +1,16 @@
-import React, {
-  CSSProperties,
-  ReactNode,
-  RefObject,
-  useEffect,
-  useImperativeHandle,
-  useMemo,
-  useRef,
-  useState
-} from 'react'
-
-import { twMerge } from 'tailwind-merge'
+import { ReactNode, RefObject, useEffect, useImperativeHandle, useMemo, useRef } from 'react'
 
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import { usePools } from '@/application/pools/usePools'
-import { Token } from '@/application/token/type'
-import { useToken } from '@/application/token'
 import {
   isQuantumSOL,
   isQuantumSOLVersionSOL,
   isQuantumSOLVersionWSOL,
   SOL_BASE_BALANCE,
+  tokenAtom,
   WSOLMint
 } from '@/application/token'
-import useWallet from '@/application/wallet/useWallet'
+import { Token } from '@/application/token/type'
 import { toTokenAmount } from '@/functions/format/toTokenAmount'
 import toTotalPrice from '@/functions/format/toTotalPrice'
 import toUsdVolume from '@/functions/format/toUsdVolume'
@@ -30,17 +18,18 @@ import { isTokenAmount } from '@/functions/judgers/dateType'
 import { gt, gte, lt } from '@/functions/numberish/compare'
 import { mul, sub } from '@/functions/numberish/operations'
 
+import { walletAtom } from '@/application/wallet'
+import toPubString from '@/functions/format/toMintString'
+import { isMintEqual } from '@/functions/judgers/areEqual'
+import { toString } from '@/functions/numberish/toString'
+import { useSignalState } from '@/hooks/useSignalState'
+import { Numberish } from '@/types/constants'
+import { cssRow, Div, DivProps } from '@edsolater/uikit'
+import { useXStore } from '@edsolater/xstore'
 import Button from '../tempUikits/Button'
+import DecimalInput from '../tempUikits/DecimalInput'
 import CoinAvatar from './CoinAvatar'
 import Icon from './Icon'
-import Input from '../tempUikits/Input'
-import toPubString from '@/functions/format/toMintString'
-import { toString } from '@/functions/numberish/toString'
-import { Numberish } from '@/types/constants'
-import DecimalInput from '../tempUikits/DecimalInput'
-import { isMintEqual } from '@/functions/judgers/areEqual'
-import { useSignalState } from '@/hooks/useSignalState'
-import { cssRow, Div, DivProps } from '@edsolater/uikit'
 
 export interface CoinInputBoxHandle {
   focusInput?: () => void
@@ -136,10 +125,10 @@ export default function CoinInputBox({
   const disabledTokenSelect = disabled || innerDisabledTokenSelect
   // if user is inputing or just input, no need to update upon out-side value
   const isOutsideValueLocked = useRef(false)
-  const { connected, getBalance, tokenAccounts } = useWallet()
+  const { connected, getBalance, tokenAccounts } = useXStore(walletAtom)
+  const { tokenPrices } = useXStore(tokenAtom)
   const { lpPrices } = usePools()
   const isMobile = useAppSettings((s) => s.isMobile)
-  const tokenPrices = useToken((s) => s.tokenPrices)
 
   const variousPrices = { ...lpPrices, ...tokenPrices }
   const [inputedAmount, setInputedAmount, inputAmountSignal] = useSignalState<string>() // setInputedAmount use to state , not sync, useSignalState can get sync value

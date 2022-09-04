@@ -1,30 +1,31 @@
-import React, { ReactNode, useMemo } from 'react'
+import { ReactNode, useMemo } from 'react'
 
-import Grid from '@/tempUikits/Grid'
-import PageLayout from '@/components/PageLayout/PageLayout'
-import useIdo from '@/application/ido/useIdo'
-import { AddressItem } from '@/components/AddressItem'
-import { ThreeSlotItem } from '@/tempUikits/ThreeSlotItem'
-import { toString } from '@/functions/numberish/toString'
-import { add, mul, sub } from '@/functions/numberish/operations'
-import { Numberish } from '@/types/constants'
-import useAsyncMemo from '@/hooks/useAsyncMemo'
-import useWallet from '@/application/wallet/useWallet'
-import asyncMap from '@/functions/asyncMap'
-import { getWalletBalance } from '@/application/txTools/getWalletBalance'
-import { useToken } from '@/application/token'
 import useConnection from '@/application/connection/useConnection'
-import toPubString from '@/functions/format/toMintString'
-import { HydratedIdoInfo } from '@/application/ido/type'
 import txIdoClaim from '@/application/ido/txIdoClaim'
-import Button from '@/tempUikits/Button'
 import txIdoPurchase from '@/application/ido/txIdoPurchase'
-import txTransferToken from '@/application/txTools/txTransformSqlToken'
-import { isTokenAmount } from '@/functions/judgers/dateType'
-import assert from 'assert'
-import { gt } from '@/functions/numberish/compare'
+import { HydratedIdoInfo } from '@/application/ido/type'
 import useAutoFetchIdoInfos from '@/application/ido/useAutoFetchIdoInfos'
+import useIdo from '@/application/ido/useIdo'
+import { tokenAtom } from '@/application/token'
+import { getWalletBalance } from '@/application/txTools/getWalletBalance'
+import txTransferToken from '@/application/txTools/txTransformSqlToken'
+import useWallet from '@/application/wallet/useWallet'
+import { AddressItem } from '@/components/AddressItem'
+import PageLayout from '@/components/PageLayout/PageLayout'
+import asyncMap from '@/functions/asyncMap'
+import toPubString from '@/functions/format/toMintString'
+import { isTokenAmount } from '@/functions/judgers/dateType'
+import { gt } from '@/functions/numberish/compare'
+import { add, mul, sub } from '@/functions/numberish/operations'
+import { toString } from '@/functions/numberish/toString'
+import useAsyncMemo from '@/hooks/useAsyncMemo'
+import Button from '@/tempUikits/Button'
+import Grid from '@/tempUikits/Grid'
+import { ThreeSlotItem } from '@/tempUikits/ThreeSlotItem'
+import { Numberish } from '@/types/constants'
 import { Div } from '@edsolater/uikit'
+import { useXStore } from '@edsolater/xstore'
+import assert from 'assert'
 
 export default function BasementPage() {
   useAutoFetchIdoInfos()
@@ -37,9 +38,8 @@ export default function BasementPage() {
 
 function IdoPanel() {
   const shadowKeypairs = useWallet((s) => s.shadowKeypairs)
-  const tokens = useToken((s) => s.tokens)
   const connection = useConnection((s) => s.connection)
-  const getToken = useToken((s) => s.getToken)
+  const { tokens, getToken } = useXStore(tokenAtom)
 
   const idoHydratedInfos = useIdo((s) => s.idoHydratedInfos)
   const shadowIdoHydratedInfos = useIdo((s) => s.shadowIdoHydratedInfos) // maybe independent it from useEffect

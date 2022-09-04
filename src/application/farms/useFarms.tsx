@@ -1,9 +1,9 @@
 import create from 'zustand'
 
-import { FarmPoolJsonInfo, HydratedFarmInfo, SdkParsedFarmInfo } from './type'
-import { useToken } from '../token'
 import useLocalStorageItem from '@/hooks/useLocalStorage'
 import { HexAddress } from '@/types/constants'
+import { tokenAtom } from '../token'
+import { FarmPoolJsonInfo, HydratedFarmInfo, SdkParsedFarmInfo } from './type'
 
 export type FarmStore = {
   /** detect if hydratedInfo is ready */
@@ -55,7 +55,7 @@ const useFarms = create<FarmStore>((set, get) => ({
   farmRefreshCount: 0,
   refreshFarmInfos: () => {
     set((s) => ({ farmRefreshCount: s.farmRefreshCount + 1 }))
-    useToken.getState().refreshTokenPrice()
+    tokenAtom.get().refreshTokenPrice()
   },
 
   onlySelfFarms: false,

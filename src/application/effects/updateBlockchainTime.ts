@@ -2,7 +2,7 @@
  * * ATOM EFFECT *
  *****************/
 
-import { createXEffect } from '@/../../xstore/dist'
+import { createXEffect } from '@edsolater/xstore'
 import { minus, mul } from '@edsolater/fnkit'
 import { Connection } from '../connection'
 import { connectionAtom } from '../connection/atom'

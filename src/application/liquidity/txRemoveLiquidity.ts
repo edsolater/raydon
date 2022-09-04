@@ -1,21 +1,21 @@
 import { jsonInfo2PoolKeys, Liquidity } from '@raydium-io/raydium-sdk'
 
-import { useToken } from '@/application/token'
+import { tokenAtom } from '@/application/token'
 import useWallet from '@/application/wallet/useWallet'
 import assert from '@/functions/assert'
 import { toTokenAmount } from '@/functions/format/toTokenAmount'
 import { PublicKeyish } from '@/types/constants'
 
-import useLiquidity from './useLiquidity'
-import handleMultiTx from '@/application/txTools/handleMultiTx'
 import { loadTransaction } from '@/application/txTools/createTransaction'
+import handleMultiTx from '@/application/txTools/handleMultiTx'
+import useLiquidity from './useLiquidity'
 
 export default function txRemoveLiquidity({ ammId: targetAmmId }: { ammId?: PublicKeyish } = {}) {
   return handleMultiTx(async ({ transactionCollector, baseUtils: { owner, connection } }) => {
     assert(targetAmmId, 'should provide ammId to remove liquidity')
 
     const { getTokenAccount, tokenAccountRawInfos } = useWallet.getState()
-    const { getToken } = useToken.getState()
+    const { getToken } = tokenAtom.get()
     const { jsonInfos, currentJsonInfo, removeAmount } = useLiquidity.getState()
     assert(removeAmount, 'user have not input amount to remove lp')
 

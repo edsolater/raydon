@@ -1,34 +1,39 @@
 import useAppSettings from '@/application/appSettings/useAppSettings'
-import { getOnlineTokenInfo } from '@/application/token/utils/getOnlineTokenInfo'
 import {
+  createSplToken,
   isQuantumSOL,
   isQuantumSOLVersionSOL,
   isQuantumSOLVersionWSOL,
-  QuantumSOLVersionSOL
+  QuantumSOLVersionSOL,
+  RAYMint,
+  SupportedTokenListSettingName,
+  tokenAtom,
+  USDCMint,
+  USDTMint
 } from '@/application/token'
 import { SplToken } from '@/application/token/type'
-import { useToken, SupportedTokenListSettingName, createSplToken } from '@/application/token'
-import { RAYMint, USDCMint, USDTMint } from '@/application/token'
+import { getOnlineTokenInfo } from '@/application/token/utils/getOnlineTokenInfo'
 import useWallet from '@/application/wallet/useWallet'
-import Button from '@/tempUikits/Button'
-import Card from '@/tempUikits/Card'
 import CoinAvatar from '@/components/CoinAvatar'
 import Icon from '@/components/Icon'
-import Image from '@/tempUikits/Image'
 import InputBox from '@/components/InputBox'
-import ResponsiveDialogDrawer from '@/tempUikits/ResponsiveDialogDrawer'
-import Switcher from '@/tempUikits/Switcher'
 import toPubString from '@/functions/format/toMintString'
 import { isMintEqual, isStringInsensitivelyEqual } from '@/functions/judgers/areEqual'
 import useAsyncValue from '@/hooks/useAsyncValue'
 import useToggle from '@/hooks/useToggle'
+import Button from '@/tempUikits/Button'
+import Card from '@/tempUikits/Card'
+import Image from '@/tempUikits/Image'
+import ResponsiveDialogDrawer from '@/tempUikits/ResponsiveDialogDrawer'
+import Switcher from '@/tempUikits/Switcher'
 
 import Input from '@/tempUikits/Input'
 import List from '@/tempUikits/List'
 import ListFast from '@/tempUikits/ListFast'
+import { cssCol, cssRow, Div } from '@edsolater/uikit'
+import { useXStore } from '@edsolater/xstore'
 import { PublicKeyish } from '@raydium-io/raydium-sdk'
 import { useCallback, useDeferredValue, useMemo, useRef, useState } from 'react'
-import { Div, cssCol, cssRow } from '@edsolater/uikit'
 
 export type TokenSelectorProps = {
   open: boolean
@@ -57,8 +62,7 @@ function TokenSelectorDialogContent({
   disableTokens,
   canSelectQuantumSOL
 }: TokenSelectorProps) {
-  const tokenListSettings = useToken((s) => s.tokenListSettings)
-  const getToken = useToken((s) => s.getToken)
+  const { tokenListSettings, getToken, allSelectableTokens } = useXStore(tokenAtom)
 
   const isMobile = useAppSettings((s) => s.isMobile)
   const balances = useWallet((s) => s.balances)
@@ -86,8 +90,9 @@ function TokenSelectorDialogContent({
       : false
   }
 
-  const sourceTokens = useToken((s) => s.allSelectableTokens)
-  const sortedTokens = disableTokens?.length ? sourceTokens.filter((token) => !isTokenDisabled(token)) : sourceTokens
+  const sortedTokens = disableTokens?.length
+    ? allSelectableTokens.filter((token) => !isTokenDisabled(token))
+    : allSelectableTokens
 
   // by user's search text
   const originalSearchedTokens = useMemo(
@@ -292,7 +297,7 @@ function TokenSelectorDialogContent({
                     userCustomizedTokenSymbol.current = text
                   }}
                   onEnter={(text) => {
-                    const { addUserAddedToken } = useToken.getState()
+                    const { addUserAddedToken } = tokenAtom.get()
                     const newToken = createSplToken({
                       mint: searchText,
                       symbol: text,
@@ -308,7 +313,7 @@ function TokenSelectorDialogContent({
                 <Button
                   className="frosted-glass-teal"
                   onClick={() => {
-                    const { addUserAddedToken } = useToken.getState()
+                    const { addUserAddedToken } = tokenAtom.get()
                     const newToken = createSplToken({
                       mint: searchText,
                       symbol: userCustomizedTokenSymbol.current,
@@ -337,12 +342,12 @@ function TokenSelectorDialogContent({
 }
 
 function TokenSelectorDialogTokenItem({ token, onClick }: { token: SplToken; onClick?(): void }) {
-  const userFlaggedTokenMints = useToken((s) => s.userFlaggedTokenMints)
-  const canFlaggedTokenMints = useToken((s) => s.canFlaggedTokenMints)
-  const userAddedTokens = useToken((s) => s.userAddedTokens)
+  const { userFlaggedTokenMints } = useXStore(tokenAtom)
+  const { canFlaggedTokenMints } = useXStore(tokenAtom)
+  const { userAddedTokens } = useXStore(tokenAtom)
   const isUserAddedToken = Boolean(userAddedTokens[toPubString(token.mint)])
-  const toggleFlaggedToken = useToken((s) => s.toggleFlaggedToken)
-  const deleteUserAddedToken = useToken((s) => s.deleteUserAddedToken)
+  const { toggleFlaggedToken } = useXStore(tokenAtom)
+  const { deleteUserAddedToken } = useXStore(tokenAtom)
   const getBalance = useWallet((s) => s.getBalance)
   return (
     <Div icss={cssRow()} onClick={onClick} className="group w-full gap-4 justify-between items-center p-2 ">
@@ -385,12 +390,12 @@ function TokenSelectorDialogTokenItem({ token, onClick }: { token: SplToken; onC
 }
 
 function TokenSelectorDialogTokenListItem({ tokenListName }: { tokenListName: SupportedTokenListSettingName }) {
-  const tokenListSettings = useToken((s) => s.tokenListSettings)
+  const { tokenListSettings } = useXStore(tokenAtom)
   const tokenList = tokenListSettings[tokenListName]
   const isOn = tokenListSettings[tokenListName].isOn
   const disableUserConfig = tokenListSettings[tokenListName].disableUserConfig
   const toggleTokenListName = () => {
-    useToken.setState((s) => ({
+    tokenAtom.set((s) => ({
       tokenListSettings: {
         ...s.tokenListSettings,
         [tokenListName]: {

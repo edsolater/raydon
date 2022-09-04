@@ -15,12 +15,12 @@ import { useFarmUrlParser } from '@/application/farms/useFarmUrlParser'
 import useNotification from '@/application/notification/useNotification'
 import { usePools } from '@/application/pools/usePools'
 import { routeTo } from '@/application/routeTools'
-import { useToken } from '@/application/token'
-import { RAYMint } from '@/application/token'
+import { RAYMint, tokenAtom } from '@/application/token'
 import useWallet from '@/application/wallet/useWallet'
 import { AddressItem } from '@/components/AddressItem'
 import CoinAvatar from '@/components/CoinAvatar'
 import CoinAvatarPair from '@/components/CoinAvatarPair'
+import CoinInputBox, { CoinInputBoxHandle } from '@/components/CoinInputBox'
 import Icon from '@/components/Icon'
 import LoadingCircle from '@/components/LoadingCircle'
 import PageLayout from '@/components/PageLayout/PageLayout'
@@ -45,7 +45,6 @@ import { appColors } from '@/styles/colors'
 import { Badge } from '@/tempUikits/Badge'
 import Button, { ButtonHandle } from '@/tempUikits/Button'
 import Card from '@/tempUikits/Card'
-import CoinInputBox, { CoinInputBoxHandle } from '@/components/CoinInputBox'
 
 import Grid from '@/tempUikits/Grid'
 import Input from '@/tempUikits/Input'
@@ -58,6 +57,7 @@ import Select from '@/tempUikits/Select'
 import Switcher from '@/tempUikits/Switcher'
 import Tooltip, { TooltipHandle } from '@/tempUikits/Tooltip'
 import { cssCol, cssRow, Div, DivProps, SplitView } from '@edsolater/uikit'
+import { useXStore } from '@edsolater/xstore'
 
 export default function FarmPage() {
   useFarmUrlParser()
@@ -1080,7 +1080,7 @@ function FarmItemHavestButton({ farmInfo, ...divProps }: { farmInfo: HydratedFar
 
 function FarmDetailPanelItemContent({ farmInfo, ...divProps }: { farmInfo: HydratedFarmInfo } & DivProps) {
   const lpPrices = usePools((s) => s.lpPrices)
-  const prices = useToken((s) => s.tokenPrices)
+  const { tokenPrices: prices } = useXStore(tokenAtom)
   const isMobile = useAppSettings((s) => s.isMobile)
   const lightBoardClass = 'bg-[rgba(20,16,65,.2)]'
   const owner = useWallet((s) => s.owner)
@@ -1352,8 +1352,7 @@ function FarmStakeLpDialog() {
 
 function CoinAvatarInfoItem({ info, className }: { info: HydratedFarmInfo | FarmPoolJsonInfo; className?: string }) {
   const isMobile = useAppSettings((s) => s.isMobile)
-  const getLpToken = useToken((s) => s.getLpToken)
-  const getToken = useToken((s) => s.getToken)
+  const { getLpToken, getToken } = useXStore(tokenAtom)
   const isStable = isJsonFarmInfo(info) ? false : info.isStablePool
 
   if (isJsonFarmInfo(info)) {

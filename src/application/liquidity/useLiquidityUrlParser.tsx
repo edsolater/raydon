@@ -1,6 +1,6 @@
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import useNotification from '@/application/notification/useNotification'
-import { useToken } from '@/application/token'
+import { tokenAtom } from '@/application/token'
 import { throttle } from '@/functions/debounce'
 import toPubString from '@/functions/format/toMintString'
 import { areShallowEqual, isStringInsensitivelyEqual } from '@/functions/judgers/areEqual'
@@ -8,6 +8,7 @@ import { objectShakeFalsy } from '@/functions/objectMethods'
 import useAsyncEffect from '@/hooks/useAsyncEffect'
 import { useRecordedEffect } from '@/hooks/useRecordedEffect'
 import { EnumStr } from '@/types/constants'
+import { useXStore } from '@edsolater/xstore'
 import { useRouter } from 'next/router'
 import { ParsedUrlQuery } from 'querystring'
 import { useCallback, useEffect, useRef } from 'react'
@@ -31,11 +32,8 @@ export default function useLiquidityUrlParser() {
     [liquidityPoolJsonInfos]
   )
   const findLiquidityInfoByTokenMint = useLiquidity((s) => s.findLiquidityInfoByTokenMint)
-  const tokens = useToken((s) => s.tokens)
-  const userAddedTokens = useToken((s) => s.userAddedTokens)
   const connection = useConnection((s) => s.connection)
-  const getToken = useToken((s) => s.getToken)
-  const toUrlMint = useToken((s) => s.toUrlMint)
+  const { tokens, userAddedTokens, getToken, toUrlMint } = useXStore(tokenAtom)
   const inCleanUrlMode = useAppSettings((s) => s.inCleanUrlMode)
 
   // flag: 'get info from url' period  or  'affect info to url' period

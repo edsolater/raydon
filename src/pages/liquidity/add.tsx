@@ -1,41 +1,28 @@
-import React, { createRef, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-
 import { Percent } from '@raydium-io/raydium-sdk'
-
 import BN from 'bn.js'
+import { createRef, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import useFarms from '@/application/farms/useFarms'
-import useLiquidityAmmSelector from '@/application/liquidity/useLiquidityAmmSelector'
-import useLiquidityAmountCalculator from '@/application/liquidity/useLiquidityAmountCalculator'
-import useLiquidityInitCoinFiller from '@/application/liquidity/useLiquidityInitCoinFiller'
-import useLiquidityUrlParser from '@/application/liquidity/useLiquidityUrlParser'
 import txAddLiquidity from '@/application/liquidity/txAddLiquidity'
 import useLiquidity from '@/application/liquidity/useLiquidity'
+import useLiquidityAmmSelector from '@/application/liquidity/useLiquidityAmmSelector'
+import useLiquidityInitCoinFiller from '@/application/liquidity/useLiquidityInitCoinFiller'
+import useLiquidityUrlParser from '@/application/liquidity/useLiquidityUrlParser'
 import { routeTo } from '@/application/routeTools'
-import { useToken } from '@/application/token'
-import { SOL_BASE_BALANCE, SOLDecimals, isQuantumSOLVersionSOL, isQuantumSOLVersionWSOL } from '@/application/token'
+import { SOLDecimals, SOL_BASE_BALANCE, tokenAtom } from '@/application/token'
 import useWallet from '@/application/wallet/useWallet'
-import Button, { ButtonHandle } from '@/tempUikits/Button'
-import Card from '@/tempUikits/Card'
 import CoinAvatarPair from '@/components/CoinAvatarPair'
 import CoinInputBox, { CoinInputBoxHandle } from '@/components/CoinInputBox'
+import Button, { ButtonHandle } from '@/tempUikits/Button'
+import Card from '@/tempUikits/Card'
 
-import Collapse from '@/tempUikits/Collapse'
-import CyberpunkStyleCard from '@/tempUikits/CyberpunkStyleCard'
 import { SearchAmmDialog } from '@/components/dialogs/SearchAmmDialog'
-import FadeInStable, { FadeIn } from '@/tempUikits/FadeIn'
 import Icon from '@/components/Icon'
-import Input from '@/tempUikits/Input'
-import Link from '@/tempUikits/Link'
-import List from '@/tempUikits/List'
 import PageLayout from '@/components/PageLayout/PageLayout'
 import RefreshCircle from '@/components/RefreshCircle'
-import RowTabs from '@/tempUikits/RowTabs'
-import Tooltip from '@/tempUikits/Tooltip'
-import { addItem, removeItem, shakeFalsyItem, unifyItem } from '@/functions/arrayMethods'
-import copyToClipboard from '@/functions/dom/copyToClipboard'
+import { addItem, unifyItem } from '@/functions/arrayMethods'
 import formatNumber from '@/functions/format/formatNumber'
 import toPubString from '@/functions/format/toMintString'
 import { toTokenAmount } from '@/functions/format/toTokenAmount'
@@ -45,18 +32,28 @@ import { toString } from '@/functions/numberish/toString'
 import createContextStore from '@/functions/react/createContextStore'
 import useLocalStorageItem from '@/hooks/useLocalStorage'
 import useToggle from '@/hooks/useToggle'
+import Collapse from '@/tempUikits/Collapse'
+import CyberpunkStyleCard from '@/tempUikits/CyberpunkStyleCard'
+import { FadeIn } from '@/tempUikits/FadeIn'
+import Input from '@/tempUikits/Input'
+import Link from '@/tempUikits/Link'
+import List from '@/tempUikits/List'
+import RowTabs from '@/tempUikits/RowTabs'
+import Tooltip from '@/tempUikits/Tooltip'
 import { HexAddress } from '@/types/constants'
 
-import { Checkbox } from '../../tempUikits/Checkbox'
+import { useXStore } from '@edsolater/xstore'
+import { SplToken } from '@/application/token/type'
+import { walletAtom } from '@/application/wallet'
+import { AddressItem } from '@/components/AddressItem'
+import { capitalize } from '@/functions/changeCase'
+import { isMintEqual } from '@/functions/judgers/areEqual'
+import { objectShakeFalsy } from '@/functions/objectMethods'
+import { Badge } from '@/tempUikits/Badge'
+import { cssCol, cssRow, Div } from '@edsolater/uikit'
 import { RemoveLiquidityDialog } from '../../components/dialogs/RemoveLiquidityDialog'
 import TokenSelectorDialog from '../../components/dialogs/TokenSelectorDialog'
-import { Badge } from '@/tempUikits/Badge'
-import { isMintEqual } from '@/functions/judgers/areEqual'
-import { SplToken } from '@/application/token/type'
-import { capitalize } from '@/functions/changeCase'
-import { objectShakeFalsy } from '@/functions/objectMethods'
-import { AddressItem } from '@/components/AddressItem'
-import { Div, cssCol, cssRow } from '@edsolater/uikit'
+import { Checkbox } from '../../tempUikits/Checkbox'
 
 const { ContextProvider: LiquidityUIContextProvider, useStore: useLiquidityContextStore } = createContextStore({
   hasAcceptedPriceChange: false,
@@ -222,7 +219,7 @@ function ConfirmRiskPanel({
 }
 
 function LiquidityCard() {
-  const { connected, owner } = useWallet()
+  const { connected, owner } = useXStore(walletAtom)
   const [isCoinSelectorOn, { on: turnOnCoinSelector, off: turnOffCoinSelector }] = useToggle()
   // it is for coin selector panel
   const [targetCoinNo, setTargetCoinNo] = useState<'1' | '2'>('1')
@@ -242,7 +239,7 @@ function LiquidityCard() {
     isSearchAmmDialogOpen,
     refreshLiquidity
   } = useLiquidity()
-  const refreshTokenPrice = useToken((s) => s.refreshTokenPrice)
+  const { refreshTokenPrice } = useXStore(tokenAtom)
 
   const { coinInputBox1ComponentRef, coinInputBox2ComponentRef, liquidityButtonComponentRef } =
     useLiquidityContextStore()
@@ -760,7 +757,7 @@ function UserLiquidityExhibition() {
   const isRemoveDialogOpen = useLiquidity((s) => s.isRemoveDialogOpen)
   const scrollToInputBox = useLiquidity((s) => s.scrollToInputBox)
   const farmPoolsList = useFarms((s) => s.hydratedInfos)
-  const getToken = useToken((s) => s.getToken)
+  const { getToken } = useXStore(tokenAtom)
 
   const balances = useWallet((s) => s.balances)
   const rawBalances = useWallet((s) => s.rawBalances)

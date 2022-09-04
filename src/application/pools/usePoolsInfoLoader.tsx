@@ -9,16 +9,17 @@ import jFetch from '@/functions/dom/jFetch'
 import toTokenPrice from '@/functions/format/toTokenPrice'
 import { HexAddress } from '@/types/constants'
 
-import { useToken } from '../token'
+import { tokenAtom } from '../token'
 import useWallet from '../wallet/useWallet'
 
 import { unifyItem } from '@/functions/arrayMethods'
+import { lazyMap } from '@/functions/lazyMap'
 import { useEffectWithTransition } from '@/hooks/useEffectWithTransition'
+import { useXStore } from '@edsolater/xstore'
 import useLiquidity from '../liquidity/useLiquidity'
+import { hydratedPairInfo } from './hydratedPairInfo'
 import { JsonPairItemInfo } from './type'
 import { usePools } from './usePools'
-import { hydratedPairInfo } from './hydratedPairInfo'
-import { lazyMap } from '@/functions/lazyMap'
 
 export default function usePoolsInfoLoader() {
   const jsonInfo = usePools((s) => s.jsonInfos, shallow)
@@ -28,10 +29,7 @@ export default function usePoolsInfoLoader() {
     [liquidityJsonInfos]
   )
 
-  const getToken = useToken((s) => s.getToken)
-  const tokens = useToken((s) => s.tokens)
-  const getLpToken = useToken((s) => s.getLpToken)
-  const lpTokens = useToken((s) => s.lpTokens)
+  const { getToken, tokens, getLpToken, lpTokens } = useXStore(tokenAtom)
   const balances = useWallet((s) => s.balances)
   const { pathname } = useRouter()
   const refreshCount = usePools((s) => s.refreshCount)

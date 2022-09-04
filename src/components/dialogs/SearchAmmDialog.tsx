@@ -1,18 +1,18 @@
 import React, { useRef } from 'react'
 import { twMerge } from 'tailwind-merge'
 
+import { findTokenMintByAmmId, findTokenMintByMarketId } from '@/application/liquidity/miscToolFns'
 import useLiquidity from '@/application/liquidity/useLiquidity'
+import useNotification from '@/application/notification/useNotification'
+import Icon from '@/components/Icon'
+import assert from '@/functions/assert'
+import { isValidPublicKey } from '@/functions/judgers/dateType'
 import Button, { ButtonHandle } from '@/tempUikits/Button'
 import Card from '@/tempUikits/Card'
 import Dialog from '@/tempUikits/Dialog'
-import Icon from '@/components/Icon'
-import { useToken } from '@/application/token'
-import assert from '@/functions/assert'
-import { isValidPublicKey } from '@/functions/judgers/dateType'
-import { findTokenMintByAmmId, findTokenMintByMarketId } from '@/application/liquidity/miscToolFns'
-import useNotification from '@/application/notification/useNotification'
+import { cssRow, Div } from '@edsolater/uikit'
 import InputBox from '../InputBox'
-import { Div, cssRow } from '@edsolater/uikit'
+import { tokenAtom } from '@/application/token'
 
 export function SearchAmmDialog({
   open,
@@ -28,7 +28,7 @@ export function SearchAmmDialog({
 
   const parseTokensFromSearchInput = async (currentValue: string) => {
     try {
-      const { getToken } = useToken.getState()
+      const { getToken } = tokenAtom.get()
       assert(isValidPublicKey(currentValue), 'Invalid public key')
 
       const ammFindResult = findTokenMintByAmmId(currentValue.trim())

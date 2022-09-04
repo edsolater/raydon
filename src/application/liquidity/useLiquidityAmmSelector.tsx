@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { useToken } from '@/application/token'
+import { tokenAtom } from '@/application/token'
 import { isMintEqual } from '@/functions/judgers/areEqual'
 import useAsyncEffect from '@/hooks/useAsyncEffect'
 
@@ -22,7 +22,7 @@ export default function useLiquidityAmmSelector() {
     if (isMintEqual(coin1?.mint, targetInfo?.baseMint) && isMintEqual(coin2?.mint, targetInfo?.quoteMint)) return
     if (isMintEqual(coin1?.mint, targetInfo?.quoteMint) && isMintEqual(coin2?.mint, targetInfo?.baseMint)) return
 
-    const { getToken } = useToken.getState()
+    const { getToken } = tokenAtom.get()
     const baseCoin = getToken(jsonInfos.find((i) => i.id === ammId)?.baseMint)
     const quoteCoin = getToken(jsonInfos.find((i) => i.id === ammId)?.quoteMint)
     useLiquidity.setState({

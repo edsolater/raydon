@@ -2,7 +2,7 @@ import useAppSettings from '@/application/appSettings/useAppSettings'
 import useLiquidity from '@/application/liquidity/useLiquidity'
 import useNotification from '@/application/notification/useNotification'
 import { useSwap } from '@/application/swap/useSwap'
-import { useToken } from '@/application/token'
+import { tokenAtom } from '@/application/token'
 import { hasSameItems } from '@/functions/arrayMethods'
 import { throttle } from '@/functions/debounce'
 import toPubString from '@/functions/format/toMintString'
@@ -11,12 +11,13 @@ import { toString } from '@/functions/numberish/toString'
 import { objectShakeFalsy, omit } from '@/functions/objectMethods'
 import useAsyncEffect from '@/hooks/useAsyncEffect'
 import { EnumStr } from '@/types/constants'
+import { useXStore } from '@edsolater/xstore'
 import { useRouter } from 'next/router'
 import { ParsedUrlQuery } from 'querystring'
 import { useCallback, useEffect, useRef } from 'react'
 import useConnection from '../connection/useConnection'
-import { getUserTokenEvenNotExist } from '../token/utils/getUserTokenEvenNotExist'
 import { QuantumSOLVersionSOL, QuantumSOLVersionWSOL, WSOLMint } from '../token'
+import { getUserTokenEvenNotExist } from '../token/utils/getUserTokenEvenNotExist'
 
 function isSolAndWsol(query1: string, query2: string): boolean {
   return query1 === 'sol' && query2 === toPubString(WSOLMint)
@@ -39,11 +40,8 @@ export default function useSwapUrlParser(): void {
     (ammid: string) => liquidityPoolJsonInfos.find((jsonInfo) => jsonInfo.id === ammid),
     [liquidityPoolJsonInfos]
   )
-  const tokens = useToken((s) => s.tokens)
-  const userAddedTokens = useToken((s) => s.userAddedTokens)
   const connection = useConnection((s) => s.connection)
-  const getToken = useToken((s) => s.getToken)
-  const toUrlMint = useToken((s) => s.toUrlMint)
+  const { tokens, userAddedTokens, getToken, toUrlMint } = useXStore(tokenAtom)
   const inCleanUrlMode = useAppSettings((s) => s.inCleanUrlMode)
 
   // flag: 'get info from url' period  or  'affect info to url' period

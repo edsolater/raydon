@@ -205,8 +205,6 @@ export const tokenAtom = createXAtom<TokenStore>({
   }
 })
 
-export const useToken = createZustandStoreHook(tokenAtom) // TODO delete temp
-
 //TODO  move to fnkit
 function toggleSetItem<T>(set: Set<T>, item: T) {
   const newSet = new Set(set)

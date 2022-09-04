@@ -1,21 +1,19 @@
 import { Liquidity, SPL_MINT_LAYOUT, Token } from '@raydium-io/raydium-sdk'
 import { PublicKey } from '@solana/web3.js'
 
-import { useToken } from '@/application/token'
 import { loadTransaction } from '@/application/txTools/createTransaction'
 import handleMultiTx from '@/application/txTools/handleMultiTx'
 import useWallet from '@/application/wallet/useWallet'
 import assert from '@/functions/assert'
 import { toTokenAmount } from '@/functions/format/toTokenAmount'
-import { eq, gt, gte, isMeaningfulNumber } from '@/functions/numberish/compare'
+import { gt, gte, isMeaningfulNumber } from '@/functions/numberish/compare'
 import toBN from '@/functions/numberish/toBN'
 
-import useCreatePool from './useCreatePool'
-import { recordCreatedPool } from './recordCreatedPool'
-import { deUITokenAmount, WSOLMint } from '@/application/token'
+import { deUITokenAmount, tokenAtom, WSOLMint } from '@/application/token'
 import toPubString from '@/functions/format/toMintString'
 import { getMax } from '@/functions/numberish/operations'
-import { toHumanReadable } from '@/functions/format/toHumanReadable'
+import { recordCreatedPool } from './recordCreatedPool'
+import useCreatePool from './useCreatePool'
 
 export default async function txCreateAndInitNewPool({ onAllSuccess }: { onAllSuccess?: () => void }) {
   return handleMultiTx(async ({ transactionCollector, baseUtils: { owner, connection } }) => {
@@ -35,7 +33,7 @@ export default async function txCreateAndInitNewPool({ onAllSuccess }: { onAllSu
       startTime
     } = useCreatePool.getState()
 
-    const { getToken } = useToken.getState()
+    const { getToken } = tokenAtom.get()
     const { solBalance, tokenAccounts, pureRawBalances } = useWallet.getState()
 
     assert(lpMint, 'required create-pool step 1, it will cause info injection') // actually no need, but for type check , copy form other file

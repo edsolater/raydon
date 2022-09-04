@@ -2,21 +2,22 @@ import useAppSettings from '@/application/appSettings/useAppSettings'
 import useCreateFarms from '@/application/createFarm/useCreateFarm'
 import useLiquidity from '@/application/liquidity/useLiquidity'
 import { usePools } from '@/application/pools/usePools'
-import { useToken } from '@/application/token'
+import { tokenAtom } from '@/application/token'
 import { AddressItem } from '@/components/AddressItem'
-import AutoComplete, { AutoCompleteCandidateItem } from '@/tempUikits/AutoComplete'
-import Card from '@/tempUikits/Card'
 import CoinAvatarPair from '@/components/CoinAvatarPair'
-import FadeInStable from '@/tempUikits/FadeIn'
-import Grid from '@/tempUikits/Grid'
 import Icon from '@/components/Icon'
 import listToMap from '@/functions/format/listToMap'
 import toUsdVolume from '@/functions/format/toUsdVolume'
 import { isValidPublicKey } from '@/functions/judgers/dateType'
 import { useClickOutside } from '@/hooks/useClickOutside'
+import AutoComplete, { AutoCompleteCandidateItem } from '@/tempUikits/AutoComplete'
+import Card from '@/tempUikits/Card'
+import FadeInStable from '@/tempUikits/FadeIn'
+import Grid from '@/tempUikits/Grid'
+import { cssRow, Div } from '@edsolater/uikit'
+import { useXStore } from '@edsolater/xstore'
 import { LiquidityPoolJsonInfo } from '@raydium-io/raydium-sdk'
 import { RefObject, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react'
-import { Div, cssRow } from '@edsolater/uikit'
 
 export interface PoolIdInputBlockHandle {
   validate?: () => void
@@ -34,7 +35,7 @@ export function PoolIdInputBlock({
   const poolId = useCreateFarms((s) => s.poolId)
   const pairInfos = usePools((s) => s.hydratedInfos)
   const liquidityPoolJsons = useLiquidity((s) => s.jsonInfos)
-  const tokens = useToken((s) => s.tokens)
+  const { tokens } = useXStore(tokenAtom)
 
   const liquidityPoolMap = useMemo(() => listToMap(liquidityPoolJsons, (s) => s.id), [liquidityPoolJsons])
   const pairInfoMap = useMemo(() => listToMap(pairInfos, (s) => s.ammId), [pairInfos])

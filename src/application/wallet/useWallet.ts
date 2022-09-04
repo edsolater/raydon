@@ -1,4 +1,4 @@
-import { createZustandStoreHook } from '@/../../xstore/dist'
+import { createZustandStoreHook } from '@edsolater/xstore'
 import { walletAtom } from './atom'
 
 const useWallet = createZustandStoreHook(walletAtom) // temp for aerosol

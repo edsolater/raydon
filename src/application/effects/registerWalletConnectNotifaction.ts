@@ -1,4 +1,4 @@
-import { createXAtom, createXEffect } from '@/../../xstore/dist'
+import { createXAtom, createXEffect } from '@edsolater/xstore'
 import useNotification from '@/application/notification/useNotification'
 import { throttle } from '@/functions/debounce'
 import toPubString from '@/functions/format/toMintString'

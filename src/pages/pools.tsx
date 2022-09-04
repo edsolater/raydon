@@ -9,8 +9,8 @@ import { HydratedPairItemInfo } from '@/application/pools/type'
 import { usePoolFavoriteIds, usePools } from '@/application/pools/usePools'
 import usePoolSummeryInfoLoader from '@/application/pools/usePoolSummeryInfoLoader'
 import { routeTo } from '@/application/routeTools'
+import { tokenAtom } from '@/application/token'
 import { LpToken } from '@/application/token/type'
-import { useToken } from '@/application/token'
 import useWallet from '@/application/wallet/useWallet'
 import CoinAvatarPair from '@/components/CoinAvatarPair'
 import Icon from '@/components/Icon'
@@ -43,6 +43,7 @@ import Select from '@/tempUikits/Select'
 import Switcher from '@/tempUikits/Switcher'
 import Tooltip from '@/tempUikits/Tooltip'
 import { cssCol, cssRow, Div } from '@edsolater/uikit'
+import { useXStore } from '@edsolater/xstore'
 
 /**
  * store:
@@ -592,7 +593,7 @@ function PoolCardDatabaseBodyCollapseItemFace({
   onUnFavorite?: (ammId: string) => void
   onStartFavorite?: (ammId: string) => void
 }) {
-  const lpTokens = useToken((s) => s.lpTokens)
+  const { lpTokens } = useXStore(tokenAtom)
   const lpToken = lpTokens[info.lpMint] as LpToken | undefined
   const haveLp = Boolean(lpToken)
   const isMobile = useAppSettings((s) => s.isMobile)

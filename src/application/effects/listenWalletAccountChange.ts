@@ -1,4 +1,4 @@
-import { createXEffect } from '@/../../xstore/dist'
+import { createXEffect } from '@edsolater/xstore'
 import { toPub } from '@/functions/format/toMintString'
 import { connectionAtom } from '../connection'
 import { walletAtom } from '../wallet/atom'
