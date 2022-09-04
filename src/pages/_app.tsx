@@ -17,14 +17,6 @@ import useMessageBoardFileLoader from '@/application/messageBoard/useMessageBoar
 import useMessageBoardReadedIdRecorder from '@/application/messageBoard/useMessageBoardReadedIdRecorder'
 import usePoolsInfoLoader from '@/application/pools/usePoolsInfoLoader'
 import useStealDataFromFarm from '@/application/staking/useStealDataFromFarm'
-import useAutoUpdateSelectableTokens from '@/application/token/useAutoUpdateSelectableTokens'
-import { useLpTokenMethodsLoad } from '@/application/token/useLpTokenMethodsLoad'
-import useLpTokensLoader from '@/application/token/useLpTokensLoader'
-import useTokenMintAutoRecord from '@/application/token/useTokenFlaggedMintAutoRecorder'
-import { useTokenGetterFnLoader } from '@/application/token/useTokenGetterFnLoader'
-import useTokenListSettingsLocalStorage from '@/application/token/useTokenListSettingsLocalStorage'
-import useTokenListsLoader from '@/application/token/useTokenListsLoader'
-import useTokenPriceRefresher from '@/application/token/useTokenPriceRefresher'
 import useInitRefreshTransactionStatus from '@/application/txHistory/useInitRefreshTransactionStatus'
 import useSyncTxHistoryWithLocalStorage from '@/application/txHistory/useSyncTxHistoryWithLocalStorage'
 import { useSyncWithSolanaWallet } from '@/application/wallet/useSyncWithSolanaWallet'
@@ -106,14 +98,6 @@ function ApplicationsInitializations() {
 
   /********************** token **********************/
   // application initializations
-  useAutoUpdateSelectableTokens()
-  useTokenListsLoader()
-  useLpTokensLoader()
-  useLpTokenMethodsLoad()
-  useTokenPriceRefresher()
-  useTokenMintAutoRecord()
-  useTokenListSettingsLocalStorage()
-  useTokenGetterFnLoader()
 
   /* ----- load liquidity info (jsonInfo, sdkParsedInfo, hydratedInfo) ----- */
   useLiquidityInfoLoader()

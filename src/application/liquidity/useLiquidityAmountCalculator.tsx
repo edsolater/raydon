@@ -2,7 +2,7 @@ import { jsonInfo2PoolKeys, Liquidity, LiquidityPoolJsonInfo } from '@raydium-io
 
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import { SplToken } from '@/application/token/type'
-import { deUIToken, deUITokenAmount, toUITokenAmount } from '@/application/token/quantumSOL'
+import { deUIToken, deUITokenAmount, toUITokenAmount } from '@/application/token'
 import { toPercent } from '@/functions/format/toPercent'
 import { toTokenAmount } from '@/functions/format/toTokenAmount'
 import { eq } from '@/functions/numberish/compare'

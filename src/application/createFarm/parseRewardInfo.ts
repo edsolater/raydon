@@ -4,7 +4,7 @@ import toPubString from '@/functions/format/toMintString'
 import { mul } from '@/functions/numberish/operations'
 import { toString } from '@/functions/numberish/toString'
 import { HydratedRewardInfo } from '../farms/type'
-import { isQuantumSOLVersionSOL } from '../token/quantumSOL'
+import { isQuantumSOLVersionSOL } from '../token'
 import { UIRewardInfo } from './type'
 
 let lastTempUIRewardId = 1

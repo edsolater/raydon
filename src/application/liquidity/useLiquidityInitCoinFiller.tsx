@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
 
-import useToken from '@/application/token/useToken'
-import { RAYMint } from '@/application/token/wellknownToken.config'
+import { useToken } from '@/application/token'
+import { RAYMint } from '@/application/token'
 
-import { QuantumSOLVersionSOL } from '@/application/token/quantumSOL'
+import { QuantumSOLVersionSOL } from '@/application/token'
 import { getURLQueryEntry } from '@/functions/dom/getURLQueryEntries'
 import toPubString from '@/functions/format/toMintString'
 import useLiquidity from './useLiquidity'

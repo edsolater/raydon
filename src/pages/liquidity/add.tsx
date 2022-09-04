@@ -14,13 +14,8 @@ import useLiquidityUrlParser from '@/application/liquidity/useLiquidityUrlParser
 import txAddLiquidity from '@/application/liquidity/txAddLiquidity'
 import useLiquidity from '@/application/liquidity/useLiquidity'
 import { routeTo } from '@/application/routeTools'
-import useToken from '@/application/token/useToken'
-import {
-  SOL_BASE_BALANCE,
-  SOLDecimals,
-  isQuantumSOLVersionSOL,
-  isQuantumSOLVersionWSOL
-} from '@/application/token/quantumSOL'
+import { useToken } from '@/application/token'
+import { SOL_BASE_BALANCE, SOLDecimals, isQuantumSOLVersionSOL, isQuantumSOLVersionWSOL } from '@/application/token'
 import useWallet from '@/application/wallet/useWallet'
 import Button, { ButtonHandle } from '@/tempUikits/Button'
 import Card from '@/tempUikits/Card'

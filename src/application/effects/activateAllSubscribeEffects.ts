@@ -6,6 +6,13 @@ import { initWalletBalance } from './initWalletBalance'
 import { listenWalletAccountChange } from './listenWalletAccountChange'
 import { manuallyRefreshTokenAccount } from './manuallyRefreshTokenAccount'
 import { registerWalletConnectNotifaction } from './registerWalletConnectNotifaction'
+import { autoRefreshTokenPrice } from './autoRefreshTokenPrice'
+import { autoUpdateSelectableTokens } from './autoUpdateSelectableTokens'
+import { loadLpTokens } from './loadLpTokens'
+import { loadTokenList } from './loadTokenList'
+import { syncLoadUserAddedTokens } from './syncLoadUserAddedTokens'
+import { syncTokenListSettings } from './syncTokenListSettings'
+import { syncUserFlaggedTokenMints } from './syncUserFlaggedTokenMints'
 
 export const activateAllSubscribeEffects = () => {
   // connection
@@ -19,4 +26,13 @@ export const activateAllSubscribeEffects = () => {
   listenWalletAccountChange.activate()
   manuallyRefreshTokenAccount.activate()
   registerWalletConnectNotifaction.activate()
+
+  // token
+  autoRefreshTokenPrice.activate()
+  autoUpdateSelectableTokens.activate()
+  loadLpTokens.activate()
+  loadTokenList.activate()
+  syncLoadUserAddedTokens.activate()
+  syncTokenListSettings.activate()
+  syncUserFlaggedTokenMints.activate()
 }

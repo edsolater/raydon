@@ -2,7 +2,7 @@ import assert from '@/functions/assert'
 import { isMintEqual } from '@/functions/judgers/areEqual'
 import { PublicKeyish, Spl } from '@raydium-io/raydium-sdk'
 import { PublicKey } from '@solana/web3.js'
-import { WSOLMint } from '../token/quantumSOL'
+import { WSOLMint } from '../token'
 
 import useWallet from '../wallet/useWallet'
 import { TransactionPiecesCollector } from './createTransaction'

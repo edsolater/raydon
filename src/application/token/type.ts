@@ -1,6 +1,5 @@
-import { SplTokenJsonInfo, Token } from '@raydium-io/raydium-sdk'
-
 import { HexAddress, SrcAddress } from '@/types/constants'
+import { SplTokenJsonInfo, Token } from '@raydium-io/raydium-sdk'
 
 export interface TokenJson {
   symbol: string
@@ -54,6 +53,9 @@ export interface HydratedTokenJsonInfo {
 }
 
 export interface RaydiumTokenListJsonInfo {
+  name: string
+  timestamp: string
+  version: { major: number; minor: number; patch: number }
   official: TokenJson[]
   unOfficial: TokenJson[]
   blacklist: HexAddress[]

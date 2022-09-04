@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import useToken from '@/application/token/useToken'
+import { useToken } from '@/application/token'
 import { isMintEqual } from '@/functions/judgers/areEqual'
 import useAsyncEffect from '@/hooks/useAsyncEffect'
 

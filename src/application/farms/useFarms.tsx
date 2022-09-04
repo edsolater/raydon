@@ -1,7 +1,7 @@
 import create from 'zustand'
 
 import { FarmPoolJsonInfo, HydratedFarmInfo, SdkParsedFarmInfo } from './type'
-import useToken from '../token/useToken'
+import { useToken } from '../token'
 import useLocalStorageItem from '@/hooks/useLocalStorage'
 import { HexAddress } from '@/types/constants'
 

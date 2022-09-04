@@ -19,10 +19,10 @@ import {
   SOLDecimals,
   SOL_BASE_BALANCE,
   toUITokenAmount
-} from '@/application/token/quantumSOL'
+} from '@/application/token'
 import { SplToken } from '@/application/token/type'
-import useToken, { RAYDIUM_MAINNET_TOKEN_LIST_NAME } from '@/application/token/useToken'
-import { USDCMint, USDTMint } from '@/application/token/wellknownToken.config'
+import { useToken, RAYDIUM_MAINNET_TOKEN_LIST_NAME } from '@/application/token'
+import { USDCMint, USDTMint } from '@/application/token'
 import useWallet from '@/application/wallet/useWallet'
 import CoinAvatar from '@/components/CoinAvatar'
 import Icon from '@/components/Icon'
@@ -97,7 +97,8 @@ function useUnofficialTokenConfirmState(): { hasConfirmed: boolean; popConfirm: 
   const coin1 = useSwap((s) => s.coin1)
   const coin2 = useSwap((s) => s.coin2)
   const downCoin = directionReversed ? coin1 : coin2
-  const raydiumTokenMints = useToken((s) => s.tokenListSettings[RAYDIUM_MAINNET_TOKEN_LIST_NAME]?.mints)
+  const tokenListSettings = useToken((s) => s.tokenListSettings)
+  const raydiumTokenMints = tokenListSettings[RAYDIUM_MAINNET_TOKEN_LIST_NAME]?.mints
 
   const [userPermanentConfirmedTokenMints, setUserPermanentConfirmedTokenMints] =
     useLocalStorageItem<HexAddress[] /* token mint  */>('USER_CONFIRMED_SWAP_TOKENS')
@@ -188,7 +189,7 @@ function SwapHead() {
 }
 
 function SwapCard() {
-  const { connected: walletConnected } = useWallet()
+  const walletConnected = useWallet((s) => s.connected)
   const coin1 = useSwap((s) => s.coin1)
   const coin2 = useSwap((s) => s.coin2)
   const coin1Amount = useSwap((s) => s.coin1Amount)

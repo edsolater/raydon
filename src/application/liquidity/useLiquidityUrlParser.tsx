@@ -1,6 +1,6 @@
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import useNotification from '@/application/notification/useNotification'
-import useToken from '@/application/token/useToken'
+import { useToken } from '@/application/token'
 import { throttle } from '@/functions/debounce'
 import toPubString from '@/functions/format/toMintString'
 import { areShallowEqual, isStringInsensitivelyEqual } from '@/functions/judgers/areEqual'
@@ -12,7 +12,7 @@ import { useRouter } from 'next/router'
 import { ParsedUrlQuery } from 'querystring'
 import { useCallback, useEffect, useRef } from 'react'
 import useConnection from '../connection/useConnection'
-import { getUserTokenEvenNotExist } from '../token/getUserTokenEvenNotExist'
+import { getUserTokenEvenNotExist } from '../token/utils/getUserTokenEvenNotExist'
 import useLiquidity from './useLiquidity'
 
 export default function useLiquidityUrlParser() {

@@ -1,15 +1,14 @@
 import useAppSettings from '@/application/appSettings/useAppSettings'
-import { getOnlineTokenInfo } from '@/application/token/getOnlineTokenInfo'
+import { getOnlineTokenInfo } from '@/application/token/utils/getOnlineTokenInfo'
 import {
   isQuantumSOL,
   isQuantumSOLVersionSOL,
   isQuantumSOLVersionWSOL,
   QuantumSOLVersionSOL
-} from '@/application/token/quantumSOL'
+} from '@/application/token'
 import { SplToken } from '@/application/token/type'
-import useToken, { SupportedTokenListSettingName } from '@/application/token/useToken'
-import { createSplToken } from '@/application/token/useTokenListsLoader'
-import { RAYMint, USDCMint, USDTMint } from '@/application/token/wellknownToken.config'
+import { useToken, SupportedTokenListSettingName, createSplToken } from '@/application/token'
+import { RAYMint, USDCMint, USDTMint } from '@/application/token'
 import useWallet from '@/application/wallet/useWallet'
 import Button from '@/tempUikits/Button'
 import Card from '@/tempUikits/Card'
@@ -365,7 +364,7 @@ function TokenSelectorDialogTokenItem({ token, onClick }: { token: SplToken; onC
         </Div>
         {canFlaggedTokenMints.has(toPubString(token.mint)) ? (
           <Div
-            onClick={({ev}) => {
+            onClick={({ ev }) => {
               toggleFlaggedToken(token)
               ev.stopPropagation()
             }}
@@ -376,7 +375,7 @@ function TokenSelectorDialogTokenItem({ token, onClick }: { token: SplToken; onC
         ) : null}
         {isUserAddedToken && !canFlaggedTokenMints.has(toPubString(token.mint)) ? (
           <Div
-            onClick={({ev}) => {
+            onClick={({ ev }) => {
               deleteUserAddedToken(token)
               ev.stopPropagation()
             }}

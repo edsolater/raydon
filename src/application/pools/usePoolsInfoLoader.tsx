@@ -9,7 +9,7 @@ import jFetch from '@/functions/dom/jFetch'
 import toTokenPrice from '@/functions/format/toTokenPrice'
 import { HexAddress } from '@/types/constants'
 
-import useToken from '../token/useToken'
+import { useToken } from '../token'
 import useWallet from '../wallet/useWallet'
 
 import { unifyItem } from '@/functions/arrayMethods'

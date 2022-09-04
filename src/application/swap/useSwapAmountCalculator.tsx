@@ -16,7 +16,7 @@ import { SDKParsedLiquidityInfo } from '../liquidity/type'
 import useLiquidity from '../liquidity/useLiquidity'
 import sdkParseJsonLiquidityInfo from '../liquidity/sdkParseJsonLiquidityInfo'
 import { SplToken } from '../token/type'
-import { deUIToken, deUITokenAmount, toUITokenAmount } from '../token/quantumSOL'
+import { deUIToken, deUITokenAmount, toUITokenAmount } from '../token'
 
 import { useSwap } from './useSwap'
 import { useDebugValue, useEffect } from 'react'

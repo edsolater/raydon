@@ -9,7 +9,7 @@ import {
   MAX_OFFSET_AFTER_NOW_SECOND,
   MIN_DURATION_SECOND
 } from '@/application/farms/handleFarmInfo'
-import { isQuantumSOLVersionSOL, QuantumSOLVersionSOL, QuantumSOLVersionWSOL } from '@/application/token/quantumSOL'
+import { isQuantumSOLVersionSOL, QuantumSOLVersionSOL, QuantumSOLVersionWSOL } from '@/application/token'
 import { SplToken } from '@/application/token/type'
 import useWallet from '@/application/wallet/useWallet'
 import CoinInputBoxWithTokenSelector from '@/components/CoinInputBoxWithTokenSelector'

@@ -1,7 +1,7 @@
 import { Liquidity, SPL_MINT_LAYOUT, Token } from '@raydium-io/raydium-sdk'
 import { PublicKey } from '@solana/web3.js'
 
-import useToken from '@/application/token/useToken'
+import { useToken } from '@/application/token'
 import { loadTransaction } from '@/application/txTools/createTransaction'
 import handleMultiTx from '@/application/txTools/handleMultiTx'
 import useWallet from '@/application/wallet/useWallet'
@@ -12,7 +12,7 @@ import toBN from '@/functions/numberish/toBN'
 
 import useCreatePool from './useCreatePool'
 import { recordCreatedPool } from './recordCreatedPool'
-import { deUITokenAmount, WSOLMint } from '@/application/token/quantumSOL'
+import { deUITokenAmount, WSOLMint } from '@/application/token'
 import toPubString from '@/functions/format/toMintString'
 import { getMax } from '@/functions/numberish/operations'
 import { toHumanReadable } from '@/functions/format/toHumanReadable'

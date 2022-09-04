@@ -1,7 +1,7 @@
 import { LiquidityPoolsJsonFile } from '@raydium-io/raydium-sdk'
 
 import useConnection from '@/application/connection/useConnection'
-import useToken from '@/application/token/useToken'
+import { useToken } from '@/application/token'
 import useWallet from '@/application/wallet/useWallet'
 import jFetch from '@/functions/dom/jFetch'
 import { isExist } from '@/functions/judgers/nil'

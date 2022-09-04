@@ -7,17 +7,8 @@ import { gte } from '@/functions/numberish/compare'
 import { div } from '@/functions/numberish/operations'
 
 import { SplToken } from '../token/type'
-import { toDataMint, WSOLMint } from '../token/quantumSOL'
-import {
-  ETHMint,
-  mSOLMint,
-  PAIMint,
-  RAYMint,
-  stSOLMint,
-  USDCMint,
-  USDHMint,
-  USDTMint
-} from '../token/wellknownToken.config'
+import { toDataMint, WSOLMint } from '../token'
+import { ETHMint, mSOLMint, PAIMint, RAYMint, stSOLMint, USDCMint, USDHMint, USDTMint } from '../token'
 
 import { HydratedLiquidityInfo, SDKParsedLiquidityInfo } from './type'
 import sdkParseJsonLiquidityInfo from './sdkParseJsonLiquidityInfo'

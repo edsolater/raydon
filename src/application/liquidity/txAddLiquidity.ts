@@ -1,6 +1,6 @@
 import { jsonInfo2PoolKeys, Liquidity } from '@raydium-io/raydium-sdk'
 
-import { deUITokenAmount } from '@/application/token/quantumSOL'
+import { deUITokenAmount } from '@/application/token'
 import useWallet from '@/application/wallet/useWallet'
 import assert from '@/functions/assert'
 import { toTokenAmount } from '@/functions/format/toTokenAmount'

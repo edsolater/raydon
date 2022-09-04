@@ -1,4 +1,4 @@
-import { WSOLMint, toQuantumSolAmount, QuantumSOL, WSOL } from '@/application/token/quantumSOL'
+import { WSOLMint, toQuantumSolAmount, QuantumSOL, WSOL } from '@/application/token'
 import { SplToken } from '@/application/token/type'
 import toPubString from '@/functions/format/toMintString'
 import { toTokenAmount } from '@/functions/format/toTokenAmount'

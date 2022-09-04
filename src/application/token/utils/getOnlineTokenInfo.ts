@@ -1,7 +1,7 @@
 import { toPub } from '@/functions/format/toMintString'
 import { PublicKeyish } from '@/types/constants'
 import { SPL_MINT_LAYOUT } from '@raydium-io/raydium-sdk'
-import useConnection from '../connection/useConnection'
+import useConnection from '../../connection/useConnection'
 
 /**
  * need connection

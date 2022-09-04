@@ -14,14 +14,14 @@ import { twMerge } from 'tailwind-merge'
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import { usePools } from '@/application/pools/usePools'
 import { Token } from '@/application/token/type'
-import useToken from '@/application/token/useToken'
+import { useToken } from '@/application/token'
 import {
   isQuantumSOL,
   isQuantumSOLVersionSOL,
   isQuantumSOLVersionWSOL,
   SOL_BASE_BALANCE,
   WSOLMint
-} from '@/application/token/quantumSOL'
+} from '@/application/token'
 import useWallet from '@/application/wallet/useWallet'
 import { toTokenAmount } from '@/functions/format/toTokenAmount'
 import toTotalPrice from '@/functions/format/toTotalPrice'

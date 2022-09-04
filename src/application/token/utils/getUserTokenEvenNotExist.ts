@@ -1,7 +1,7 @@
-import useToken from '@/application/token/useToken'
+import { tokenAtom } from '../atom'
+import { createSplToken } from './createSplToken'
 import { getOnlineTokenDecimals } from './getOnlineTokenInfo'
-import { SplToken } from './type'
-import { createSplToken } from './useTokenListsLoader'
+import { SplToken } from '../type'
 
 /**
  *
@@ -10,16 +10,16 @@ import { createSplToken } from './useTokenListsLoader'
  * @returns
  */
 export async function getUserTokenEvenNotExist(mint: string, symbol: string): Promise<SplToken | undefined> {
-  const tokens = useToken.getState().tokens
-  const userAddedTokens = useToken.getState().userAddedTokens
+  const tokens = tokenAtom.get().tokens
+  const userAddedTokens = tokenAtom.get().userAddedTokens
   const tokensHasLoaded = Object.keys(tokens).length > 0
   if (!tokensHasLoaded) return undefined // not load token list
-  const token = useToken.getState().getToken(mint)
+  const token = tokenAtom.get().getToken(mint)
   if (!token) {
     const tokenDecimals = await getOnlineTokenDecimals(mint)
     if (tokenDecimals == null) return undefined
 
-    const hasUserAddedTokensLoadedWhenGetOnlineTokenDecimals = userAddedTokens !== useToken.getState().userAddedTokens // userAddedTokens may loaded during await
+    const hasUserAddedTokensLoadedWhenGetOnlineTokenDecimals = userAddedTokens !== tokenAtom.get().userAddedTokens // userAddedTokens may loaded during await
     if (hasUserAddedTokensLoadedWhenGetOnlineTokenDecimals) return undefined
     const newCreatedToken = createSplToken({
       mint,
@@ -28,7 +28,7 @@ export async function getUserTokenEvenNotExist(mint: string, symbol: string): Pr
       userAdded: Boolean(symbol)
     })
 
-    useToken.getState().addUserAddedToken(newCreatedToken)
+    tokenAtom.get().addUserAddedToken(newCreatedToken)
     return newCreatedToken
   } else {
     return token

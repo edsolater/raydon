@@ -7,8 +7,9 @@ import { ITokenAccount, TokenAccountRawInfo } from './type'
 import BN from 'bn.js'
 import { isToken } from '@/functions/judgers/dateType'
 import { HexAddress } from '@/types/constants'
-import { QuantumSOLAmount, isQuantumSOL, WSOLMint } from '../token/quantumSOL'
 import { gte } from '@/functions/numberish/compare'
+import { isQuantumSOL, QuantumSOLAmount, WSOLMint } from '../token'
+import toPubString from '@/functions/format/toMintString'
 
 export type WalletStore = {
   // owner
@@ -134,7 +135,7 @@ export const walletAtom = createXAtom<WalletStore>({
     getBalance(target) {
       if (!target) return undefined
       if (isQuantumSOL(target) && target.collapseTo === 'wsol') {
-        return walletAtom.get().pureBalances[String(WSOLMint)]
+        return walletAtom.get().pureBalances[toPubString(WSOLMint)]
       } else {
         const mint = isToken(target) ? String(target.mint) : String(target)
         return walletAtom.get().balances[mint]
