@@ -6,7 +6,7 @@ const duration = 1000 * 60 * 2
 
 export const autoRefreshTokenPrice = createXEffect(() => {
   const timeIntervalId = globalThis.setInterval(() => {
-    if (inClient && window.document.visibilityState === 'hidden') return
+    if (inClient && globalThis.document.visibilityState === 'hidden') return
     refreshTokenPrice()
   }, duration)
   return () => globalThis.clearInterval(timeIntervalId)

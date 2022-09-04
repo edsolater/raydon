@@ -14,7 +14,7 @@ export default function useResizeObserver(
 ) {
   useEffect(() => {
     if (!ref?.current) return
-    const observer = new window.ResizeObserver((entries) => {
+    const observer = new globalThis.ResizeObserver((entries) => {
       entries.forEach((entry) => callback?.(entry))
     })
     observer.observe(ref.current)

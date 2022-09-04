@@ -149,7 +149,7 @@ function useInfiniteScrollItemCount<T>({
 
   //#region -------------------  hugry load render Count -------------------
   const load = useEvent(() => {
-    window.requestIdleCallback(() => {
+    globalThis.requestIdleCallback(() => {
       setTimeout(() => {
         setRenderItemLength((n) => Math.min(n + increaseRenderCount, allItems.length))
         if (increaseRenderCount < allItems.length) {
@@ -165,7 +165,7 @@ function useInfiniteScrollItemCount<T>({
       const currAllItemKeys = allItems.map(getKey)
       const itemListHasChanged = currAllItemKeys.some((key) => !prevAllItemKeys.has(key))
       if (renderAllQuickly && !renderAllAtOnce && itemListHasChanged) {
-        window.setTimeout(load, 1000)
+        globalThis.setTimeout(load, 1000)
       }
     },
     [allItems, renderAllAtOnce, renderAllQuickly] as const

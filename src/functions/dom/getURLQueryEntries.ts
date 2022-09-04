@@ -5,7 +5,7 @@ import { shrinkToValue } from '../shrinkToValue'
 
 export function getURLQueryEntry(): Record<string, string | undefined> {
   if (!inClient) return {}
-  const searchText = window.location.search
+  const searchText = globalThis.location.search
   const searchQuery = searchText
     ? Object.fromEntries(
         searchText

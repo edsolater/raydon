@@ -22,10 +22,10 @@ export function useClickOutside(
       if (targetElements.some((el) => el && path.includes(el))) return
       onClickOutSide?.()
     }
-    window.document?.addEventListener('click', handleClickOutside, { capture: true })
+    globalThis.document?.addEventListener('click', handleClickOutside, { capture: true })
     onBlurToOutside && getElementsFromRef(refs).forEach((el) => el.addEventListener('focusout', onBlurToOutside))
     return () => {
-      window.document?.removeEventListener('click', handleClickOutside, { capture: true })
+      globalThis.document?.removeEventListener('click', handleClickOutside, { capture: true })
       onBlurToOutside && getElementsFromRef(refs).forEach((el) => el.removeEventListener('focusout', onBlurToOutside))
     }
   }, [refs, disable, onClickOutSide])

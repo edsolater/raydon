@@ -1179,7 +1179,7 @@ function FarmDetailPanelItemContent({ farmInfo, ...divProps }: { farmInfo: Hydra
               copyToClipboard(
                 new URL(
                   `farms/?tab=${useFarms.getState().currentTab}&farmid=${toPubString(farmInfo.id)}`,
-                  window.location.origin
+                  globalThis.location.origin
                 ).toString()
               ).then(() => {
                 logSuccess('Copy Farm Link', <Div>Farm ID: {toPubString(farmInfo.id)}</Div>)
