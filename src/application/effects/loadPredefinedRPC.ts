@@ -8,7 +8,7 @@ import { unifyByKey } from '@edsolater/fnkit'
 import { jFetch } from '@edsolater/jfetch'
 import { Connection } from '@solana/web3.js'
 import { connectionAtom } from '../connection/atom'
-import { Config, Endpoint } from '../connection'
+import { Config, ConnectionAtom, Endpoint } from '../connection'
 import caculateEndpointUrlByRpcConfig from '../connection/utils/chooseBestRPC'
 
 const devRpcConfig: Omit<Config, 'success'> = {
@@ -25,14 +25,14 @@ const devRpcConfig: Omit<Config, 'success'> = {
   strategy: 'speed'
 }
 
-export const SESSION_STORAGE_USER_SELECTED_RPC = 'user-selected-rpc'
+export const SESSION_STORAGE_USER_SELECTED_RPC = 'USER_SELECTED_RPC'
 
 /**
  * will initialize one official RPC (auto select currently the best one)
  * *IMPORTANT: all fetch action must have a reliable RPC**
  */
 export const loadPredefinedRPC = createXEffect(async () => {
-  connectionAtom.set({ isLoading: true })
+  setState({ isLoading: true })
   const data = await jFetch<Config>('https://api.raydium.io/v2/main/rpcs')
 
   if (!data) return
@@ -48,11 +48,30 @@ export const loadPredefinedRPC = createXEffect(async () => {
   // IDEA : what if cache the connection in storage
   const connection = new Connection(userSelectedRpc?.url ?? selectedEndpointUrl, 'confirmed')
 
-  connectionAtom.set((s) => ({
-    availableEndPoints: unifyByKey([...data.rpcs, ...(s.availableEndPoints ?? [])], (i) => i.url),
+  const { availableEndPoints, currentEndPoint } = connectionAtom.get()
+  // connectionAtom.set((s) => ({
+  //   availableEndPoints: unifyByKey([...data.rpcs, ...(s.availableEndPoints ?? [])], (i) => i.url),
+  //   autoChoosedEndPoint: data.rpcs.find(({ url }) => url === selectedEndpointUrl),
+  //   currentEndPoint: s.currentEndPoint ?? userSelectedRpc ?? data.rpcs.find(({ url }) => url === selectedEndpointUrl),
+  //   connection,
+  //   isLoading: false
+  // }))
+  setState({
+    availableEndPoints: unifyByKey([...data.rpcs, ...(availableEndPoints ?? [])], (i) => i.url),
     autoChoosedEndPoint: data.rpcs.find(({ url }) => url === selectedEndpointUrl),
-    currentEndPoint: s.currentEndPoint ?? userSelectedRpc ?? data.rpcs.find(({ url }) => url === selectedEndpointUrl),
+    currentEndPoint: currentEndPoint ?? userSelectedRpc ?? data.rpcs.find(({ url }) => url === selectedEndpointUrl),
     connection,
     isLoading: false
-  }))
+  })
 }, [])
+
+function setState(
+  payload: Pick<
+    ConnectionAtom,
+    'availableEndPoints' | 'autoChoosedEndPoint' | 'currentEndPoint' | 'connection' | 'isLoading'
+  >
+) {
+  connectionAtom.set(payload)
+  // TODO: transform to main thread
+  // console.log('globalThis: ', globalThis)
+}

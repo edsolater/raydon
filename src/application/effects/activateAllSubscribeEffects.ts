@@ -1,5 +1,3 @@
-import { autoUpdateBlockchainTime } from './updateBlockchainTime'
-import { loadPredefinedRPC } from './loadPredefinedRPC'
 import { addUserRPC } from './addUserRPC'
 import { autoRefreshTokenAccount } from './autoRefreshTokenAccount'
 import { initWalletBalance } from './initWalletBalance'
@@ -16,8 +14,7 @@ import { syncUserFlaggedTokenMints } from './syncUserFlaggedTokenMints'
 
 export const activateAllSubscribeEffects = () => {
   // connection
-  loadPredefinedRPC.activate()
-  autoUpdateBlockchainTime.activate()
+
   addUserRPC.activate()
 
   // wallet

@@ -2,6 +2,8 @@
  * * * ATOM *
  ************/
 
+import { isObject } from '@/functions/judgers/dateType'
+import { inClient } from '@/functions/judgers/isSSR'
 import { createXAtom } from '@edsolater/xstore'
 import { Connection, Endpoint } from './type'
 import { extractConnectionName } from './utils/extractConnectionName'
@@ -56,3 +58,14 @@ export const connectionAtom = createXAtom<ConnectionAtom>({
     getChainDate
   })
 })
+;(() => {
+  if (!inClient) return
+  const webworkerHandler = new Worker(new URL('./worker', import.meta.url))
+  webworkerHandler.postMessage('start')
+  webworkerHandler.addEventListener('message', ({ data }) => {
+    if (isObject(data) && data['type'] === 'set connection' && typeof data['payload'] === 'number') {
+      //@ts-expect-error temp
+      connectionAtom.set({ chainTimeOffset: data.payload }) // TODO type it !!!
+    }
+  })
+})()

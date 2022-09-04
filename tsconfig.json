@@ -25,7 +25,8 @@
     "next-env.d.ts",
     "src/**/*.ts",
     "src/**/*.tsx",
-    "src/application/messageBoard/useMessageBoardLocalStorage.tss"
+    "src/application/messageBoard/useMessageBoardLocalStorage.tss",
+    "src/application/connection/worker.js"
   ],
   "exclude": ["node_modules", ".next", "out"]
 }
