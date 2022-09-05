@@ -2,13 +2,13 @@
  * * ATOM EFFECT *
  *****************/
 
-import { createXEffect } from '@edsolater/xstore'
 import { getSessionItem } from '@/functions/dom/jStorage'
 import { unifyByKey } from '@edsolater/fnkit'
 import { jFetch } from '@edsolater/jfetch'
+import { createXEffect } from '@edsolater/xstore'
 import { Connection } from '@solana/web3.js'
+import { Config, Endpoint } from '../connection'
 import { connectionAtom } from '../connection/atom'
-import { Config, ConnectionAtom, Endpoint } from '../connection'
 import caculateEndpointUrlByRpcConfig from '../connection/utils/chooseBestRPC'
 
 const devRpcConfig: Omit<Config, 'success'> = {
@@ -32,7 +32,7 @@ export const SESSION_STORAGE_USER_SELECTED_RPC = 'USER_SELECTED_RPC'
  * *IMPORTANT: all fetch action must have a reliable RPC**
  */
 export const loadPredefinedRPC = createXEffect(async () => {
-  setState({ isLoading: true })
+  connectionAtom.set({ isLoading: true })
   const data = await jFetch<Config>('https://api.raydium.io/v2/main/rpcs')
 
   if (!data) return
@@ -49,14 +49,7 @@ export const loadPredefinedRPC = createXEffect(async () => {
   const connection = new Connection(userSelectedRpc?.url ?? selectedEndpointUrl, 'confirmed')
 
   const { availableEndPoints, currentEndPoint } = connectionAtom.get()
-  // connectionAtom.set((s) => ({
-  //   availableEndPoints: unifyByKey([...data.rpcs, ...(s.availableEndPoints ?? [])], (i) => i.url),
-  //   autoChoosedEndPoint: data.rpcs.find(({ url }) => url === selectedEndpointUrl),
-  //   currentEndPoint: s.currentEndPoint ?? userSelectedRpc ?? data.rpcs.find(({ url }) => url === selectedEndpointUrl),
-  //   connection,
-  //   isLoading: false
-  // }))
-  setState({
+  connectionAtom.set({
     availableEndPoints: unifyByKey([...data.rpcs, ...(availableEndPoints ?? [])], (i) => i.url),
     autoChoosedEndPoint: data.rpcs.find(({ url }) => url === selectedEndpointUrl),
     currentEndPoint: currentEndPoint ?? userSelectedRpc ?? data.rpcs.find(({ url }) => url === selectedEndpointUrl),
@@ -64,14 +57,3 @@ export const loadPredefinedRPC = createXEffect(async () => {
     isLoading: false
   })
 }, [])
-
-function setState(
-  payload: Pick<
-    ConnectionAtom,
-    'availableEndPoints' | 'autoChoosedEndPoint' | 'currentEndPoint' | 'connection' | 'isLoading'
-  >
-) {
-  connectionAtom.set(payload)
-  // TODO: transform to main thread
-  // console.log('globalThis: ', globalThis)
-}

@@ -2,10 +2,13 @@
  * * * ATOM *
  ************/
 
-import { isObject } from '@/functions/judgers/dateType'
+import { isArray, isFunction, isObject } from '@/functions/judgers/dateType'
 import { inClient } from '@/functions/judgers/isSSR'
 import { createXAtom } from '@edsolater/xstore'
-import { Connection, Endpoint } from './type'
+import { map } from '@edsolater/fnkit'
+import { Connection } from '@solana/web3.js'
+import { inMainThreadScope, inWebworkerScope } from '../effects/webworkerUtil'
+import { Endpoint } from './type'
 import { extractConnectionName } from './utils/extractConnectionName'
 import { getChainDate } from './utils/getChainDate'
 import { deleteRpc, switchRpc } from './utils/swithRPC'
@@ -58,14 +61,50 @@ export const connectionAtom = createXAtom<ConnectionAtom>({
     getChainDate
   })
 })
+type WebworkerXAtomTransformData = {
+  type: 'xAtom set'
+  payload: unknown
+}
 ;(() => {
-  if (!inClient) return
-  const webworkerHandler = new Worker(new URL('./worker', import.meta.url))
-  webworkerHandler.postMessage('start')
-  webworkerHandler.addEventListener('message', ({ data }) => {
-    if (isObject(data) && data['type'] === 'set connection' && typeof data['payload'] === 'number') {
-      //@ts-expect-error temp
-      connectionAtom.set({ chainTimeOffset: data.payload }) // TODO type it !!!
-    }
-  })
+  if (inWebworkerScope()) {
+    connectionAtom.subscribe('$any', ({ propertyName, value }) => {
+      globalThis.postMessage({ type: 'xAtom set', payload: { [propertyName]: serializeWebworkerTransformData(value) } })
+    })
+  }
+  if (inMainThreadScope()) {
+    const webworkerHandler = new Worker(new URL('./worker', import.meta.url))
+    webworkerHandler.postMessage('start')
+    webworkerHandler.addEventListener('message', ({ data }) => {
+      if (isWebworkerXAtomTransformData(data)) {
+        //@ts-expect-error temp
+        connectionAtom.set(deserializeWebworkerTransformData(data.payload)) // TODO type it !!!
+      }
+    })
+  }
 })()
+
+export function isWebworkerXAtomTransformData(data: unknown): data is WebworkerXAtomTransformData {
+  return isObject(data) && typeof data['type'] === 'string'
+}
+
+export function serializeWebworkerTransformData(data: unknown): unknown {
+  if (data instanceof Connection) {
+    return { type: 'connection', innerRpc: data.rpcEndpoint } // TODO add Connection[@@serialize]
+  } else if (isObject(data)) {
+    return map(data, (v) => serializeWebworkerTransformData(v))
+  } else if (isFunction(data)) {
+    throw new Error(`webworker can't transform function`)
+  } else {
+    return data
+  }
+}
+
+export function deserializeWebworkerTransformData(data: unknown): unknown {
+  if (isObject(data) && 'type' in data && data.type === 'connection') {
+    return new Connection(data.innerRpc) // TODO add Connection[@@deserialize]
+  } else if (isObject(data)) {
+    return map(data, (v) => deserializeWebworkerTransformData(v))
+  } else {
+    return data
+  }
+}

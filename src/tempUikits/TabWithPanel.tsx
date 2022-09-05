@@ -24,7 +24,7 @@ export interface TabWithPanelProps<T extends string = string>
  * @todo not flexiable enough
  *
  */
-function findMinimum<K extends string | number>(obj: Record<string | number, K>): K {
+function findMinimum<K extends string | number>(obj: Record<string, K>): K {
   const min = Math.min(...Object.keys(obj).map(Number))
   return obj[min]
 }
