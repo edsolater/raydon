@@ -63,7 +63,6 @@ function TokenSelectorDialogContent({
   canSelectQuantumSOL
 }: TokenSelectorProps) {
   const { tokenListSettings, getToken, allSelectableTokens } = useXStore(tokenAtom)
-
   const isMobile = useAppSettings((s) => s.isMobile)
   const balances = useWallet((s) => s.balances)
 

@@ -141,7 +141,7 @@ const toggleFlaggedToken = (token: SplToken) => {
 }
 
 export const tokenAtom = createXAtom<TokenStore>({
-  name: 'tokenStore',
+  name: 'token',
   default: {
     tokenIconSrcs: {},
 

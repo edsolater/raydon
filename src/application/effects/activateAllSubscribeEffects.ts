@@ -1,4 +1,5 @@
 import { connectionAtom } from '../connection'
+import { tokenAtom } from '../token'
 import { addUserRPC } from './addUserRPC'
 import { autoRefreshTokenAccount } from './autoRefreshTokenAccount'
 import { autoRefreshTokenPrice } from './autoRefreshTokenPrice'
@@ -16,7 +17,7 @@ import { establishXAtomMainThreadSide } from './webworkerUtil'
 
 establishXAtomMainThreadSide({
   makeWorkerHandler: () => new Worker(new URL('./worker', import.meta.url)),
-  atoms: [connectionAtom]
+  atoms: [connectionAtom, tokenAtom]
 })
 
 export const activateAllSubscribeEffects = () => {
@@ -26,13 +27,4 @@ export const activateAllSubscribeEffects = () => {
   listenWalletAccountChange.activate()
   manuallyRefreshTokenAccount.activate()
   registerWalletConnectNotifaction.activate()
-
-  // token
-  autoRefreshTokenPrice.activate()
-  autoUpdateUserSelectableTokens.activate()
-  loadLpTokens.activate()
-  loadTokenList.activate()
-  syncLoadUserAddedTokens.activate()
-  syncTokenListSettings.activate()
-  syncUserFlaggedTokenMints.activate()
 }
