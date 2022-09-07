@@ -1,7 +1,7 @@
 import { XAtom } from '@/../../xstore/dist'
 import toPubString, { toPub } from '@/functions/format/toMintString'
 import { isFunction, isObject } from '@/functions/judgers/dateType'
-import { listToMap, map } from '@edsolater/fnkit'
+import { AnyFn, listToMap, map } from '@edsolater/fnkit'
 import { Connection, PublicKey } from '@solana/web3.js'
 
 function inWebworkerScope() {
@@ -58,22 +58,49 @@ export function establishXAtomWebworkerSide(atoms: XAtom<any>[]) {
   if (inWebworkerScope()) {
     atoms.forEach((atom) => {
       atom.subscribe('$any', ({ propertyName, value }) => {
-        if (atom.name === 'token')
-          globalThis.postMessage({
-            type: 'xAtom set',
-            atomName: atom.name,
-            payload: { [propertyName]: serializeWebworkerTransformData(value) }
-          })
+        globalThis.postMessage({
+          type: 'xAtom set',
+          atomName: atom.name,
+          payload: { [propertyName]: serializeWebworkerTransformData(value) }
+        })
       })
     })
   }
 }
 
+const serializeSymbol = Symbol('serialize')
+const deserializeSymbol = Symbol('deserialize')
+
+const transformRules = new Map<
+  unknown,
+  { constructor: any; constructorKey: string; serialize: AnyFn; deserialize: AnyFn }
+>([
+  [
+    Connection,
+    {
+      constructor: Connection,
+      constructorKey: 'connection',
+      serialize: (data: Connection) => ({ innerRpc: data.rpcEndpoint }),
+      deserialize: (fromworker: { innerRpc: string }) => new Connection(fromworker.innerRpc)
+    }
+  ],
+  [
+    PublicKey,
+    {
+      constructor: PublicKey,
+      constructorKey: 'publicKey',
+      serialize: (data: PublicKey) => ({ content: toPubString(data) }),
+      deserialize: ({ content }: { content: string }) => toPub(content)
+    }
+  ]
+])
+const revertTransformRules = new Map([...transformRules.values()].map((i) => [i.constructorKey, i]))
+
 function serializeWebworkerTransformData(data: unknown): unknown {
-  if (data instanceof Connection) {
-    return { type: 'connection', innerRpc: data.rpcEndpoint } // TODO add Connection[@@serialize]
-  } else if (data instanceof PublicKey) {
-    return { type: 'publickey', content: toPubString(data) } // TODO add Connection[@@serialize]
+  if (isObject(data) && data[serializeSymbol]) {
+    return data[serializeSymbol]()
+  } else if (isObject(data) && transformRules.has(data.constructor)) {
+    return transformRules.get(data.constructor)!.serialize(data)
   } else if (isObject(data)) {
     return map(data, (v) => serializeWebworkerTransformData(v))
   } else if (isFunction(data)) {
@@ -84,10 +111,10 @@ function serializeWebworkerTransformData(data: unknown): unknown {
 }
 
 function deserializeWebworkerTransformData(data: unknown): unknown {
-  if (isObject(data) && 'type' in data && data.type === 'connection') {
-    return new Connection(data.innerRpc) // TODO add Connection[@@deserialize]
-  } else if (isObject(data) && 'type' in data && data.type === 'publickey') {
-    return toPub(data.content) // TODO add Connection[@@deserialize]
+  if (isObject(data) && data[deserializeSymbol]) {
+    return data[deserializeSymbol]()
+  } else if (isObject(data) && 'constructorKey' in data && revertTransformRules.has(data.constructorKey)) {
+    return revertTransformRules.get(data.constructorKey)!.deserialize(data)
   } else if (isObject(data)) {
     return map(data, (v) => deserializeWebworkerTransformData(v))
   } else {
