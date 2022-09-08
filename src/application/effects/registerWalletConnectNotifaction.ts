@@ -1,10 +1,8 @@
-import { createXAtom, createXEffect } from '@edsolater/xstore'
 import useNotification from '@/application/notification/useNotification'
 import { throttle } from '@/functions/debounce'
 import toPubString from '@/functions/format/toMintString'
-import { useEffect } from 'react'
+import { createXEffect } from '@edsolater/xstore'
 import { walletAtom } from '../wallet/atom'
-import useWallet from '../wallet/useWallet'
 
 export const registerWalletConnectNotifaction = createXEffect(() => {
   const { adapter } = walletAtom.get()
