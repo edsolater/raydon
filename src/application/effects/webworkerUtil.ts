@@ -100,7 +100,10 @@ function serializeWebworkerTransformData(data: unknown): unknown {
   if (isObject(data) && data[serializeSymbol]) {
     return data[serializeSymbol]()
   } else if (isObject(data) && transformRules.has(data.constructor)) {
-    return transformRules.get(data.constructor)!.serialize(data)
+    return {
+      ...transformRules.get(data.constructor)!.serialize(data),
+      constructorKey: transformRules.get(data.constructor)!.constructorKey
+    }
   } else if (isObject(data)) {
     return map(data, (v) => serializeWebworkerTransformData(v))
   } else if (isFunction(data)) {
