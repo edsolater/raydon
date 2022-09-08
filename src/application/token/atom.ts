@@ -4,11 +4,20 @@
 
 import { removeItem } from '@/functions/arrayMethods'
 import toPubString from '@/functions/format/toMintString'
+import { isMintEqual } from '@/functions/judgers/areEqual'
 import { HexAddress, SrcAddress } from '@/types/constants'
 import { createXAtom, createZustandStoreHook, XStoreAtom } from '@edsolater/xstore'
 import { Price, PublicKeyish } from '@raydium-io/raydium-sdk'
 import produce from 'immer'
+import {
+  SupportedTokenListSettingName,
+  USER_ADDED_TOKEN_LIST_NAME,
+  RAYDIUM_MAINNET_TOKEN_LIST_NAME,
+  RAYDIUM_DEV_TOKEN_LIST_NAME,
+  SOLANA_TOKEN_LIST_NAME
+} from './utils/tokenListSettingName.config'
 import { LpToken, SplToken, TokenJson } from './type'
+import { SOLMint } from './utils'
 import {
   isQuantumSOL,
   isQuantumSOLVersionWSOL,
@@ -60,8 +69,6 @@ export type TokenStore = {
   // url may be 'sol'
   fromUrlString(mintlike: string): SplToken | QuantumSOLToken
 
-  isLpToken(mint: PublicKeyish | undefined): boolean
-
   /** it does't contain lp tokens' price  */
   tokenPrices: Record<HexAddress, Price>
 
@@ -90,17 +97,6 @@ export type TokenStore = {
   refreshTokenCount: number
   refreshTokenPrice(): void
 }
-
-export type SupportedTokenListSettingName =
-  | 'Raydium Token List' // actually  official
-  | 'Raydium Dev Token List'
-  | 'Solana Token List' // actually  unOfficial
-  | 'User Added Token List'
-export const RAYDIUM_MAINNET_TOKEN_LIST_NAME_DEPRECATED = 'Raydium Mainnet Token List'
-export const RAYDIUM_MAINNET_TOKEN_LIST_NAME = 'Raydium Token List'
-export const RAYDIUM_DEV_TOKEN_LIST_NAME = 'Raydium Dev Token List'
-export const SOLANA_TOKEN_LIST_NAME = 'Solana Token List'
-export const USER_ADDED_TOKEN_LIST_NAME = 'User Added Token List'
 
 export type TokenAtom = XStoreAtom<TokenStore>
 
@@ -157,17 +153,15 @@ export const tokenAtom = createXAtom<TokenStore>({
     // lpToken have not SOL, no need pure and verbose
     lpTokens: {},
 
-    getToken: () => undefined,
+    getToken,
 
-    getLpToken: () => undefined,
+    getLpToken,
 
     toUrlMint,
 
     fromUrlString,
 
-    getPureToken: () => undefined,
-
-    isLpToken: () => false,
+    getPureToken,
 
     tokenPrices: {},
     blacklist: [],
@@ -204,6 +198,24 @@ export const tokenAtom = createXAtom<TokenStore>({
     refreshTokenPrice: refreshTokenPrice
   }
 })
+
+function getToken(mint: PublicKeyish | undefined, options?: { exact?: boolean }): SplToken | undefined {
+  if (isMintEqual(mint, SOLMint)) {
+    return QuantumSOLVersionSOL
+  }
+  if (isMintEqual(mint, WSOLMint) && options?.exact) {
+    return QuantumSOLVersionWSOL
+  }
+  return tokenAtom.get().tokens[toPubString(mint)]
+}
+
+function getLpToken(mint: PublicKeyish | undefined): LpToken | undefined {
+  return tokenAtom.get().lpTokens[toPubString(mint)]
+}
+
+function getPureToken(mint: PublicKeyish | undefined): SplToken | undefined {
+  return tokenAtom.get().pureTokens[toPubString(mint)]
+}
 
 //TODO  move to fnkit
 function toggleSetItem<T>(set: Set<T>, item: T) {

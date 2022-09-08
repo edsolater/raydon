@@ -20,15 +20,16 @@ import {
 } from '@/application/token'
 import useWallet from '@/application/wallet/useWallet'
 import assert from '@/functions/assert'
-import toPubString from '@/functions/format/toMintString'
+import toPubString, { toPub } from '@/functions/format/toMintString'
 
 import useCreatePool from './useCreatePool'
+import { isMintEqual } from '@/functions/judgers/areEqual'
 
 export async function updateCreatePoolInfo(txParam: { marketId: PublicKeyish }): Promise<{ isSuccess: boolean }> {
   try {
     // find out if already exists this pool? disallow user to recreate
     const { jsonInfos } = usePools.getState()
-    assert(!jsonInfos.some((i) => i.market === String(txParam.marketId)), 'Pool already created')
+    assert(!jsonInfos.some((i) => isMintEqual(i.market, txParam.marketId)), 'Pool already created')
 
     // get market info
     const { connection } = useConnection.getState()
@@ -41,18 +42,18 @@ export async function updateCreatePoolInfo(txParam: { marketId: PublicKeyish }):
 
     const avaliableQuoteMints = {
       //TODO: actually just use getToken() is ok, this structure is build when getToken() is not ready
-      USDT: String(USDTMint),
-      USDC: String(USDCMint),
-      RAY: String(RAYMint),
-      WSOL: String(WSOLMint),
-      SRM: String(SRMMint),
-      PAI: String(PAIMint),
-      mSOL: String(mSOLMint),
-      stSOL: String(stSOLMint),
-      USDH: String(USDHMint),
-      NRV: String(NRVMint),
-      ANA: String(ANAMint),
-      ETH: String(ETHMint)
+      USDT: toPubString(USDTMint),
+      USDC: toPubString(USDCMint),
+      RAY: toPubString(RAYMint),
+      WSOL: toPubString(WSOLMint),
+      SRM: toPubString(SRMMint),
+      PAI: toPubString(PAIMint),
+      mSOL: toPubString(mSOLMint),
+      stSOL: toPubString(stSOLMint),
+      USDH: toPubString(USDHMint),
+      NRV: toPubString(NRVMint),
+      ANA: toPubString(ANAMint),
+      ETH: toPubString(ETHMint)
     }
 
     assert(
@@ -97,7 +98,7 @@ export async function updateCreatePoolInfo(txParam: { marketId: PublicKeyish }):
       version: 4,
       baseMint,
       quoteMint,
-      marketId: new PublicKey(txParam.marketId)
+      marketId: toPub(txParam.marketId)
     })
     const { id: ammId, lpMint } = associatedPoolKeys
     useCreatePool.setState({ sdkAssociatedPoolKeys: associatedPoolKeys })

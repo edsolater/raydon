@@ -104,6 +104,7 @@ function serializeWebworkerTransformData(data: unknown): unknown {
   } else if (isObject(data)) {
     return map(data, (v) => serializeWebworkerTransformData(v))
   } else if (isFunction(data)) {
+    console.error(data)
     throw new Error(`webworker can't transform function`)
   } else {
     return data

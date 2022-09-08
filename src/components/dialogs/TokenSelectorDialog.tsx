@@ -6,7 +6,6 @@ import {
   isQuantumSOLVersionWSOL,
   QuantumSOLVersionSOL,
   RAYMint,
-  SupportedTokenListSettingName,
   tokenAtom,
   USDCMint,
   USDTMint
@@ -34,6 +33,7 @@ import { cssCol, cssRow, Div } from '@edsolater/uikit'
 import { useXStore } from '@edsolater/xstore'
 import { PublicKeyish } from '@raydium-io/raydium-sdk'
 import { useCallback, useDeferredValue, useMemo, useRef, useState } from 'react'
+import { SupportedTokenListSettingName } from '@/application/token/utils/tokenListSettingName.config'
 
 export type TokenSelectorProps = {
   open: boolean

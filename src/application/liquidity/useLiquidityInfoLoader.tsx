@@ -1,17 +1,16 @@
-import { LiquidityPoolsJsonFile } from '@raydium-io/raydium-sdk'
-
 import useConnection from '@/application/connection/useConnection'
 import { tokenAtom } from '@/application/token'
 import useWallet from '@/application/wallet/useWallet'
-import jFetch from '@/functions/dom/jFetch'
-import { gt } from '@/functions/numberish/compare'
-import { HexAddress } from '@/types/constants'
-
-import { useXStore } from '@edsolater/xstore'
 import { shakeUndifindedItem } from '@/functions/arrayMethods'
+import jFetch from '@/functions/dom/jFetch'
+import toPubString from '@/functions/format/toMintString'
 import { areShallowEqual } from '@/functions/judgers/areEqual'
+import { gt } from '@/functions/numberish/compare'
 import { useEffectWithTransition } from '@/hooks/useEffectWithTransition'
 import { useRecordedEffect } from '@/hooks/useRecordedEffect'
+import { HexAddress } from '@/types/constants'
+import { useXStore } from '@edsolater/xstore'
+import { LiquidityPoolsJsonFile } from '@raydium-io/raydium-sdk'
 import hydrateLiquidityInfo from './hydrateLiquidityInfo'
 import sdkParseJsonLiquidityInfo from './sdkParseJsonLiquidityInfo'
 import useLiquidity from './useLiquidity'
@@ -22,7 +21,7 @@ import useLiquidity from './useLiquidity'
 export default function useLiquidityInfoLoader({ disabled }: { disabled?: boolean } = {}) {
   const { jsonInfos, sdkParsedInfos, currentJsonInfo, currentSdkParsedInfo, userExhibitionLiquidityIds } =
     useLiquidity()
-  const { getToken, getLpToken, isLpToken } = useXStore(tokenAtom)
+  const { getToken, getLpToken } = useXStore(tokenAtom)
   const refreshCount = useLiquidity((s) => s.refreshCount)
   const connection = useConnection((s) => s.connection)
   const rawBalances = useWallet((s) => s.rawBalances)
@@ -51,12 +50,12 @@ export default function useLiquidityInfoLoader({ disabled }: { disabled?: boolea
     const allLpBalance = Object.entries(rawBalances).filter(
       ([mint, tokenAmount]) => liquidityLpMints.has(mint) && gt(tokenAmount, 0)
     )
-    const allLpBalanceMint = allLpBalance.map(([mint]) => String(mint))
+    const allLpBalanceMint = allLpBalance.map(([mint]) => toPubString(mint))
     const userExhibitionLiquidityIds = jsonInfos
       .filter((jsonInfo) => allLpBalanceMint.includes(jsonInfo.lpMint))
       .map((jsonInfo) => jsonInfo.id)
     useLiquidity.setState({ userExhibitionLiquidityIds })
-  }, [disabled, jsonInfos, rawBalances, isLpToken, refreshCount])
+  }, [disabled, jsonInfos, rawBalances, refreshCount])
 
   /** json infos ➡ sdkParsed infos (only wallet's LP)  */
   useRecordedEffect(

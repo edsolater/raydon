@@ -3,7 +3,8 @@ import toPubString from '@/functions/format/toMintString'
 import { map } from '@edsolater/fnkit'
 import { createXEffect, mergeXEffects } from '@edsolater/xstore'
 import { SplTokenJsonInfo } from '@raydium-io/raydium-sdk'
-import { SOLANA_TOKEN_LIST_NAME, tokenAtom, USER_ADDED_TOKEN_LIST_NAME } from '../token/atom'
+import { tokenAtom } from '../token/atom'
+import { SOLANA_TOKEN_LIST_NAME, USER_ADDED_TOKEN_LIST_NAME } from '../token/utils/tokenListSettingName.config'
 import { createSplToken } from '../token/utils/createSplToken'
 
 const initlyLoadTokenListSettings = createXEffect(() => {

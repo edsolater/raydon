@@ -1,16 +1,17 @@
 import toPubString from '@/functions/format/toMintString'
+import { isMintEqual } from '@/functions/judgers/areEqual'
 import { replaceValue } from '@/functions/objectMethods'
 import { HexAddress, SrcAddress } from '@/types/constants'
 import { asyncMapAllSettled, listToMap, map } from '@edsolater/fnkit'
 import { jFetch } from '@edsolater/jfetch'
 import { createAtomEffect, createXEffect } from '@edsolater/xstore'
 import { PublicKeyish, WSOL } from '@raydium-io/raydium-sdk'
+import { tokenAtom } from '../token/atom'
 import {
   RAYDIUM_DEV_TOKEN_LIST_NAME,
   RAYDIUM_MAINNET_TOKEN_LIST_NAME,
-  SOLANA_TOKEN_LIST_NAME,
-  tokenAtom
-} from '../token/atom'
+  SOLANA_TOKEN_LIST_NAME
+} from '../token/utils/tokenListSettingName.config'
 import {
   RaydiumDevTokenListJsonInfo,
   RaydiumTokenListJsonInfo,
@@ -149,39 +150,21 @@ async function loadTokens() {
 
   const verboseTokens = [
     QuantumSOLVersionSOL,
-    ...Object.values(replaceValue(pureTokens, (v, k) => k === String(WSOL.mint), QuantumSOLVersionWSOL))
+    ...Object.values(replaceValue(pureTokens, (v, k) => isMintEqual(k, WSOL.mint), QuantumSOLVersionWSOL))
   ]
 
   tokenAtom.set((s) => ({
     canFlaggedTokenMints: new Set(
       Object.values(tokens)
-        .filter((token) => !s.tokenListSettings[RAYDIUM_MAINNET_TOKEN_LIST_NAME].mints?.has(String(token.mint)))
-        .map((token) => String(token.mint))
+        .filter((token) => !s.tokenListSettings[RAYDIUM_MAINNET_TOKEN_LIST_NAME].mints?.has(toPubString(token.mint)))
+        .map((token) => toPubString(token.mint))
     )
   }))
-
-  /** NOTE -  getToken place 1 */
-  /** exact mode: 'so111111112' will be QSOL-WSOL 'sol' will be QSOL-SOL */
-  function getToken(mint: PublicKeyish | undefined, options?: { exact?: boolean }): SplToken | undefined {
-    if (String(mint) === SOLUrlMint) {
-      return QuantumSOLVersionSOL
-    }
-    if (String(mint) === String(WSOLMint) && options?.exact) {
-      return QuantumSOLVersionWSOL
-    }
-    return tokens[String(mint)]
-  }
-
-  function getPureToken(mint: PublicKeyish | undefined): SplToken | undefined {
-    return pureTokens[String(mint)]
-  }
 
   tokenAtom.set({
     tokenJsonInfos: listToMap(allTokens, (i) => i.mint),
     tokens,
     pureTokens,
-    verboseTokens,
-    getToken,
-    getPureToken
+    verboseTokens
   })
 }

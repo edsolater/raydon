@@ -11,9 +11,8 @@ import { LpToken } from '../token/type'
 
 export const loadLpTokens = createXEffect(async () => {
   const { jsonInfos: ammJsonInfos } = await getLiquidityJsonInfos()
-  const userAddedTokens = tokenAtom.get().userAddedTokens
-  const getToken = tokenAtom.get().getToken
-
+  const { getToken, userAddedTokens } = tokenAtom.get()
+  if (!Object.keys(tokenAtom.get().tokens).length) return
   const lpTokenItems = await lazyMap({
     source: ammJsonInfos,
     sourceKey: 'load lp token',
@@ -40,7 +39,7 @@ export const loadLpTokens = createXEffect(async () => {
     }
   })
   const lpTokens = listToMap(shakeUndifindedItem(lpTokenItems), (t) => toPubString(t.mint))
-  tokenAtom.set({ lpTokens, getLpToken: (mint) => lpTokens[toPubString(mint)] })
+  tokenAtom.set({ lpTokens })
 }, [
   // liquidityAtom.subscribe.jsonInfos,
   tokenAtom.subscribe.tokens,

@@ -12,7 +12,6 @@ import useSwapUrlParser from '@/application/swap/useSwapUrlParser'
 import {
   isQuantumSOLVersionSOL,
   isQuantumSOLVersionWSOL,
-  RAYDIUM_MAINNET_TOKEN_LIST_NAME,
   SOLDecimals,
   SOL_BASE_BALANCE,
   tokenAtom,
@@ -21,6 +20,7 @@ import {
   USDTMint
 } from '@/application/token'
 import { SplToken } from '@/application/token/type'
+import { RAYDIUM_MAINNET_TOKEN_LIST_NAME } from '@/application/token/utils/tokenListSettingName.config'
 import useWallet from '@/application/wallet/useWallet'
 import { AddressItem } from '@/components/AddressItem'
 import CoinAvatar from '@/components/CoinAvatar'
