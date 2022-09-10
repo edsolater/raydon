@@ -1,22 +1,23 @@
 import { findAmmId } from '@/application/liquidity/miscToolFns'
 import { LiquidityStore } from '@/application/liquidity/useLiquidity'
 import { PoolsStore } from '@/application/pools/usePools'
-import { TokenStore } from '@/application/token'
-import { RAYMint } from '@/application/token'
-import { shakeUndifindedItem, unifyByKey } from '@/functions/arrayMethods'
+import { RAYMint, TokenStore } from '@/application/token'
+import { shakeUndifindedItem } from '@/functions/arrayMethods'
 import { DateParam, offsetDateTime } from '@/functions/date/dateFormat'
 import { isDateAfter, isDateBefore } from '@/functions/date/judges'
 import jFetch from '@/functions/dom/jFetch'
-import { getLocalItem } from '@/functions/dom/jStorage'
+import listToMap from '@/functions/format/listToMap'
 import toPubString from '@/functions/format/toMintString'
 import { toPercent } from '@/functions/format/toPercent'
 import { toTokenAmount } from '@/functions/format/toTokenAmount'
 import toTotalPrice from '@/functions/format/toTotalPrice'
+import { lazyMap } from '@/functions/lazyMap'
 import { isMeaningfulNumber } from '@/functions/numberish/compare'
 import { getMax, sub } from '@/functions/numberish/operations'
 import toBN from '@/functions/numberish/toBN'
 import { toString } from '@/functions/numberish/toString'
 import { unionArr } from '@/types/generics'
+import { groupArrayBySize } from '@edsolater/fnkit'
 import {
   CurrencyAmount,
   Farm,
@@ -25,17 +26,12 @@ import {
   ONE,
   Price,
   TEN,
-  TokenAmount,
-  ZERO
+  TokenAmount
 } from '@raydium-io/raydium-sdk'
 import BN from 'bn.js'
 import { ConnectionAtom } from '../connection'
 import { SplToken } from '../token/type'
-import { APIRewardInfo, FarmPoolJsonInfo, FarmPoolsJsonFile, HydratedFarmInfo, SdkParsedFarmInfo } from './type'
-
-function getMaxOpenTime(i: APIRewardInfo[]) {
-  return Math.max(...i.map((r) => r.rewardOpenTime))
-}
+import { FarmPoolJsonInfo, FarmPoolsJsonFile, HydratedFarmInfo, SdkParsedFarmInfo } from './type'
 
 const MAX_DURATION_DAY = 90
 const MIN_DURATION_DAY = 7
@@ -68,17 +64,29 @@ export async function mergeSdkFarmInfo(
     jsonInfos: FarmPoolJsonInfo[]
   }
 ): Promise<SdkParsedFarmInfo[]> {
-  const rawInfos = await Farm.fetchMultipleInfoAndUpdate(options)
-  const result = options.pools.map(
-    (pool, idx) =>
-      ({
-        ...payload.jsonInfos[idx],
-        ...pool,
-        ...rawInfos[String(pool.id)],
-        jsonInfo: payload.jsonInfos[idx]
-      } as unknown as SdkParsedFarmInfo)
-  )
-  return result
+  const groupSize = 20
+  const payloadPoolMap = listToMap(payload.jsonInfos, (i) => i.id)
+  const optionPoolMap = listToMap(options.pools, (i) => toPubString(i.id))
+  const results = await lazyMap({
+    sourceKey: 'farm fetchMultipleInfoAndUpdate',
+    source: groupArrayBySize(options.pools, groupSize),
+    sourceGroupSize: 1,
+    loopFn: async (item) => {
+      const ids = item.map((i) => toPubString(i.id))
+      const rawInfos = await Farm.fetchMultipleInfo({ ...options, pools: item })
+      const result = ids.map(
+        (id) =>
+          ({
+            ...payloadPoolMap[id],
+            ...optionPoolMap[id],
+            ...rawInfos[id],
+            jsonInfo: payloadPoolMap[id]
+          } as unknown as SdkParsedFarmInfo)
+      )
+      return result
+    }
+  })
+  return results.flat()
 }
 
 export function hydrateFarmInfo(

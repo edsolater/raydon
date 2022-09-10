@@ -1,3 +1,4 @@
+import { groupArrayBySize } from '@edsolater/fnkit'
 import { AnyFn } from '@/types/constants'
 import { addItem } from './arrayMethods'
 
@@ -6,7 +7,9 @@ const invokedRecord = new Map<string, (LazyMapSettings<any, any> & { idleId: num
 type LazyMapSettings<T, U> = {
   sourceKey: string
   source: T[]
-  loopFn: (item: T, index: number, source: readonly T[]) => U
+  loopFn: (item: T, index: number, group: readonly T[]) => U
+  /* default 8 */
+  sourceGroupSize?: number
 }
 
 /**
@@ -16,15 +19,11 @@ type LazyMapSettings<T, U> = {
  * @param settings.sourceKey flag for todo queue
  * @param settings.loopFn like js: array::map
  */
-export function lazyMap<T, U>(setting: LazyMapSettings<T, U>): Promise<U[]> {
+export function lazyMap<T, U>(setting: LazyMapSettings<T, U>): Promise<Awaited<U>[]> {
   return new Promise((resolve) => {
     const idleId = requestIdleCallback(async () => {
-      // console.time(`lazy map (${setting.sourceKey})`)
-
-      // const result = setting.source.map(setting.loopFn)
-      const result = await lazyMapCoreMap(setting.source, setting.loopFn)
+      const result = await lazyMapCoreMap(setting)
       resolve(result)
-      // console.timeEnd(`lazy map (${setting.sourceKey})`)
     })
 
     // cancel the last idle callback, and record new setting
@@ -44,32 +43,15 @@ function cancelIdleCallback(handleId: number): void {
   return globalThis.cancelIdleCallback ? globalThis.cancelIdleCallback(handleId) : globalThis.clearTimeout(handleId)
 }
 
-/**
- * @example
- * splitBlockList([0, 1, 2, 3, 4, 5, 6, 7, 8], 4) => [[0, 1, 2, 3], [4, 5, 6, 7], [8]]
- */
-function groupBlockList<T>(array: T[], blockGroupSize = 16): T[][] {
-  const blockList: T[][] = []
-  let prevBlockIndex = 0
-  for (let blockIndx = blockGroupSize; blockIndx - blockGroupSize < array.length; blockIndx += blockGroupSize) {
-    const newList = array.slice(prevBlockIndex, blockIndx)
-    blockList.push(newList)
-    prevBlockIndex = blockIndx
-  }
-  return blockList
-}
-
-async function lazyMapCoreMap<T, U>(
-  arr: T[],
-  mapFn: (item: T, index: number, source: readonly T[]) => U
-): Promise<U[]> {
-  const wholeResult: U[] = []
-  for (const blockList of groupBlockList(arr)) {
+async function lazyMapCoreMap<T, U>(options: LazyMapSettings<T, U>): Promise<Awaited<U>[]> {
+  const wholeResult: Awaited<U>[] = []
+  for (const blockList of groupArrayBySize(options.source, options.sourceGroupSize ?? 8)) {
     await new Promise((resolve) => {
       requestIdleCallback(() => {
-        const newResultList = blockList.map(mapFn)
-        wholeResult.push(...newResultList)
-        resolve(undefined)
+        Promise.all(blockList.map(options.loopFn)).then((newResultList) => {
+          wholeResult.push(...newResultList)
+          resolve(undefined)
+        })
       })
     }) // forcely use microtask
   }
