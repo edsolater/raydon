@@ -3,12 +3,12 @@ import { twMerge } from 'tailwind-merge'
 import { PageRouteName, routeTo } from '@/application/routeTools'
 import { Div, DivProps } from '@edsolater/uikit'
 
-type LinkProps = {
+interface LinkProps extends DivProps {
   href?: string
   noTextStyle?: boolean
   /** it's a hint. avoid it just use auto detect */
   openInNewTab?: boolean
-} & DivProps
+}
 
 export default function Link({ href, noTextStyle, openInNewTab, ...restProps }: LinkProps) {
   if (!href) return <Div {...restProps} />

@@ -87,7 +87,7 @@ export default function ListFast<T>({
     <Div {...restProps} domRef_={listRef} className_={`List overflow-y-scroll`} style_={{ contentVisibility: 'auto' }}>
       {isGrouped
         ? Object.entries(turncatedGroupedListItems).map(([groupName, groupItems]) => (
-            <Div key={groupName} icss={{ position: 'relative' }}>
+            <Div key={groupName}>
               {/* WrapDivIfNot */}
               <Div icss={{ position: 'sticky', top: 0, zIndex: 1000 }}>
                 {renderGroupTitle(

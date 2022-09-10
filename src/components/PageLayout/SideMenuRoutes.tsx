@@ -46,9 +46,16 @@ function SideMenuRoutesLinkItem({
       {...restProps}
       href={href}
       noTextStyle
-      className={`group block py-2.5 mobile:py-1.5 px-4 mobile:px-1 rounded-xl mobile:rounded-lg hover:bg-[rgba(57,208,216,0.05)] ${
-        isCurrentRoutePath ? 'bg-bg-link-active' : ''
-      }`}
+      icss={{
+        display: 'block',
+        paddingBlock: isMobile ? 6 : 10,
+        paddingInline: isMobile ? 4 : 16,
+        borderRadius: 8,
+        ':hover': {
+          background: 'rgba(57,208,216,0.05)'
+        },
+        background: isCurrentRoutePath ? 'var(--bg-link-active)' : undefined
+      }}
     >
       <Div icss={{ display: 'flex', alignItems: 'center', justifyContent: 'stretch' }}>
         <Icon forceColor="var(--icon-link)" className="mr-3" size={isMobile ? 'xs' : 'sm'} iconSrc={icon} />

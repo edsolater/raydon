@@ -1,7 +1,3 @@
-import { TokenAmount } from '@raydium-io/raydium-sdk'
-import { Fragment, ReactNode, useEffect, useMemo, useRef, useState } from 'react'
-import { twMerge } from 'tailwind-merge'
-
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import useCreateFarms from '@/application/createFarm/useCreateFarm'
 import { isHydratedFarmInfo, isJsonFarmInfo } from '@/application/farms/judgeFarmInfo'
@@ -45,7 +41,6 @@ import { appColors } from '@/styles/colors'
 import { Badge } from '@/tempUikits/Badge'
 import Button, { ButtonHandle } from '@/tempUikits/Button'
 import Card from '@/tempUikits/Card'
-
 import Grid from '@/tempUikits/Grid'
 import Input from '@/tempUikits/Input'
 import Link from '@/tempUikits/Link'
@@ -58,6 +53,9 @@ import Switcher from '@/tempUikits/Switcher'
 import Tooltip, { TooltipHandle } from '@/tempUikits/Tooltip'
 import { cssCol, cssRow, Div, DivProps, SplitView } from '@edsolater/uikit'
 import { useXStore } from '@edsolater/xstore'
+import { TokenAmount } from '@raydium-io/raydium-sdk'
+import { Fragment, ReactNode, useEffect, useMemo, useRef, useState } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 export default function FarmPage() {
   useFarmUrlParser()
@@ -609,7 +607,17 @@ function FarmCardDatabaseBody({
           sourceData={data}
           getKey={(i) => toPubString(i.id)}
           getGroupTitle={(i) => i.category}
-          renderGroupTitle={(category) => <Div icss={{ paddingBlock: 4, background: 'var(--app-bg)' }}>{category}</Div>}
+          renderGroupTitle={(category) => (
+            <Div
+              icss={{
+                border: '1px solid transparent' /*  Fix webkit render bug */,
+                paddingBlock: 4,
+                background: 'var(--app-bg)'
+              }}
+            >
+              {category}
+            </Div>
+          )}
           renderItem={(info) => (
             <FarmCardItemFace
               info={info}
