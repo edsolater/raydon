@@ -607,17 +607,7 @@ function FarmCardDatabaseBody({
           sourceData={data}
           getKey={(i) => toPubString(i.id)}
           getGroupTitle={(i) => i.category}
-          renderGroupTitle={(category) => (
-            <Div
-              icss={{
-                border: '1px solid transparent' /*  Fix webkit render bug */,
-                paddingBlock: 4,
-                background: 'var(--app-bg)'
-              }}
-            >
-              {category}
-            </Div>
-          )}
+          renderGroupTitle={(category) => <Div icss={{ paddingBlock: 4, background: 'var(--app-bg)' }}>{category}</Div>}
           renderItem={(info) => (
             <FarmCardItemFace
               info={info}
