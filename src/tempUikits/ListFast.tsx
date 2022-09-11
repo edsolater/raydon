@@ -7,7 +7,7 @@ import { useEvent } from '@/hooks/useEvent'
 import { useScrollDegreeDetector } from '@/hooks/useScrollDegreeDetector'
 import { groupBy, map, shakeNil } from '@edsolater/fnkit'
 import { useForceUpdate } from '@edsolater/hookit'
-import { Div, DivProps } from '@edsolater/uikit'
+import { AddProps, Div, DivProps } from '@edsolater/uikit'
 
 type InfiniteScrollOptions = {
   increaseRenderCount?: number
@@ -88,13 +88,12 @@ export default function ListFast<T>({
       {isGrouped
         ? Object.entries(turncatedGroupedListItems).map(([groupName, groupItems]) => (
             <Div key={groupName}>
-              {/* WrapDivIfNot */}
-              <Div icss={{ position: 'sticky', top: 0, zIndex: 1000 }}>
+              <AddProps icss={{ position: 'sticky', top: 0, zIndex: 1000 }}>
                 {renderGroupTitle(
                   groupName,
                   map(groupItems, (i) => i.item)
                 )}
-              </Div>
+              </AddProps>
               {groupItems.map(({ item }, idx) => (
                 <Fragment key={getKey(item, idx)}>{getRenderNode(item, idx)}</Fragment>
               ))}
