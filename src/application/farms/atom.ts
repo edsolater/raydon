@@ -20,7 +20,6 @@ export type FarmStore = {
    * expanded collapse items
    */
   expandedItemIds: Set<string>
-  haveUpcomingFarms: boolean
 
   // do not care it's value, just trigger React refresh
   farmRefreshCount: number
@@ -51,7 +50,6 @@ export const farmAtom = createXAtom<FarmStore>({
       return Boolean(detailIdCount && detailIdCount > 0)
     },
     expandedItemIds: new Set(),
-    haveUpcomingFarms: false,
 
     farmRefreshCount: 0,
     refreshFarmInfos: () => {
