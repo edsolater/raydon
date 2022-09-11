@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react'
-import txFarmDeposit from '@/application/farms/txFarmDeposit'
-import txFarmWithdraw from '@/application/farms/txFarmWithdraw'
+import txFarmDeposit from '@/application/farms/tx/txFarmDeposit'
+import txFarmWithdraw from '@/application/farms/tx/txFarmWithdraw'
 import useStaking from '@/application/staking/useStaking'
 import useWallet from '@/application/wallet/useWallet'
 import Button from '@/tempUikits/Button'

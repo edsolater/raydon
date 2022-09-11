@@ -8,7 +8,7 @@ import {
   MAX_DURATION_SECOND,
   MAX_OFFSET_AFTER_NOW_SECOND,
   MIN_DURATION_SECOND
-} from '@/application/farms/handleFarmInfo'
+} from '@/application/farms/utils/handleFarmInfo'
 import { isQuantumSOLVersionSOL, QuantumSOLVersionSOL, QuantumSOLVersionWSOL } from '@/application/token'
 import { SplToken } from '@/application/token/type'
 import useWallet from '@/application/wallet/useWallet'

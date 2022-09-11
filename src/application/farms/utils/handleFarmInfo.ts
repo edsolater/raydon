@@ -29,9 +29,9 @@ import {
   TokenAmount
 } from '@raydium-io/raydium-sdk'
 import BN from 'bn.js'
-import { ConnectionAtom } from '../connection'
-import { SplToken } from '../token/type'
-import { FarmPoolJsonInfo, FarmPoolsJsonFile, HydratedFarmInfo, SdkParsedFarmInfo } from './type'
+import { ConnectionStore } from '../../connection'
+import { SplToken } from '../../token/type'
+import { FarmPoolJsonInfo, FarmPoolsJsonFile, HydratedFarmInfo, SdkParsedFarmInfo } from '../type'
 
 const MAX_DURATION_DAY = 90
 const MIN_DURATION_DAY = 7
@@ -100,7 +100,7 @@ export function hydrateFarmInfo(
     tokenPrices: TokenStore['tokenPrices']
     liquidityJsonInfos: LiquidityStore['jsonInfos']
     currentBlockChainDate: Date
-    chainTimeOffset: ConnectionAtom['chainTimeOffset']
+    chainTimeOffset: ConnectionStore['chainTimeOffset']
   }
 ): HydratedFarmInfo {
   const farmPoolType = judgeFarmType(farmInfo, payload.currentBlockChainDate)

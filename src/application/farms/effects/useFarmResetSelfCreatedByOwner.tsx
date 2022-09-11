@@ -1,5 +1,5 @@
-import useWallet from '../wallet/useWallet'
-import useFarms from './useFarms'
+import useWallet from '../../wallet/useWallet'
+import useFarms from '../useFarms'
 import { useEffect } from 'react'
 
 export default function useFarmResetSelfCreatedByOwner() {

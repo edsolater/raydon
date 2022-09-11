@@ -1,5 +1,5 @@
 import { isValidPublicKey } from '@/functions/judgers/dateType'
-import { getURLQueryEntry } from '../../functions/dom/getURLQueryEntries'
+import { getURLQueryEntry } from '../../../functions/dom/getURLQueryEntries'
 
 export function getURLFarmId(): string | undefined {
   const query = getURLQueryEntry()

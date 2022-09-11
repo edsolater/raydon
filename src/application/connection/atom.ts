@@ -9,7 +9,7 @@ import { extractConnectionName } from './utils/extractConnectionName'
 import { getChainDate } from './utils/getChainDate'
 import { deleteRpc, switchRpc } from './utils/swithRPC'
 
-export type ConnectionAtom = {
+export type ConnectionStore = {
   connection?: Connection
   version?: string | number
   availableEndPoints?: Endpoint[]
@@ -44,7 +44,7 @@ export type ConnectionAtom = {
   readonly getChainDate: () => Date
 }
 
-export const connectionAtom = createXAtom<ConnectionAtom>({
+export const connectionAtom = createXAtom<ConnectionStore>({
   name: 'connection',
   default: () => ({
     availableEndPoints: [],

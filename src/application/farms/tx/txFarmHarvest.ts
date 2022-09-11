@@ -3,19 +3,19 @@ import { Farm, TokenAmount } from '@raydium-io/raydium-sdk'
 import createAssociatedTokenAccountIfNotExist from '@/application/txTools/createAssociatedTokenAccountIfNotExist'
 import { createTransactionCollector } from '@/application/txTools/createTransaction'
 import handleMultiTx from '@/application/txTools/handleMultiTx'
-import assert from '@/functions/assert'
-import asyncMap from '@/functions/asyncMap'
-import { HydratedFarmInfo } from './type'
-import useFarms from './useFarms'
-import { jsonInfo2PoolKeys } from '../txTools/jsonInfo2PoolKeys'
 import {
   addWalletAccountChangeListener,
   removeWalletAccountChangeListener
-} from '../wallet/utils/walletAccountChangeListener'
+} from '@/application/wallet/utils/walletAccountChangeListener'
+import assert from '@/functions/assert'
+import asyncMap from '@/functions/asyncMap'
+import { jsonInfo2PoolKeys } from '../../txTools/jsonInfo2PoolKeys'
+import { HydratedFarmInfo } from '../type'
+import useFarms from '../useFarms'
 
-export default async function txFarmDeposit(
+export default async function txFarmHarvest(
   info: HydratedFarmInfo,
-  options: { isStaking?: boolean; amount: TokenAmount }
+  options: { isStaking?: boolean; rewardAmounts: TokenAmount[] }
 ) {
   return handleMultiTx(async ({ transactionCollector, baseUtils: { owner } }) => {
     const piecesCollector = createTransactionCollector()
@@ -55,9 +55,8 @@ export default async function txFarmDeposit(
       })
       piecesCollector.addInstruction(instruction)
     }
-
-    // ------------- add deposit transaction --------------
-    const depositInstruction = Farm.makeDepositInstruction({
+    // ------------- add withdraw transaction --------------
+    const depositInstruction = Farm.makeWithdrawInstruction({
       poolKeys,
       userKeys: {
         ledger: ledgerAddress,
@@ -65,7 +64,7 @@ export default async function txFarmDeposit(
         owner,
         rewardTokenAccounts: rewardTokenAccountsPublicKeys
       },
-      amount: options.amount.raw
+      amount: 0
     })
     piecesCollector.addInstruction(depositInstruction)
 
@@ -78,9 +77,16 @@ export default async function txFarmDeposit(
     transactionCollector.add(await piecesCollector.spawnTransaction(), {
       onTxError: () => removeWalletAccountChangeListener(listenerId),
       onTxSentError: () => removeWalletAccountChangeListener(listenerId),
+      onTxSuccess: () => {
+        setTimeout(() => {
+          useFarms.getState().refreshFarmInfos()
+        }, 300) // sometimes pending rewards is not very reliable, so invoke it manually
+      }, // wallet Account Change sometimes not stable
       txHistoryInfo: {
-        title: `Stake ${options.amount.token.symbol}`,
-        description: `Stake ${options.amount.toExact()} ${options.amount.token.symbol}`
+        title: `Harvest ${options.rewardAmounts.map(({ token }) => token.symbol).join(', ')}`,
+        description: `Harvest ${options.rewardAmounts
+          .map((amount) => `${amount.toExact()} ${amount.token.symbol}`)
+          .join(', ')}`
       }
     })
   })

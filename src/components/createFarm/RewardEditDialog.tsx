@@ -1,6 +1,6 @@
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import useCreateFarms from '@/application/createFarm/useCreateFarm'
-import { MAX_DURATION, MIN_DURATION } from '@/application/farms/handleFarmInfo'
+import { MAX_DURATION, MIN_DURATION } from '@/application/farms/utils/handleFarmInfo'
 import useWallet from '@/application/wallet/useWallet'
 import Button from '@/tempUikits/Button'
 import ResponsiveDialogDrawer from '@/tempUikits/ResponsiveDialogDrawer'

@@ -1,7 +1,7 @@
 import { addItem } from '@/functions/arrayMethods'
 import useInit from '@/hooks/useInit'
-import { getURLFarmId } from './parseFarmUrl'
-import useFarms from './useFarms'
+import { getURLFarmId } from '../utils/parseFarmUrl'
+import useFarms from '../useFarms'
 
 export function useFarmUrlParser() {
   useInit(

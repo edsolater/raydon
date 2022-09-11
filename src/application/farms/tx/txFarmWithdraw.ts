@@ -9,9 +9,9 @@ import {
 } from '@/application/wallet/utils/walletAccountChangeListener'
 import assert from '@/functions/assert'
 import asyncMap from '@/functions/asyncMap'
-import { HydratedFarmInfo } from './type'
-import useFarms from './useFarms'
-import { jsonInfo2PoolKeys } from '../txTools/jsonInfo2PoolKeys'
+import { HydratedFarmInfo } from '../type'
+import useFarms from '../useFarms'
+import { jsonInfo2PoolKeys } from '../../txTools/jsonInfo2PoolKeys'
 
 export default async function txFarmWithdraw(
   info: HydratedFarmInfo,

@@ -5,20 +5,21 @@ import { lazyMap } from '@/functions/lazyMap'
 import { useEffectWithTransition } from '@/hooks/useEffectWithTransition'
 import { useXStore } from '@edsolater/xstore'
 import { useMemo } from 'react'
-import { Endpoint } from '../connection'
-import useConnection from '../connection/useConnection'
-import { usePools } from '../pools/usePools'
-import { tokenAtom } from '../token'
-import { jsonInfo2PoolKeys } from '../txTools/jsonInfo2PoolKeys'
-import useWallet from '../wallet/useWallet'
-import { fetchFarmJsonInfos, hydrateFarmInfo, mergeSdkFarmInfo } from './handleFarmInfo'
-import useFarms from './useFarms'
+import { Endpoint } from '../../connection'
+import useConnection from '../../connection/useConnection'
+import { usePools } from '../../pools/usePools'
+import { tokenAtom } from '../../token'
+import { jsonInfo2PoolKeys } from '../../txTools/jsonInfo2PoolKeys'
+import useWallet from '../../wallet/useWallet'
+import { fetchFarmJsonInfos, hydrateFarmInfo, mergeSdkFarmInfo } from '../utils/handleFarmInfo'
+import useFarms from '../useFarms'
+import { farmAtom } from '../atom'
 
 export default function useFarmInfoLoader() {
-  const { jsonInfos, sdkParsedInfos, farmRefreshCount } = useFarms()
+  const { jsonInfos, sdkParsedInfos, farmRefreshCount } = useXStore(farmAtom)
   const liquidityJsonInfos = useLiquidity((s) => s.jsonInfos)
   const pairs = usePools((s) => s.jsonInfos)
-  const { getToken, getLpToken, lpTokens, tokenPrices } = useXStore(tokenAtom)
+  const { tokens, getToken, getLpToken, lpTokens, tokenPrices } = useXStore(tokenAtom)
   const chainTimeOffset = useConnection((s) => s.chainTimeOffset) ?? 0
   const currentBlockChainDate = offsetDateTime(Date.now() + chainTimeOffset, { minutes: 0 /* force */ })
 
@@ -84,10 +85,9 @@ export default function useFarmInfoLoader() {
   }, [
     aprs,
     sdkParsedInfos,
-    getToken,
+    tokens,
     lpPrices,
     tokenPrices,
-    getLpToken,
     lpTokens,
     liquidityJsonInfos,
     chainTimeOffset // when connection is ready, should get connection's chain time)
