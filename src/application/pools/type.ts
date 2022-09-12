@@ -1,7 +1,5 @@
-import { CurrencyAmount, Fraction, Price, Token, TokenAmount } from '@raydium-io/raydium-sdk'
-
 import { HexAddress } from '@/types/constants'
-
+import { CurrencyAmount, Fraction, Price, TokenAmount } from '@raydium-io/raydium-sdk'
 import { SplToken } from '../token/type'
 
 export interface JsonPairItemInfo {

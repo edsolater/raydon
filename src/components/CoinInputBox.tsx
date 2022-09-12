@@ -30,6 +30,7 @@ import Button from '../tempUikits/Button'
 import DecimalInput from '../tempUikits/DecimalInput'
 import CoinAvatar from './CoinAvatar'
 import Icon from './Icon'
+import { poolsAtom } from '@/application/pools/atom'
 
 export interface CoinInputBoxHandle {
   focusInput?: () => void
@@ -127,7 +128,7 @@ export default function CoinInputBox({
   const isOutsideValueLocked = useRef(false)
   const { connected, getBalance, tokenAccounts } = useXStore(walletAtom)
   const { tokenPrices } = useXStore(tokenAtom)
-  const { lpPrices } = usePools()
+  const { lpPrices } = useXStore(poolsAtom)
   const isMobile = useAppSettings((s) => s.isMobile)
 
   const variousPrices = { ...lpPrices, ...tokenPrices }

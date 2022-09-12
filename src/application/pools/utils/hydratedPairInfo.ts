@@ -2,9 +2,9 @@ import { TokenAmount } from '@raydium-io/raydium-sdk'
 import { toTokenAmount } from '@/functions/format/toTokenAmount'
 import toTokenPrice from '@/functions/format/toTokenPrice'
 import toUsdCurrency from '@/functions/format/toUsdCurrency'
-import { LpToken } from '../token/type'
+import { LpToken } from '../../token/type'
 import computeUserLedgerInfo from './infoCalculater'
-import { HydratedPairItemInfo, JsonPairItemInfo } from './type'
+import { HydratedPairItemInfo, JsonPairItemInfo } from '../type'
 
 export function hydratedPairInfo(
   pair: JsonPairItemInfo,

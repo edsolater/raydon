@@ -1,8 +1,7 @@
-import { useEffect } from 'react'
-
 import jFetch from '@/functions/dom/jFetch'
-
-import { usePools } from './usePools'
+import { useEffect } from 'react'
+import { poolsAtom } from '../atom'
+import { usePools } from '../usePools'
 
 type InfoResponse = {
   tvl: string | number
@@ -23,7 +22,7 @@ export default function usePoolSummeryInfoLoader() {
     })
     if (!summeryInfo) return
 
-    usePools.setState({ tvl: summeryInfo.tvl, volume24h: summeryInfo.volume24h })
+    poolsAtom.set({ tvl: summeryInfo.tvl, volume24h: summeryInfo.volume24h })
   }
 
   useEffect(() => {

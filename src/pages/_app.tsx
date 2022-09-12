@@ -14,7 +14,7 @@ import { useAppInitVersionPostHeartBeat, useJudgeAppVersion } from '@/applicatio
 import useLiquidityInfoLoader from '@/application/liquidity/effects/useLiquidityInfoLoader'
 import useMessageBoardFileLoader from '@/application/messageBoard/useMessageBoardFileLoader'
 import useMessageBoardReadedIdRecorder from '@/application/messageBoard/useMessageBoardReadedIdRecorder'
-import usePoolsInfoLoader from '@/application/pools/usePoolsInfoLoader'
+import usePoolsInfoLoader from '@/application/pools/effects/usePoolsInfoLoader'
 import useStealDataFromFarm from '@/application/staking/useStealDataFromFarm'
 import useInitRefreshTransactionStatus from '@/application/txHistory/useInitRefreshTransactionStatus'
 import useSyncTxHistoryWithLocalStorage from '@/application/txHistory/useSyncTxHistoryWithLocalStorage'

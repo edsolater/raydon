@@ -4,10 +4,10 @@ import { twMerge } from 'tailwind-merge'
 
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import useFarms from '@/application/farms/useFarms'
-import { isHydratedPoolItemInfo } from '@/application/pools/is'
+import { isHydratedPoolItemInfo } from '@/application/pools/utils/is'
 import { HydratedPairItemInfo } from '@/application/pools/type'
 import { usePoolFavoriteIds, usePools } from '@/application/pools/usePools'
-import usePoolSummeryInfoLoader from '@/application/pools/usePoolSummeryInfoLoader'
+import usePoolSummeryInfoLoader from '@/application/pools/effects/usePoolSummeryInfoLoader'
 import { routeTo } from '@/application/routeTools'
 import { tokenAtom } from '@/application/token'
 import { LpToken } from '@/application/token/type'
@@ -44,6 +44,7 @@ import Switcher from '@/tempUikits/Switcher'
 import Tooltip from '@/tempUikits/Tooltip'
 import { cssCol, cssRow, Div } from '@edsolater/uikit'
 import { useXStore } from '@edsolater/xstore'
+import { poolsAtom } from '@/application/pools/atom'
 
 /**
  * store:
@@ -120,7 +121,7 @@ function PoolStakedOnlyBlock() {
         className="ml-2"
         defaultChecked={onlySelfPools}
         onToggle={(isOnly) => {
-          usePools.setState({ onlySelfPools: isOnly })
+          poolsAtom.set({ onlySelfPools: isOnly })
         }}
       />
     </Div>
@@ -175,13 +176,13 @@ function PoolSearchBlock({ className }: { className?: string }) {
             storeSearchText ? 'opacity-100' : 'opacity-0 pointer-events-none'
           }`}
           onClick={() => {
-            usePools.setState({ searchText: '' })
+            poolsAtom.set({ searchText: '' })
           }}
         />
       }
       placeholder="Search All"
       onUserInput={(searchText) => {
-        usePools.setState({ searchText })
+        poolsAtom.set({ searchText })
       }}
     />
   )
@@ -208,7 +209,7 @@ function PoolTimeBasisSelectorBox({ className }: { className?: string }) {
       defaultValue={timeBasis}
       prefix="Time Basis:"
       onChange={(newSortKey) => {
-        usePools.setState({ timeBasis: newSortKey ?? '7D' })
+        poolsAtom.set({ timeBasis: newSortKey ?? '7D' })
       }}
     />
   )
@@ -268,7 +269,7 @@ function PoolRefreshCircleBlock({ className }: { className?: string }) {
       <RefreshCircle
         refreshKey="pools"
         freshFunction={() => {
-          usePools.getState().refreshPools()
+          poolsAtom.get().refreshPools()
         }}
       />
     </Div>
@@ -277,7 +278,7 @@ function PoolRefreshCircleBlock({ className }: { className?: string }) {
       <RefreshCircle
         refreshKey="pools"
         freshFunction={() => {
-          usePools.getState().refreshPools()
+          poolsAtom.get().refreshPools()
         }}
       />
     </Div>
@@ -287,7 +288,7 @@ function PoolRefreshCircleBlock({ className }: { className?: string }) {
 function PoolCard() {
   const balances = useWallet((s) => s.balances)
   const unZeroBalances = objectFilter(balances, (tokenAmount) => gt(tokenAmount, 0))
-  const { hydratedInfos } = usePools()
+  const { hydratedInfos } = useXStore(poolsAtom)
   // const { searchText, setSearchText, currentTab, onlySelfPools } = usePageState()
 
   const searchText = usePools((s) => s.searchText)

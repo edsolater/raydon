@@ -1,6 +1,6 @@
 import { LiquidityStore } from '@/application/liquidity/atom'
 import { findAmmId } from '@/application/liquidity/utils/miscToolFns'
-import { PoolsStore } from '@/application/pools/usePools'
+import { PoolsStore } from '@/application/pools/atom'
 import { RAYMint, TokenStore } from '@/application/token'
 import { shakeUndifindedItem } from '@/functions/arrayMethods'
 import { DateParam, offsetDateTime } from '@/functions/date/dateFormat'

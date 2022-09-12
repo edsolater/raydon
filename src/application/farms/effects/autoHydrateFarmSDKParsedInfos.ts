@@ -9,13 +9,14 @@ import { hydrateFarmInfo } from '../utils/handleFarmInfo'
 import { farmAtom } from '../atom'
 import { getSlotCountForSecond } from '../utils/getSlotCountForSecond'
 import { liquidityAtom } from '@/application/liquidity/atom'
+import { poolsAtom } from '@/application/pools/atom'
 
 export const autoHydrateFarmSDKParsedInfos = createXEffect(async () => {
   const { sdkParsedInfos } = farmAtom.get()
   const { jsonInfos: liquidityJsonInfos } = liquidityAtom.get()
-  const { jsonInfos: pairs } = usePools.getState()
+  const { jsonInfos: pairs } = poolsAtom.get()
   const { getToken, getLpToken, tokenPrices } = tokenAtom.get()
-  const { lpPrices } = usePools.getState()
+  const { lpPrices } = poolsAtom.get()
   const { chainTimeOffset = 0, currentEndPoint } = connectionAtom.get()
 
   const currentBlockChainDate = offsetDateTime(Date.now() + chainTimeOffset, { minutes: 0 /* force */ })

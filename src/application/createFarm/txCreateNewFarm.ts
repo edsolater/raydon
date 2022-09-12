@@ -22,6 +22,7 @@ import { SOLMint, WSOLMint } from '../token'
 import useWallet from '../wallet/useWallet'
 import useCreateFarms from './useCreateFarm'
 import { valid300Ray, validUiRewardInfo } from './validRewardInfo'
+import { poolsAtom } from '../pools/atom'
 
 export const userCreatedFarmKey = 'USER_CREATED_FARMS'
 
@@ -97,7 +98,7 @@ export default async function txCreateNewFarm(
       // should record result
       async function recordNewCreatedFarmItem() {
         const { poolId, farmId } = useCreateFarms.getState()
-        const { jsonInfos } = usePools.getState()
+        const { jsonInfos } = poolsAtom.get()
         if (!poolId) return
         if (!farmId) return
         const poolJsonInfo = jsonInfos.find((j) => j.ammId === poolId)

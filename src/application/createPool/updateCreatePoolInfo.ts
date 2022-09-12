@@ -24,11 +24,12 @@ import toPubString, { toPub } from '@/functions/format/toMintString'
 
 import useCreatePool from './useCreatePool'
 import { isMintEqual } from '@/functions/judgers/areEqual'
+import { poolsAtom } from '../pools/atom'
 
 export async function updateCreatePoolInfo(txParam: { marketId: PublicKeyish }): Promise<{ isSuccess: boolean }> {
   try {
     // find out if already exists this pool? disallow user to recreate
-    const { jsonInfos } = usePools.getState()
+    const { jsonInfos } = poolsAtom.get()
     assert(!jsonInfos.some((i) => isMintEqual(i.market, txParam.marketId)), 'Pool already created')
 
     // get market info

@@ -1,28 +1,23 @@
-import { useRouter } from 'next/router'
-import { useEffect, useMemo } from 'react'
-
-import { Price } from '@raydium-io/raydium-sdk'
-
-import shallow from 'zustand/shallow'
-
+import { unifyItem } from '@/functions/arrayMethods'
 import jFetch from '@/functions/dom/jFetch'
 import toTokenPrice from '@/functions/format/toTokenPrice'
-import { HexAddress } from '@/types/constants'
-
-import { tokenAtom } from '../token'
-import useWallet from '../wallet/useWallet'
-
-import { unifyItem } from '@/functions/arrayMethods'
 import { lazyMap } from '@/functions/lazyMap'
 import { useEffectWithTransition } from '@/hooks/useEffectWithTransition'
+import { HexAddress } from '@/types/constants'
 import { useXStore } from '@edsolater/xstore'
-import useLiquidity from '../liquidity/useLiquidity'
-import { hydratedPairInfo } from './hydratedPairInfo'
-import { JsonPairItemInfo } from './type'
-import { usePools } from './usePools'
+import { Price } from '@raydium-io/raydium-sdk'
+import { useRouter } from 'next/router'
+import { useEffect, useMemo } from 'react'
+import useLiquidity from '../../liquidity/useLiquidity'
+import { tokenAtom } from '../../token'
+import useWallet from '../../wallet/useWallet'
+import { poolsAtom } from '../atom'
+import { JsonPairItemInfo } from '../type'
+import { usePools } from '../usePools'
+import { hydratedPairInfo } from '../utils/hydratedPairInfo'
 
 export default function usePoolsInfoLoader() {
-  const jsonInfo = usePools((s) => s.jsonInfos, shallow)
+  const jsonInfo = usePools((s) => s.jsonInfos)
   const liquidityJsonInfos = useLiquidity((s) => s.jsonInfos)
   const stableLiquidityJsonInfoLpMints = useMemo(
     () => unifyItem(liquidityJsonInfos.filter((j) => j.version === 5).map((j) => j.lpMint)),
@@ -38,7 +33,7 @@ export default function usePoolsInfoLoader() {
     // console.time('load pair json')
     const pairJsonInfo = await jFetch<JsonPairItemInfo[]>('https://api.raydium.io/v2/main/pairs')
     if (!pairJsonInfo) return
-    usePools.setState({ jsonInfos: pairJsonInfo.filter(({ name }) => !name.includes('unknown')) })
+    poolsAtom.set({ jsonInfos: pairJsonInfo.filter(({ name }) => !name.includes('unknown')) })
     // console.timeEnd('load pair json')
   }
 
@@ -49,7 +44,7 @@ export default function usePoolsInfoLoader() {
   // TODO: currently also fetch info when it's not
   useEffect(() => {
     if (!pathname.includes('/pools/') && !pathname.includes('/liquidity/')) return
-    const timeoutId = setInterval(usePools.getState().refreshPools, 15 * 60 * 1000)
+    const timeoutId = setInterval(poolsAtom.get().refreshPools, 15 * 60 * 1000)
     return () => clearInterval(timeoutId)
   }, [pathname])
 
@@ -68,7 +63,7 @@ export default function usePoolsInfoLoader() {
   )
 
   useEffect(() => {
-    usePools.setState({ lpPrices })
+    poolsAtom.set({ lpPrices })
   }, [lpPrices])
 
   useEffectWithTransition(async () => {
@@ -82,6 +77,6 @@ export default function usePoolsInfoLoader() {
           isStable: stableLiquidityJsonInfoLpMints.includes(pair.lpMint)
         })
     })
-    usePools.setState({ hydratedInfos, loading: hydratedInfos.length === 0 })
+    poolsAtom.set({ hydratedInfos, loading: hydratedInfos.length === 0 })
   }, [jsonInfo, getToken, balances, lpTokens, tokens, stableLiquidityJsonInfoLpMints])
 }
