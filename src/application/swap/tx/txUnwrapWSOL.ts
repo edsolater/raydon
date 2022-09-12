@@ -1,10 +1,10 @@
 import { Spl } from '@raydium-io/raydium-sdk'
 
-import { createTransactionCollector } from '../txTools/createTransaction'
-import handleMultiTx from '../txTools/handleMultiTx'
-import useWallet from '../wallet/useWallet'
+import { createTransactionCollector } from '../../txTools/createTransaction'
+import handleMultiTx from '../../txTools/handleMultiTx'
+import useWallet from '../../wallet/useWallet'
 
-import { WSOL, WSOLMint } from '../token'
+import { WSOL, WSOLMint } from '../../token'
 import toPubString from '@/functions/format/toMintString'
 import { Numberish } from '@/types/constants'
 import { PublicKey } from '@solana/web3.js'

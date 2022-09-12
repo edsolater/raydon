@@ -1,14 +1,14 @@
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import useNotification from '@/application/notification/useNotification'
 import { routeTo } from '@/application/routeTools'
-import { getCoingeckoChartPriceData } from '@/application/swap/klinePrice'
-import txSwap from '@/application/swap/txSwap'
-import { txUnwrapWSOL } from '@/application/swap/txUnwrapWSOL'
-import txWrapSOL from '@/application/swap/txWrapSOL'
+import { getCoingeckoChartPriceData } from '@/application/swap/utils/klinePrice'
+import txSwap from '@/application/swap/tx/txSwap'
+import { txUnwrapWSOL } from '@/application/swap/tx/txUnwrapWSOL'
+import txWrapSOL from '@/application/swap/tx/txWrapSOL'
 import { useSwap } from '@/application/swap/useSwap'
-import { useSwapAmountCalculator } from '@/application/swap/useSwapAmountCalculator'
-import useSwapInitCoinFiller from '@/application/swap/useSwapInitCoinFiller'
-import useSwapUrlParser from '@/application/swap/useSwapUrlParser'
+import { useSwapAmountCalculator } from '@/application/swap/effects/useSwapAmountCalculator'
+import useSwapInitCoinFiller from '@/application/swap/effects/useSwapInitCoinFiller'
+import useSwapUrlParser from '@/application/swap/effects/useSwapUrlParser'
 import {
   isQuantumSOLVersionSOL,
   isQuantumSOLVersionWSOL,
@@ -59,6 +59,7 @@ import { RouteInfo } from '@raydium-io/raydium-sdk'
 import { createRef, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { useSwapTwoElements } from '../hooks/useSwapTwoElements'
+import { swapAtom } from '@/application/swap/atom'
 
 function SwapEffect() {
   useSwapInitCoinFiller()
@@ -154,7 +155,7 @@ function useUnofficialTokenConfirmState(): { hasConfirmed: boolean; popConfirm: 
       onCancel: () => {
         setHasUserTemporaryConfirmed(false)
         setIsConfirmPanelOn(false)
-        useSwap.setState(directionReversed ? { coin1: undefined } : { coin2: undefined })
+        swapAtom.set(directionReversed ? { coin1: undefined } : { coin2: undefined })
       }
     })
   }
@@ -219,7 +220,7 @@ function SwapCard() {
   )
 
   const switchDirectionReversed = useCallback(() => {
-    useSwap.setState((s) => ({ directionReversed: !s.directionReversed }))
+    swapAtom.set((s) => ({ directionReversed: !s.directionReversed }))
   }, [])
   const [isCoinSelectorOn, { on: turnOnCoinSelector, off: turnOffCoinSelector }] = useToggle()
   const [targetCoinNo, setTargetCoinNo] = useState<'1' | '2'>('1')
@@ -233,14 +234,14 @@ function SwapCard() {
   })
 
   useEffect(() => {
-    useSwap.setState({ directionReversed: hasUISwrapped })
+    swapAtom.set({ directionReversed: hasUISwrapped })
   }, [hasUISwrapped])
 
   const hasSwapDetermined =
     coin1 && isMeaningfulNumber(coin1Amount) && coin2 && isMeaningfulNumber(coin2Amount) && executionPrice
   const cardRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
-    useSwap.setState({
+    swapAtom.set({
       scrollToInputBox: () => cardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
     })
   }, [])
@@ -275,7 +276,7 @@ function SwapCard() {
           token={coin1}
           value={coin1Amount ? (eq(coin1Amount, 0) ? '' : toString(coin1Amount)) : undefined}
           onUserInput={(value) => {
-            useSwap.setState({ focusSide: 'coin1', coin1Amount: value })
+            swapAtom.set({ focusSide: 'coin1', coin1Amount: value })
           }}
         />
 
@@ -340,7 +341,7 @@ function SwapCard() {
           token={coin2}
           value={coin2Amount ? (eq(coin2Amount, 0) ? '' : toString(coin2Amount)) : undefined}
           onUserInput={(value) => {
-            useSwap.setState({ focusSide: 'coin2', coin2Amount: value })
+            swapAtom.set({ focusSide: 'coin2', coin2Amount: value })
           }}
         />
       </Div>
@@ -461,14 +462,14 @@ function SwapCard() {
         open={isCoinSelectorOn}
         onSelectCoin={(token) => {
           if (targetCoinNo === '1') {
-            useSwap.setState({ coin1: token })
+            swapAtom.set({ coin1: token })
             if (!areTokenPairSwapable(token, coin2)) {
-              useSwap.setState({ coin2: undefined })
+              swapAtom.set({ coin2: undefined })
             }
           } else {
-            useSwap.setState({ coin2: token })
+            swapAtom.set({ coin2: token })
             if (!areTokenPairSwapable(token, coin1)) {
-              useSwap.setState({ coin1: undefined })
+              swapAtom.set({ coin1: undefined })
             }
           }
           turnOffCoinSelector()

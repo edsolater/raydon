@@ -20,6 +20,7 @@ import { createNewUIRewardInfo, parsedHydratedRewardInfoToUiRewardInfo } from '.
 import { addQuery, cleanQuery } from '@/functions/dom/getURLQueryEntries'
 import { addItem } from '@/functions/arrayMethods'
 import { liquidityAtom } from './liquidity/atom'
+import { swapAtom } from './swap/atom'
 
 export type PageRouteConfigs = {
   '/swap': {
@@ -90,18 +91,16 @@ export function routeTo<ToPage extends keyof PageRouteConfigs>(
       options?.queryProps?.coin1 ?? (router.pathname.includes('/liquidity/add') ? liquidityAtom.get().coin1 : undefined)
     const coin2 =
       options?.queryProps?.coin2 ?? (router.pathname.includes('/liquidity/add') ? liquidityAtom.get().coin2 : undefined)
-    const isSwapDirectionReversed = useSwap.getState().directionReversed
+    const isSwapDirectionReversed = swapAtom.get().directionReversed
     const targetState = objectShakeFalsy(isSwapDirectionReversed ? { coin2: coin1, coin1: coin2 } : { coin1, coin2 })
-    useSwap.setState(targetState)
+    swapAtom.set(targetState)
     router.push({ pathname: '/swap' })
   } else if (toPage === '/liquidity/add') {
     /** get info from queryProp */
     const ammId = options?.queryProps?.ammId
-    const coin1 =
-      options?.queryProps?.coin1 ?? (router.pathname.includes('swap') ? useSwap.getState().coin1 : undefined)
-    const coin2 =
-      options?.queryProps?.coin2 ?? (router.pathname.includes('swap') ? useSwap.getState().coin2 : undefined)
-    const isSwapDirectionReversed = useSwap.getState().directionReversed
+    const coin1 = options?.queryProps?.coin1 ?? (router.pathname.includes('swap') ? swapAtom.get().coin1 : undefined)
+    const coin2 = options?.queryProps?.coin2 ?? (router.pathname.includes('swap') ? swapAtom.get().coin2 : undefined)
+    const isSwapDirectionReversed = swapAtom.get().directionReversed
     const upCoin = isSwapDirectionReversed ? coin2 : coin1
     const downCoin = isSwapDirectionReversed ? coin1 : coin2
     const mode = options?.queryProps?.mode

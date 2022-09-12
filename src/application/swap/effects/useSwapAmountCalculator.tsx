@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 
 import { jsonInfo2PoolKeys, Liquidity, Trade, WSOL } from '@raydium-io/raydium-sdk'
-import { Connection } from '../connection'
+import { Connection } from '../../connection'
 
 import { shakeUndifindedItem } from '@/functions/arrayMethods'
 import toPubString from '@/functions/format/toMintString'
@@ -10,21 +10,22 @@ import { toTokenAmount } from '@/functions/format/toTokenAmount'
 import useAsyncEffect from '@/hooks/useAsyncEffect'
 import { HexAddress, Numberish } from '@/types/constants'
 
-import useAppSettings from '../appSettings/useAppSettings'
-import useConnection from '../connection/useConnection'
-import { SDKParsedLiquidityInfo } from '../liquidity/type'
-import useLiquidity from '../liquidity/useLiquidity'
-import { sdkParseJsonLiquidityInfo } from '../liquidity/utils/sdkParseJsonLiquidityInfo'
-import { SplToken } from '../token/type'
-import { deUIToken, deUITokenAmount, toUITokenAmount } from '../token'
+import useAppSettings from '../../appSettings/useAppSettings'
+import useConnection from '../../connection/useConnection'
+import { SDKParsedLiquidityInfo } from '../../liquidity/type'
+import useLiquidity from '../../liquidity/useLiquidity'
+import { sdkParseJsonLiquidityInfo } from '../../liquidity/utils/sdkParseJsonLiquidityInfo'
+import { SplToken } from '../../token/type'
+import { deUIToken, deUITokenAmount, toUITokenAmount } from '../../token'
 
-import { useSwap } from './useSwap'
+import { useSwap } from '../useSwap'
 import { useDebugValue, useEffect } from 'react'
-import useWallet from '../wallet/useWallet'
+import useWallet from '../../wallet/useWallet'
 import { isMintEqual } from '@/functions/judgers/areEqual'
 import { toString } from '@/functions/numberish/toString'
 import { eq } from '@/functions/numberish/compare'
 import { useRecordedEffect } from '@/hooks/useRecordedEffect'
+import { swapAtom } from '../atom'
 
 export function useSwapAmountCalculator() {
   const { pathname } = useRouter()
@@ -57,7 +58,7 @@ export function useSwapAmountCalculator() {
   useAsyncEffect(async () => {
     // pairInfo is not enough
     if (!upCoin || !downCoin || !connection || !pathname.startsWith('/swap')) {
-      useSwap.setState({
+      swapAtom.set({
         fee: undefined,
         minReceived: undefined,
         maxSpent: undefined,
@@ -76,7 +77,7 @@ export function useSwapAmountCalculator() {
     const inputIsSolWSOL = isMintEqual(coin1, coin2) && isMintEqual(coin1, WSOL.mint)
     if (inputIsSolWSOL) {
       if (eq(userCoin1Amount, userCoin2Amount)) return
-      useSwap.setState({
+      swapAtom.set({
         fee: undefined,
         minReceived: undefined,
         maxSpent: undefined,
@@ -103,11 +104,10 @@ export function useSwapAmountCalculator() {
       })
       // for calculatePairTokenAmount is async, result maybe droped. if that, just stop it
       const resultStillFresh = (() => {
-        const directionReversed = useSwap.getState().directionReversed
-        const currentUpCoinAmount =
-          (directionReversed ? useSwap.getState().coin2Amount : useSwap.getState().coin1Amount) || '0'
+        const directionReversed = swapAtom.get().directionReversed
+        const currentUpCoinAmount = (directionReversed ? swapAtom.get().coin2Amount : swapAtom.get().coin1Amount) || '0'
         const currentDownCoinAmount =
-          (directionReversed ? useSwap.getState().coin1Amount : useSwap.getState().coin2Amount) || '0'
+          (directionReversed ? swapAtom.get().coin1Amount : swapAtom.get().coin2Amount) || '0'
         const currentFocusSideAmount = focusDirectionSide === 'up' ? currentUpCoinAmount : currentDownCoinAmount
         const focusSideAmount = focusDirectionSide === 'up' ? upCoinAmount : downCoinAmount
         return eq(currentFocusSideAmount, focusSideAmount)
@@ -117,7 +117,7 @@ export function useSwapAmountCalculator() {
       if (focusDirectionSide === 'up') {
         const { routes, priceImpact, executionPrice, currentPrice, swapable, routeType, fee } = calcResult ?? {}
         const { amountOut, minAmountOut } = (calcResult?.info ?? {}) as { amountOut?: string; minAmountOut?: string }
-        useSwap.setState({
+        swapAtom.set({
           fee,
           routes,
           priceImpact,
@@ -132,7 +132,7 @@ export function useSwapAmountCalculator() {
       } else {
         const { routes, priceImpact, executionPrice, currentPrice, swapable, routeType, fee } = calcResult ?? {}
         const { amountIn, maxAmountIn } = (calcResult?.info ?? {}) as { amountIn?: string; maxAmountIn?: string }
-        useSwap.setState({
+        swapAtom.set({
           fee,
           routes,
           priceImpact,

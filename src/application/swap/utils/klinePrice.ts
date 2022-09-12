@@ -1,9 +1,10 @@
 import useLiquidity from '@/application/liquidity/useLiquidity'
 import jFetch from '@/functions/dom/jFetch'
 import { HexAddress, StringNumber } from '@/types/constants'
-import { liquidityAtom } from '../liquidity/atom'
+import { liquidityAtom } from '../../liquidity/atom'
+import { swapAtom } from '../atom'
 
-import { useSwap } from './useSwap'
+import { useSwap } from '../useSwap'
 
 type KLineResponseShape = {
   // state
@@ -36,7 +37,7 @@ type KLineResponseShape2 = {
 // }
 
 export function recordKLineData({ marketId, priceData }: { marketId: HexAddress; priceData: number[] }): void {
-  useSwap.setState((s) => ({ klineData: { ...s.klineData, [marketId]: { priceData, updateTime: Date.now() } } }))
+  swapAtom.set((s) => ({ klineData: { ...s.klineData, [marketId]: { priceData, updateTime: Date.now() } } }))
 }
 
 export async function fetchKLine({ marketId }: { marketId: HexAddress }): Promise<number[] | undefined> {
@@ -49,7 +50,7 @@ export async function fetchKLine({ marketId }: { marketId: HexAddress }): Promis
 }
 
 export async function freshKLineChartPrices() {
-  const { coin1, coin2 } = useSwap.getState()
+  const { coin1, coin2 } = swapAtom.get()
   if (!coin1 || !coin2) return
   const { findLiquidityInfoByTokenMint } = liquidityAtom.get()
 

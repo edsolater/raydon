@@ -15,9 +15,10 @@ import { useXStore } from '@edsolater/xstore'
 import { useRouter } from 'next/router'
 import { ParsedUrlQuery } from 'querystring'
 import { useCallback, useEffect, useRef } from 'react'
-import useConnection from '../connection/useConnection'
-import { QuantumSOLVersionSOL, QuantumSOLVersionWSOL, WSOLMint } from '../token'
-import { getUserTokenEvenNotExist } from '../token/utils/getUserTokenEvenNotExist'
+import useConnection from '../../connection/useConnection'
+import { QuantumSOLVersionSOL, QuantumSOLVersionWSOL, WSOLMint } from '../../token'
+import { getUserTokenEvenNotExist } from '../../token/utils/getUserTokenEvenNotExist'
+import { swapAtom } from '../atom'
 
 function isSolAndWsol(query1: string, query2: string): boolean {
   return query1 === 'sol' && query2 === toPubString(WSOLMint)
@@ -84,10 +85,10 @@ export default function useSwapUrlParser(): void {
 
     if (isSolAndWsol(urlCoin1Mint, urlCoin2Mint)) {
       // SPECIAL CASE: wrap (sol ⇢ wsol)
-      useSwap.setState({ coin1: QuantumSOLVersionSOL, coin2: QuantumSOLVersionWSOL })
+      swapAtom.set({ coin1: QuantumSOLVersionSOL, coin2: QuantumSOLVersionWSOL })
     } else if (isWsolAndSol(urlCoin1Mint, urlCoin2Mint)) {
       // SPECIAL CASE: unwrap (wsol ⇢ sol)
-      useSwap.setState({ coin1: QuantumSOLVersionWSOL, coin2: QuantumSOLVersionSOL })
+      swapAtom.set({ coin1: QuantumSOLVersionWSOL, coin2: QuantumSOLVersionSOL })
     } else if (urlAmmId) {
       // from URL: according to user's ammId , match liquidity pool json info, extract it's base and quote as coin1 and coin2
       const { logWarning } = useNotification.getState()
@@ -107,7 +108,7 @@ export default function useSwapUrlParser(): void {
           // already have correct info, no need parse info from url again
           !hasSameItems([urlCoin1Mint, urlCoin2Mint], [String(coin1?.mint), String(coin2?.mint)])
         ) {
-          useSwap.setState(objectShakeFalsy({ coin1, coin2 }))
+          swapAtom.set(objectShakeFalsy({ coin1, coin2 }))
         }
       } else {
         // may be just haven't load liquidityPoolJsonInfos yet
@@ -120,14 +121,14 @@ export default function useSwapUrlParser(): void {
       const urlCoin1 = await getUserTokenEvenNotExist(urlCoin1Mint, urlCoin1Symbol)
       const urlCoin2 = await getUserTokenEvenNotExist(urlCoin2Mint, urlCoin2Symbol)
 
-      useSwap.setState(objectShakeFalsy({ coin1: urlCoin1, coin2: urlCoin1 === urlCoin2 ? undefined : urlCoin2 }))
+      swapAtom.set(objectShakeFalsy({ coin1: urlCoin1, coin2: urlCoin1 === urlCoin2 ? undefined : urlCoin2 }))
     }
 
     // parse amount
     const coin1Amount = urlCoin1Mint ? urlCoin1Amount : urlCoin2Mint ? urlCoin2Amount : undefined
     const coin2Amount = urlCoin2Mint ? urlCoin2Amount : urlCoin1Mint ? urlCoin1Amount : undefined
-    if (coin1Amount) useSwap.setState({ coin1Amount: coin1Amount })
-    if (coin2Amount) useSwap.setState({ coin2Amount: coin2Amount })
+    if (coin1Amount) swapAtom.set({ coin1Amount: coin1Amount })
+    if (coin2Amount) swapAtom.set({ coin2Amount: coin2Amount })
 
     // parse fixed side
     const currentFixedSide = swapDirectionReversed
@@ -141,7 +142,7 @@ export default function useSwapUrlParser(): void {
     if (isUrlFixedSideValid && currentFixedSide !== urlFixedSide) {
       const correspondingFocusSide =
         urlFixedSide === 'in' ? (swapDirectionReversed ? 'coin2' : 'coin1') : swapDirectionReversed ? 'coin1' : 'coin2'
-      useSwap.setState({ focusSide: correspondingFocusSide })
+      swapAtom.set({ focusSide: correspondingFocusSide })
     }
 
     // if not load enough data, do not change state

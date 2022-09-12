@@ -1,4 +1,4 @@
-import { TokenAmount, Trade } from '@raydium-io/raydium-sdk'
+import { Trade } from '@raydium-io/raydium-sdk'
 
 import assert from '@/functions/assert'
 import asyncMap from '@/functions/asyncMap'
@@ -6,14 +6,13 @@ import { toTokenAmount } from '@/functions/format/toTokenAmount'
 import { gt } from '@/functions/numberish/compare'
 import { toString } from '@/functions/numberish/toString'
 
-import { loadTransaction } from '../txTools/createTransaction'
-import handleMultiTx from '../txTools/handleMultiTx'
-import useWallet from '../wallet/useWallet'
+import { loadTransaction } from '../../txTools/createTransaction'
+import handleMultiTx from '../../txTools/handleMultiTx'
+import useWallet from '../../wallet/useWallet'
 
-import { useSwap } from './useSwap'
-import { deUITokenAmount, toUITokenAmount } from '../token'
 import { shakeUndifindedItem } from '@/functions/arrayMethods'
-import { toHumanReadable } from '@/functions/format/toHumanReadable'
+import { deUITokenAmount } from '../../token'
+import { swapAtom } from '../atom'
 
 export default function txSwap() {
   return handleMultiTx(async ({ transactionCollector, baseUtils: { connection, owner } }) => {
@@ -29,7 +28,7 @@ export default function txSwap() {
       directionReversed,
       minReceived,
       maxSpent
-    } = useSwap.getState()
+    } = swapAtom.get()
 
     const upCoin = directionReversed ? coin2 : coin1
     // although info is included in routes, still need upCoinAmount to pop friendly feedback
