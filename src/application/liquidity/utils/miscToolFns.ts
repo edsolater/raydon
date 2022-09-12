@@ -3,15 +3,16 @@ import { PublicKey } from '@solana/web3.js'
 
 import useConnection from '@/application/connection/useConnection'
 
-import useLiquidity from './useLiquidity'
+import useLiquidity from '../useLiquidity'
 import toPubString from '@/functions/format/toMintString'
+import { liquidityAtom } from '../atom'
 
 export function findLiquidityPoolJson(options: {
   urlAmmId?: string
   urlCoin1Mint?: string
   urlCoin2Mint?: string
 }): LiquidityPoolJsonInfo | undefined {
-  const { jsonInfos } = useLiquidity.getState()
+  const { jsonInfos } = liquidityAtom.get()
   return jsonInfos.find((i) => {
     if (i.id === options.urlAmmId) return true
     if (
@@ -25,7 +26,7 @@ export function findLiquidityPoolJson(options: {
 
 export function findAmmId(lpMint: PublicKeyish) {
   const userLpMint = String(lpMint)
-  const { jsonInfos } = useLiquidity.getState()
+  const { jsonInfos } = liquidityAtom.get()
   const targetJsonInfo = jsonInfos.find(({ lpMint }) => lpMint === userLpMint)
   return targetJsonInfo?.id
 }
@@ -36,7 +37,7 @@ export function findAmmId(lpMint: PublicKeyish) {
  * @returns token mint pair
  */
 export function findTokenMintByAmmId(ammId: string): { base: string; quote: string } | undefined {
-  const { jsonInfos } = useLiquidity.getState()
+  const { jsonInfos } = liquidityAtom.get()
   const targetJsonInfo = jsonInfos.find(({ id }) => id === ammId)
   return targetJsonInfo ? { base: targetJsonInfo.baseMint, quote: targetJsonInfo.quoteMint } : undefined
 }

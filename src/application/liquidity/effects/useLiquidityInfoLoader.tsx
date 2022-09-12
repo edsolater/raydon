@@ -11,16 +11,17 @@ import { useRecordedEffect } from '@/hooks/useRecordedEffect'
 import { HexAddress } from '@/types/constants'
 import { useXStore } from '@edsolater/xstore'
 import { LiquidityPoolsJsonFile } from '@raydium-io/raydium-sdk'
-import hydrateLiquidityInfo from './hydrateLiquidityInfo'
-import sdkParseJsonLiquidityInfo from './sdkParseJsonLiquidityInfo'
-import useLiquidity from './useLiquidity'
+import { hydrateLiquidityInfo } from '../utils/hydrateLiquidityInfo'
+import { sdkParseJsonLiquidityInfo } from '../utils/sdkParseJsonLiquidityInfo'
+import useLiquidity from '../useLiquidity'
+import { liquidityAtom } from '../atom'
 
 /**
  * will load liquidity info (jsonInfo, sdkParsedInfo, hydratedInfo)
  */
 export default function useLiquidityInfoLoader({ disabled }: { disabled?: boolean } = {}) {
   const { jsonInfos, sdkParsedInfos, currentJsonInfo, currentSdkParsedInfo, userExhibitionLiquidityIds } =
-    useLiquidity()
+    useXStore(liquidityAtom)
   const { getToken, getLpToken } = useXStore(tokenAtom)
   const refreshCount = useLiquidity((s) => s.refreshCount)
   const connection = useConnection((s) => s.connection)
@@ -38,7 +39,7 @@ export default function useLiquidityInfoLoader({ disabled }: { disabled?: boolea
       .filter((info) => !(blacklist ?? []).includes(info.id))
     const officialIds = new Set(response?.official?.map((i) => i.id))
     const unOfficialIds = new Set(response?.unOfficial?.map((i) => i.id))
-    if (liquidityInfoList) useLiquidity.setState({ jsonInfos: liquidityInfoList, officialIds, unOfficialIds })
+    if (liquidityInfoList) liquidityAtom.set({ jsonInfos: liquidityInfoList, officialIds, unOfficialIds })
   }, [disabled])
 
   /** get userExhibitionLiquidityIds */
@@ -54,7 +55,7 @@ export default function useLiquidityInfoLoader({ disabled }: { disabled?: boolea
     const userExhibitionLiquidityIds = jsonInfos
       .filter((jsonInfo) => allLpBalanceMint.includes(jsonInfo.lpMint))
       .map((jsonInfo) => jsonInfo.id)
-    useLiquidity.setState({ userExhibitionLiquidityIds })
+    liquidityAtom.set({ userExhibitionLiquidityIds })
   }, [disabled, jsonInfos, rawBalances, refreshCount])
 
   /** json infos ➡ sdkParsed infos (only wallet's LP)  */
@@ -73,7 +74,7 @@ export default function useLiquidityInfoLoader({ disabled }: { disabled?: boolea
         jsonInfos.filter((i) => userExhibitionLiquidityIds.includes(i.id)),
         connection
       )
-      useLiquidity.setState({ sdkParsedInfos: shakeUndifindedItem(sdkParsedInfos) })
+      liquidityAtom.set({ sdkParsedInfos: shakeUndifindedItem(sdkParsedInfos) })
     },
     [disabled, connection, jsonInfos, userExhibitionLiquidityIds, refreshCount] as const
   )
@@ -85,18 +86,18 @@ export default function useLiquidityInfoLoader({ disabled }: { disabled?: boolea
       const lpBalance = rawBalances[String(liquidityInfo.lpMint)]
       return hydrateLiquidityInfo(liquidityInfo, { getToken, getLpToken, lpBalance })
     })
-    useLiquidity.setState({ hydratedInfos })
+    liquidityAtom.set({ hydratedInfos })
   }, [disabled, sdkParsedInfos, rawBalances, getToken, getLpToken])
 
   /** CURRENT jsonInfo ➡ current sdkParsedInfo  */
   useEffectWithTransition(async () => {
     if (disabled) return
     if (connection && currentJsonInfo) {
-      useLiquidity.setState({
+      liquidityAtom.set({
         currentSdkParsedInfo: (await sdkParseJsonLiquidityInfo([currentJsonInfo], connection))?.[0]
       })
     } else {
-      useLiquidity.setState({ currentSdkParsedInfo: undefined })
+      liquidityAtom.set({ currentSdkParsedInfo: undefined })
     }
   }, [disabled, currentJsonInfo, connection, refreshCount])
 
@@ -106,11 +107,11 @@ export default function useLiquidityInfoLoader({ disabled }: { disabled?: boolea
     if (connection && currentSdkParsedInfo) {
       const lpBalance = rawBalances[String(currentSdkParsedInfo.lpMint)]
       const hydrated = await hydrateLiquidityInfo(currentSdkParsedInfo, { getToken, getLpToken, lpBalance })
-      useLiquidity.setState({
+      liquidityAtom.set({
         currentHydratedInfo: hydrated
       })
     } else {
-      useLiquidity.setState({ currentHydratedInfo: undefined })
+      liquidityAtom.set({ currentHydratedInfo: undefined })
     }
   }, [disabled, currentSdkParsedInfo, getToken, getLpToken])
 }

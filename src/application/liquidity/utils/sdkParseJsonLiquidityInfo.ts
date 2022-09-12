@@ -1,10 +1,10 @@
 import useConnection from '@/application/connection/useConnection'
 import { jsonInfo2PoolKeys, Liquidity, LiquidityPoolJsonInfo as LiquidityJsonInfo } from '@raydium-io/raydium-sdk'
 
-import { SDKParsedLiquidityInfo } from './type'
+import { SDKParsedLiquidityInfo } from '../type'
 
 // TODO: cache system
-export default async function sdkParseJsonLiquidityInfo(
+export async function sdkParseJsonLiquidityInfo(
   liquidityJsonInfos: LiquidityJsonInfo[],
   connection = useConnection.getState().connection
 ): Promise<SDKParsedLiquidityInfo[]> {

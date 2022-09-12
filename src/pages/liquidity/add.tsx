@@ -5,11 +5,11 @@ import { twMerge } from 'tailwind-merge'
 
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import useFarms from '@/application/farms/useFarms'
-import txAddLiquidity from '@/application/liquidity/txAddLiquidity'
+import txAddLiquidity from '@/application/liquidity/tx/txAddLiquidity'
 import useLiquidity from '@/application/liquidity/useLiquidity'
-import useLiquidityAmmSelector from '@/application/liquidity/useLiquidityAmmSelector'
-import useLiquidityInitCoinFiller from '@/application/liquidity/useLiquidityInitCoinFiller'
-import useLiquidityUrlParser from '@/application/liquidity/useLiquidityUrlParser'
+import useLiquidityAmmSelector from '@/application/liquidity/effects/useLiquidityAmmSelector'
+import useLiquidityInitCoinFiller from '@/application/liquidity/effects/useLiquidityInitCoinFiller'
+import useLiquidityUrlParser from '@/application/liquidity/effects/useLiquidityUrlParser'
 import { routeTo } from '@/application/routeTools'
 import { SOLDecimals, SOL_BASE_BALANCE, tokenAtom } from '@/application/token'
 import useWallet from '@/application/wallet/useWallet'
@@ -54,6 +54,7 @@ import { cssCol, cssRow, Div } from '@edsolater/uikit'
 import { RemoveLiquidityDialog } from '../../components/dialogs/RemoveLiquidityDialog'
 import TokenSelectorDialog from '../../components/dialogs/TokenSelectorDialog'
 import { Checkbox } from '../../tempUikits/Checkbox'
+import { liquidityAtom } from '@/application/liquidity/atom'
 
 const { ContextProvider: LiquidityUIContextProvider, useStore: useLiquidityContextStore } = createContextStore({
   hasAcceptedPriceChange: false,
@@ -116,8 +117,8 @@ function useLiquidityWarning() {
   const checkPermanent = useCallback(
     () =>
       Boolean(
-        useLiquidity.getState().currentJsonInfo &&
-          userConfirmedListRef.current?.includes(useLiquidity.getState().currentJsonInfo!.id)
+        liquidityAtom.get().currentJsonInfo &&
+          userConfirmedListRef.current?.includes(liquidityAtom.get().currentJsonInfo!.id)
       ),
     []
   )
@@ -238,7 +239,7 @@ function LiquidityCard() {
     currentHydratedInfo,
     isSearchAmmDialogOpen,
     refreshLiquidity
-  } = useLiquidity()
+  } = useXStore(liquidityAtom)
   const { refreshTokenPrice } = useXStore(tokenAtom)
 
   const { coinInputBox1ComponentRef, coinInputBox2ComponentRef, liquidityButtonComponentRef } =
@@ -270,7 +271,7 @@ function LiquidityCard() {
   const cardRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    useLiquidity.setState({
+    liquidityAtom.set({
       scrollToInputBox: () => cardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
     })
   }, [])
@@ -299,7 +300,7 @@ function LiquidityCard() {
             setTargetCoinNo('1')
           }}
           onUserInput={(amount) => {
-            useLiquidity.setState({ coin1Amount: amount, focusSide: 'coin1' })
+            liquidityAtom.set({ coin1Amount: amount, focusSide: 'coin1' })
           }}
           onEnter={(input) => {
             if (!input) return
@@ -328,7 +329,7 @@ function LiquidityCard() {
                 isApprovePanelShown ? 'not-clickable' : ''
               }`}
               onClick={() => {
-                useLiquidity.setState({ isSearchAmmDialogOpen: true })
+                liquidityAtom.set({ isSearchAmmDialogOpen: true })
               }}
             />
             <Div className={isApprovePanelShown ? 'not-clickable' : 'clickable'}>
@@ -365,7 +366,7 @@ function LiquidityCard() {
             if (coin1 && coin1Amount) liquidityButtonComponentRef.current?.click?.()
           }}
           onUserInput={(amount) => {
-            useLiquidity.setState({ coin2Amount: amount, focusSide: 'coin2' })
+            liquidityAtom.set({ coin2Amount: amount, focusSide: 'coin2' })
           }}
           token={coin2}
         />
@@ -443,16 +444,16 @@ function LiquidityCard() {
         close={turnOffCoinSelector}
         onSelectCoin={(token) => {
           if (targetCoinNo === '1') {
-            useLiquidity.setState({ coin1: token })
+            liquidityAtom.set({ coin1: token })
             // delete other
             if (!canTokenPairBeSelected(token, coin2)) {
-              useLiquidity.setState({ coin2: undefined })
+              liquidityAtom.set({ coin2: undefined })
             }
           } else {
             // delete other
-            useLiquidity.setState({ coin2: token })
+            liquidityAtom.set({ coin2: token })
             if (!canTokenPairBeSelected(token, coin1)) {
-              useLiquidity.setState({ coin1: undefined })
+              liquidityAtom.set({ coin1: undefined })
             }
           }
           turnOffCoinSelector()
@@ -461,7 +462,7 @@ function LiquidityCard() {
       <SearchAmmDialog
         open={isSearchAmmDialogOpen}
         onClose={() => {
-          useLiquidity.setState({ isSearchAmmDialogOpen: false })
+          liquidityAtom.set({ isSearchAmmDialogOpen: false })
         }}
       />
     </CyberpunkStyleCard>
@@ -845,7 +846,7 @@ function UserLiquidityExhibition() {
                           <Button
                             className="text-base mobile:text-sm font-medium frosted-glass frosted-glass-teal rounded-xl flex-grow"
                             onClick={() => {
-                              useLiquidity.setState({
+                              liquidityAtom.set({
                                 currentJsonInfo: info.jsonInfo
                               })
                               scrollToInputBox()
@@ -897,7 +898,7 @@ function UserLiquidityExhibition() {
                               iconSrc="/icons/pools-remove-liquidity-entry.svg"
                               className={`grid place-items-center w-10 h-10 mobile:w-8 mobile:h-8 ring-inset ring-1 mobile:ring-1 ring-[rgba(171,196,255,.5)] rounded-xl mobile:rounded-lg text-[rgba(171,196,255,.5)] clickable clickable-filter-effect`}
                               onClick={() => {
-                                useLiquidity.setState({ currentJsonInfo: info.jsonInfo, isRemoveDialogOpen: true })
+                                liquidityAtom.set({ currentJsonInfo: info.jsonInfo, isRemoveDialogOpen: true })
                               }}
                             />
                             <Tooltip.Panel>Remove Liquidity</Tooltip.Panel>
@@ -915,7 +916,7 @@ function UserLiquidityExhibition() {
         <RemoveLiquidityDialog
           open={isRemoveDialogOpen}
           onClose={() => {
-            useLiquidity.setState({ isRemoveDialogOpen: false })
+            liquidityAtom.set({ isRemoveDialogOpen: false })
           }}
         />
         <Div className="text-xs mobile:text-2xs font-medium text-[rgba(171,196,255,0.5)]">

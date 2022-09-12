@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import useAppSettings from '@/application/appSettings/useAppSettings'
-import txRemoveLiquidity from '@/application/liquidity/txRemoveLiquidity'
+import txRemoveLiquidity from '@/application/liquidity/tx/txRemoveLiquidity'
 import { HydratedLiquidityInfo } from '@/application/liquidity/type'
 import useLiquidity from '@/application/liquidity/useLiquidity'
 import useWallet from '@/application/wallet/useWallet'
@@ -13,6 +13,7 @@ import Dialog from '@/tempUikits/Dialog'
 import Icon from '@/components/Icon'
 import { gt } from '@/functions/numberish/compare'
 import { Div, cssRow } from '@edsolater/uikit'
+import { liquidityAtom } from '@/application/liquidity/atom'
 
 export function RemoveLiquidityDialog({
   info,
@@ -42,7 +43,7 @@ export function RemoveLiquidityDialog({
       open={open}
       onClose={() => {
         onClose()
-        useLiquidity.setState({ removeAmount: '' })
+        liquidityAtom.set({ removeAmount: '' })
         setAmountIsNegative(false)
         setAmountIsOutOfMax(false)
       }}
@@ -67,7 +68,7 @@ export function RemoveLiquidityDialog({
             topLeftLabel="Pool"
             token={hydratedInfo?.lpToken}
             onUserInput={(value) => {
-              useLiquidity.setState({ removeAmount: value })
+              liquidityAtom.set({ removeAmount: value })
             }}
             onInputAmountClampInBalanceChange={({ negative, outOfMax }) => {
               negative ? setAmountIsNegative(true) : setAmountIsNegative(false)
@@ -101,7 +102,7 @@ export function RemoveLiquidityDialog({
               ]}
               onClick={() => {
                 txRemoveLiquidity({ ammId: hydratedInfo?.id }).then(() => {
-                  useLiquidity.setState({ removeAmount: '' })
+                  liquidityAtom.set({ removeAmount: '' })
                   setAmountIsNegative(false)
                   setAmountIsOutOfMax(false)
                 })

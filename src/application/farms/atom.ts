@@ -1,4 +1,4 @@
-import { createXAtom } from '@/../../xstore/dist'
+import { createXAtom } from '@edsolater/xstore'
 import { HexAddress } from '@/types/constants'
 import create from 'zustand'
 import { tokenAtom } from '../token'

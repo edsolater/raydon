@@ -11,7 +11,7 @@ import {
   useThemeModeSync
 } from '@/application/appSettings/initializationHooks'
 import { useAppInitVersionPostHeartBeat, useJudgeAppVersion } from '@/application/appVersion/useAppVersion'
-import useLiquidityInfoLoader from '@/application/liquidity/useLiquidityInfoLoader'
+import useLiquidityInfoLoader from '@/application/liquidity/effects/useLiquidityInfoLoader'
 import useMessageBoardFileLoader from '@/application/messageBoard/useMessageBoardFileLoader'
 import useMessageBoardReadedIdRecorder from '@/application/messageBoard/useMessageBoardReadedIdRecorder'
 import usePoolsInfoLoader from '@/application/pools/usePoolsInfoLoader'

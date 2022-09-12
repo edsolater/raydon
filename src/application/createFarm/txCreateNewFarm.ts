@@ -1,27 +1,26 @@
-import { Farm, FarmCreateInstructionParamsV6, FarmPoolJsonInfoV6 } from '@raydium-io/raydium-sdk'
+import { Farm, FarmCreateInstructionParamsV6 } from '@raydium-io/raydium-sdk'
 
 import assert from '@/functions/assert'
 
 import { createTransactionCollector } from '@/application/txTools/createTransaction'
 import handleMultiTx, { AddSingleTxOptions } from '@/application/txTools/handleMultiTx'
+import { addItem } from '@/functions/arrayMethods'
+import asyncMap from '@/functions/asyncMap'
 import { setDateTimeSecondToZero } from '@/functions/date/dateFormat'
 import { parseDurationAbsolute } from '@/functions/date/parseDuration'
+import { setLocalItem } from '@/functions/dom/jStorage'
 import toPubString, { toPub } from '@/functions/format/toMintString'
 import { isMintEqual } from '@/functions/judgers/areEqual'
 import { padZero } from '@/functions/numberish/handleZero'
 import { div, mul } from '@/functions/numberish/operations'
 import toBN from '@/functions/numberish/toBN'
+import { FarmPoolJsonInfo } from '../farms/type'
+import { EXTEND_BEFORE_END_SECOND, MAX_DURATION_SECOND, MIN_DURATION_SECOND } from '../farms/utils/handleFarmInfo'
+import { liquidityAtom } from '../liquidity/atom'
+import { usePools } from '../pools/usePools'
+import { SOLMint, WSOLMint } from '../token'
 import useWallet from '../wallet/useWallet'
 import useCreateFarms from './useCreateFarm'
-import { usePools } from '../pools/usePools'
-import { EXTEND_BEFORE_END_SECOND, MAX_DURATION_SECOND, MIN_DURATION_SECOND } from '../farms/utils/handleFarmInfo'
-import { FarmPoolJsonInfo } from '../farms/type'
-import asyncMap from '@/functions/asyncMap'
-import { setLocalItem } from '@/functions/dom/jStorage'
-import { addItem } from '@/functions/arrayMethods'
-import useLiquidity from '../liquidity/useLiquidity'
-import { WSOLMint } from '../token'
-import { RAYMint, SOLMint } from '../token'
 import { valid300Ray, validUiRewardInfo } from './validRewardInfo'
 
 export const userCreatedFarmKey = 'USER_CREATED_FARMS'
@@ -43,7 +42,7 @@ export default async function txCreateNewFarm(
       const { tokenAccounts, tokenAccountRawInfos } = useWallet.getState()
       const piecesCollector = createTransactionCollector()
       const { poolId } = useCreateFarms.getState()
-      const { jsonInfos } = useLiquidity.getState()
+      const { jsonInfos } = liquidityAtom.get()
       const poolJsonInfo = jsonInfos.find((j) => j.id === poolId)
 
       const tokenAccountMints = tokenAccounts.map((ta) => toPubString(ta.mint))

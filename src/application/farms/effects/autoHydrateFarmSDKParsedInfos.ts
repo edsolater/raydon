@@ -8,10 +8,11 @@ import { tokenAtom } from '../../token'
 import { hydrateFarmInfo } from '../utils/handleFarmInfo'
 import { farmAtom } from '../atom'
 import { getSlotCountForSecond } from '../utils/getSlotCountForSecond'
+import { liquidityAtom } from '@/application/liquidity/atom'
 
 export const autoHydrateFarmSDKParsedInfos = createXEffect(async () => {
   const { sdkParsedInfos } = farmAtom.get()
-  const { jsonInfos: liquidityJsonInfos } = useLiquidity.getState()
+  const { jsonInfos: liquidityJsonInfos } = liquidityAtom.get()
   const { jsonInfos: pairs } = usePools.getState()
   const { getToken, getLpToken, tokenPrices } = tokenAtom.get()
   const { lpPrices } = usePools.getState()

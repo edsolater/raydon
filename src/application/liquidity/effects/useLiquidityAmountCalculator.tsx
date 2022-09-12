@@ -10,12 +10,13 @@ import { shakeZero } from '@/functions/numberish/shakeZero'
 import useAsyncEffect from '@/hooks/useAsyncEffect'
 import { HexAddress, Numberish } from '@/types/constants'
 
-import { hasSameItems } from '../../functions/arrayMethods'
-import useConnection from '../connection/useConnection'
-import { SDKParsedLiquidityInfo } from './type'
-import useLiquidity from './useLiquidity'
+import { hasSameItems } from '../../../functions/arrayMethods'
+import useConnection from '../../connection/useConnection'
+import { SDKParsedLiquidityInfo } from '../type'
+import useLiquidity from '../useLiquidity'
 import { useEffect } from 'react'
 import toPubString from '@/functions/format/toMintString'
+import { liquidityAtom } from '../atom'
 
 /**
  * will auto fresh  liquidity's coin1Amount and coin2Amount with liquidity's jsonInfos and coin1 and coin2
@@ -52,8 +53,8 @@ export default function useLiquidityAmountCalculator() {
       (focusSide === 'coin1' && eq(userCoin1Amount, 0)) ||
       (focusSide === 'coin2' && eq(userCoin2Amount, 0))
     ) {
-      if (focusSide === 'coin1') useLiquidity.setState({ coin2Amount: '', unslippagedCoin2Amount: '' })
-      if (focusSide === 'coin2') useLiquidity.setState({ coin1Amount: '', unslippagedCoin1Amount: '' })
+      if (focusSide === 'coin1') liquidityAtom.set({ coin2Amount: '', unslippagedCoin2Amount: '' })
+      if (focusSide === 'coin2') liquidityAtom.set({ coin1Amount: '', unslippagedCoin1Amount: '' })
       return
     }
     try {
@@ -70,7 +71,7 @@ export default function useLiquidityAmountCalculator() {
 
       // for calculatePairTokenAmount is async, result maybe droped. if that, just stop it
       const resultStillFresh = (() => {
-        const { coin1Amount, coin2Amount } = useLiquidity.getState()
+        const { coin1Amount, coin2Amount } = liquidityAtom.get()
         const currentFocusSideAmount = focusSide === 'coin1' ? coin1Amount : coin2Amount
         const focusSideAmount = focusSide === 'coin1' ? userCoin1Amount : userCoin2Amount
         return eq(currentFocusSideAmount, focusSideAmount)
@@ -78,9 +79,9 @@ export default function useLiquidityAmountCalculator() {
       if (!resultStillFresh) return
 
       if (focusSide === 'coin1') {
-        useLiquidity.setState({ coin2Amount: pairCoinAmount, unslippagedCoin2Amount: unslippagedPairCoinAmount })
+        liquidityAtom.set({ coin2Amount: pairCoinAmount, unslippagedCoin2Amount: unslippagedPairCoinAmount })
       } else {
-        useLiquidity.setState({ coin1Amount: pairCoinAmount, unslippagedCoin1Amount: unslippagedPairCoinAmount })
+        liquidityAtom.set({ coin1Amount: pairCoinAmount, unslippagedCoin1Amount: unslippagedPairCoinAmount })
       }
     } catch (err) {
       console.error('err: ', err)

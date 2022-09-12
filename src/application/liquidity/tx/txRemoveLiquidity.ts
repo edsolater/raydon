@@ -8,7 +8,8 @@ import { PublicKeyish } from '@/types/constants'
 
 import { loadTransaction } from '@/application/txTools/createTransaction'
 import handleMultiTx from '@/application/txTools/handleMultiTx'
-import useLiquidity from './useLiquidity'
+import useLiquidity from '../useLiquidity'
+import { liquidityAtom } from '../atom'
 
 export default function txRemoveLiquidity({ ammId: targetAmmId }: { ammId?: PublicKeyish } = {}) {
   return handleMultiTx(async ({ transactionCollector, baseUtils: { owner, connection } }) => {
@@ -16,7 +17,7 @@ export default function txRemoveLiquidity({ ammId: targetAmmId }: { ammId?: Publ
 
     const { getTokenAccount, tokenAccountRawInfos } = useWallet.getState()
     const { getToken } = tokenAtom.get()
-    const { jsonInfos, currentJsonInfo, removeAmount } = useLiquidity.getState()
+    const { jsonInfos, currentJsonInfo, removeAmount } = liquidityAtom.get()
     assert(removeAmount, 'user have not input amount to remove lp')
 
     const targetJsonInfo = targetAmmId
@@ -43,7 +44,7 @@ export default function txRemoveLiquidity({ ammId: targetAmmId }: { ammId?: Publ
         description: `Remove  ${removeTokenAmount.toExact()} ${lpToken.symbol}`
       },
       onTxSuccess: () => {
-        useLiquidity.setState({ removeAmount: '', isRemoveDialogOpen: false })
+        liquidityAtom.set({ removeAmount: '', isRemoveDialogOpen: false })
       }
     })
   })

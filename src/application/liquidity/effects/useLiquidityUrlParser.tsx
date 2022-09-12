@@ -12,9 +12,10 @@ import { useXStore } from '@edsolater/xstore'
 import { useRouter } from 'next/router'
 import { ParsedUrlQuery } from 'querystring'
 import { useCallback, useEffect, useRef } from 'react'
-import useConnection from '../connection/useConnection'
-import { getUserTokenEvenNotExist } from '../token/utils/getUserTokenEvenNotExist'
-import useLiquidity from './useLiquidity'
+import useConnection from '../../connection/useConnection'
+import { getUserTokenEvenNotExist } from '../../token/utils/getUserTokenEvenNotExist'
+import { liquidityAtom } from '../atom'
+import useLiquidity from '../useLiquidity'
 
 export default function useLiquidityUrlParser() {
   const { query, pathname, replace } = useRouter()
@@ -101,11 +102,11 @@ export default function useLiquidityUrlParser() {
         toPubString(liquidityCoin1?.mint) + toPubString(liquidityCoin2?.mint) !==
           toPubString(coin2?.mint) + toPubString(coin1?.mint)
       ) {
-        useLiquidity.setState(objectShakeFalsy({ coin1, coin2: coin1 === coin2 ? undefined : coin2 }))
+        liquidityAtom.set(objectShakeFalsy({ coin1, coin2: coin1 === coin2 ? undefined : coin2 }))
       }
 
       if (matchedLiquidityJsonInfo) {
-        useLiquidity.setState({
+        liquidityAtom.set({
           currentJsonInfo: matchedLiquidityJsonInfo,
           ammId: matchedLiquidityJsonInfo.id
         })
@@ -123,14 +124,14 @@ export default function useLiquidityUrlParser() {
     // parse amount
     const coin1Amount = urlCoin1Mint ? urlCoin1Amount : urlCoin2Mint ? urlCoin2Amount : undefined
     const coin2Amount = urlCoin2Mint ? urlCoin2Amount : urlCoin1Mint ? urlCoin1Amount : undefined
-    if (coin1Amount) useLiquidity.setState({ coin1Amount: coin1Amount })
-    if (coin2Amount) useLiquidity.setState({ coin2Amount: coin2Amount })
+    if (coin1Amount) liquidityAtom.set({ coin1Amount: coin1Amount })
+    if (coin2Amount) liquidityAtom.set({ coin2Amount: coin2Amount })
 
     // get mode
     if (mode && mode.toLowerCase() === 'removeLiquidity'.toLowerCase()) {
-      const { isRemoveDialogOpen } = useLiquidity.getState()
+      const { isRemoveDialogOpen } = liquidityAtom.get()
       if (isRemoveDialogOpen) return
-      useLiquidity.setState({ isRemoveDialogOpen: true })
+      liquidityAtom.set({ isRemoveDialogOpen: true })
     }
 
     // parse fixed side
@@ -138,7 +139,7 @@ export default function useLiquidityUrlParser() {
     const isUrlFixedSideValid = urlFixedSide === 'coin0' || urlFixedSide === 'coin1'
     if (isUrlFixedSideValid && currentFixedSide !== urlFixedSide) {
       const correspondingFocusSide = urlFixedSide === 'coin0' ? 'coin1' : 'coin2'
-      useLiquidity.setState({ focusSide: correspondingFocusSide })
+      liquidityAtom.set({ focusSide: correspondingFocusSide })
     }
   }, [
     connection,

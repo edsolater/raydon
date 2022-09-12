@@ -1,4 +1,4 @@
-import { XAtom } from '@/../../xstore/dist'
+import { XAtom } from '@edsolater/xstore'
 import toPubString, { toPub } from '@/functions/format/toMintString'
 import { isFunction, isObject } from '@/functions/judgers/dateType'
 import { AnyFn, listToMap, map } from '@edsolater/fnkit'

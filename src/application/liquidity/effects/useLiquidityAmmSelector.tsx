@@ -4,7 +4,8 @@ import { tokenAtom } from '@/application/token'
 import { isMintEqual } from '@/functions/judgers/areEqual'
 import useAsyncEffect from '@/hooks/useAsyncEffect'
 
-import useLiquidity from './useLiquidity'
+import useLiquidity from '../useLiquidity'
+import { liquidityAtom } from '../atom'
 
 /** coin1 coin2 ammId */
 export default function useLiquidityAmmSelector() {
@@ -16,7 +17,7 @@ export default function useLiquidityAmmSelector() {
   /** update `coin1` and `coin2` (to match `ammId`) */
   useEffect(() => {
     if (!ammId) return
-    const { coin1, coin2, jsonInfos } = useLiquidity.getState()
+    const { coin1, coin2, jsonInfos } = liquidityAtom.get()
     const targetInfo = jsonInfos.find((info) => info.id === ammId)
     // current is right, no need to sync again
     if (isMintEqual(coin1?.mint, targetInfo?.baseMint) && isMintEqual(coin2?.mint, targetInfo?.quoteMint)) return
@@ -25,7 +26,7 @@ export default function useLiquidityAmmSelector() {
     const { getToken } = tokenAtom.get()
     const baseCoin = getToken(jsonInfos.find((i) => i.id === ammId)?.baseMint)
     const quoteCoin = getToken(jsonInfos.find((i) => i.id === ammId)?.quoteMint)
-    useLiquidity.setState({
+    liquidityAtom.set({
       coin1: baseCoin,
       coin2: quoteCoin
     })
@@ -34,7 +35,7 @@ export default function useLiquidityAmmSelector() {
   /** update `ammId` (to match `coin1` and `coin2`) */
   useAsyncEffect(async () => {
     if (!coin1 || !coin2) return
-    const { findLiquidityInfoByTokenMint, ammId } = useLiquidity.getState()
+    const { findLiquidityInfoByTokenMint, ammId } = liquidityAtom.get()
 
     const computeResult = await findLiquidityInfoByTokenMint(coin1?.mint, coin2?.mint)
 
@@ -45,13 +46,13 @@ export default function useLiquidityAmmSelector() {
       // current is right, no need to sync again
       if (ammId === resultPool?.id) return
 
-      useLiquidity.setState({
+      liquidityAtom.set({
         ammId: resultPool?.id,
         currentJsonInfo: resultPool
       })
     } else {
       // should clear ammId and currentJsonInfo
-      useLiquidity.setState({
+      liquidityAtom.set({
         ammId: undefined,
         currentJsonInfo: undefined
       })
@@ -61,24 +62,24 @@ export default function useLiquidityAmmSelector() {
   // update `currentJsonInfo` (to match `ammId`)
   useEffect(() => {
     if (!ammId) return
-    const { jsonInfos, currentJsonInfo } = useLiquidity.getState()
+    const { jsonInfos, currentJsonInfo } = liquidityAtom.get()
 
     const alreadyMatched = currentJsonInfo?.id === ammId
     if (alreadyMatched) return
 
     const matchedInfo = jsonInfos.find((i) => i.id === ammId)
-    useLiquidity.setState({ currentJsonInfo: matchedInfo })
+    liquidityAtom.set({ currentJsonInfo: matchedInfo })
   }, [ammId])
 
   // update `ammId` (to match `currentJsonInfo`)
   useEffect(() => {
     if (!currentJsonInfo) return
-    const { ammId: currentAmmId } = useLiquidity.getState()
+    const { ammId: currentAmmId } = liquidityAtom.get()
 
     const alreadyMatched = currentJsonInfo?.id === currentAmmId
     if (alreadyMatched) return
 
     const ammId = currentJsonInfo?.id
-    useLiquidity.setState({ ammId })
+    liquidityAtom.set({ ammId })
   }, [currentJsonInfo])
 }

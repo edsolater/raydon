@@ -14,7 +14,7 @@ import useAppSettings from '../appSettings/useAppSettings'
 import useConnection from '../connection/useConnection'
 import { SDKParsedLiquidityInfo } from '../liquidity/type'
 import useLiquidity from '../liquidity/useLiquidity'
-import sdkParseJsonLiquidityInfo from '../liquidity/sdkParseJsonLiquidityInfo'
+import { sdkParseJsonLiquidityInfo } from '../liquidity/utils/sdkParseJsonLiquidityInfo'
 import { SplToken } from '../token/type'
 import { deUIToken, deUITokenAmount, toUITokenAmount } from '../token'
 

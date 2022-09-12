@@ -4,11 +4,11 @@ import toFraction from '@/functions/numberish/toFraction'
 import { HexAddress } from '@/types/constants'
 import { TokenAmount } from '@raydium-io/raydium-sdk'
 
-import toBN from '../../functions/numberish/toBN'
-import { LpToken, SplToken } from '../token/type'
-import { HydratedLiquidityInfo, SDKParsedLiquidityInfo } from './type'
+import toBN from '../../../functions/numberish/toBN'
+import { LpToken, SplToken } from '../../token/type'
+import { HydratedLiquidityInfo, SDKParsedLiquidityInfo } from '../type'
 
-export default function hydrateLiquidityInfo(
+export function hydrateLiquidityInfo(
   liquidityInfo: SDKParsedLiquidityInfo,
   additionalTools: {
     getToken: (mint: HexAddress) => SplToken | undefined

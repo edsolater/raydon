@@ -1,13 +1,13 @@
 import { PublicKeyish } from '@/types/constants'
 import { LiquidityPoolJsonInfo } from '@raydium-io/raydium-sdk'
 
-import searchJsonLiquidityInfo from './searchJsonLiquidityInfo'
+import { searchJsonLiquidityInfo } from './searchJsonLiquidityInfo'
 
 /**
  *
  * @requires {@link searchJsonLiquidityInfo}
  */
-export default function searchJsonLiquidityInfoByMintPair(
+export function searchJsonLiquidityInfoByMintPair(
   mint1: PublicKeyish,
   mint2: PublicKeyish,
   jsonInfos: LiquidityPoolJsonInfo[]

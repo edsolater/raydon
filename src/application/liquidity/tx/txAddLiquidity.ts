@@ -8,9 +8,9 @@ import { gt } from '@/functions/numberish/compare'
 import { toString } from '@/functions/numberish/toString'
 import { PublicKeyish } from '@/types/constants'
 
-import useLiquidity from './useLiquidity'
-import handleMultiTx from '@/application/txTools/handleMultiTx'
 import { loadTransaction } from '@/application/txTools/createTransaction'
+import handleMultiTx from '@/application/txTools/handleMultiTx'
+import { liquidityAtom } from '../atom'
 
 export default function txAddLiquidity({ ammId: targetAmmId }: { ammId?: PublicKeyish } = {}) {
   return handleMultiTx(async ({ transactionCollector, baseUtils: { connection, owner } }) => {
@@ -25,7 +25,7 @@ export default function txAddLiquidity({ ammId: targetAmmId }: { ammId?: PublicK
       currentJsonInfo,
       unslippagedCoin1Amount,
       unslippagedCoin2Amount
-    } = useLiquidity.getState()
+    } = liquidityAtom.get()
 
     const targetJsonInfo = targetAmmId
       ? jsonInfos.find(({ id: ammId }) => ammId === String(targetAmmId))

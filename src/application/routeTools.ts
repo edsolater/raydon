@@ -19,6 +19,7 @@ import { isMintEqual } from '@/functions/judgers/areEqual'
 import { createNewUIRewardInfo, parsedHydratedRewardInfoToUiRewardInfo } from './createFarm/parseRewardInfo'
 import { addQuery, cleanQuery } from '@/functions/dom/getURLQueryEntries'
 import { addItem } from '@/functions/arrayMethods'
+import { liquidityAtom } from './liquidity/atom'
 
 export type PageRouteConfigs = {
   '/swap': {
@@ -86,11 +87,9 @@ export function routeTo<ToPage extends keyof PageRouteConfigs>(
   const options = shrinkToValue(opts, [{ currentPageQuery: router.query }])
   if (toPage === '/swap') {
     const coin1 =
-      options?.queryProps?.coin1 ??
-      (router.pathname.includes('/liquidity/add') ? useLiquidity.getState().coin1 : undefined)
+      options?.queryProps?.coin1 ?? (router.pathname.includes('/liquidity/add') ? liquidityAtom.get().coin1 : undefined)
     const coin2 =
-      options?.queryProps?.coin2 ??
-      (router.pathname.includes('/liquidity/add') ? useLiquidity.getState().coin2 : undefined)
+      options?.queryProps?.coin2 ?? (router.pathname.includes('/liquidity/add') ? liquidityAtom.get().coin2 : undefined)
     const isSwapDirectionReversed = useSwap.getState().directionReversed
     const targetState = objectShakeFalsy(isSwapDirectionReversed ? { coin2: coin1, coin1: coin2 } : { coin1, coin2 })
     useSwap.setState(targetState)
@@ -106,7 +105,7 @@ export function routeTo<ToPage extends keyof PageRouteConfigs>(
     const upCoin = isSwapDirectionReversed ? coin2 : coin1
     const downCoin = isSwapDirectionReversed ? coin1 : coin2
     const mode = options?.queryProps?.mode
-    useLiquidity.setState({
+    liquidityAtom.set({
       coin1: upCoin,
       coin2: downCoin,
       ammId,

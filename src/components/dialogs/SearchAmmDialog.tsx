@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-import { findTokenMintByAmmId, findTokenMintByMarketId } from '@/application/liquidity/miscToolFns'
+import { findTokenMintByAmmId, findTokenMintByMarketId } from '@/application/liquidity/utils/miscToolFns'
 import useLiquidity from '@/application/liquidity/useLiquidity'
 import useNotification from '@/application/notification/useNotification'
 import Icon from '@/components/Icon'
@@ -13,6 +13,7 @@ import Dialog from '@/tempUikits/Dialog'
 import { cssRow, Div } from '@edsolater/uikit'
 import InputBox from '../InputBox'
 import { tokenAtom } from '@/application/token'
+import { liquidityAtom } from '@/application/liquidity/atom'
 
 export function SearchAmmDialog({
   open,
@@ -33,7 +34,7 @@ export function SearchAmmDialog({
 
       const ammFindResult = findTokenMintByAmmId(currentValue.trim())
       if (ammFindResult) {
-        useLiquidity.setState({
+        liquidityAtom.set({
           coin1: getToken(ammFindResult.base),
           coin2: getToken(ammFindResult.quote),
           ammId: currentValue.trim()
@@ -43,7 +44,7 @@ export function SearchAmmDialog({
 
       const marketFindResult = await findTokenMintByMarketId(currentValue.trim())
       if (marketFindResult) {
-        useLiquidity.setState({ coin1: getToken(marketFindResult.base), coin2: getToken(marketFindResult.quote) })
+        liquidityAtom.set({ coin1: getToken(marketFindResult.base), coin2: getToken(marketFindResult.quote) })
         return
       }
 

@@ -1,6 +1,6 @@
 import { LiquidityPoolJsonInfo } from '@raydium-io/raydium-sdk'
 
-export default function searchJsonLiquidityInfo(
+export function searchJsonLiquidityInfo(
   partialJsonInfo: Partial<LiquidityPoolJsonInfo>,
   jsonInfos: LiquidityPoolJsonInfo[] = []
 ): LiquidityPoolJsonInfo | undefined {

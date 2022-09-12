@@ -1,6 +1,7 @@
 import useLiquidity from '@/application/liquidity/useLiquidity'
 import jFetch from '@/functions/dom/jFetch'
 import { HexAddress, StringNumber } from '@/types/constants'
+import { liquidityAtom } from '../liquidity/atom'
 
 import { useSwap } from './useSwap'
 
@@ -50,7 +51,7 @@ export async function fetchKLine({ marketId }: { marketId: HexAddress }): Promis
 export async function freshKLineChartPrices() {
   const { coin1, coin2 } = useSwap.getState()
   if (!coin1 || !coin2) return
-  const { findLiquidityInfoByTokenMint } = useLiquidity.getState()
+  const { findLiquidityInfoByTokenMint } = liquidityAtom.get()
 
   // find market ID
   const poolJsonInfo = (await findLiquidityInfoByTokenMint(coin1.mint, coin2.mint)).best
