@@ -5,9 +5,7 @@ import txFarmDeposit from '@/application/farms/tx/txFarmDeposit'
 import txFarmHarvest from '@/application/farms/tx/txFarmHarvest'
 import txFarmWithdraw from '@/application/farms/tx/txFarmWithdraw'
 import { FarmPoolJsonInfo, HydratedFarmInfo, HydratedRewardInfo } from '@/application/farms/type'
-import useFarmResetSelfCreatedByOwner from '@/application/farms/effects/useFarmResetSelfCreatedByOwner'
 import useFarms, { useFarmFavoriteIds } from '@/application/farms/useFarms'
-import { useFarmUrlParser } from '@/application/farms/effects/useFarmUrlParser'
 import useNotification from '@/application/notification/useNotification'
 import { usePools } from '@/application/pools/usePools'
 import { routeTo } from '@/application/routeTools'
@@ -56,10 +54,23 @@ import { useXStore } from '@edsolater/xstore'
 import { TokenAmount } from '@raydium-io/raydium-sdk'
 import { Fragment, ReactNode, useEffect, useMemo, useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
+import useInit from '@/hooks/useInit'
+import { getURLFarmId } from '@/application/farms/utils/parseFarmUrl'
+
+function useFarmUrlParser() {
+  useInit(
+    () => {
+      const urlFarmId = getURLFarmId()
+      if (urlFarmId) {
+        useFarms.setState((s) => ({ expandedItemIds: addItem(s.expandedItemIds, urlFarmId), searchText: urlFarmId }))
+      }
+    },
+    { effectMethod: 'isoLayoutEffect' }
+  )
+}
 
 export default function FarmPage() {
   useFarmUrlParser()
-  useFarmResetSelfCreatedByOwner()
 
   const hydratedInfos = useFarms((s) => s.hydratedInfos)
   const farmIds = useFarms((s) => s.detailedId) ?? []

@@ -2,6 +2,7 @@ import { createXAtom } from '@/../../xstore/dist'
 import { HexAddress } from '@/types/constants'
 import create from 'zustand'
 import { tokenAtom } from '../token'
+import { autoResetFarmCreatedBySelf } from './effects/autoResetFarmCreatedBySelf'
 import { FarmPoolJsonInfo, HydratedFarmInfo, SdkParsedFarmInfo } from './type'
 
 export type FarmStore = {
@@ -66,5 +67,6 @@ export const farmAtom = createXAtom<FarmStore>({
     stakeDialogMode: 'deposit',
     isStakeDialogOpen: false,
     stakeDialogInfo: undefined
-  })
+  }),
+  effects: [autoResetFarmCreatedBySelf]
 })
