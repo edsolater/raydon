@@ -127,8 +127,8 @@ export default function useSwapUrlParser(): void {
     // parse amount
     const coin1Amount = urlCoin1Mint ? urlCoin1Amount : urlCoin2Mint ? urlCoin2Amount : undefined
     const coin2Amount = urlCoin2Mint ? urlCoin2Amount : urlCoin1Mint ? urlCoin1Amount : undefined
-    if (coin1Amount) swapAtom.set({ coin1Amount: coin1Amount })
-    if (coin2Amount) swapAtom.set({ coin2Amount: coin2Amount })
+    if (coin1Amount) swapAtom.set({ coin1Amount })
+    if (coin2Amount) swapAtom.set({ coin2Amount })
 
     // parse fixed side
     const currentFixedSide = swapDirectionReversed

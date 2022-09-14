@@ -1,5 +1,5 @@
 import { HexAddress } from '@/types/constants'
-import { createXAtom } from '@edsolater/xstore'
+import { createXAtom, recordWidthLocalStorage } from '@edsolater/xstore'
 import { tokenAtom } from '../token'
 import { FarmPoolJsonInfo, HydratedFarmInfo, SdkParsedFarmInfo } from './type'
 
@@ -19,6 +19,7 @@ export type FarmStore = {
    * expanded collapse items
    */
   expandedItemIds: Set<string>
+  favouriteIds?: string[]
 
   // do not care it's value, just trigger React refresh
   farmRefreshCount: number
@@ -65,5 +66,6 @@ export const farmAtom = createXAtom<FarmStore>({
     stakeDialogMode: 'deposit',
     isStakeDialogOpen: false,
     stakeDialogInfo: undefined
-  })
+  }),
+  plugins: [recordWidthLocalStorage<FarmStore>({ observeProperty: 'favouriteIds' })]
 })

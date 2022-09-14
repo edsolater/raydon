@@ -124,8 +124,8 @@ export default function useLiquidityUrlParser() {
     // parse amount
     const coin1Amount = urlCoin1Mint ? urlCoin1Amount : urlCoin2Mint ? urlCoin2Amount : undefined
     const coin2Amount = urlCoin2Mint ? urlCoin2Amount : urlCoin1Mint ? urlCoin1Amount : undefined
-    if (coin1Amount) liquidityAtom.set({ coin1Amount: coin1Amount })
-    if (coin2Amount) liquidityAtom.set({ coin2Amount: coin2Amount })
+    if (coin1Amount) liquidityAtom.set({ coin1Amount })
+    if (coin2Amount) liquidityAtom.set({ coin2Amount })
 
     // get mode
     if (mode && mode.toLowerCase() === 'removeLiquidity'.toLowerCase()) {

@@ -168,6 +168,6 @@ export default async function txCreateNewFarm(
         }
       })
     },
-    { txKey: txKey }
+    { txKey }
   )
 }

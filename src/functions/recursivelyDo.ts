@@ -38,6 +38,6 @@ export function recursivelyDo<T>(
         stopWhen,
         prevPayload: currPayload
       })
-    }, shrinkToValue(retryCD, [{ currentLoopCount: currentLoopCount }]))
+    }, shrinkToValue(retryCD, [{ currentLoopCount }]))
   }
 }

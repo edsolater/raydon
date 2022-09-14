@@ -42,7 +42,7 @@ export default function StakingPage() {
 }
 
 function StakingHeader() {
-  const { refreshFarmInfos: refreshFarmInfos } = useXStore(farmAtom)
+  const { refreshFarmInfos } = useXStore(farmAtom)
   return (
     <Grid className="grid-cols-[1fr,1fr] items-center gap-y-8 pb-4 pt-2">
       <Div className="title text-2xl mobile:text-lg font-semibold justify-self-start text-white">Staking</Div>
@@ -59,7 +59,7 @@ function StakingHeader() {
 }
 
 function StakingCard() {
-  const { hydratedInfos: hydratedInfos } = useXStore(farmAtom)
+  const { hydratedInfos } = useXStore(farmAtom)
   const infos = useMemo(() => hydratedInfos.filter((i) => i.isStakePool), [hydratedInfos])
   if (!infos.length)
     return (

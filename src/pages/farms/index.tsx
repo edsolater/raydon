@@ -5,7 +5,6 @@ import txFarmDeposit from '@/application/farms/tx/txFarmDeposit'
 import txFarmHarvest from '@/application/farms/tx/txFarmHarvest'
 import txFarmWithdraw from '@/application/farms/tx/txFarmWithdraw'
 import { FarmPoolJsonInfo, HydratedFarmInfo, HydratedRewardInfo } from '@/application/farms/type'
-import { useFarmFavoriteIds } from '@/application/farms/useFarms'
 import { isHydratedFarmInfo, isJsonFarmInfo } from '@/application/farms/utils/judgeFarmInfo'
 import { getURLFarmId } from '@/application/farms/utils/parseFarmUrl'
 import useNotification from '@/application/notification/useNotification'
@@ -73,7 +72,7 @@ function useFarmUrlParser() {
 export default function FarmPage() {
   useFarmUrlParser()
 
-  const { hydratedInfos: hydratedInfos } = useXStore(farmAtom)
+  const { hydratedInfos } = useXStore(farmAtom)
   const { detailedId: farmIds } = useXStore(farmAtom)
   /** for calculate detailInfos */
   const tempHydratedInfoMap = listToMap(hydratedInfos, (i) => toPubString(i.id))
@@ -98,7 +97,7 @@ export default function FarmPage() {
 }
 
 function FarmTitle() {
-  const { currentTab: currentTab } = useXStore(farmAtom)
+  const { currentTab } = useXStore(farmAtom)
   const farmCardTitleInfo =
     currentTab === 'Ecosystem'
       ? {
@@ -228,9 +227,9 @@ function FarmSearchBlock({ className }: { className?: string }) {
 }
 
 function FarmStakedOnlyBlock({ className }: { className?: string }) {
-  const { onlySelfFarms: onlySelfFarms } = useXStore(farmAtom)
+  const { onlySelfFarms } = useXStore(farmAtom)
   const connected = useWallet((s) => s.connected)
-  const { currentTab: currentTab } = useXStore(farmAtom)
+  const { currentTab } = useXStore(farmAtom)
   if (!connected) return null
   if (currentTab === 'Staked') return null // no staked switcher if it is staked
   return (
@@ -248,7 +247,7 @@ function FarmStakedOnlyBlock({ className }: { className?: string }) {
 }
 
 function FarmSlefCreatedOnlyBlock({ className }: { className?: string }) {
-  const { onlySelfCreatedFarms: onlySelfCreatedFarms } = useXStore(farmAtom)
+  const { onlySelfCreatedFarms } = useXStore(farmAtom)
   return (
     <Div icss={cssRow()} className="justify-self-end  mobile:justify-self-auto items-center">
       <span className="text-[rgba(196,214,255,0.5)] whitespace-nowrap font-medium text-sm mobile:text-xs">
@@ -287,7 +286,7 @@ function FarmCreateFarmEntryBlock({ className }: { className?: string }) {
 }
 
 function FarmTabBlock({ className }: { className?: string }) {
-  const { currentTab: currentTab } = useXStore(farmAtom)
+  const { currentTab } = useXStore(farmAtom)
   const isMobile = useAppSettings((s) => s.isMobile)
   return isMobile ? (
     <RowTabs
@@ -310,7 +309,7 @@ function FarmTabBlock({ className }: { className?: string }) {
 }
 
 function FarmTimeBasisSelectorBox({ className }: { className?: string }) {
-  const { timeBasis: timeBasis } = useXStore(farmAtom)
+  const { timeBasis } = useXStore(farmAtom)
   return (
     <Select
       className={twMerge('z-20', className)}
@@ -332,7 +331,7 @@ function FarmTableSorterBlock({
   className?: string
   onChange?: (newKey: 'name' | `totalApr${'7d' | '30d' | '24h'}` | 'tvl' | 'favorite' | undefined) => void
 }) {
-  const { timeBasis: timeBasis } = useXStore(farmAtom)
+  const { timeBasis } = useXStore(farmAtom)
   return (
     <Select
       className={className}
@@ -352,7 +351,7 @@ function FarmTableSorterBlock({
 }
 
 function FarmRefreshCircleBlock({ className }: { className?: string }) {
-  const { refreshFarmInfos: refreshFarmInfos } = useXStore(farmAtom)
+  const { refreshFarmInfos } = useXStore(farmAtom)
   const isMobile = useAppSettings((s) => s.isMobile)
   return isMobile ? (
     <Div icss={cssRow()} className={twMerge('items-center', className)}>
@@ -385,8 +384,8 @@ function FarmDatabaseControllers({
   sortControls: UseSortControls<(FarmPoolJsonInfo | HydratedFarmInfo)[]>
 } & DivProps) {
   const owner = useWallet((s) => s.owner)
-  const { jsonInfos: jsonInfos } = useXStore(farmAtom)
-  const { hydratedInfos: hydratedInfos } = useXStore(farmAtom)
+  const { jsonInfos } = useXStore(farmAtom)
+  const { hydratedInfos } = useXStore(farmAtom)
 
   const dataSource = (
     (hydratedInfos.length ? hydratedInfos : jsonInfos) as (FarmPoolJsonInfo | HydratedFarmInfo)[]
@@ -413,8 +412,7 @@ function FarmCardDatabaseHead({
 }: {
   sortControls: UseSortControls<(FarmPoolJsonInfo | HydratedFarmInfo)[]>
 } & DivProps) {
-  const [favouriteIds] = useFarmFavoriteIds()
-  const { timeBasis: timeBasis } = useXStore(farmAtom)
+  const { timeBasis: timeBasis, favouriteIds: favouriteIds } = useXStore(farmAtom)
   return (
     <Div
       {...restProps}
@@ -531,14 +529,10 @@ function FarmCardDatabaseHead({
 
 // TODO: FarmCardData to be context
 function FarmTableList(divProps: DivProps) {
-  const { jsonInfos: jsonInfos } = useXStore(farmAtom)
-  const { hydratedInfos: hydratedInfos } = useXStore(farmAtom)
-  const { onlySelfFarms: onlySelfFarms } = useXStore(farmAtom)
-  const { onlySelfCreatedFarms: onlySelfCreatedFarms } = useXStore(farmAtom)
-  const { searchText: searchText } = useXStore(farmAtom)
-  const [favouriteIds] = useFarmFavoriteIds()
+  const { jsonInfos, hydratedInfos, onlySelfFarms, onlySelfCreatedFarms, searchText, favouriteIds } =
+    useXStore(farmAtom)
   const owner = useWallet((s) => s.owner)
-  const { isLoading: isLoading } = useXStore(farmAtom)
+  const { isLoading } = useXStore(farmAtom)
   const dataSource = (
     (hydratedInfos.length ? hydratedInfos : jsonInfos) as (FarmPoolJsonInfo | HydratedFarmInfo)[]
   ).filter((i) => !isMintEqual(i.lpMint, RAYMint))
@@ -604,8 +598,7 @@ function FarmCardDatabaseBody({
   isLoading: boolean
   data: (FarmPoolJsonInfo | HydratedFarmInfo)[]
 } & DivProps) {
-  const { expandedItemIds: expandedItemIds } = useXStore(farmAtom)
-  const [favouriteIds, setFavouriteIds] = useFarmFavoriteIds()
+  const { expandedItemIds, favouriteIds } = useXStore(farmAtom)
   return (
     <Div {...divProps}>
       {data.length ? (
@@ -625,10 +618,10 @@ function FarmCardDatabaseBody({
               info={info}
               isFavourite={favouriteIds?.includes(toPubString(info.id))}
               onUnFavorite={(farmId) => {
-                setFavouriteIds((ids) => removeItem(ids ?? [], farmId))
+                farmAtom.set((s) => ({ favouriteIds: removeItem(s.favouriteIds ?? [], farmId) }))
               }}
               onStartFavorite={(farmId) => {
-                setFavouriteIds((ids) => addItem(ids ?? [], farmId))
+                farmAtom.set((s) => ({ favouriteIds: addItem(s.favouriteIds ?? [], farmId) }))
               }}
               onClickItemFace={(farmId) => {
                 farmAtom.set((s) => ({ detailedId: addItem(s.detailedId ?? [], farmId) }))
@@ -650,7 +643,7 @@ function FarmCardDatabaseBody({
  * manage component (with useFarms)
  */
 function FarmDetailPanel(divProps: DivProps) {
-  const { hydratedInfos: hydratedInfos } = useXStore(farmAtom)
+  const { hydratedInfos } = useXStore(farmAtom)
   const { detailedId: farmIds } = useXStore(farmAtom) ?? []
   /** for calculate detailInfos */
   const tempHydratedInfoMap = listToMap(hydratedInfos, (i) => toPubString(i.id))
@@ -772,7 +765,7 @@ function FarmCardItemFace({
   onStartFavorite?: (farmId: string) => void
 } & DivProps) {
   const isMobile = useAppSettings((s) => s.isMobile)
-  const { timeBasis: timeBasis } = useXStore(farmAtom)
+  const { timeBasis } = useXStore(farmAtom)
 
   return (
     <Div
@@ -1231,7 +1224,7 @@ function FarmDetailPanelItemContent({ farmInfo, ...divProps }: { farmInfo: Hydra
               useCreateFarms.setState({
                 isRoutedByCreateOrEdit: true
               })
-              routeTo('/farms/edit', { queryProps: { farmInfo: farmInfo } })
+              routeTo('/farms/edit', { queryProps: { farmInfo } })
             }}
           >
             Edit Farm
@@ -1248,8 +1241,8 @@ function FarmStakeLpDialog() {
   const tokenAccounts = useWallet((s) => s.tokenAccounts)
 
   const { stakeDialogInfo: stakeDialogFarmInfo } = useXStore(farmAtom)
-  const { isStakeDialogOpen: isStakeDialogOpen } = useXStore(farmAtom)
-  const { stakeDialogMode: stakeDialogMode } = useXStore(farmAtom)
+  const { isStakeDialogOpen } = useXStore(farmAtom)
+  const { stakeDialogMode } = useXStore(farmAtom)
 
   const [amount, setAmount] = useState<string>()
 

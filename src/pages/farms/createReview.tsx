@@ -36,7 +36,7 @@ export default function CreateFarmReviewPage() {
   const rewards = useCreateFarms((s) => s.rewards)
   const { pathname } = useRouter()
   const isMobile = useAppSettings((s) => s.isMobile)
-  const { refreshFarmInfos: refreshFarmInfos } = useXStore(farmAtom)
+  const { refreshFarmInfos } = useXStore(farmAtom)
   const [key, setKey] = useState(String(Date.now())) // hacking: same block hash can only success once
   const isApprovePanelShown = useAppSettings((s) => s.isApprovePanelShown)
   useEffect(() => {
