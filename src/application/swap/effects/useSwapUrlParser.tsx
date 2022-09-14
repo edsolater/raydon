@@ -1,8 +1,6 @@
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import { liquidityAtom } from '@/application/liquidity/atom'
-
 import useNotification from '@/application/notification/useNotification'
-import { useSwap } from '@/application/swap/useSwap'
 import { tokenAtom } from '@/application/token'
 import { hasSameItems } from '@/functions/arrayMethods'
 import { throttle } from '@/functions/debounce'
@@ -30,12 +28,12 @@ function isWsolAndSol(query1: string, query2: string): boolean {
 
 export default function useSwapUrlParser(): void {
   const { query, pathname, replace } = useRouter()
-  const swapCoin1 = useSwap((s) => s.coin1)
-  const swapCoin2 = useSwap((s) => s.coin2)
-  const swapCoin1Amount = useSwap((s) => s.coin1Amount)
-  const swapCoin2Amount = useSwap((s) => s.coin2Amount)
-  const swapFocusSide = useSwap((s) => s.focusSide)
-  const swapDirectionReversed = useSwap((s) => s.directionReversed)
+  const { coin1: swapCoin1 } = useXStore(swapAtom)
+  const { coin2: swapCoin2 } = useXStore(swapAtom)
+  const { coin1Amount: swapCoin1Amount } = useXStore(swapAtom)
+  const { coin2Amount: swapCoin2Amount } = useXStore(swapAtom)
+  const { focusSide: swapFocusSide } = useXStore(swapAtom)
+  const { directionReversed: swapDirectionReversed } = useXStore(swapAtom)
   const { jsonInfos: liquidityPoolJsonInfos } = useXStore(liquidityAtom)
   const { findLiquidityInfoByTokenMint } = useXStore(liquidityAtom)
   const findLiquidityInfoByAmmId = useCallback(

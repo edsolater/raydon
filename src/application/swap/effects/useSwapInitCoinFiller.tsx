@@ -1,12 +1,9 @@
-import { useEffect } from 'react'
-
 import { RAYMint, tokenAtom } from '@/application/token'
-
 import { getURLQueryEntry } from '@/functions/dom/getURLQueryEntries'
 import toPubString from '@/functions/format/toMintString'
 import { useXStore } from '@edsolater/xstore'
+import { useEffect } from 'react'
 import { QuantumSOLVersionSOL } from '../../token'
-import { useSwap } from '../useSwap'
 import { swapAtom } from '../atom'
 
 export default function useSwapInitCoinFiller() {

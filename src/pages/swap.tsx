@@ -1,14 +1,14 @@
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import useNotification from '@/application/notification/useNotification'
 import { routeTo } from '@/application/routeTools'
-import { getCoingeckoChartPriceData } from '@/application/swap/utils/klinePrice'
-import txSwap from '@/application/swap/tx/txSwap'
-import { txUnwrapWSOL } from '@/application/swap/tx/txUnwrapWSOL'
-import txWrapSOL from '@/application/swap/tx/txWrapSOL'
-import { useSwap } from '@/application/swap/useSwap'
+import { swapAtom } from '@/application/swap/atom'
 import { useSwapAmountCalculator } from '@/application/swap/effects/useSwapAmountCalculator'
 import useSwapInitCoinFiller from '@/application/swap/effects/useSwapInitCoinFiller'
 import useSwapUrlParser from '@/application/swap/effects/useSwapUrlParser'
+import txSwap from '@/application/swap/tx/txSwap'
+import { txUnwrapWSOL } from '@/application/swap/tx/txUnwrapWSOL'
+import txWrapSOL from '@/application/swap/tx/txWrapSOL'
+import { getCoingeckoChartPriceData } from '@/application/swap/utils/klinePrice'
 import {
   isQuantumSOLVersionSOL,
   isQuantumSOLVersionWSOL,
@@ -59,7 +59,6 @@ import { RouteInfo } from '@raydium-io/raydium-sdk'
 import { createRef, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { useSwapTwoElements } from '../hooks/useSwapTwoElements'
-import { swapAtom } from '@/application/swap/atom'
 
 function SwapEffect() {
   useSwapInitCoinFiller()
@@ -91,9 +90,9 @@ export default function Swap() {
 
 // to check if downCoin is unOfficial (not is raydium token list but in solana token list)
 function useUnofficialTokenConfirmState(): { hasConfirmed: boolean; popConfirm: () => void } {
-  const directionReversed = useSwap((s) => s.directionReversed)
-  const coin1 = useSwap((s) => s.coin1)
-  const coin2 = useSwap((s) => s.coin2)
+  const { directionReversed } = useXStore(swapAtom)
+  const { coin1 } = useXStore(swapAtom)
+  const { coin2 } = useXStore(swapAtom)
   const downCoin = directionReversed ? coin1 : coin2
   const { tokenListSettings } = useXStore(tokenAtom)
   const raydiumTokenMints = tokenListSettings[RAYDIUM_MAINNET_TOKEN_LIST_NAME]?.mints
@@ -188,17 +187,17 @@ function SwapHead() {
 
 function SwapCard() {
   const walletConnected = useWallet((s) => s.connected)
-  const coin1 = useSwap((s) => s.coin1)
-  const coin2 = useSwap((s) => s.coin2)
-  const coin1Amount = useSwap((s) => s.coin1Amount)
-  const coin2Amount = useSwap((s) => s.coin2Amount)
+  const { coin1 } = useXStore(swapAtom)
+  const { coin2 } = useXStore(swapAtom)
+  const { coin1Amount } = useXStore(swapAtom)
+  const { coin2Amount } = useXStore(swapAtom)
   // console.log('coin: ', coin1?.symbol, coin1Amount, coin2?.symbol, coin2Amount)
-  const directionReversed = useSwap((s) => s.directionReversed)
-  const priceImpact = useSwap((s) => s.priceImpact)
-  const refreshSwap = useSwap((s) => s.refreshSwap)
+  const { directionReversed } = useXStore(swapAtom)
+  const { priceImpact } = useXStore(swapAtom)
+  const { refreshSwap } = useXStore(swapAtom)
   const balances = useWallet((s) => s.balances)
-  const routes = useSwap((s) => s.routes)
-  const swapable = useSwap((s) => s.swapable)
+  const { routes } = useXStore(swapAtom)
+  const { swapable } = useXStore(swapAtom)
   const { refreshTokenPrice } = useXStore(tokenAtom)
   const { hasConfirmed, popConfirm: popUnofficialConfirm } = useUnofficialTokenConfirmState()
   const { hasAcceptedPriceChange, swapButtonComponentRef, coinInputBox1ComponentRef, coinInputBox2ComponentRef } =
@@ -225,7 +224,7 @@ function SwapCard() {
   const [isCoinSelectorOn, { on: turnOnCoinSelector, off: turnOffCoinSelector }] = useToggle()
   const [targetCoinNo, setTargetCoinNo] = useState<'1' | '2'>('1')
 
-  const executionPrice = useSwap((s) => s.executionPrice)
+  const { executionPrice } = useXStore(swapAtom)
 
   const swapElementBox1 = useRef<HTMLDivElement>(null)
   const swapElementBox2 = useRef<HTMLDivElement>(null)
@@ -520,11 +519,11 @@ function areTokenPairSwapable(targetToken: SplToken | undefined, candidateToken:
 
 function SwapPriceAcceptChip() {
   const { hasAcceptedPriceChange, setHasAcceptedPriceChange } = useSwapContextStore()
-  const coin1 = useSwap((s) => s.coin1)
-  const coin2 = useSwap((s) => s.coin2)
-  const coin1Amount = useSwap((s) => s.coin1Amount)
-  const coin2Amount = useSwap((s) => s.coin2Amount)
-  const directionReversed = useSwap((s) => s.directionReversed)
+  const { coin1 } = useXStore(swapAtom)
+  const { coin2 } = useXStore(swapAtom)
+  const { coin1Amount } = useXStore(swapAtom)
+  const { coin2Amount } = useXStore(swapAtom)
+  const { directionReversed } = useXStore(swapAtom)
   const focusSide = directionReversed ? 'coin2' : 'coin1'
   const focusSideCoin = focusSide === 'coin1' ? coin1 : coin2
   const focusSideAmount = focusSide === 'coin1' ? coin1Amount : coin2Amount
@@ -642,14 +641,14 @@ function RemainSOLAlert() {
 function SwapCardPriceIndicator({ className }: { className?: string }) {
   const [innerReversed, setInnerReversed] = useState(false)
 
-  const coin1 = useSwap((s) => s.coin1)
-  const coin2 = useSwap((s) => s.coin2)
+  const { coin1 } = useXStore(swapAtom)
+  const { coin2 } = useXStore(swapAtom)
 
-  const directionReversed = useSwap((s) => s.directionReversed)
+  const { directionReversed } = useXStore(swapAtom)
   const upCoin = directionReversed ? coin2 : coin1
   const downCoin = directionReversed ? coin1 : coin2
-  const executionPrice = useSwap((s) => s.executionPrice)
-  const priceImpact = useSwap((s) => s.priceImpact)
+  const { executionPrice } = useXStore(swapAtom)
+  const { priceImpact } = useXStore(swapAtom)
 
   const isDangerousPrice = useMemo(() => priceImpact != null && gte(priceImpact, 0.05), [priceImpact])
   const isWarningPrice = useMemo(() => priceImpact != null && gte(priceImpact, 0.01), [priceImpact])
@@ -696,18 +695,18 @@ function getRouteMiddleToken(info: { routes: RouteInfo[]; upCoin: SplToken; down
 }
 
 function SwapCardInfo({ className }: { className?: string }) {
-  const priceImpact = useSwap((s) => s.priceImpact)
-  const coin1 = useSwap((s) => s.coin1)
-  const coin2 = useSwap((s) => s.coin2)
-  const directionReversed = useSwap((s) => s.directionReversed)
+  const { priceImpact } = useXStore(swapAtom)
+  const { coin1 } = useXStore(swapAtom)
+  const { coin2 } = useXStore(swapAtom)
+  const { directionReversed } = useXStore(swapAtom)
   const upCoin = directionReversed ? coin2 : coin1
   const downCoin = directionReversed ? coin1 : coin2
 
-  const focusSide = useSwap((s) => s.focusSide)
-  const minReceived = useSwap((s) => s.minReceived)
-  const fee = useSwap((s) => s.fee)
-  const maxSpent = useSwap((s) => s.maxSpent)
-  const routes = useSwap((s) => s.routes)
+  const { focusSide } = useXStore(swapAtom)
+  const { minReceived } = useXStore(swapAtom)
+  const { fee } = useXStore(swapAtom)
+  const { maxSpent } = useXStore(swapAtom)
+  const { routes } = useXStore(swapAtom)
   const slippageTolerance = useAppSettings((s) => s.slippageTolerance)
   const { getToken } = useXStore(tokenAtom)
 
@@ -886,9 +885,9 @@ function SwapCardItem({
 }
 
 function SwapCardTooltipPanelAddress() {
-  const coin1 = useSwap((s) => s.coin1)
-  const coin2 = useSwap((s) => s.coin2)
-  const routes = useSwap((s) => s.routes)
+  const { coin1 } = useXStore(swapAtom)
+  const { coin2 } = useXStore(swapAtom)
+  const { routes } = useXStore(swapAtom)
   return (
     <Div className="w-60">
       <Div className="text-sm font-semibold mb-2">Addresses</Div>
@@ -965,9 +964,9 @@ function SwapCardTooltipPanelAddressItem({
 }
 
 function KLineChart() {
-  const coin1 = useSwap((s) => s.coin1)
-  const coin2 = useSwap((s) => s.coin2)
-  const directionReversed = useSwap((s) => s.directionReversed)
+  const { coin1 } = useXStore(swapAtom)
+  const { coin2 } = useXStore(swapAtom)
+  const { directionReversed } = useXStore(swapAtom)
 
   const kline1Box = useRef<HTMLDivElement>(null)
   const kline2Box = useRef<HTMLDivElement>(null)
@@ -1025,7 +1024,7 @@ function KLineChartItem({
 }) {
   const blackListTokenMint = [toPubString(USDCMint), toPubString(USDTMint)]
   const isMobile = useAppSettings((s) => s.isMobile)
-  const refreshCount = useSwap((s) => s.refreshCount)
+  const { refreshCount } = useXStore(swapAtom)
 
   const pricePoints = useAsyncMemo(
     async () =>

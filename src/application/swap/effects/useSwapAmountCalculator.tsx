@@ -21,18 +21,17 @@ import { deUIToken, deUITokenAmount, toUITokenAmount } from '../../token'
 import { SplToken } from '../../token/type'
 import useWallet from '../../wallet/useWallet'
 import { swapAtom } from '../atom'
-import { useSwap } from '../useSwap'
 
 export function useSwapAmountCalculator() {
   const { pathname } = useRouter()
 
   const connection = useConnection((s) => s.connection)
-  const coin1 = useSwap((s) => s.coin1)
-  const coin2 = useSwap((s) => s.coin2)
-  const userCoin1Amount = useSwap((s) => s.coin1Amount)
-  const userCoin2Amount = useSwap((s) => s.coin2Amount)
-  const refreshCount = useSwap((s) => s.refreshCount)
-  const directionReversed = useSwap((s) => s.directionReversed)
+  const { coin1 } = useXStore(swapAtom)
+  const { coin2 } = useXStore(swapAtom)
+  const { coin1Amount: userCoin1Amount } = useXStore(swapAtom)
+  const { coin2Amount: userCoin2Amount } = useXStore(swapAtom)
+  const { refreshCount } = useXStore(swapAtom)
+  const { directionReversed } = useXStore(swapAtom)
   const focusSide = directionReversed ? 'coin2' : 'coin1' // temporary focus side is always up, due to swap route's `Trade.getBestAmountIn()` is not ready
   const slippageTolerance = useAppSettings((s) => s.slippageTolerance)
   const connected = useWallet((s) => s.connected)

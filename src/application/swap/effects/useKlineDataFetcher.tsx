@@ -1,15 +1,14 @@
-import { useEffect } from 'react'
-
-import { freshKLineChartPrices } from '../utils/klinePrice'
-import { useSwap } from '../useSwap'
 import { useXStore } from '@/../../xstore/dist'
 import { liquidityAtom } from '@/application/liquidity/atom'
+import { useEffect } from 'react'
+import { swapAtom } from '../atom'
+import { freshKLineChartPrices } from '../utils/klinePrice'
 
 export function useKlineDataFetcher() {
-  const coin1 = useSwap((s) => s.coin1)
-  const coin2 = useSwap((s) => s.coin2)
+  const { coin1 } = useXStore(swapAtom)
+  const { coin2 } = useXStore(swapAtom)
   const { jsonInfos } = useXStore(liquidityAtom)
-  const refreshCount = useSwap((s) => s.refreshCount)
+  const { refreshCount } = useXStore(swapAtom)
 
   useEffect(() => {
     freshKLineChartPrices()
