@@ -1,7 +1,6 @@
 import { ReactNode, RefObject, useEffect, useImperativeHandle, useMemo, useRef } from 'react'
 
 import useAppSettings from '@/application/appSettings/useAppSettings'
-import { usePools } from '@/application/pools/usePools'
 import {
   isQuantumSOL,
   isQuantumSOLVersionSOL,
@@ -18,6 +17,7 @@ import { isTokenAmount } from '@/functions/judgers/dateType'
 import { gt, gte, lt } from '@/functions/numberish/compare'
 import { mul, sub } from '@/functions/numberish/operations'
 
+import { poolsAtom } from '@/application/pools/atom'
 import { walletAtom } from '@/application/wallet'
 import toPubString from '@/functions/format/toMintString'
 import { isMintEqual } from '@/functions/judgers/areEqual'
@@ -30,7 +30,6 @@ import Button from '../tempUikits/Button'
 import DecimalInput from '../tempUikits/DecimalInput'
 import CoinAvatar from './CoinAvatar'
 import Icon from './Icon'
-import { poolsAtom } from '@/application/pools/atom'
 
 export interface CoinInputBoxHandle {
   focusInput?: () => void

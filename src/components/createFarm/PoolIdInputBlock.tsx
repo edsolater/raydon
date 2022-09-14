@@ -1,7 +1,7 @@
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import useCreateFarms from '@/application/createFarm/useCreateFarm'
 import useLiquidity from '@/application/liquidity/useLiquidity'
-import { usePools } from '@/application/pools/usePools'
+import { poolsAtom } from '@/application/pools/atom'
 import { tokenAtom } from '@/application/token'
 import { AddressItem } from '@/components/AddressItem'
 import CoinAvatarPair from '@/components/CoinAvatarPair'
@@ -33,7 +33,7 @@ export function PoolIdInputBlock({
 }) {
   const isMoblie = useAppSettings((s) => s.isMobile)
   const poolId = useCreateFarms((s) => s.poolId)
-  const pairInfos = usePools((s) => s.hydratedInfos)
+  const { hydratedInfos: pairInfos } = useXStore(poolsAtom)
   const liquidityPoolJsons = useLiquidity((s) => s.jsonInfos)
   const { tokens } = useXStore(tokenAtom)
 

@@ -67,6 +67,5 @@ export const farmAtom = createXAtom<FarmStore>({
     stakeDialogMode: 'deposit',
     isStakeDialogOpen: false,
     stakeDialogInfo: undefined
-  }),
-  effects: [autoResetFarmCreatedBySelf]
+  })
 })

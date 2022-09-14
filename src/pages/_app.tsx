@@ -10,7 +10,6 @@ import { activateAllSubscribeEffects } from '@/application/effects/activateAllSu
 import useLiquidityInfoLoader from '@/application/liquidity/effects/useLiquidityInfoLoader'
 import useMessageBoardFileLoader from '@/application/messageBoard/useMessageBoardFileLoader'
 import useMessageBoardReadedIdRecorder from '@/application/messageBoard/useMessageBoardReadedIdRecorder'
-import usePoolsInfoLoader from '@/application/pools/effects/usePoolsInfoLoader'
 import { routerAtom } from '@/application/router/atom'
 import useStealDataFromFarm from '@/application/staking/useStealDataFromFarm'
 import useInitRefreshTransactionStatus from '@/application/txHistory/useInitRefreshTransactionStatus'
@@ -109,7 +108,7 @@ function ApplicationsInitializations() {
   useLiquidityInfoLoader()
 
   /********************** pair Info (pools) **********************/
-  usePoolsInfoLoader()
+  // usePoolsInfoLoader()
 
   /********************** staking **********************/
   useStealDataFromFarm() // auto inject apr to farm info from backend pair interface

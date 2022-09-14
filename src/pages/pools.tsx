@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 
 import { twMerge } from 'tailwind-merge'
 
@@ -7,7 +7,7 @@ import useFarms from '@/application/farms/useFarms'
 import { isHydratedPoolItemInfo } from '@/application/pools/utils/is'
 import { HydratedPairItemInfo } from '@/application/pools/type'
 import { usePoolFavoriteIds, usePools } from '@/application/pools/usePools'
-import usePoolSummeryInfoLoader from '@/application/pools/effects/usePoolSummeryInfoLoader'
+import { autoRefreshTvlAndVolume24hData } from '@/application/pools/effects/autoRefreshTvlAndVolume24hData'
 import { routeTo } from '@/application/routeTools'
 import { tokenAtom } from '@/application/token'
 import { LpToken } from '@/application/token/type'
@@ -53,7 +53,10 @@ import { poolsAtom } from '@/application/pools/atom'
  * {@link useDatabase `useDatabase`} detail data is from liquidity
  */
 export default function PoolsPage() {
-  usePoolSummeryInfoLoader()
+  useEffect(() => {
+    const stop = autoRefreshTvlAndVolume24hData.activate()
+    return stop
+  }, [])
   return (
     <PageLayout contentButtonPaddingShorter mobileBarTitle="Pools" metaTitle="Pools - Raydium">
       <PoolHeader />

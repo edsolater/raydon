@@ -17,12 +17,11 @@ import toBN from '@/functions/numberish/toBN'
 import { FarmPoolJsonInfo } from '../farms/type'
 import { EXTEND_BEFORE_END_SECOND, MAX_DURATION_SECOND, MIN_DURATION_SECOND } from '../farms/utils/handleFarmInfo'
 import { liquidityAtom } from '../liquidity/atom'
-import { usePools } from '../pools/usePools'
+import { poolsAtom } from '../pools/atom'
 import { SOLMint, WSOLMint } from '../token'
 import useWallet from '../wallet/useWallet'
 import useCreateFarms from './useCreateFarm'
 import { valid300Ray, validUiRewardInfo } from './validRewardInfo'
-import { poolsAtom } from '../pools/atom'
 
 export const userCreatedFarmKey = 'USER_CREATED_FARMS'
 

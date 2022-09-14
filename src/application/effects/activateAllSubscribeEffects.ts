@@ -8,6 +8,11 @@ import { walletAtom } from '../wallet'
 import { listenWalletAccountChange } from './listenWalletAccountChange'
 import { registerWalletConnectNotifaction } from './registerWalletConnectNotifaction'
 import { establishXAtomMainThreadSide } from './webworkerUtil'
+import { autoComposeLpPrices } from '../pools/effects/autoComposeLpPrices'
+import { autoHydratePairInfo } from '../pools/effects/autoHydratePairInfo'
+import { autoRefetchPairJsonInfo } from '../pools/effects/autoRefetchPairJsonInfo'
+import { autoRefreshTvlAndVolume24hData } from '../pools/effects/autoRefreshTvlAndVolume24hData'
+import { startPoolIntervalRefresh } from '../pools/effects/startPoolIntervalRefresh'
 
 establishXAtomMainThreadSide({
   makeWorkerHandler: () => new Worker(new URL('./worker', import.meta.url)),
@@ -20,7 +25,15 @@ export const activateAllSubscribeEffects = () => {
   registerWalletConnectNotifaction.activate()
 
   // farms
+  autoResetFarmCreatedBySelf.activate() // for UI
   autoRefetchFarmJsonInfos.activate()
   autoSDKParseFarmJsonInfos.activate()
   autoHydrateFarmSDKParsedInfos.activate()
+
+  // pools
+  autoComposeLpPrices.activate()
+  autoHydratePairInfo.activate()
+  autoRefetchPairJsonInfo.activate()
+  autoRefreshTvlAndVolume24hData.activate()
+  startPoolIntervalRefresh.activate()
 }

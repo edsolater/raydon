@@ -1,15 +1,13 @@
-import useLiquidity from '@/application/liquidity/useLiquidity'
+import { liquidityAtom } from '@/application/liquidity/atom'
+import { poolsAtom } from '@/application/pools/atom'
 import { offsetDateTime } from '@/functions/date/dateFormat'
 import { lazyMap } from '@/functions/lazyMap'
 import { createXEffect } from '@edsolater/xstore'
 import { connectionAtom } from '../../connection'
-import { usePools } from '../../pools/usePools'
 import { tokenAtom } from '../../token'
-import { hydrateFarmInfo } from '../utils/handleFarmInfo'
 import { farmAtom } from '../atom'
 import { getSlotCountForSecond } from '../utils/getSlotCountForSecond'
-import { liquidityAtom } from '@/application/liquidity/atom'
-import { poolsAtom } from '@/application/pools/atom'
+import { hydrateFarmInfo } from '../utils/handleFarmInfo'
 
 export const autoHydrateFarmSDKParsedInfos = createXEffect(async () => {
   const { sdkParsedInfos } = farmAtom.get()

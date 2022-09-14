@@ -3,8 +3,6 @@ import { PublicKey } from '@solana/web3.js'
 
 import useConnection from '@/application/connection/useConnection'
 import useNotification from '@/application/notification/useNotification'
-import { usePools } from '@/application/pools/usePools'
-import { WSOLMint } from '@/application/token'
 import {
   ANAMint,
   ETHMint,
@@ -16,15 +14,16 @@ import {
   stSOLMint,
   USDCMint,
   USDHMint,
-  USDTMint
+  USDTMint,
+  WSOLMint
 } from '@/application/token'
 import useWallet from '@/application/wallet/useWallet'
 import assert from '@/functions/assert'
 import toPubString, { toPub } from '@/functions/format/toMintString'
 
-import useCreatePool from './useCreatePool'
 import { isMintEqual } from '@/functions/judgers/areEqual'
 import { poolsAtom } from '../pools/atom'
+import useCreatePool from './useCreatePool'
 
 export async function updateCreatePoolInfo(txParam: { marketId: PublicKeyish }): Promise<{ isSuccess: boolean }> {
   try {
