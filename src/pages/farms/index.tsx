@@ -7,7 +7,6 @@ import txFarmWithdraw from '@/application/farms/tx/txFarmWithdraw'
 import { FarmPoolJsonInfo, HydratedFarmInfo, HydratedRewardInfo } from '@/application/farms/type'
 import useFarms, { useFarmFavoriteIds } from '@/application/farms/useFarms'
 import useNotification from '@/application/notification/useNotification'
-import { usePools } from '@/application/pools/usePools'
 import { routeTo } from '@/application/routeTools'
 import { RAYMint, tokenAtom } from '@/application/token'
 import useWallet from '@/application/wallet/useWallet'
@@ -56,6 +55,7 @@ import { Fragment, ReactNode, useEffect, useMemo, useRef, useState } from 'react
 import { twMerge } from 'tailwind-merge'
 import useInit from '@/hooks/useInit'
 import { getURLFarmId } from '@/application/farms/utils/parseFarmUrl'
+import { poolsAtom } from '@/application/pools/atom'
 
 function useFarmUrlParser() {
   useInit(
@@ -1088,7 +1088,7 @@ function FarmItemHavestButton({ farmInfo, ...divProps }: { farmInfo: HydratedFar
 }
 
 function FarmDetailPanelItemContent({ farmInfo, ...divProps }: { farmInfo: HydratedFarmInfo } & DivProps) {
-  const lpPrices = usePools((s) => s.lpPrices)
+  const { lpPrices } = useXStore(poolsAtom)
   const { tokenPrices: prices } = useXStore(tokenAtom)
   const isMobile = useAppSettings((s) => s.isMobile)
   const lightBoardClass = 'bg-[rgba(20,16,65,.2)]'

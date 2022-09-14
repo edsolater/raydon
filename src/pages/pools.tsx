@@ -6,7 +6,7 @@ import useAppSettings from '@/application/appSettings/useAppSettings'
 import useFarms from '@/application/farms/useFarms'
 import { isHydratedPoolItemInfo } from '@/application/pools/utils/is'
 import { HydratedPairItemInfo } from '@/application/pools/type'
-import { usePoolFavoriteIds, usePools } from '@/application/pools/usePools'
+import { usePoolFavoriteIds } from '@/application/pools/usePools'
 import { autoRefreshTvlAndVolume24hData } from '@/application/pools/effects/autoRefreshTvlAndVolume24hData'
 import { routeTo } from '@/application/routeTools'
 import { tokenAtom } from '@/application/token'
@@ -49,7 +49,6 @@ import { poolsAtom } from '@/application/pools/atom'
 /**
  * store:
  * {@link useCurrentPage `useCurrentPage`} ui page store
- * {@link usePools `usePools`} pools store
  * {@link useDatabase `useDatabase`} detail data is from liquidity
  */
 export default function PoolsPage() {
@@ -66,8 +65,8 @@ export default function PoolsPage() {
 }
 
 function PoolHeader() {
-  const tvl = usePools((s) => s.tvl)
-  const volume24h = usePools((s) => s.volume24h)
+  const { tvl } = useXStore(poolsAtom)
+  const { volume24h } = useXStore(poolsAtom)
   const isMobile = useAppSettings((s) => s.isMobile)
   return isMobile ? (
     <Div
@@ -112,7 +111,7 @@ function PoolHeader() {
 }
 
 function PoolStakedOnlyBlock() {
-  const onlySelfPools = usePools((s) => s.onlySelfPools)
+  const { onlySelfPools } = useXStore(poolsAtom)
   const connected = useWallet((s) => s.connected)
   if (!connected) return null
   return (
@@ -161,10 +160,10 @@ function ToolsButton({ className }: { className?: string }) {
 
 function PoolSearchBlock({ className }: { className?: string }) {
   const isMobile = useAppSettings((s) => s.isMobile)
-  const storeSearchText = usePools((s) => s.searchText)
+  const { searchText } = useXStore(poolsAtom)
   return (
     <Input
-      value={storeSearchText}
+      value={searchText}
       className={twMerge(
         'px-2 py-2 mobile:py-1 gap-2 ring-inset ring-1 ring-[rgba(196,214,255,0.5)] rounded-xl mobile:rounded-lg min-w-[6em]',
         className
@@ -176,7 +175,7 @@ function PoolSearchBlock({ className }: { className?: string }) {
           heroIconName="x"
           size={isMobile ? 'xs' : 'sm'}
           className={`text-[rgba(196,214,255,0.5)] transition clickable ${
-            storeSearchText ? 'opacity-100' : 'opacity-0 pointer-events-none'
+            searchText ? 'opacity-100' : 'opacity-0 pointer-events-none'
           }`}
           onClick={() => {
             poolsAtom.set({ searchText: '' })
@@ -203,7 +202,7 @@ function PoolLabelBlock({ className }: { className?: string }) {
 }
 
 function PoolTimeBasisSelectorBox({ className }: { className?: string }) {
-  const timeBasis = usePools((s) => s.timeBasis)
+  const { timeBasis } = useXStore(poolsAtom)
   return (
     <Select
       className={twMerge('z-20', className)}
@@ -240,7 +239,7 @@ function PoolTableSorterBox({
       | undefined
   ) => void
 }) {
-  const timeBasis = usePools((s) => s.timeBasis)
+  const { timeBasis } = useXStore(poolsAtom)
   return (
     <Select
       className={className}
@@ -294,10 +293,10 @@ function PoolCard() {
   const { hydratedInfos } = useXStore(poolsAtom)
   // const { searchText, setSearchText, currentTab, onlySelfPools } = usePageState()
 
-  const searchText = usePools((s) => s.searchText)
-  const currentTab = usePools((s) => s.currentTab)
-  const onlySelfPools = usePools((s) => s.onlySelfPools)
-  const timeBasis = usePools((s) => s.timeBasis)
+  const { searchText } = useXStore(poolsAtom)
+  const { currentTab } = useXStore(poolsAtom)
+  const { onlySelfPools } = useXStore(poolsAtom)
+  const { timeBasis } = useXStore(poolsAtom)
 
   const isMobile = useAppSettings((s) => s.isMobile)
   const [favouriteIds] = usePoolFavoriteIds()
@@ -544,7 +543,7 @@ function PoolCard() {
 }
 
 function PoolCardDatabaseBody({ sortedData }: { sortedData: HydratedPairItemInfo[] }) {
-  const loading = usePools((s) => s.loading)
+  const { loading } = useXStore(poolsAtom)
   const [favouriteIds, setFavouriteIds] = usePoolFavoriteIds()
   return sortedData.length ? (
     <ListFast
@@ -602,7 +601,7 @@ function PoolCardDatabaseBodyCollapseItemFace({
   const haveLp = Boolean(lpToken)
   const isMobile = useAppSettings((s) => s.isMobile)
   const isTablet = useAppSettings((s) => s.isTablet)
-  const timeBasis = usePools((s) => s.timeBasis)
+  const { timeBasis } = useXStore(poolsAtom)
 
   const pcCotent = (
     <Div
@@ -786,7 +785,7 @@ function PoolCardDatabaseBodyCollapseItemContent({ poolInfo: info }: { poolInfo:
   const balances = useWallet((s) => s.balances)
   const lightBoardClass = 'bg-[rgba(20,16,65,.2)]'
   const farmPoolsList = useFarms((s) => s.hydratedInfos)
-  const prices = usePools((s) => s.lpPrices)
+  const { lpPrices: prices } = useXStore(poolsAtom)
 
   const hasLp = isMeaningfulNumber(balances[info.lpMint])
 
