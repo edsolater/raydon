@@ -8,7 +8,7 @@ import { PublicKeyish } from '@/types/constants'
 
 import { loadTransaction } from '@/application/txTools/createTransaction'
 import handleMultiTx from '@/application/txTools/handleMultiTx'
-import useLiquidity from '../useLiquidity'
+
 import { liquidityAtom } from '../atom'
 
 export default function txRemoveLiquidity({ ammId: targetAmmId }: { ammId?: PublicKeyish } = {}) {

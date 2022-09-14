@@ -1,6 +1,7 @@
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import useCreateFarms from '@/application/createFarm/useCreateFarm'
-import useLiquidity from '@/application/liquidity/useLiquidity'
+import { liquidityAtom } from '@/application/liquidity/atom'
+
 import { poolsAtom } from '@/application/pools/atom'
 import { tokenAtom } from '@/application/token'
 import { AddressItem } from '@/components/AddressItem'
@@ -18,7 +19,7 @@ import { useXStore } from '@edsolater/xstore'
 export function PoolInfoSummary() {
   const poolId = useCreateFarms((s) => s.poolId)
   const { hydratedInfos: pairInfos } = useXStore(poolsAtom)
-  const liquidityPoolJsons = useLiquidity((s) => s.jsonInfos)
+  const { jsonInfos: liquidityPoolJsons } = useXStore(liquidityAtom)
   const { tokens } = useXStore(tokenAtom)
   const isMobile = useAppSettings((s) => s.isMobile)
 

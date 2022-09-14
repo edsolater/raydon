@@ -3,7 +3,6 @@ import { PublicKey } from '@solana/web3.js'
 
 import useConnection from '@/application/connection/useConnection'
 
-import useLiquidity from '../useLiquidity'
 import toPubString from '@/functions/format/toMintString'
 import { liquidityAtom } from '../atom'
 

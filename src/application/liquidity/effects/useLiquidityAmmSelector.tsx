@@ -1,18 +1,13 @@
-import { useEffect } from 'react'
-
+import { useXStore } from '@/../../xstore/dist'
 import { tokenAtom } from '@/application/token'
 import { isMintEqual } from '@/functions/judgers/areEqual'
 import useAsyncEffect from '@/hooks/useAsyncEffect'
-
-import useLiquidity from '../useLiquidity'
+import { useEffect } from 'react'
 import { liquidityAtom } from '../atom'
 
 /** coin1 coin2 ammId */
 export default function useLiquidityAmmSelector() {
-  const coin1 = useLiquidity((s) => s.coin1)
-  const coin2 = useLiquidity((s) => s.coin2)
-  const ammId = useLiquidity((s) => s.ammId)
-  const currentJsonInfo = useLiquidity((s) => s.currentJsonInfo)
+  const { coin1, coin2, ammId, currentJsonInfo } = useXStore(liquidityAtom)
 
   /** update `coin1` and `coin2` (to match `ammId`) */
   useEffect(() => {

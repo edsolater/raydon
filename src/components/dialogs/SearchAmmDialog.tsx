@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { findTokenMintByAmmId, findTokenMintByMarketId } from '@/application/liquidity/utils/miscToolFns'
-import useLiquidity from '@/application/liquidity/useLiquidity'
+
 import useNotification from '@/application/notification/useNotification'
 import Icon from '@/components/Icon'
 import assert from '@/functions/assert'

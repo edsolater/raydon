@@ -1,11 +1,7 @@
-import useLiquidity from '@/application/liquidity/useLiquidity'
 import jFetch from '@/functions/dom/jFetch'
 import { HexAddress, StringNumber } from '@/types/constants'
 import { liquidityAtom } from '../../liquidity/atom'
 import { swapAtom } from '../atom'
-
-import { useSwap } from '../useSwap'
-
 type KLineResponseShape = {
   // state
   s?: 'ok'

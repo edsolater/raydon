@@ -13,10 +13,11 @@ import { HexAddress, Numberish } from '@/types/constants'
 import { hasSameItems } from '../../../functions/arrayMethods'
 import useConnection from '../../connection/useConnection'
 import { SDKParsedLiquidityInfo } from '../type'
-import useLiquidity from '../useLiquidity'
+
 import { useEffect } from 'react'
 import toPubString from '@/functions/format/toMintString'
 import { liquidityAtom } from '../atom'
+import { useXStore } from '@/../../xstore/dist'
 
 /**
  * will auto fresh  liquidity's coin1Amount and coin2Amount with liquidity's jsonInfos and coin1 and coin2
@@ -26,15 +27,15 @@ import { liquidityAtom } from '../atom'
 export default function useLiquidityAmountCalculator() {
   const connection = useConnection((s) => s.connection)
 
-  const currentJsonInfo = useLiquidity((s) => s.currentJsonInfo)
-  const currentSdkParsedInfo = useLiquidity((s) => s.currentSdkParsedInfo)
+  const { currentJsonInfo } = useXStore(liquidityAtom)
+  const { currentSdkParsedInfo } = useXStore(liquidityAtom)
 
-  const coin1 = useLiquidity((s) => s.coin1)
-  const coin2 = useLiquidity((s) => s.coin2)
-  const userCoin1Amount = useLiquidity((s) => s.coin1Amount)
-  const userCoin2Amount = useLiquidity((s) => s.coin2Amount)
-  const focusSide = useLiquidity((s) => s.focusSide)
-  const refreshCount = useLiquidity((s) => s.refreshCount)
+  const { coin1 } = useXStore(liquidityAtom)
+  const { coin2 } = useXStore(liquidityAtom)
+  const { coin1Amount: userCoin1Amount } = useXStore(liquidityAtom)
+  const { coin2Amount: userCoin2Amount } = useXStore(liquidityAtom)
+  const { focusSide } = useXStore(liquidityAtom)
+  const { refreshCount } = useXStore(liquidityAtom)
 
   const slippageTolerance = useAppSettings((s) => s.slippageTolerance)
 

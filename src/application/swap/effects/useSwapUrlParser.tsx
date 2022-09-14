@@ -1,5 +1,6 @@
 import useAppSettings from '@/application/appSettings/useAppSettings'
-import useLiquidity from '@/application/liquidity/useLiquidity'
+import { liquidityAtom } from '@/application/liquidity/atom'
+
 import useNotification from '@/application/notification/useNotification'
 import { useSwap } from '@/application/swap/useSwap'
 import { tokenAtom } from '@/application/token'
@@ -35,8 +36,8 @@ export default function useSwapUrlParser(): void {
   const swapCoin2Amount = useSwap((s) => s.coin2Amount)
   const swapFocusSide = useSwap((s) => s.focusSide)
   const swapDirectionReversed = useSwap((s) => s.directionReversed)
-  const liquidityPoolJsonInfos = useLiquidity((s) => s.jsonInfos)
-  const findLiquidityInfoByTokenMint = useLiquidity((s) => s.findLiquidityInfoByTokenMint)
+  const { jsonInfos: liquidityPoolJsonInfos } = useXStore(liquidityAtom)
+  const { findLiquidityInfoByTokenMint } = useXStore(liquidityAtom)
   const findLiquidityInfoByAmmId = useCallback(
     (ammid: string) => liquidityPoolJsonInfos.find((jsonInfo) => jsonInfo.id === ammid),
     [liquidityPoolJsonInfos]

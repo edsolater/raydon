@@ -1,31 +1,27 @@
-import { useRouter } from 'next/router'
-
-import { jsonInfo2PoolKeys, Liquidity, Trade, WSOL } from '@raydium-io/raydium-sdk'
-import { Connection } from '../../connection'
-
+import { useXStore } from '@/../../xstore/dist'
+import { liquidityAtom } from '@/application/liquidity/atom'
 import { shakeUndifindedItem } from '@/functions/arrayMethods'
 import toPubString from '@/functions/format/toMintString'
 import { toPercent } from '@/functions/format/toPercent'
 import { toTokenAmount } from '@/functions/format/toTokenAmount'
+import { isMintEqual } from '@/functions/judgers/areEqual'
+import { eq } from '@/functions/numberish/compare'
+import { toString } from '@/functions/numberish/toString'
 import useAsyncEffect from '@/hooks/useAsyncEffect'
 import { HexAddress, Numberish } from '@/types/constants'
-
+import { jsonInfo2PoolKeys, Liquidity, Trade, WSOL } from '@raydium-io/raydium-sdk'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 import useAppSettings from '../../appSettings/useAppSettings'
+import { Connection } from '../../connection'
 import useConnection from '../../connection/useConnection'
 import { SDKParsedLiquidityInfo } from '../../liquidity/type'
-import useLiquidity from '../../liquidity/useLiquidity'
 import { sdkParseJsonLiquidityInfo } from '../../liquidity/utils/sdkParseJsonLiquidityInfo'
-import { SplToken } from '../../token/type'
 import { deUIToken, deUITokenAmount, toUITokenAmount } from '../../token'
-
-import { useSwap } from '../useSwap'
-import { useDebugValue, useEffect } from 'react'
+import { SplToken } from '../../token/type'
 import useWallet from '../../wallet/useWallet'
-import { isMintEqual } from '@/functions/judgers/areEqual'
-import { toString } from '@/functions/numberish/toString'
-import { eq } from '@/functions/numberish/compare'
-import { useRecordedEffect } from '@/hooks/useRecordedEffect'
 import { swapAtom } from '../atom'
+import { useSwap } from '../useSwap'
 
 export function useSwapAmountCalculator() {
   const { pathname } = useRouter()
@@ -47,7 +43,7 @@ export function useSwapAmountCalculator() {
   const downCoin = directionReversed ? coin1 : coin2
   const downCoinAmount = (directionReversed ? userCoin1Amount : userCoin2Amount) || '0'
 
-  const jsonInfos = useLiquidity((s) => s.jsonInfos)
+  const { jsonInfos } = useXStore(liquidityAtom)
   useEffect(() => {
     cleanCalcCache()
   }, [refreshCount])
@@ -201,9 +197,7 @@ async function calculatePairTokenAmount({
   const upCoinTokenAmount = toTokenAmount(upCoin, upCoinAmount, { alreadyDecimaled: true })
   const downCoinTokenAmount = toTokenAmount(downCoin, downCoinAmount, { alreadyDecimaled: true })
 
-  const { routeRelated: jsonInfos } = await useLiquidity
-    .getState()
-    .findLiquidityInfoByTokenMint(upCoin.mint, downCoin.mint)
+  const { routeRelated: jsonInfos } = await liquidityAtom.get().findLiquidityInfoByTokenMint(upCoin.mint, downCoin.mint)
 
   if (jsonInfos.length) {
     const key = jsonInfos.map((jsonInfo) => jsonInfo.id).join('-')

@@ -13,7 +13,7 @@ import { useXStore } from '@edsolater/xstore'
 import { LiquidityPoolsJsonFile } from '@raydium-io/raydium-sdk'
 import { hydrateLiquidityInfo } from '../utils/hydrateLiquidityInfo'
 import { sdkParseJsonLiquidityInfo } from '../utils/sdkParseJsonLiquidityInfo'
-import useLiquidity from '../useLiquidity'
+
 import { liquidityAtom } from '../atom'
 
 /**
@@ -23,7 +23,7 @@ export default function useLiquidityInfoLoader({ disabled }: { disabled?: boolea
   const { jsonInfos, sdkParsedInfos, currentJsonInfo, currentSdkParsedInfo, userExhibitionLiquidityIds } =
     useXStore(liquidityAtom)
   const { getToken, getLpToken } = useXStore(tokenAtom)
-  const refreshCount = useLiquidity((s) => s.refreshCount)
+  const { refreshCount } = useXStore(liquidityAtom)
   const connection = useConnection((s) => s.connection)
   const rawBalances = useWallet((s) => s.rawBalances)
 

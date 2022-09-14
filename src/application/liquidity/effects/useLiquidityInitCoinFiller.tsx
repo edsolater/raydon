@@ -6,7 +6,7 @@ import { QuantumSOLVersionSOL } from '@/application/token'
 import { getURLQueryEntry } from '@/functions/dom/getURLQueryEntries'
 import toPubString from '@/functions/format/toMintString'
 import { useXStore } from '@edsolater/xstore'
-import useLiquidity from '../useLiquidity'
+
 import { liquidityAtom } from '../atom'
 
 export default function useLiquidityInitCoinFiller() {

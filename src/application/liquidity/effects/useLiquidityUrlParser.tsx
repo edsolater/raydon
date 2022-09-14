@@ -15,24 +15,23 @@ import { useCallback, useEffect, useRef } from 'react'
 import useConnection from '../../connection/useConnection'
 import { getUserTokenEvenNotExist } from '../../token/utils/getUserTokenEvenNotExist'
 import { liquidityAtom } from '../atom'
-import useLiquidity from '../useLiquidity'
 
 export default function useLiquidityUrlParser() {
   const { query, pathname, replace } = useRouter()
-  const liquidityCoin1 = useLiquidity((s) => s.coin1)
-  const liquidityCoin2 = useLiquidity((s) => s.coin2)
-  const liquidityCoin1Amount = useLiquidity((s) => s.coin1Amount)
-  const liquidityCoin2Amount = useLiquidity((s) => s.coin2Amount)
-  const liquidityFocusSide = useLiquidity((s) => s.focusSide)
-  const liquidityPoolJsonInfos = useLiquidity((s) => s.jsonInfos)
-  const liquidityAmmId = useLiquidity((s) => s.ammId)
-  const isRemoveDialogOpen = useLiquidity((s) => s.isRemoveDialogOpen)
+  const { coin1: liquidityCoin1 } = useXStore(liquidityAtom)
+  const { coin2: liquidityCoin2 } = useXStore(liquidityAtom)
+  const { coin1Amount: liquidityCoin1Amount } = useXStore(liquidityAtom)
+  const { coin2Amount: liquidityCoin2Amount } = useXStore(liquidityAtom)
+  const { focusSide: liquidityFocusSide } = useXStore(liquidityAtom)
+  const { jsonInfos: liquidityPoolJsonInfos } = useXStore(liquidityAtom)
+  const { ammId: liquidityAmmId } = useXStore(liquidityAtom)
+  const { isRemoveDialogOpen } = useXStore(liquidityAtom)
 
   const findLiquidityInfoByAmmId = useCallback(
     (ammid: string) => liquidityPoolJsonInfos.find((jsonInfo) => jsonInfo.id === ammid),
     [liquidityPoolJsonInfos]
   )
-  const findLiquidityInfoByTokenMint = useLiquidity((s) => s.findLiquidityInfoByTokenMint)
+  const { findLiquidityInfoByTokenMint } = useXStore(liquidityAtom)
   const connection = useConnection((s) => s.connection)
   const { tokens, userAddedTokens, getToken, toUrlMint } = useXStore(tokenAtom)
   const inCleanUrlMode = useAppSettings((s) => s.inCleanUrlMode)

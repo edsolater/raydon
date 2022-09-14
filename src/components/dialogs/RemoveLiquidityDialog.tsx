@@ -1,19 +1,18 @@
-import React, { useRef } from 'react'
-import { twMerge } from 'tailwind-merge'
-
+import { useXStore } from '@/../../xstore/dist'
 import useAppSettings from '@/application/appSettings/useAppSettings'
+import { liquidityAtom } from '@/application/liquidity/atom'
 import txRemoveLiquidity from '@/application/liquidity/tx/txRemoveLiquidity'
 import { HydratedLiquidityInfo } from '@/application/liquidity/type'
-import useLiquidity from '@/application/liquidity/useLiquidity'
 import useWallet from '@/application/wallet/useWallet'
-import Button, { ButtonHandle } from '@/tempUikits/Button'
-import Card from '@/tempUikits/Card'
 import CoinInputBox, { CoinInputBoxHandle } from '@/components/CoinInputBox'
-import Dialog from '@/tempUikits/Dialog'
 import Icon from '@/components/Icon'
 import { gt } from '@/functions/numberish/compare'
-import { Div, cssRow } from '@edsolater/uikit'
-import { liquidityAtom } from '@/application/liquidity/atom'
+import Button, { ButtonHandle } from '@/tempUikits/Button'
+import Card from '@/tempUikits/Card'
+import Dialog from '@/tempUikits/Dialog'
+import { cssRow, Div } from '@edsolater/uikit'
+import React, { useRef } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 export function RemoveLiquidityDialog({
   info,
@@ -26,8 +25,8 @@ export function RemoveLiquidityDialog({
   onClose: () => void
   className?: string
 }) {
-  const defaultHydratedInfo = useLiquidity((s) => s.currentHydratedInfo)
-  const removeAmout = useLiquidity((s) => s.removeAmount)
+  const { currentHydratedInfo: defaultHydratedInfo } = useXStore(liquidityAtom)
+  const { removeAmount: removeAmout } = useXStore(liquidityAtom)
   const walletConnected = useWallet((s) => s.connected)
   const isApprovePanelShown = useAppSettings((s) => s.isApprovePanelShown)
 

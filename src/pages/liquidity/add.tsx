@@ -3,7 +3,7 @@ import useLiquidityAmmSelector from '@/application/liquidity/effects/useLiquidit
 import useLiquidityInitCoinFiller from '@/application/liquidity/effects/useLiquidityInitCoinFiller'
 import useLiquidityUrlParser from '@/application/liquidity/effects/useLiquidityUrlParser'
 import txAddLiquidity from '@/application/liquidity/tx/txAddLiquidity'
-import useLiquidity from '@/application/liquidity/useLiquidity'
+
 import { routeTo } from '@/application/routeTools'
 import { SOLDecimals, SOL_BASE_BALANCE, tokenAtom } from '@/application/token'
 import useWallet from '@/application/wallet/useWallet'
@@ -104,9 +104,9 @@ function LiquidityPageHead() {
 }
 
 function useLiquidityWarning() {
-  const currentJsonInfo = useLiquidity((s) => s.currentJsonInfo)
-  const coin1 = useLiquidity((s) => s.coin1)
-  const coin2 = useLiquidity((s) => s.coin2)
+  const { currentJsonInfo } = useXStore(liquidityAtom)
+  const { coin1 } = useXStore(liquidityAtom)
+  const { coin2 } = useXStore(liquidityAtom)
   const [userConfirmedList, setUserConfirmedList] = useLocalStorageItem<HexAddress /* ammId */[]>(
     'USER_CONFIRMED_LIQUIDITY_AMM_LIST'
   )
@@ -499,9 +499,9 @@ function RemainSOLAlert() {
 function LiquidityCardPriceIndicator({ className }: { className?: string }) {
   const [innerReversed, setInnerReversed] = useState(false)
 
-  const currentHydratedInfo = useLiquidity((s) => s.currentHydratedInfo)
-  const coin1 = useLiquidity((s) => s.coin1)
-  const coin2 = useLiquidity((s) => s.coin2)
+  const { currentHydratedInfo } = useXStore(liquidityAtom)
+  const { coin1 } = useXStore(liquidityAtom)
+  const { coin2 } = useXStore(liquidityAtom)
   const isMobile = useAppSettings((s) => s.isMobile)
 
   const pooledBaseTokenAmount = currentHydratedInfo?.baseToken
@@ -541,12 +541,12 @@ function LiquidityCardPriceIndicator({ className }: { className?: string }) {
 }
 
 function LiquidityCardInfo({ className }: { className?: string }) {
-  const currentHydratedInfo = useLiquidity((s) => s.currentHydratedInfo)
-  const coin1 = useLiquidity((s) => s.coin1)
-  const coin2 = useLiquidity((s) => s.coin2)
-  const focusSide = useLiquidity((s) => s.focusSide)
-  const coin1Amount = useLiquidity((s) => s.coin1Amount)
-  const coin2Amount = useLiquidity((s) => s.coin2Amount)
+  const { currentHydratedInfo } = useXStore(liquidityAtom)
+  const { coin1 } = useXStore(liquidityAtom)
+  const { coin2 } = useXStore(liquidityAtom)
+  const { focusSide } = useXStore(liquidityAtom)
+  const { coin1Amount } = useXStore(liquidityAtom)
+  const { coin2Amount } = useXStore(liquidityAtom)
   const slippageTolerance = useAppSettings((s) => s.slippageTolerance)
 
   const isCoin1Base = String(currentHydratedInfo?.baseMint) === String(coin1?.mint)
@@ -695,9 +695,8 @@ function LiquidityCardItem({
 }
 
 function LiquidityCardTooltipPanelAddress() {
-  const coin1 = useLiquidity((s) => s.coin1)
-  const coin2 = useLiquidity((s) => s.coin2)
-  const { lpMint, id, marketId } = useLiquidity((s) => s.currentJsonInfo) ?? {}
+  const { coin1, coin2, currentJsonInfo } = useXStore(liquidityAtom)
+  const { lpMint, id, marketId } = currentJsonInfo ?? {}
   return (
     <Div className="w-60">
       <Div className="text-sm font-semibold mb-2">Addresses</Div>
@@ -752,10 +751,10 @@ function LiquidityCardTooltipPanelAddressItem({
 }
 
 function UserLiquidityExhibition() {
-  const hydratedInfos = useLiquidity((s) => s.hydratedInfos)
-  const userExhibitionLiquidityIds = useLiquidity((s) => s.userExhibitionLiquidityIds)
-  const isRemoveDialogOpen = useLiquidity((s) => s.isRemoveDialogOpen)
-  const scrollToInputBox = useLiquidity((s) => s.scrollToInputBox)
+  const { hydratedInfos } = useXStore(liquidityAtom)
+  const { userExhibitionLiquidityIds } = useXStore(liquidityAtom)
+  const { isRemoveDialogOpen } = useXStore(liquidityAtom)
+  const { scrollToInputBox } = useXStore(liquidityAtom)
   const { hydratedInfos: farmPoolsList } = useXStore(farmAtom)
   const { getToken } = useXStore(tokenAtom)
 
