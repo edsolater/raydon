@@ -1,8 +1,6 @@
-import { createXAtom } from '@edsolater/xstore'
 import { HexAddress } from '@/types/constants'
-import create from 'zustand'
+import { createXAtom } from '@edsolater/xstore'
 import { tokenAtom } from '../token'
-import { autoResetFarmCreatedBySelf } from './effects/autoResetFarmCreatedBySelf'
 import { FarmPoolJsonInfo, HydratedFarmInfo, SdkParsedFarmInfo } from './type'
 
 export type FarmStore = {

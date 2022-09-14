@@ -13,8 +13,8 @@ import { padZero } from '@/functions/numberish/handleZero'
 import { div, mul } from '@/functions/numberish/operations'
 import toBN from '@/functions/numberish/toBN'
 import { Connection } from '../connection'
+import { farmAtom } from '../farms/atom'
 import { HydratedFarmInfo } from '../farms/type'
-import useFarms from '../farms/useFarms'
 import { isQuantumSOLVersionSOL, SOLMint } from '../token'
 import { jsonInfo2PoolKeys } from '../txTools/jsonInfo2PoolKeys'
 import useWallet from '../wallet/useWallet'
@@ -28,7 +28,7 @@ export default async function txUpdateEdited({ ...txAddOptions }: AddSingleTxOpt
     const piecesCollector = createTransactionCollector()
 
     // ---------- generate basic info ----------
-    const { hydratedInfos } = useFarms.getState()
+    const { hydratedInfos } = farmAtom.get()
     const { rewards: uiRewardInfos, farmId: targetFarmId } = useCreateFarms.getState()
 
     const farmInfo = hydratedInfos.find((f) => toPubString(f.id) === targetFarmId)

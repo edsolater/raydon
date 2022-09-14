@@ -2,7 +2,7 @@ import useAppSettings from '@/application/appSettings/useAppSettings'
 import { createNewUIRewardInfo, hasRewardBeenEdited } from '@/application/createFarm/parseRewardInfo'
 import txUpdateEdited from '@/application/createFarm/txUpdateFarm'
 import useCreateFarms from '@/application/createFarm/useCreateFarm'
-import useFarms from '@/application/farms/useFarms'
+import { farmAtom } from '@/application/farms/atom'
 import { routeBack, routeTo } from '@/application/routeTools'
 import { tokenAtom } from '@/application/token'
 import { AddressItem } from '@/components/AddressItem'
@@ -107,7 +107,7 @@ export default function EditReviewPage() {
                   setTimeout(() => {
                     routeTo('/farms', { queryProps: { currentTab: 'Ecosystem' } })
                     useCreateFarms.setState({ rewards: [createNewUIRewardInfo()] })
-                    useFarms.getState().refreshFarmInfos()
+                    farmAtom.get().refreshFarmInfos()
                     useCreateFarms.setState({ isRoutedByCreateOrEdit: false })
                   }, 1000)
                 }

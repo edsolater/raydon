@@ -1,15 +1,9 @@
-import { Percent } from '@raydium-io/raydium-sdk'
-import BN from 'bn.js'
-import { createRef, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { twMerge } from 'tailwind-merge'
-
 import useAppSettings from '@/application/appSettings/useAppSettings'
-import useFarms from '@/application/farms/useFarms'
-import txAddLiquidity from '@/application/liquidity/tx/txAddLiquidity'
-import useLiquidity from '@/application/liquidity/useLiquidity'
 import useLiquidityAmmSelector from '@/application/liquidity/effects/useLiquidityAmmSelector'
 import useLiquidityInitCoinFiller from '@/application/liquidity/effects/useLiquidityInitCoinFiller'
 import useLiquidityUrlParser from '@/application/liquidity/effects/useLiquidityUrlParser'
+import txAddLiquidity from '@/application/liquidity/tx/txAddLiquidity'
+import useLiquidity from '@/application/liquidity/useLiquidity'
 import { routeTo } from '@/application/routeTools'
 import { SOLDecimals, SOL_BASE_BALANCE, tokenAtom } from '@/application/token'
 import useWallet from '@/application/wallet/useWallet'
@@ -17,6 +11,10 @@ import CoinAvatarPair from '@/components/CoinAvatarPair'
 import CoinInputBox, { CoinInputBoxHandle } from '@/components/CoinInputBox'
 import Button, { ButtonHandle } from '@/tempUikits/Button'
 import Card from '@/tempUikits/Card'
+import { Percent } from '@raydium-io/raydium-sdk'
+import BN from 'bn.js'
+import { createRef, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 import { SearchAmmDialog } from '@/components/dialogs/SearchAmmDialog'
 import Icon from '@/components/Icon'
@@ -42,7 +40,8 @@ import RowTabs from '@/tempUikits/RowTabs'
 import Tooltip from '@/tempUikits/Tooltip'
 import { HexAddress } from '@/types/constants'
 
-import { useXStore } from '@edsolater/xstore'
+import { farmAtom } from '@/application/farms/atom'
+import { liquidityAtom } from '@/application/liquidity/atom'
 import { SplToken } from '@/application/token/type'
 import { walletAtom } from '@/application/wallet'
 import { AddressItem } from '@/components/AddressItem'
@@ -51,10 +50,10 @@ import { isMintEqual } from '@/functions/judgers/areEqual'
 import { objectShakeFalsy } from '@/functions/objectMethods'
 import { Badge } from '@/tempUikits/Badge'
 import { cssCol, cssRow, Div } from '@edsolater/uikit'
+import { useXStore } from '@edsolater/xstore'
 import { RemoveLiquidityDialog } from '../../components/dialogs/RemoveLiquidityDialog'
 import TokenSelectorDialog from '../../components/dialogs/TokenSelectorDialog'
 import { Checkbox } from '../../tempUikits/Checkbox'
-import { liquidityAtom } from '@/application/liquidity/atom'
 
 const { ContextProvider: LiquidityUIContextProvider, useStore: useLiquidityContextStore } = createContextStore({
   hasAcceptedPriceChange: false,
@@ -757,7 +756,7 @@ function UserLiquidityExhibition() {
   const userExhibitionLiquidityIds = useLiquidity((s) => s.userExhibitionLiquidityIds)
   const isRemoveDialogOpen = useLiquidity((s) => s.isRemoveDialogOpen)
   const scrollToInputBox = useLiquidity((s) => s.scrollToInputBox)
-  const farmPoolsList = useFarms((s) => s.hydratedInfos)
+  const { hydratedInfos: farmPoolsList } = useXStore(farmAtom)
   const { getToken } = useXStore(tokenAtom)
 
   const balances = useWallet((s) => s.balances)

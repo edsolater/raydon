@@ -1,13 +1,10 @@
-import { useCallback, useEffect, useMemo } from 'react'
-
-import { twMerge } from 'tailwind-merge'
-
 import useAppSettings from '@/application/appSettings/useAppSettings'
-import useFarms from '@/application/farms/useFarms'
-import { isHydratedPoolItemInfo } from '@/application/pools/utils/is'
+import { farmAtom } from '@/application/farms/atom'
+import { poolsAtom } from '@/application/pools/atom'
+import { autoRefreshTvlAndVolume24hData } from '@/application/pools/effects/autoRefreshTvlAndVolume24hData'
 import { HydratedPairItemInfo } from '@/application/pools/type'
 import { usePoolFavoriteIds } from '@/application/pools/usePools'
-import { autoRefreshTvlAndVolume24hData } from '@/application/pools/effects/autoRefreshTvlAndVolume24hData'
+import { isHydratedPoolItemInfo } from '@/application/pools/utils/is'
 import { routeTo } from '@/application/routeTools'
 import { tokenAtom } from '@/application/token'
 import { LpToken } from '@/application/token/type'
@@ -44,7 +41,8 @@ import Switcher from '@/tempUikits/Switcher'
 import Tooltip from '@/tempUikits/Tooltip'
 import { cssCol, cssRow, Div } from '@edsolater/uikit'
 import { useXStore } from '@edsolater/xstore'
-import { poolsAtom } from '@/application/pools/atom'
+import { useCallback, useEffect, useMemo } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 /**
  * store:
@@ -784,7 +782,7 @@ function PoolCardDatabaseBodyCollapseItemContent({ poolInfo: info }: { poolInfo:
   const isMobile = useAppSettings((s) => s.isMobile)
   const balances = useWallet((s) => s.balances)
   const lightBoardClass = 'bg-[rgba(20,16,65,.2)]'
-  const farmPoolsList = useFarms((s) => s.hydratedInfos)
+  const { hydratedInfos: farmPoolsList } = useXStore(farmAtom)
   const { lpPrices: prices } = useXStore(poolsAtom)
 
   const hasLp = isMeaningfulNumber(balances[info.lpMint])

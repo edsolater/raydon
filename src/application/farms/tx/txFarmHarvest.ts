@@ -10,8 +10,8 @@ import {
 import assert from '@/functions/assert'
 import asyncMap from '@/functions/asyncMap'
 import { jsonInfo2PoolKeys } from '../../txTools/jsonInfo2PoolKeys'
+import { farmAtom } from '../atom'
 import { HydratedFarmInfo } from '../type'
-import useFarms from '../useFarms'
 
 export default async function txFarmHarvest(
   info: HydratedFarmInfo,
@@ -21,7 +21,7 @@ export default async function txFarmHarvest(
     const piecesCollector = createTransactionCollector()
     assert(owner, 'require connected wallet')
 
-    const jsonFarmInfo = useFarms.getState().jsonInfos.find(({ id }) => String(id) === String(info.id))
+    const jsonFarmInfo = farmAtom.get().jsonInfos.find(({ id }) => String(id) === String(info.id))
     assert(jsonFarmInfo, 'Farm pool not found')
 
     // ------------- add lp token transaction --------------
@@ -70,7 +70,7 @@ export default async function txFarmHarvest(
 
     const listenerId = addWalletAccountChangeListener(
       () => {
-        useFarms.getState().refreshFarmInfos()
+        farmAtom.get().refreshFarmInfos()
       },
       { once: true }
     )
@@ -79,7 +79,7 @@ export default async function txFarmHarvest(
       onTxSentError: () => removeWalletAccountChangeListener(listenerId),
       onTxSuccess: () => {
         setTimeout(() => {
-          useFarms.getState().refreshFarmInfos()
+          farmAtom.get().refreshFarmInfos()
         }, 300) // sometimes pending rewards is not very reliable, so invoke it manually
       }, // wallet Account Change sometimes not stable
       txHistoryInfo: {

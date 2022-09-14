@@ -1,14 +1,15 @@
+import { useXStore } from '@/../../xstore/dist'
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import { createNewUIRewardInfo } from '@/application/createFarm/parseRewardInfo'
 import txCreateNewFarm from '@/application/createFarm/txCreateNewFarm'
 import useCreateFarms from '@/application/createFarm/useCreateFarm'
-import useFarms from '@/application/farms/useFarms'
+import { farmAtom } from '@/application/farms/atom'
 import { routeBack, routeTo } from '@/application/routeTools'
 import { RAYMint } from '@/application/token'
 import useWallet from '@/application/wallet/useWallet'
 import { AddressItem } from '@/components/AddressItem'
-import Button from '@/tempUikits/Button'
-
+import { NewAddedRewardSummary } from '@/components/createFarm/NewAddedRewardSummary'
+import { PoolInfoSummary } from '@/components/createFarm/PoolInfoSummery'
 import PageLayout from '@/components/PageLayout/PageLayout'
 import toPubString from '@/functions/format/toMintString'
 import { isMintEqual } from '@/functions/judgers/areEqual'
@@ -16,12 +17,11 @@ import { gte } from '@/functions/numberish/compare'
 import { add } from '@/functions/numberish/operations'
 import { toString } from '@/functions/numberish/toString'
 import useToggle from '@/hooks/useToggle'
-import { NewAddedRewardSummary } from '@/components/createFarm/NewAddedRewardSummary'
-import { PoolInfoSummary } from '@/components/createFarm/PoolInfoSummery'
+import Button from '@/tempUikits/Button'
+import { cssCol, cssRow, Div } from '@edsolater/uikit'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { setInterval } from '../../functions/timeout'
-import { Div, cssCol, cssRow } from '@edsolater/uikit'
 
 function useAvailableCheck() {
   useEffect(() => {
@@ -36,7 +36,7 @@ export default function CreateFarmReviewPage() {
   const rewards = useCreateFarms((s) => s.rewards)
   const { pathname } = useRouter()
   const isMobile = useAppSettings((s) => s.isMobile)
-  const refreshFarmInfos = useFarms((s) => s.refreshFarmInfos)
+  const { refreshFarmInfos: refreshFarmInfos } = useXStore(farmAtom)
   const [key, setKey] = useState(String(Date.now())) // hacking: same block hash can only success once
   const isApprovePanelShown = useAppSettings((s) => s.isApprovePanelShown)
   useEffect(() => {
@@ -64,7 +64,7 @@ export default function CreateFarmReviewPage() {
               turnOnCreated()
               setInterval(
                 () => {
-                  useFarms.getState().refreshFarmInfos()
+                  farmAtom.get().refreshFarmInfos()
                 },
                 { loopCount: 3, intervalTime: 1000 * 60 }
               )

@@ -5,13 +5,13 @@ import { createTransactionCollector } from '@/application/txTools/createTransact
 import handleMultiTx from '@/application/txTools/handleMultiTx'
 import assert from '@/functions/assert'
 import asyncMap from '@/functions/asyncMap'
-import { HydratedFarmInfo } from '../type'
-import useFarms from '../useFarms'
 import { jsonInfo2PoolKeys } from '../../txTools/jsonInfo2PoolKeys'
 import {
   addWalletAccountChangeListener,
   removeWalletAccountChangeListener
 } from '../../wallet/utils/walletAccountChangeListener'
+import { farmAtom } from '../atom'
+import { HydratedFarmInfo } from '../type'
 
 export default async function txFarmDeposit(
   info: HydratedFarmInfo,
@@ -21,7 +21,7 @@ export default async function txFarmDeposit(
     const piecesCollector = createTransactionCollector()
     assert(owner, 'require connected wallet')
 
-    const jsonFarmInfo = useFarms.getState().jsonInfos.find(({ id }) => String(id) === String(info.id))
+    const jsonFarmInfo = farmAtom.get().jsonInfos.find(({ id }) => String(id) === String(info.id))
     assert(jsonFarmInfo, 'Farm pool not found')
 
     // ------------- add lp token transaction --------------
@@ -71,7 +71,7 @@ export default async function txFarmDeposit(
 
     const listenerId = addWalletAccountChangeListener(
       () => {
-        useFarms.getState().refreshFarmInfos()
+        farmAtom.get().refreshFarmInfos()
       },
       { once: true }
     )

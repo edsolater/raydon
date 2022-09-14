@@ -1,14 +1,9 @@
 import { useRouter } from 'next/router'
 import { ReactNode, useMemo } from 'react'
 
-import { Fraction, TokenAmount, ZERO } from '@raydium-io/raydium-sdk'
-
-import { twMerge } from 'tailwind-merge'
-
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import txFarmHarvest from '@/application/farms/tx/txFarmHarvest'
 import { HydratedFarmInfo } from '@/application/farms/type'
-import useFarms from '@/application/farms/useFarms'
 import useStaking from '@/application/staking/useStaking'
 import { tokenAtom } from '@/application/token'
 import useWallet from '@/application/wallet/useWallet'
@@ -27,7 +22,10 @@ import { add } from '@/functions/numberish/operations'
 import { toString } from '@/functions/numberish/toString'
 import Button from '@/tempUikits/Button'
 import { cssCol, cssRow, Div } from '@edsolater/uikit'
+import { Fraction, TokenAmount, ZERO } from '@raydium-io/raydium-sdk'
+import { twMerge } from 'tailwind-merge'
 
+import { farmAtom } from '@/application/farms/atom'
 import Collapse from '@/tempUikits/Collapse'
 import CyberpunkStyleCard from '@/tempUikits/CyberpunkStyleCard'
 import Grid from '@/tempUikits/Grid'
@@ -44,7 +42,7 @@ export default function StakingPage() {
 }
 
 function StakingHeader() {
-  const refreshFarmInfos = useFarms((s) => s.refreshFarmInfos)
+  const { refreshFarmInfos: refreshFarmInfos } = useXStore(farmAtom)
   return (
     <Grid className="grid-cols-[1fr,1fr] items-center gap-y-8 pb-4 pt-2">
       <Div className="title text-2xl mobile:text-lg font-semibold justify-self-start text-white">Staking</Div>
@@ -61,7 +59,7 @@ function StakingHeader() {
 }
 
 function StakingCard() {
-  const hydratedInfos = useFarms((s) => s.hydratedInfos)
+  const { hydratedInfos: hydratedInfos } = useXStore(farmAtom)
   const infos = useMemo(() => hydratedInfos.filter((i) => i.isStakePool), [hydratedInfos])
   if (!infos.length)
     return (

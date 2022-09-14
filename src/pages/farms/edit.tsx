@@ -1,3 +1,4 @@
+import { useXStore } from '@/../../xstore/dist'
 import useAppSettings from '@/application/appSettings/useAppSettings'
 import {
   createNewUIRewardInfo,
@@ -7,11 +8,15 @@ import {
 import txClaimReward from '@/application/createFarm/txClaimReward'
 import { UIRewardInfo } from '@/application/createFarm/type'
 import useCreateFarms, { cleanStoreEmptyRewards } from '@/application/createFarm/useCreateFarm'
+import { farmAtom } from '@/application/farms/atom'
 import { HydratedFarmInfo } from '@/application/farms/type'
-import useFarms from '@/application/farms/useFarms'
 import { routeBack, routeTo } from '@/application/routeTools'
 import useWallet from '@/application/wallet/useWallet'
 import { AddressItem } from '@/components/AddressItem'
+import { EditableRewardSummary } from '@/components/createFarm/EditableRewardSummary'
+import { NewRewardIndicatorAndForm } from '@/components/createFarm/NewRewardIndicatorAndForm'
+import { PoolInfoSummary } from '@/components/createFarm/PoolInfoSummery'
+import RewardInputDialog from '@/components/createFarm/RewardEditDialog'
 import Icon from '@/components/Icon'
 import PageLayout from '@/components/PageLayout/PageLayout'
 import { isDateBefore } from '@/functions/date/judges'
@@ -23,17 +28,13 @@ import { gte, isMeaningfulNumber } from '@/functions/numberish/compare'
 import { div } from '@/functions/numberish/operations'
 import { objectShakeNil } from '@/functions/objectMethods'
 import { useChainDate } from '@/hooks/useChainDate'
-import { EditableRewardSummary } from '@/components/createFarm/EditableRewardSummary'
-import { NewRewardIndicatorAndForm } from '@/components/createFarm/NewRewardIndicatorAndForm'
-import { PoolInfoSummary } from '@/components/createFarm/PoolInfoSummery'
-import RewardInputDialog from '@/components/createFarm/RewardEditDialog'
 import Button from '@/tempUikits/Button'
 import Card from '@/tempUikits/Card'
+import { cssRow, Div } from '@edsolater/uikit'
 import produce from 'immer'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
-import { Div, cssRow } from '@edsolater/uikit'
 
 function useAvailableCheck() {
   useEffect(() => {
@@ -60,7 +61,7 @@ function NavButtons({ className }: { className?: string }) {
 export function useEditFarmUrlParser() {
   const { query } = useRouter()
   const owner = useWallet((s) => s.owner)
-  const farms = useFarms((s) => s.hydratedInfos)
+  const { hydratedInfos: farms } = useXStore(farmAtom)
   function updateCreateFarmInfo(farmInfo: HydratedFarmInfo) {
     useCreateFarms.setState(
       objectShakeNil({
@@ -88,7 +89,7 @@ export default function FarmEditPage() {
   const walletConnected = useWallet((s) => s.connected)
   const getBalance = useWallet((s) => s.getBalance)
   const { rewards: allRewards, cannotAddNewReward, farmId } = useCreateFarms()
-  const hydratedFarmInfos = useFarms((s) => s.hydratedInfos)
+  const { hydratedInfos: hydratedFarmInfos } = useXStore(farmAtom)
   const [focusReward, setFocusReward] = useState<UIRewardInfo>()
   const canAddRewardInfo = !cannotAddNewReward && allRewards.length < 5
   const editableRewards = allRewards.filter((r) => r.type === 'existed reward')

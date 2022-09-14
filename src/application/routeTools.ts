@@ -2,25 +2,22 @@ import router from 'next/router'
 
 import { ParsedUrlQuery } from 'querystring'
 
+import { addItem } from '@/functions/arrayMethods'
+import { cleanQuery } from '@/functions/dom/getURLQueryEntries'
+import toPubString from '@/functions/format/toMintString'
+import { isMintEqual } from '@/functions/judgers/areEqual'
 import { objectShakeFalsy, objectShakeNil } from '@/functions/objectMethods'
 import { shrinkToValue } from '@/functions/shrinkToValue'
 import { HexAddress, MayFunction } from '@/types/constants'
-
-import useLiquidity from './liquidity/useLiquidity'
-import { useSwap } from './swap/useSwap'
-import { SplToken } from './token/type'
-import useFarms from './farms/useFarms'
-import useIdo from './ido/useIdo'
-import useCreateFarms from './createFarm/useCreateFarm'
-import { HydratedFarmInfo } from './farms/type'
-import toPubString from '@/functions/format/toMintString'
-import useWallet from './wallet/useWallet'
-import { isMintEqual } from '@/functions/judgers/areEqual'
 import { createNewUIRewardInfo, parsedHydratedRewardInfoToUiRewardInfo } from './createFarm/parseRewardInfo'
-import { addQuery, cleanQuery } from '@/functions/dom/getURLQueryEntries'
-import { addItem } from '@/functions/arrayMethods'
+import useCreateFarms from './createFarm/useCreateFarm'
+import { farmAtom } from './farms/atom'
+import { HydratedFarmInfo } from './farms/type'
+import useIdo from './ido/useIdo'
 import { liquidityAtom } from './liquidity/atom'
 import { swapAtom } from './swap/atom'
+import { SplToken } from './token/type'
+import useWallet from './wallet/useWallet'
 
 export type PageRouteConfigs = {
   '/swap': {
@@ -114,7 +111,7 @@ export function routeTo<ToPage extends keyof PageRouteConfigs>(
   } else if (toPage === '/farms') {
     return router.push({ pathname: '/farms' }).then(() => {
       /** jump to target page */
-      useFarms.setState((s) =>
+      farmAtom.set((s) =>
         objectShakeFalsy({
           currentTab: options?.queryProps?.currentTab,
           searchText: options?.queryProps?.searchText,
@@ -122,7 +119,7 @@ export function routeTo<ToPage extends keyof PageRouteConfigs>(
         })
       )
       if (options?.queryProps?.newExpandedItemId) {
-        useFarms.setState((s) => ({
+        farmAtom.set((s) => ({
           expandedItemIds: addItem(s.expandedItemIds, options.queryProps.newExpandedItemId)
         }))
       }
@@ -154,7 +151,7 @@ export function routeTo<ToPage extends keyof PageRouteConfigs>(
         pathname: '/farms/create'
       })
       .then(() => {
-        useFarms.setState({
+        farmAtom.set({
           searchText: ''
         })
       })

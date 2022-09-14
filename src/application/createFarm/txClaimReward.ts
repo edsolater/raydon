@@ -4,19 +4,17 @@ import { Connection, Signer, TransactionInstruction } from '@solana/web3.js'
 import { createTransactionCollector } from '@/application/txTools/createTransaction'
 import handleMultiTx, { AddSingleTxOptions } from '@/application/txTools/handleMultiTx'
 import assert from '@/functions/assert'
+import { asyncForEach } from '@/functions/asyncMap'
 import toPubString from '@/functions/format/toMintString'
 import { isMintEqual } from '@/functions/judgers/areEqual'
+import { MayArray } from '@/types/constants'
+import { farmAtom } from '../farms/atom'
 import { HydratedFarmInfo } from '../farms/type'
-import useFarms from '../farms/useFarms'
-import { isQuantumSOLVersionSOL } from '../token'
-import { SOLMint } from '../token'
+import { isQuantumSOLVersionSOL, SOLMint } from '../token'
+import { jsonInfo2PoolKeys } from '../txTools/jsonInfo2PoolKeys'
 import useWallet from '../wallet/useWallet'
 import { UIRewardInfo } from './type'
 import useCreateFarms from './useCreateFarm'
-import { MayArray } from '@/types/constants'
-import { asyncForEach } from '@/functions/asyncMap'
-import { jsonInfo2PoolKeys } from '../txTools/jsonInfo2PoolKeys'
-import { validUiRewardInfo } from './validRewardInfo'
 
 export default async function txClaimReward({
   reward,
@@ -26,7 +24,7 @@ export default async function txClaimReward({
     const piecesCollector = createTransactionCollector()
 
     // ---------- generate basic info ----------
-    const { hydratedInfos } = useFarms.getState()
+    const { hydratedInfos } = farmAtom.get()
     const { farmId: targetFarmId } = useCreateFarms.getState()
     assert(targetFarmId, 'target farm id is missing')
     const farmInfo = hydratedInfos.find((f) => toPubString(f.id) === targetFarmId)

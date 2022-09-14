@@ -9,9 +9,9 @@ import {
 } from '@/application/wallet/utils/walletAccountChangeListener'
 import assert from '@/functions/assert'
 import asyncMap from '@/functions/asyncMap'
-import { HydratedFarmInfo } from '../type'
-import useFarms from '../useFarms'
 import { jsonInfo2PoolKeys } from '../../txTools/jsonInfo2PoolKeys'
+import { farmAtom } from '../atom'
+import { HydratedFarmInfo } from '../type'
 
 export default async function txFarmWithdraw(
   info: HydratedFarmInfo,
@@ -21,7 +21,7 @@ export default async function txFarmWithdraw(
     const piecesCollector = createTransactionCollector()
     assert(owner, 'require connected wallet')
 
-    const jsonFarmInfo = useFarms.getState().jsonInfos.find(({ id }) => String(id) === String(info.id))
+    const jsonFarmInfo = farmAtom.get().jsonInfos.find(({ id }) => String(id) === String(info.id))
     assert(jsonFarmInfo, 'Farm pool not found')
 
     // ------------- add lp token transaction --------------
@@ -71,7 +71,7 @@ export default async function txFarmWithdraw(
 
     const listenerId = addWalletAccountChangeListener(
       () => {
-        useFarms.getState().refreshFarmInfos()
+        farmAtom.get().refreshFarmInfos()
       },
       { once: true }
     )
