@@ -19,8 +19,8 @@ export const autoUpdateBlockchainTime = createXEffect(() => {
       isExist(timeOffset) && connectionAtom.set({ chainTimeOffset: timeOffset })
     })
   }, 1000 * 60 * 5)
-  return () => clearInterval(timeId) // TODO: haven't imply clean fn yet
-}, [() => connectionAtom.subscribe.connection])
+  return () => clearInterval(timeId)
+}, [connectionAtom.subscribe.connection])
 
 async function getChainTimeOffset(connection: Connection | undefined) {
   if (!connection) return

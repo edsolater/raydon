@@ -1,4 +1,4 @@
-import { createXAtom } from '@/../../xstore/dist'
+import { createXAtom } from '@edsolater/xstore'
 import { HexAddress } from '@/types/constants'
 import { Price } from '@raydium-io/raydium-sdk'
 import { HydratedPairItemInfo, JsonPairItemInfo } from './type'

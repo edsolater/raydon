@@ -1,4 +1,4 @@
-import { createZustandStoreHook } from '@/../../xstore/dist'
+import { createZustandStoreHook } from '@edsolater/xstore'
 import useLocalStorageItem from '@/hooks/useLocalStorage'
 import { poolsAtom } from './atom'
 

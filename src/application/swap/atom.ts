@@ -5,7 +5,7 @@ import create from 'zustand'
 import { Numberish } from '@/types/constants'
 
 import { SplToken } from '../token/type'
-import { createXAtom } from '@/../../xstore/dist'
+import { createXAtom } from '@edsolater/xstore'
 
 export type SwapStore = {
   directionReversed: boolean // determine pairSide  swap make this to be true
