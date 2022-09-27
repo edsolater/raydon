@@ -30,12 +30,12 @@ export function TopNavbar({
     <Div
       as="nav"
       className_={twMerge('select-none text-white px-12 py-4 mobile:px-5 mobile:py-3 transition-all')}
-      icss_={[cssRow({ justifyContent: 'space-between', items: 'center' }), { background: 'var(--navbar-bg)' }]}
+      icss_={[cssRow({ justifyContent: 'space-between', alignItems: 'center' }), { background: 'var(--navbar-bg)' }]}
       {...restProps}
     >
-      <Div icss={cssRow({ items: 'center', gap: 32 })}>{shrinkToValue(renderSlot1)}</Div>
-      <Div icss={cssRow({ items: 'center', gap: 32 })}>{shrinkToValue(renderSlot2)}</Div>
-      <Div icss={cssRow({ items: 'center', gap: 32 })}>{shrinkToValue(renderSlot3)}</Div>
+      <Div icss={cssRow({ alignItems: 'center', gap: 32 })}>{shrinkToValue(renderSlot1)}</Div>
+      <Div icss={cssRow({ alignItems: 'center', gap: 32 })}>{shrinkToValue(renderSlot2)}</Div>
+      <Div icss={cssRow({ alignItems: 'center', gap: 32 })}>{shrinkToValue(renderSlot3)}</Div>
     </Div>
   )
 }

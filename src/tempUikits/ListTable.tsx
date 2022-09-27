@@ -77,7 +77,7 @@ type ListTableProps<T> = {
 }
 
 // NOTE: have base style of bonsai
-export default function ListTable<T>({
+export default function ListTable<T extends object>({
   type = 'list-table',
   className,
 

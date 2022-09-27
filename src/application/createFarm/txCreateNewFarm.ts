@@ -149,7 +149,7 @@ export default async function txCreateNewFarm(
               rewardSender: toPubString(owner)
             }
           })
-        } as FarmPoolJsonInfo
+        } as unknown as FarmPoolJsonInfo
         setLocalItem<FarmPoolJsonInfo[]>(userCreatedFarmKey, (s) => addItem(s ?? [], farmItem))
       }
 

@@ -12,6 +12,8 @@ import Icon from '../Icon'
 import PageLayoutPopoverDrawer from '../PageLayoutPopoverDrawer'
 import { appColors } from '@/styles/colors'
 import { Div, cssRow } from '@edsolater/uikit'
+import { useXStore } from '@/../../xstore/dist'
+import { walletAtom } from '@/application/wallet'
 
 /** this should be used in ./Navbar.tsx */
 export default function WalletWidget() {
@@ -22,7 +24,7 @@ export default function WalletWidget() {
     if (isCopied) delayOff()
   }, [isCopied])
 
-  const { owner: publicKey, disconnect, connected } = useWallet()
+  const { owner: publicKey, disconnect, connected } = useXStore(walletAtom)
 
   return (
     <PageLayoutPopoverDrawer

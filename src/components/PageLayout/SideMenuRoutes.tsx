@@ -60,7 +60,7 @@ function SideMenuRoutesLinkItem({
       <Div icss={{ display: 'flex', alignItems: 'center', justifyContent: 'stretch' }}>
         <Icon forceColor="var(--icon-link)" className="mr-3" size={isMobile ? 'xs' : 'sm'} iconSrc={icon} />
         <Div
-          icss={cssRow({ items: 'center', gap: 8 })}
+          icss={cssRow({ alignItems: 'center', gap: 8 })}
           className={twMerge(
             `text-link ${isCurrentRoutePath ? 'text-link-active' : ''} text-sm mobile:text-xs font-medium`
           )}

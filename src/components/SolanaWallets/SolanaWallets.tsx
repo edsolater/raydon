@@ -25,11 +25,13 @@ import { clusterApiUrl } from '@solana/web3.js'
 import { TokenPocketWalletAdapter } from '@solana/wallet-adapter-tokenpocket'
 
 import useConnection from '@/application/connection/useConnection'
+import { useXStore } from '@/../../xstore/dist'
+import { connectionAtom } from '@/application/connection'
 
 /** include: SolanaWalletConnectionProvider SolanaWalletAdaptorsProvider SolanaWalletModalProvider */
 export function SolanaWalletProviders({ children }: { children?: ReactNode }) {
   // Set to 'devnet' | 'testnet' | 'mainnet-beta' or provide a custom RPC endpoint
-  const { currentEndPoint } = useConnection()
+  const { currentEndPoint } = useXStore(connectionAtom)
   const { pathname } = useRouter()
 
   const endpoint = useMemo(() => currentEndPoint?.url ?? clusterApiUrl('devnet'), [currentEndPoint])

@@ -48,6 +48,8 @@ import Tooltip from '@/tempUikits/Tooltip'
 import { Numberish } from '@/types/constants'
 import { useRouter } from 'next/router'
 import { twMerge } from 'tailwind-merge'
+import { useXStore } from '@/../../xstore/dist'
+import { walletAtom } from '@/application/wallet'
 
 // paser url to patch idoid
 function useUrlParser() {
@@ -872,7 +874,7 @@ function LotteryInputPanel({ className }: { className?: string }) {
   const tempJoined = useIdo((s) => s.tempJoined)
   const idoInfo = useIdo((s) => (s.currentIdoId ? s.idoHydratedInfos[s.currentIdoId] : undefined))
   const isApprovePanelShown = useAppSettings((s) => s.isApprovePanelShown)
-  const { connected, balances, checkWalletHasEnoughBalance, owner } = useWallet()
+  const { connected, balances, checkWalletHasEnoughBalance, owner } = useXStore(walletAtom)
   const refreshIdo = useIdo((s) => s.refreshIdo)
   const refreshSelf = () => refreshIdo(idoInfo?.id)
 

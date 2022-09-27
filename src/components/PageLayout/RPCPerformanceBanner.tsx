@@ -4,9 +4,11 @@ import jFetch from '@/functions/dom/jFetch'
 import useAsyncEffect from '@/hooks/useAsyncEffect'
 import { FadeIn } from '../../tempUikits/FadeIn'
 import { Div } from '@edsolater/uikit'
+import { useXStore } from '@/../../xstore/dist'
+import { connectionAtom } from '@/application/connection'
 
 export function RPCPerformanceBanner({ className }: { className?: string }) {
-  const { connection, currentEndPoint } = useConnection()
+  const { connection, currentEndPoint } = useXStore(connectionAtom)
   const [isLowRpcPerformance, setIsLowRpcPerformance] = useState(false)
 
   const MAX_TPS = 1500 // force settings

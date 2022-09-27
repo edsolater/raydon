@@ -1,22 +1,17 @@
-import { useEffect, useRef } from 'react'
-
+import { useEffect } from 'react'
 import { eq, gt, lt, lte } from '@/functions/numberish/compare'
 import useDevice from '@/hooks/useDevice'
 import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect '
-
-import useWallet from '../wallet/useWallet'
-
-import useAppSettings from './useAppSettings'
-import useLocalStorageItem from '@/hooks/useLocalStorage'
-import useNotification from '../notification/useNotification'
-import { useRouter } from 'next/router'
-import { useRecordedEffect } from '@/hooks/useRecordedEffect'
-import { toString } from '@/functions/numberish/toString'
-import Link from '@/tempUikits/Link'
-import { useAppVersion } from '../appVersion/useAppVersion'
 import { inClient, inServer, isInBonsaiTest, isInLocalhost } from '@/functions/judgers/isSSR'
+import { toString } from '@/functions/numberish/toString'
+import useLocalStorageItem from '@/hooks/useLocalStorage'
+import { useRecordedEffect } from '@/hooks/useRecordedEffect'
+import Link from '@/tempUikits/Link'
 import { useKeyboardShortcut } from '@edsolater/hookit'
 import { Div } from '@edsolater/uikit'
+import { useRouter } from 'next/router'
+import useNotification from '../notification/useNotification'
+import useAppSettings from './useAppSettings'
 
 export function useThemeModeSync() {
   const themeMode = useAppSettings((s) => s.themeMode)

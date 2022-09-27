@@ -19,8 +19,7 @@
       "@/*": ["./*"]
     },
     "strict": true,
-    "incremental": true,
-    "keyofStringsOnly": true
+    "incremental": true
   },
   "include": [
     "next-env.d.ts",
